@@ -1,0 +1,39 @@
+{
+  "$schema": "../../kit.schema.json",
+  "name": "web-rails",
+  "version": "1.0.0",
+  "author": "kits",
+  "title": "App web con Ruby on Rails",
+  "category": "web",
+  "language": "ruby",
+  "description": "Rails 8 con Hotwire, SQLite y Propshaft: una app completa (vistas, base de datos, jobs) sin montar nada más.",
+  "tags": [
+    "ruby",
+    "rails",
+    "hotwire",
+    "sqlite"
+  ],
+  "base": {
+    "command": "command -v rails >/dev/null || { echo 'Necesitas Rails: gem install rails' >&2; exit 1; }; rails new {{name}} --skip-git --skip-bundle --skip-kamal --skip-thruster",
+    "install": "bundle install --quiet"
+  },
+  "packageManagers": [
+    "bundler"
+  ],
+  "skills": [
+    "affaan-m/ecc@rails-patterns"
+  ],
+  "verify": {
+    "command": "bin/rails db:prepare && bin/rails test && bin/rails zeitwerk:check"
+  },
+  "libraries": {
+    "framework": [
+      "rails"
+    ],
+    "workflow": [
+      "superpowers",
+      "mattpocock-skills"
+    ]
+  },
+  "instructions": "## Cómo trabajar aquí\n\n- Sigue las convenciones de Rails: genera con `bin/rails generate` (modelos, controladores, migraciones) en vez de crear archivos a mano.\n- Interactividad con Hotwire (Turbo y Stimulus) antes que con un framework de JavaScript.\n- Tras cambiar el esquema: `bin/rails db:migrate`. Antes de terminar: `bin/rails test`."
+}

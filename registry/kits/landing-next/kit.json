@@ -1,0 +1,103 @@
+{
+  "$schema": "../../kit.schema.json",
+  "name": "landing-next",
+  "version": "1.2.0",
+  "title": "Landing page con Next.js",
+  "description": "Next.js + Tailwind con skills de diseño, buenas prácticas de React y despliegue en Vercel. Para landings que no parezcan hechas por IA.",
+  "category": "landing",
+  "tags": [
+    "nextjs",
+    "tailwind",
+    "design",
+    "vercel"
+  ],
+  "author": "kits",
+  "base": {
+    "command": "npx create-next-app@latest {{name}} --ts --tailwind --eslint --app --src-dir --import-alias \"@/*\" --use-{{pm}} --disable-git --no-agent-feedback --yes"
+  },
+  "verify": {
+    "command": "{{pm}} run build",
+    "matrix": [
+      {
+        "component-addons": [
+          "kokonutui",
+          "magicui"
+        ],
+        "animation": [
+          "motion",
+          "gsap"
+        ],
+        "observability": [
+          "sentry-nextjs",
+          "posthog-nextjs"
+        ]
+      },
+      {
+        "i18n": [
+          "next-intl"
+        ],
+        "testing": [
+          "vitest"
+        ],
+        "quality": [
+          "husky-lint-staged"
+        ],
+        "ci": [
+          "github-actions"
+        ],
+        "deploy": [
+          "vercel"
+        ],
+        "animation": [
+          "motion"
+        ]
+      }
+    ]
+  },
+  "skills": [
+    "anthropics/skills@frontend-design",
+    "vercel-labs/agent-skills@web-design-guidelines",
+    "vercel-labs/agent-skills@vercel-react-best-practices",
+    "vercel-labs/agent-skills@deploy-to-vercel"
+  ],
+  "options": [
+    {
+      "id": "extras",
+      "label": "Extras",
+      "type": "multi",
+      "default": [],
+      "choices": [
+        {
+          "id": "seo",
+          "label": "SEO y Open Graph",
+          "instructions": "## SEO\n\nCada página exporta `metadata` (título, descripción, Open Graph). Genera `src/app/sitemap.ts`, `src/app/robots.ts` y una imagen OG con `opengraph-image.tsx`."
+        }
+      ]
+    }
+  ],
+  "libraries": {
+    "framework": [
+      "react",
+      "nextjs"
+    ],
+    "components": "shadcn",
+    "addons": [],
+    "animation": [
+      "motion"
+    ],
+    "observability": [
+      "vercel-analytics"
+    ],
+    "i18n": "none",
+    "testing": [],
+    "quality": [],
+    "ci": [],
+    "deploy": "vercel",
+    "workflow": [
+      "superpowers",
+      "mattpocock-skills"
+    ]
+  },
+  "instructions": "## Cómo trabajar aquí\n\n- Secciones de la landing como componentes en `src/components/sections/`.\n- Antes de escribir UI, lee el skill `frontend-design` y define dirección visual (tipografía, color, ritmo).\n- Revisa el resultado con `web-design-guidelines` antes de dar algo por terminado.",
+  "language": "typescript"
+}

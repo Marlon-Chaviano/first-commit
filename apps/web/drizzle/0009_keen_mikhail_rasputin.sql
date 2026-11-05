@@ -1,0 +1,1 @@
+ALTER TABLE "kits" ADD COLUMN "language" text DEFAULT 'typescript' NOT NULL;

@@ -1,0 +1,57 @@
+{
+  "$schema": "../../kit.schema.json",
+  "name": "api-go",
+  "version": "1.1.0",
+  "title": "API con Go y chi",
+  "description": "API HTTP en Go con el router chi: middlewares estándar, JSON y tests con httptest. Sin frameworks pesados.",
+  "category": "api",
+  "tags": [
+    "go",
+    "chi",
+    "api"
+  ],
+  "author": "kits",
+  "base": {
+    "command": "mkdir {{name}} && cd {{name}} && go mod init {{name}}"
+  },
+  "packageManagers": [
+    "go"
+  ],
+  "dependencies": [
+    "github.com/go-chi/chi/v5"
+  ],
+  "files": "files/base",
+  "postInstall": [
+    "go mod tidy"
+  ],
+  "skills": [
+    "samber/cc-skills-golang@golang-code-style",
+    "samber/cc-skills-golang@golang-error-handling",
+    "samber/cc-skills-golang@golang-testing"
+  ],
+  "verify": {
+    "command": "go mod tidy && go vet ./... && go build ./... && go test ./...",
+    "matrix": [
+      {
+        "observability": [
+          "sentry-go"
+        ],
+        "ci": [
+          "github-actions-go"
+        ]
+      }
+    ]
+  },
+  "options": [],
+  "libraries": {
+    "framework": "go",
+    "observability": [],
+    "ci": [],
+    "workflow": [
+      "superpowers",
+      "mattpocock-skills"
+    ]
+  },
+  "instructions": "## Cómo trabajar aquí\n\n- Rutas en `router.go` (`newRouter`), agrupadas por recurso con `r.Route(\"/recurso\", ...)`. Handlers pequeños que devuelven JSON con `writeJSON`.\n- Usa solo la biblioteca estándar y chi; antes de añadir un módulo, comprueba si `net/http` o chi ya lo resuelven.\n- Devuelve los errores con contexto (`fmt.Errorf(\"...: %w\", err)`), nunca los ignores.\n- Antes de terminar una tarea: `go vet ./...` y `go test ./...`.",
+  "language": "go"
+}

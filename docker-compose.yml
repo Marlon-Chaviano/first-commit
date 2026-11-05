@@ -1,0 +1,39 @@
+# Local infrastructure: `docker compose up -d`
+# SRH exposes the Upstash REST API on top of a plain Redis, so the app uses the
+# same @upstash/redis client locally and in production.
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: kits
+      POSTGRES_PASSWORD: kits
+      POSTGRES_DB: kits
+    ports: ["5433:5432"]  # 5433 to avoid clashing with a local Postgres
+    volumes: [postgres:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U kits"]
+      interval: 5s
+
+  redis:
+    image: redis:8-alpine
+    ports: ["6380:6379"]
+    volumes: [redis:/data]
+
+  redis-http:
+    image: hiett/serverless-redis-http:latest
+    environment:
+      SRH_MODE: env
+      SRH_TOKEN: local_token
+      SRH_CONNECTION_STRING: redis://redis:6379
+    ports: ["8079:80"]
+    depends_on: [redis]
+
+  # Stripe's official mock of its API (validates every parameter against the OpenAPI spec).
+  # Billing tests run against it without a Stripe account: STRIPE_API_URL=http://localhost:12111
+  stripe-mock:
+    image: stripe/stripe-mock:latest
+    ports: ["12111:12111"]
+
+volumes:
+  postgres:
+  redis:

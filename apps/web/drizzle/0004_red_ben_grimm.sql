@@ -1,0 +1,1 @@
+ALTER TABLE "install_events" ADD COLUMN "event_type" text DEFAULT 'install' NOT NULL;

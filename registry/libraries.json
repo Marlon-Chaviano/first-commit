@@ -1,0 +1,1720 @@
+[
+  {
+    "id": "shadcn",
+    "name": "shadcn/ui",
+    "kind": "components",
+    "frameworks": [
+      "react"
+    ],
+    "url": "https://ui.shadcn.com",
+    "description": "Componentes accesibles que viven en tu código. Base de cientos de registros.",
+    "usage": "npx shadcn@latest add <componente>",
+    "postInstall": [
+      "{{pmx}} shadcn@latest init --defaults --yes"
+    ],
+    "skills": [
+      "shadcn-ui/ui@shadcn"
+    ],
+    "mcp": {
+      "shadcn": {
+        "command": "npx",
+        "args": [
+          "shadcn@latest",
+          "mcp"
+        ]
+      }
+    }
+  },
+  {
+    "id": "heroui",
+    "name": "HeroUI",
+    "kind": "components",
+    "frameworks": [
+      "react"
+    ],
+    "url": "https://heroui.com",
+    "description": "Componentes modernos sobre Tailwind CSS v4 y React Aria.",
+    "usage": "importa desde `@heroui/react` (https://heroui.com/docs/components)",
+    "dependencies": [
+      "@heroui/react",
+      "@heroui/styles"
+    ],
+    "setup": "añade `@import \"@heroui/styles\";` justo después de `@import \"tailwindcss\";` en el CSS global.",
+    "skills": [
+      "heroui-inc/heroui@heroui-react"
+    ]
+  },
+  {
+    "id": "mantine",
+    "name": "Mantine",
+    "kind": "components",
+    "frameworks": [
+      "react"
+    ],
+    "url": "https://mantine.dev",
+    "description": "Más de 100 componentes y hooks, con formularios y fechas.",
+    "usage": "importa desde `@mantine/core` y `@mantine/hooks`",
+    "dependencies": [
+      "@mantine/core",
+      "@mantine/hooks"
+    ],
+    "setup": "envuelve la app en `<MantineProvider>` e importa `@mantine/core/styles.css` en el layout raíz."
+  },
+  {
+    "id": "mui",
+    "name": "Material UI",
+    "kind": "components",
+    "frameworks": [
+      "react"
+    ],
+    "url": "https://mui.com/material-ui/",
+    "description": "Material Design completo y muy maduro.",
+    "usage": "importa desde `@mui/material`",
+    "dependencies": [
+      "@mui/material",
+      "@emotion/react",
+      "@emotion/styled"
+    ],
+    "setup": "define el tema con `ThemeProvider`; en Next.js App Router añade `@mui/material-nextjs` y `AppRouterCacheProvider`.",
+    "skills": [
+      "mui/material-ui@material-ui-theming"
+    ]
+  },
+  {
+    "id": "chakra",
+    "name": "Chakra UI",
+    "kind": "components",
+    "frameworks": [
+      "react"
+    ],
+    "url": "https://chakra-ui.com",
+    "description": "Componentes accesibles con un sistema de estilos por props.",
+    "usage": "importa desde `@chakra-ui/react`",
+    "dependencies": [
+      "@chakra-ui/react",
+      "@emotion/react"
+    ],
+    "setup": "envuelve la app en `<ChakraProvider value={defaultSystem}>`.",
+    "skills": [
+      "chakra-ui/chakra-ui@chakra-ui-builder"
+    ]
+  },
+  {
+    "id": "daisyui",
+    "name": "daisyUI",
+    "kind": "components",
+    "frameworks": [
+      "react",
+      "vue",
+      "svelte",
+      "solid",
+      "vanilla"
+    ],
+    "url": "https://daisyui.com",
+    "description": "Clases de componentes para Tailwind CSS. Funciona con cualquier framework.",
+    "usage": "usa sus clases (`btn`, `card`, `modal`…) según https://daisyui.com/components/",
+    "devDependencies": [
+      "daisyui"
+    ],
+    "setup": "requiere Tailwind CSS v4: añade `@plugin \"daisyui\";` al CSS global.",
+    "skills": [
+      "saadeghi/daisyui@daisyui"
+    ]
+  },
+  {
+    "id": "shadcn-vue",
+    "name": "shadcn-vue",
+    "kind": "components",
+    "frameworks": [
+      "vue"
+    ],
+    "url": "https://www.shadcn-vue.com",
+    "description": "El port oficial de shadcn/ui para Vue.",
+    "usage": "npx shadcn-vue@latest add <componente>",
+    "setup": "inicialízala con `npx shadcn-vue@latest init` (requiere Tailwind CSS).",
+    "skills": [
+      "unovue/shadcn-vue@shadcn-vue"
+    ]
+  },
+  {
+    "id": "primevue",
+    "name": "PrimeVue",
+    "kind": "components",
+    "frameworks": [
+      "vue"
+    ],
+    "url": "https://primevue.org",
+    "description": "Más de 90 componentes para Vue con temas listos.",
+    "usage": "importa desde `primevue/<componente>`",
+    "dependencies": [
+      "primevue",
+      "@primeuix/themes"
+    ],
+    "setup": "registra PrimeVue con un preset de `@primeuix/themes` en `main.ts`."
+  },
+  {
+    "id": "vuetify",
+    "name": "Vuetify",
+    "kind": "components",
+    "frameworks": [
+      "vue"
+    ],
+    "url": "https://vuetifyjs.com",
+    "description": "Material Design para Vue.",
+    "usage": "usa los componentes `v-*` de Vuetify",
+    "dependencies": [
+      "vuetify"
+    ],
+    "setup": "crea la instancia con `createVuetify()` y regístrala en la app."
+  },
+  {
+    "id": "shadcn-svelte",
+    "name": "shadcn-svelte",
+    "kind": "components",
+    "frameworks": [
+      "svelte"
+    ],
+    "url": "https://www.shadcn-svelte.com",
+    "description": "El port de shadcn/ui para Svelte.",
+    "usage": "npx shadcn-svelte@latest add <componente>",
+    "setup": "inicialízala con `npx shadcn-svelte@latest init` (requiere Tailwind CSS).",
+    "skills": [
+      "huntabyte/shadcn-svelte@shadcn-svelte"
+    ]
+  },
+  {
+    "id": "skeleton",
+    "name": "Skeleton",
+    "kind": "components",
+    "frameworks": [
+      "svelte"
+    ],
+    "url": "https://www.skeleton.dev",
+    "description": "Sistema de diseño para Svelte y Tailwind.",
+    "usage": "importa desde `@skeletonlabs/skeleton-svelte`",
+    "dependencies": [
+      "@skeletonlabs/skeleton-svelte",
+      "@skeletonlabs/skeleton"
+    ],
+    "setup": "importa `@skeletonlabs/skeleton` y un tema en el CSS global (requiere Tailwind CSS v4)."
+  },
+  {
+    "id": "flowbite-svelte",
+    "name": "Flowbite Svelte",
+    "kind": "components",
+    "frameworks": [
+      "svelte"
+    ],
+    "url": "https://flowbite-svelte.com",
+    "description": "Componentes Flowbite para Svelte y Tailwind.",
+    "usage": "importa desde `flowbite-svelte`",
+    "dependencies": [
+      "flowbite-svelte",
+      "flowbite"
+    ],
+    "setup": "requiere Tailwind CSS: añade el plugin de Flowbite al CSS global."
+  },
+  {
+    "id": "bits-ui",
+    "name": "Bits UI",
+    "kind": "components",
+    "frameworks": [
+      "svelte"
+    ],
+    "url": "https://bits-ui.com",
+    "description": "Primitivas headless y accesibles para Svelte.",
+    "usage": "importa desde `bits-ui` y dale estilo con tus propias clases",
+    "dependencies": [
+      "bits-ui"
+    ]
+  },
+  {
+    "id": "kobalte",
+    "name": "Kobalte",
+    "kind": "components",
+    "frameworks": [
+      "solid"
+    ],
+    "url": "https://kobalte.dev",
+    "description": "Primitivas accesibles sin estilos para SolidJS.",
+    "usage": "importa desde `@kobalte/core`",
+    "dependencies": [
+      "@kobalte/core"
+    ]
+  },
+  {
+    "id": "react-native-reusables",
+    "name": "React Native Reusables",
+    "kind": "components",
+    "frameworks": [
+      "react-native"
+    ],
+    "url": "https://reactnativereusables.com",
+    "description": "shadcn/ui para React Native, con NativeWind.",
+    "usage": "npx @react-native-reusables/cli@latest add <componente>",
+    "requires": {
+      "styling": [
+        "nativewind"
+      ]
+    },
+    "setup": "verifica la configuración con `npx @react-native-reusables/cli@latest doctor`."
+  },
+  {
+    "id": "tamagui",
+    "name": "Tamagui",
+    "kind": "components",
+    "frameworks": [
+      "react-native"
+    ],
+    "url": "https://tamagui.dev",
+    "description": "UI universal optimizada por compilador para nativo y web.",
+    "usage": "importa desde `tamagui`",
+    "dependencies": [
+      "tamagui",
+      "@tamagui/config"
+    ],
+    "setup": "crea `tamagui.config.ts` con `@tamagui/config` y envuelve la app en `<TamaguiProvider>`.",
+    "skills": [
+      "tamagui/tamagui@tamagui"
+    ]
+  },
+  {
+    "id": "gluestack-ui",
+    "name": "gluestack-ui",
+    "kind": "components",
+    "frameworks": [
+      "react-native"
+    ],
+    "url": "https://gluestack.io",
+    "description": "Componentes copiables para React Native con NativeWind.",
+    "usage": "npx gluestack-ui@latest add <componente>",
+    "requires": {
+      "styling": [
+        "nativewind"
+      ]
+    },
+    "setup": "inicialízala con `npx gluestack-ui@latest init`.",
+    "skills": [
+      "gluestack/agent-skills@gluestack-ui-v5"
+    ]
+  },
+  {
+    "id": "react-native-paper",
+    "name": "React Native Paper",
+    "kind": "components",
+    "frameworks": [
+      "react-native"
+    ],
+    "url": "https://reactnativepaper.com",
+    "description": "Material Design para React Native.",
+    "usage": "importa desde `react-native-paper`",
+    "dependencies": [
+      "react-native-paper",
+      "react-native-safe-area-context"
+    ],
+    "setup": "envuelve la app en `<PaperProvider>`."
+  },
+  {
+    "id": "kokonutui",
+    "name": "Kokonut UI",
+    "kind": "addon",
+    "frameworks": [
+      "react"
+    ],
+    "url": "https://kokonutui.com",
+    "description": "Componentes vistosos sobre shadcn/ui, Tailwind y Motion.",
+    "usage": "npx shadcn@latest add @kokonutui/<componente>",
+    "requires": {
+      "components": [
+        "shadcn"
+      ]
+    },
+    "skills": [
+      "kokonut-labs/kokonutui@install-kokonutui-component"
+    ]
+  },
+  {
+    "id": "magicui",
+    "name": "Magic UI",
+    "kind": "addon",
+    "frameworks": [
+      "react"
+    ],
+    "url": "https://magicui.design",
+    "description": "Más de 150 componentes animados para landings.",
+    "usage": "npx shadcn@latest add @magicui/<componente>",
+    "requires": {
+      "components": [
+        "shadcn"
+      ]
+    },
+    "skills": [
+      "magicuidesign/magicui@magic-ui"
+    ]
+  },
+  {
+    "id": "aceternity",
+    "name": "Aceternity UI",
+    "kind": "addon",
+    "frameworks": [
+      "react"
+    ],
+    "url": "https://ui.aceternity.com",
+    "description": "Efectos y fondos llamativos con Tailwind y Motion.",
+    "usage": "npx shadcn@latest add @aceternity/<componente>",
+    "requires": {
+      "components": [
+        "shadcn"
+      ]
+    }
+  },
+  {
+    "id": "bklit",
+    "name": "Bklit UI",
+    "kind": "addon",
+    "frameworks": [
+      "react"
+    ],
+    "url": "https://ui.bklit.com",
+    "description": "Gráficos componibles: líneas, áreas, barras, tartas, radar.",
+    "usage": "npx shadcn@latest add @bklit/<componente>",
+    "requires": {
+      "components": [
+        "shadcn"
+      ]
+    }
+  },
+  {
+    "id": "react-bits",
+    "name": "React Bits",
+    "kind": "addon",
+    "frameworks": [
+      "react"
+    ],
+    "url": "https://reactbits.dev",
+    "description": "Componentes animados e interactivos: textos, fondos, cursores.",
+    "usage": "npx shadcn@latest add @react-bits/<componente>",
+    "requires": {
+      "components": [
+        "shadcn"
+      ]
+    }
+  },
+  {
+    "id": "animate-ui",
+    "name": "Animate UI",
+    "kind": "addon",
+    "frameworks": [
+      "react"
+    ],
+    "url": "https://animate-ui.com",
+    "description": "Una distribución de componentes totalmente animada.",
+    "usage": "npx shadcn@latest add @animate-ui/<componente>",
+    "requires": {
+      "components": [
+        "shadcn"
+      ]
+    }
+  },
+  {
+    "id": "motion-primitives",
+    "name": "Motion Primitives",
+    "kind": "addon",
+    "frameworks": [
+      "react"
+    ],
+    "url": "https://www.motion-primitives.com",
+    "description": "Primitivas de movimiento listas para copiar.",
+    "usage": "npx shadcn@latest add @motion-primitives/<componente>",
+    "requires": {
+      "components": [
+        "shadcn"
+      ]
+    }
+  },
+  {
+    "id": "cult-ui",
+    "name": "Cult UI",
+    "kind": "addon",
+    "frameworks": [
+      "react"
+    ],
+    "url": "https://www.cult-ui.com",
+    "description": "Componentes headless y componibles poco comunes.",
+    "usage": "npx shadcn@latest add @cult-ui/<componente>",
+    "requires": {
+      "components": [
+        "shadcn"
+      ]
+    }
+  },
+  {
+    "id": "smoothui",
+    "name": "SmoothUI",
+    "kind": "addon",
+    "frameworks": [
+      "react"
+    ],
+    "url": "https://smoothui.dev",
+    "description": "Microinteracciones cuidadas con Motion.",
+    "usage": "npx shadcn@latest add @smoothui/<componente>",
+    "requires": {
+      "components": [
+        "shadcn"
+      ]
+    }
+  },
+  {
+    "id": "motion",
+    "name": "Motion",
+    "kind": "animation",
+    "frameworks": [
+      "react",
+      "svelte",
+      "solid",
+      "vanilla"
+    ],
+    "url": "https://motion.dev",
+    "description": "Animaciones declarativas, gestos y layout (antes Framer Motion).",
+    "usage": "En React: `import { motion } from \"motion/react\"`; fuera de React: `import { animate } from \"motion\"`.",
+    "dependencies": [
+      "motion"
+    ]
+  },
+  {
+    "id": "motion-vue",
+    "name": "Motion for Vue",
+    "kind": "animation",
+    "frameworks": [
+      "vue"
+    ],
+    "url": "https://motion.dev/docs/vue",
+    "description": "Motion para Vue.",
+    "usage": "Usa `import { motion } from \"motion-v\"`.",
+    "dependencies": [
+      "motion-v"
+    ]
+  },
+  {
+    "id": "gsap",
+    "name": "GSAP",
+    "kind": "animation",
+    "frameworks": [
+      "react",
+      "vue",
+      "svelte",
+      "solid",
+      "vanilla"
+    ],
+    "url": "https://gsap.com",
+    "description": "Animaciones de alto rendimiento, timelines y ScrollTrigger.",
+    "usage": "Usa `import gsap from \"gsap\"`; en React, el hook `useGSAP` de `@gsap/react`.",
+    "dependencies": [
+      "gsap"
+    ],
+    "skills": [
+      "greensock/gsap-skills@gsap-core",
+      "greensock/gsap-skills@gsap-scrolltrigger"
+    ]
+  },
+  {
+    "id": "animejs",
+    "name": "anime.js",
+    "kind": "animation",
+    "frameworks": [
+      "react",
+      "vue",
+      "svelte",
+      "solid",
+      "vanilla"
+    ],
+    "url": "https://animejs.com",
+    "description": "Motor de animación ligero para CSS, SVG y DOM.",
+    "usage": "Usa la API v4: `import { animate } from \"animejs\"`.",
+    "dependencies": [
+      "animejs"
+    ]
+  },
+  {
+    "id": "auto-animate",
+    "name": "AutoAnimate",
+    "kind": "animation",
+    "frameworks": [
+      "react",
+      "vue",
+      "svelte",
+      "solid",
+      "vanilla"
+    ],
+    "url": "https://auto-animate.formkit.com",
+    "description": "Transiciones automáticas al añadir, quitar o mover elementos.",
+    "usage": "Usa `autoAnimate` de `@formkit/auto-animate` (o su hook/directiva del framework).",
+    "dependencies": [
+      "@formkit/auto-animate"
+    ]
+  },
+  {
+    "id": "react-spring",
+    "name": "React Spring",
+    "kind": "animation",
+    "frameworks": [
+      "react"
+    ],
+    "url": "https://www.react-spring.dev",
+    "description": "Animaciones basadas en física de muelles.",
+    "usage": "Usa `import { useSpring, animated } from \"@react-spring/web\"`.",
+    "dependencies": [
+      "@react-spring/web"
+    ]
+  },
+  {
+    "id": "lottie",
+    "name": "Lottie",
+    "kind": "animation",
+    "frameworks": [
+      "react"
+    ],
+    "url": "https://lottiefiles.com",
+    "description": "Reproduce animaciones Lottie de diseño.",
+    "usage": "Usa `DotLottieReact` de `@lottiefiles/dotlottie-react`.",
+    "dependencies": [
+      "@lottiefiles/dotlottie-react"
+    ]
+  },
+  {
+    "id": "react-three-fiber",
+    "name": "React Three Fiber",
+    "kind": "animation",
+    "frameworks": [
+      "react"
+    ],
+    "url": "https://r3f.docs.pmnd.rs",
+    "description": "3D y WebGL declarativo con Three.js.",
+    "usage": "Usa `Canvas` de `@react-three/fiber` y los helpers de `@react-three/drei`.",
+    "dependencies": [
+      "three",
+      "@react-three/fiber",
+      "@react-three/drei"
+    ],
+    "devDependencies": [
+      "@types/three"
+    ],
+    "skills": [
+      "cloudai-x/threejs-skills@threejs-fundamentals"
+    ]
+  },
+  {
+    "id": "moti",
+    "name": "Moti",
+    "kind": "animation",
+    "frameworks": [
+      "react-native"
+    ],
+    "url": "https://moti.fyi",
+    "description": "Animaciones declarativas para React Native sobre Reanimated.",
+    "usage": "Usa `import { MotiView } from \"moti\"` (Reanimated ya viene con Expo).",
+    "dependencies": [
+      "moti"
+    ]
+  },
+  {
+    "id": "lottie-react-native",
+    "name": "Lottie React Native",
+    "kind": "animation",
+    "frameworks": [
+      "react-native"
+    ],
+    "url": "https://github.com/lottie-react-native/lottie-react-native",
+    "description": "Animaciones Lottie nativas.",
+    "usage": "Usa `import LottieView from \"lottie-react-native\"`.",
+    "dependencies": [
+      "lottie-react-native"
+    ]
+  },
+  {
+    "id": "sentry-nextjs",
+    "name": "Sentry",
+    "kind": "observability",
+    "frameworks": [
+      "nextjs"
+    ],
+    "url": "https://sentry.io",
+    "description": "Errores, trazas y rendimiento en cliente, servidor y edge.",
+    "usage": "Los errores no controlados se reportan solos. Para errores que capturas tú usa `Sentry.captureException(error)` y añade contexto con `Sentry.setUser` / `Sentry.setTag`. No dejes `console.error` como única señal de un fallo en producción.",
+    "dependencies": [
+      "@sentry/nextjs"
+    ],
+    "skills": [
+      "getsentry/sentry-for-ai@sentry-nextjs-sdk"
+    ],
+    "env": {
+      "NEXT_PUBLIC_SENTRY_DSN": "",
+      "SENTRY_ORG": "",
+      "SENTRY_PROJECT": "",
+      "SENTRY_AUTH_TOKEN": ""
+    },
+    "writeFiles": [
+      {
+        "path": "src/sentry.server.config.ts",
+        "content": "import * as Sentry from \"@sentry/nextjs\";\n\nSentry.init({\n  dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,\n  tracesSampleRate: process.env.NODE_ENV === \"production\" ? 0.1 : 1,\n});\n"
+      },
+      {
+        "path": "src/sentry.edge.config.ts",
+        "content": "import * as Sentry from \"@sentry/nextjs\";\n\nSentry.init({\n  dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,\n  tracesSampleRate: process.env.NODE_ENV === \"production\" ? 0.1 : 1,\n});\n"
+      },
+      {
+        "path": "src/instrumentation.ts",
+        "content": "import * as Sentry from \"@sentry/nextjs\";\n\nexport async function register() {\n  if (process.env.NEXT_RUNTIME === \"nodejs\") await import(\"./sentry.server.config\");\n  if (process.env.NEXT_RUNTIME === \"edge\") await import(\"./sentry.edge.config\");\n}\n\nexport const onRequestError = Sentry.captureRequestError;\n"
+      },
+      {
+        "path": "src/instrumentation-client.ts",
+        "mode": "append",
+        "content": "import * as Sentry from \"@sentry/nextjs\";\n\nSentry.init({\n  dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,\n  tracesSampleRate: process.env.NODE_ENV === \"production\" ? 0.1 : 1,\n});\n\nexport const onRouterTransitionStart = Sentry.captureRouterTransitionStart;\n"
+      },
+      {
+        "path": "src/app/global-error.tsx",
+        "content": "\"use client\";\n\nimport * as Sentry from \"@sentry/nextjs\";\nimport NextError from \"next/error\";\nimport { useEffect } from \"react\";\n\nexport default function GlobalError({ error }: { error: Error & { digest?: string } }) {\n  useEffect(() => {\n    Sentry.captureException(error);\n  }, [error]);\n\n  return (\n    <html>\n      <body>\n        <NextError statusCode={0} />\n      </body>\n    </html>\n  );\n}\n"
+      }
+    ],
+    "setupTasks": [
+      "Sentry: crea un proyecto Next.js en sentry.io y pon su DSN en `NEXT_PUBLIC_SENTRY_DSN`.",
+      "Sentry: para ver stack traces legibles en producción, envuelve `next.config.ts` con `withSentryConfig` (org, project y `SENTRY_AUTH_TOKEN`), siguiendo el skill `sentry-nextjs-sdk`."
+    ]
+  },
+  {
+    "id": "sentry-react-native",
+    "name": "Sentry",
+    "kind": "observability",
+    "frameworks": [
+      "expo"
+    ],
+    "url": "https://sentry.io",
+    "description": "Crashes nativos y de JavaScript, con trazas de rendimiento.",
+    "usage": "Los errores no controlados se reportan solos. Para errores que capturas tú usa `Sentry.captureException(error)` y añade contexto con `Sentry.setUser` / `Sentry.setTag`. No dejes `console.error` como única señal de un fallo en producción.",
+    "dependencies": [
+      "@sentry/react-native"
+    ],
+    "skills": [
+      "getsentry/sentry-for-ai@sentry-react-native-sdk"
+    ],
+    "env": {
+      "EXPO_PUBLIC_SENTRY_DSN": ""
+    },
+    "writeFiles": [
+      {
+        "path": "src/lib/sentry.ts",
+        "content": "import * as Sentry from \"@sentry/react-native\";\n\nSentry.init({\n  dsn: process.env.EXPO_PUBLIC_SENTRY_DSN,\n  tracesSampleRate: __DEV__ ? 1 : 0.1,\n});\n\nexport { Sentry };\n"
+      },
+      {
+        "path": "src/app/_layout.tsx",
+        "mode": "prepend",
+        "content": "import \"@/lib/sentry\";"
+      }
+    ],
+    "setupTasks": [
+      "Sentry: crea un proyecto React Native en sentry.io y pon su DSN en `EXPO_PUBLIC_SENTRY_DSN`.",
+      "Sentry: envuelve el componente exportado en `src/app/_layout.tsx` con `Sentry.wrap(...)`, añade el plugin `@sentry/react-native/expo` en `app.json` y usa `getSentryExpoConfig` en `metro.config.js` (skill `sentry-react-native-sdk`)."
+    ]
+  },
+  {
+    "id": "sentry-node",
+    "name": "Sentry",
+    "kind": "observability",
+    "frameworks": [
+      "nodejs"
+    ],
+    "url": "https://sentry.io",
+    "description": "Errores y trazas para tu API en Node.",
+    "usage": "Los errores no controlados se reportan solos. Para errores que capturas tú usa `Sentry.captureException(error)` y añade contexto con `Sentry.setUser` / `Sentry.setTag`. No dejes `console.error` como única señal de un fallo en producción.",
+    "dependencies": [
+      "@sentry/node"
+    ],
+    "skills": [
+      "getsentry/sentry-for-ai@sentry-node-sdk"
+    ],
+    "env": {
+      "SENTRY_DSN": ""
+    },
+    "writeFiles": [
+      {
+        "path": "src/instrument.ts",
+        "content": "import * as Sentry from \"@sentry/node\";\n\nSentry.init({\n  dsn: process.env.SENTRY_DSN,\n  tracesSampleRate: process.env.NODE_ENV === \"production\" ? 0.1 : 1,\n});\n"
+      },
+      {
+        "path": "src/index.ts",
+        "mode": "prepend",
+        "content": "import \"./instrument.js\";"
+      }
+    ],
+    "setupTasks": [
+      "Sentry: crea un proyecto Node.js en sentry.io y pon su DSN en `SENTRY_DSN`.",
+      "Sentry: en producción arranca Node con `--import ./dist/instrument.js` para tener trazas automáticas (skill `sentry-node-sdk`)."
+    ]
+  },
+  {
+    "id": "sentry-bun",
+    "name": "Sentry",
+    "kind": "observability",
+    "frameworks": [
+      "bun"
+    ],
+    "url": "https://sentry.io",
+    "description": "Errores y trazas para tu API en Bun.",
+    "usage": "Los errores no controlados se reportan solos. Para errores que capturas tú usa `Sentry.captureException(error)` y añade contexto con `Sentry.setUser` / `Sentry.setTag`. No dejes `console.error` como única señal de un fallo en producción.",
+    "dependencies": [
+      "@sentry/bun"
+    ],
+    "skills": [
+      "getsentry/sentry-for-ai@sentry-node-sdk"
+    ],
+    "env": {
+      "SENTRY_DSN": ""
+    },
+    "writeFiles": [
+      {
+        "path": "src/instrument.ts",
+        "content": "import * as Sentry from \"@sentry/bun\";\n\nSentry.init({\n  dsn: process.env.SENTRY_DSN,\n  tracesSampleRate: process.env.NODE_ENV === \"production\" ? 0.1 : 1,\n});\n"
+      },
+      {
+        "path": "src/index.ts",
+        "mode": "prepend",
+        "content": "import \"./instrument\";"
+      }
+    ],
+    "setupTasks": [
+      "Sentry: crea un proyecto Bun en sentry.io y pon su DSN en `SENTRY_DSN`."
+    ]
+  },
+  {
+    "id": "sentry-cloudflare",
+    "name": "Sentry",
+    "kind": "observability",
+    "frameworks": [
+      "cloudflare-workers"
+    ],
+    "url": "https://sentry.io",
+    "description": "Errores y trazas para Workers.",
+    "usage": "Los errores no controlados se reportan solos. Para errores que capturas tú usa `Sentry.captureException(error)` y añade contexto con `Sentry.setUser` / `Sentry.setTag`. No dejes `console.error` como única señal de un fallo en producción.",
+    "dependencies": [
+      "@sentry/cloudflare"
+    ],
+    "skills": [
+      "getsentry/sentry-for-ai@sentry-cloudflare-sdk"
+    ],
+    "setupTasks": [
+      "Sentry: envuelve el `export default` del Worker con `Sentry.withSentry((env) => ({ dsn: env.SENTRY_DSN }), app)`, añade el flag `nodejs_als` (o `nodejs_compat`) en `wrangler` y guarda `SENTRY_DSN` como secret (skill `sentry-cloudflare-sdk`)."
+    ]
+  },
+  {
+    "id": "posthog-nextjs",
+    "name": "PostHog",
+    "kind": "observability",
+    "frameworks": [
+      "nextjs"
+    ],
+    "url": "https://posthog.com",
+    "description": "Analítica de producto, embudos, grabación de sesiones y feature flags.",
+    "usage": "Registra eventos de producto con `capture(\"evento\", { ...props })`. Nombra los eventos en snake_case con verbo en pasado (`signup_completed`, `kit_installed`) e identifica al usuario con `identify(id)` tras el login. No envíes datos personales sensibles como propiedades. En el cliente: `import posthog from \"posthog-js\"`; en el servidor: `getPostHogServer()` de `@/lib/posthog-server` (llama a `await client.shutdown()` al terminar).",
+    "dependencies": [
+      "posthog-js",
+      "posthog-node"
+    ],
+    "skills": [
+      "posthog/ai-plugin@instrument-product-analytics"
+    ],
+    "env": {
+      "NEXT_PUBLIC_POSTHOG_KEY": "",
+      "NEXT_PUBLIC_POSTHOG_HOST": "https://us.i.posthog.com"
+    },
+    "writeFiles": [
+      {
+        "path": "src/instrumentation-client.ts",
+        "mode": "append",
+        "content": "import posthog from \"posthog-js\";\n\nif (process.env.NEXT_PUBLIC_POSTHOG_KEY) {\n  posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY, {\n    api_host: process.env.NEXT_PUBLIC_POSTHOG_HOST,\n    defaults: \"latest\",\n  });\n}\n"
+      },
+      {
+        "path": "src/lib/posthog-server.ts",
+        "content": "import { PostHog } from \"posthog-node\";\n\n/** Short-lived client for Route Handlers and Server Actions; call `await client.shutdown()` when done. */\nexport function getPostHogServer() {\n  return new PostHog(process.env.NEXT_PUBLIC_POSTHOG_KEY ?? \"\", {\n    host: process.env.NEXT_PUBLIC_POSTHOG_HOST,\n    flushAt: 1,\n    flushInterval: 0,\n  });\n}\n"
+      }
+    ],
+    "setupTasks": [
+      "PostHog: copia la clave del proyecto (Project API key) en `NEXT_PUBLIC_POSTHOG_KEY` y ajusta `NEXT_PUBLIC_POSTHOG_HOST` si usas la región EU.",
+      "PostHog: define con el usuario los 5–10 eventos clave del producto antes de instrumentar (skill `instrument-product-analytics`)."
+    ]
+  },
+  {
+    "id": "posthog-react-native",
+    "name": "PostHog",
+    "kind": "observability",
+    "frameworks": [
+      "expo"
+    ],
+    "url": "https://posthog.com",
+    "description": "Analítica de producto y feature flags en la app.",
+    "usage": "Registra eventos de producto con `capture(\"evento\", { ...props })`. Nombra los eventos en snake_case con verbo en pasado (`signup_completed`, `kit_installed`) e identifica al usuario con `identify(id)` tras el login. No envíes datos personales sensibles como propiedades. Usa el hook `usePostHog()` dentro de componentes.",
+    "dependencies": [
+      "posthog-react-native",
+      "expo-file-system",
+      "expo-application",
+      "expo-device",
+      "expo-localization"
+    ],
+    "skills": [
+      "posthog/ai-plugin@instrument-product-analytics"
+    ],
+    "env": {
+      "EXPO_PUBLIC_POSTHOG_KEY": "",
+      "EXPO_PUBLIC_POSTHOG_HOST": "https://us.i.posthog.com"
+    },
+    "writeFiles": [
+      {
+        "path": "src/lib/posthog.ts",
+        "content": "import PostHog from \"posthog-react-native\";\n\nconst apiKey = process.env.EXPO_PUBLIC_POSTHOG_KEY;\n\n/** null until EXPO_PUBLIC_POSTHOG_KEY is set, so the app runs without an account. */\nexport const posthog = apiKey ? new PostHog(apiKey, { host: process.env.EXPO_PUBLIC_POSTHOG_HOST }) : null;\n"
+      }
+    ],
+    "setupTasks": [
+      "PostHog: pon la clave del proyecto en `EXPO_PUBLIC_POSTHOG_KEY`.",
+      "PostHog: envuelve la app en `<PostHogProvider client={posthog}>` en `src/app/_layout.tsx` cuando `posthog` no sea null."
+    ]
+  },
+  {
+    "id": "posthog-node",
+    "name": "PostHog",
+    "kind": "observability",
+    "frameworks": [
+      "nodejs",
+      "bun",
+      "cloudflare-workers"
+    ],
+    "url": "https://posthog.com",
+    "description": "Eventos y feature flags desde tu API.",
+    "usage": "Registra eventos de producto con `capture(\"evento\", { ...props })`. Nombra los eventos en snake_case con verbo en pasado (`signup_completed`, `kit_installed`) e identifica al usuario con `identify(id)` tras el login. No envíes datos personales sensibles como propiedades. Usa `getPostHog()` de `src/lib/posthog.ts` y llama a `await client.shutdown()` al terminar cada request en entornos serverless.",
+    "dependencies": [
+      "posthog-node"
+    ],
+    "skills": [
+      "posthog/ai-plugin@instrument-product-analytics"
+    ],
+    "env": {
+      "POSTHOG_KEY": "",
+      "POSTHOG_HOST": "https://us.i.posthog.com"
+    },
+    "writeFiles": [
+      {
+        "path": "src/lib/posthog.ts",
+        "content": "import { PostHog } from \"posthog-node\";\n\nexport function getPostHog(key = process.env.POSTHOG_KEY ?? \"\", host = process.env.POSTHOG_HOST) {\n  return new PostHog(key, { host, flushAt: 1, flushInterval: 0 });\n}\n"
+      }
+    ],
+    "setupTasks": [
+      "PostHog: pon la clave del proyecto en `POSTHOG_KEY`."
+    ]
+  },
+  {
+    "id": "vercel-analytics",
+    "name": "Vercel Analytics",
+    "kind": "observability",
+    "frameworks": [
+      "nextjs"
+    ],
+    "url": "https://vercel.com/analytics",
+    "description": "Visitas y Core Web Vitals reales, sin cookies.",
+    "usage": "Las visitas y Web Vitals se registran solos al desplegar en Vercel. Para eventos personalizados usa `track(\"evento\")` de `@vercel/analytics`.",
+    "dependencies": [
+      "@vercel/analytics",
+      "@vercel/speed-insights"
+    ],
+    "writeFiles": [
+      {
+        "path": "src/app/layout.tsx",
+        "mode": "prepend",
+        "content": "import { Analytics } from \"@vercel/analytics/next\";\nimport { SpeedInsights } from \"@vercel/speed-insights/next\";"
+      },
+      {
+        "path": "src/app/layout.tsx",
+        "mode": "insert-before",
+        "anchor": "</body>",
+        "content": "<Analytics />\n<SpeedInsights />"
+      }
+    ],
+    "setupTasks": [
+      "Vercel Analytics: actívalo en la pestaña Analytics del proyecto en Vercel (y Speed Insights) tras el primer despliegue."
+    ]
+  },
+  {
+    "id": "better-auth",
+    "name": "Better Auth",
+    "kind": "auth",
+    "frameworks": [
+      "nextjs"
+    ],
+    "url": "https://www.better-auth.com",
+    "description": "Auth en tu propia base de datos: email, OAuth, 2FA, organizaciones.",
+    "usage": "Lee la sesión en el servidor con `auth.api.getSession({ headers: await headers() })` (de `@/lib/auth`) y en el cliente con `authClient.useSession()` (de `@/lib/auth-client`). Añade proveedores y plugins en `src/lib/auth.ts`.",
+    "dependencies": [
+      "better-auth",
+      "@better-auth/drizzle-adapter"
+    ],
+    "requires": {
+      "database": [
+        "drizzle-postgres"
+      ]
+    },
+    "skills": [
+      "better-auth/skills@better-auth-best-practices",
+      "better-auth/skills@better-auth-security-best-practices"
+    ],
+    "env": {
+      "BETTER_AUTH_SECRET": "",
+      "BETTER_AUTH_URL": "http://localhost:3000"
+    },
+    "writeFiles": [
+      {
+        "path": "src/lib/auth.ts",
+        "content": "import { drizzleAdapter } from \"@better-auth/drizzle-adapter\";\nimport { betterAuth } from \"better-auth\";\nimport { nextCookies } from \"better-auth/next-js\";\n\nimport { db } from \"@/db\";\n\nexport const auth = betterAuth({\n  database: drizzleAdapter(db, { provider: \"pg\" }),\n  emailAndPassword: { enabled: true },\n  // Keep nextCookies last: it sets cookies from Server Actions.\n  plugins: [nextCookies()],\n});\n"
+      },
+      {
+        "path": "src/lib/auth-client.ts",
+        "content": "import { createAuthClient } from \"better-auth/react\";\n\nexport const authClient = createAuthClient();\n"
+      },
+      {
+        "path": "src/app/api/auth/[...all]/route.ts",
+        "content": "import { toNextJsHandler } from \"better-auth/next-js\";\n\nimport { auth } from \"@/lib/auth\";\n\nexport const { GET, POST } = toNextJsHandler(auth);\n"
+      }
+    ],
+    "setupTasks": [
+      "Better Auth: genera un secreto con `openssl rand -base64 32` y ponlo en `BETTER_AUTH_SECRET`.",
+      "Better Auth: crea sus tablas con `npx auth@latest generate --output src/db/auth-schema.ts`, expórtalas desde `src/db/schema.ts` y aplica la migración (`npm run db:generate && npm run db:migrate`)."
+    ]
+  },
+  {
+    "id": "clerk",
+    "name": "Clerk",
+    "kind": "auth",
+    "frameworks": [
+      "nextjs"
+    ],
+    "url": "https://clerk.com",
+    "description": "Auth gestionada con componentes de login listos.",
+    "usage": "Protege rutas en `src/proxy.ts` con `clerkMiddleware` y lee el usuario con `auth()` / `currentUser()` de `@clerk/nextjs/server`. Usa sus componentes (`<SignInButton>`, `<UserButton>`) en vez de construir formularios de login.",
+    "dependencies": [
+      "@clerk/nextjs"
+    ],
+    "skills": [
+      "clerk/skills@clerk-nextjs-patterns"
+    ],
+    "env": {
+      "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY": "",
+      "CLERK_SECRET_KEY": ""
+    },
+    "writeFiles": [
+      {
+        "path": "src/proxy.ts",
+        "content": "import { clerkMiddleware } from \"@clerk/nextjs/server\";\n\nexport default clerkMiddleware();\n\nexport const config = {\n  matcher: [\n    // Everything except Next.js internals and static files.\n    \"/((?!_next|[^?]*\\\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)\",\n    \"/(api|trpc)(.*)\",\n  ],\n};\n"
+      }
+    ],
+    "setupTasks": [
+      "Clerk: crea una aplicación en clerk.com y copia sus claves en `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` y `CLERK_SECRET_KEY`.",
+      "Clerk: envuelve el contenido de `<body>` en `src/app/layout.tsx` con `<ClerkProvider>` (de `@clerk/nextjs`)."
+    ]
+  },
+  {
+    "id": "drizzle-postgres",
+    "name": "Drizzle + Postgres",
+    "kind": "database",
+    "frameworks": [
+      "nextjs"
+    ],
+    "url": "https://orm.drizzle.team",
+    "description": "ORM tipado y migraciones SQL sobre Postgres (Neon, Supabase, local).",
+    "usage": "El esquema vive en `src/db/schema.ts` y el cliente en `src/db/index.ts` (`import { db } from \"@/db\"`). Tras cambiar el esquema: `npm run db:generate` y `npm run db:migrate`. No edites migraciones ya aplicadas.",
+    "dependencies": [
+      "drizzle-orm",
+      "postgres"
+    ],
+    "devDependencies": [
+      "drizzle-kit"
+    ],
+    "skills": [
+      "supabase/agent-skills@supabase-postgres-best-practices"
+    ],
+    "env": {
+      "DATABASE_URL": "postgres://postgres:postgres@localhost:5432/app"
+    },
+    "writeFiles": [
+      {
+        "path": "drizzle.config.ts",
+        "content": "import { defineConfig } from \"drizzle-kit\";\n\nexport default defineConfig({\n  schema: \"./src/db/schema.ts\",\n  out: \"./drizzle\",\n  dialect: \"postgresql\",\n  dbCredentials: { url: process.env.DATABASE_URL! },\n});\n"
+      },
+      {
+        "path": "src/db/index.ts",
+        "content": "import { drizzle } from \"drizzle-orm/postgres-js\";\nimport postgres from \"postgres\";\n\nimport * as schema from \"./schema\";\n\n// prepare: false keeps it compatible with poolers (Neon, Supabase, PgBouncer).\nconst client = postgres(process.env.DATABASE_URL ?? \"postgres://localhost:5432/app\", { prepare: false });\n\nexport const db = drizzle(client, { schema });\n"
+      },
+      {
+        "path": "src/db/schema.ts",
+        "content": "import { pgTable, serial, text, timestamp } from \"drizzle-orm/pg-core\";\n\nexport const posts = pgTable(\"posts\", {\n  id: serial(\"id\").primaryKey(),\n  title: text(\"title\").notNull(),\n  createdAt: timestamp(\"created_at\").defaultNow().notNull(),\n});\n"
+      },
+      {
+        "path": "package.json",
+        "mode": "json-merge",
+        "content": "{\"scripts\": {\"db:generate\": \"drizzle-kit generate\", \"db:migrate\": \"drizzle-kit migrate\", \"db:studio\": \"drizzle-kit studio\"}}"
+      }
+    ],
+    "setupTasks": [
+      "Drizzle: pon la URL de tu Postgres en `DATABASE_URL` (Neon y Supabase tienen plan gratuito) y ejecuta `npm run db:migrate`."
+    ]
+  },
+  {
+    "id": "stripe",
+    "name": "Stripe",
+    "kind": "payments",
+    "frameworks": [
+      "nextjs"
+    ],
+    "url": "https://stripe.com",
+    "description": "Pagos, suscripciones y facturación.",
+    "usage": "El cliente está en `src/lib/stripe.ts` (solo servidor). Verifica siempre la firma de los webhooks con `STRIPE_WEBHOOK_SECRET` y trata los webhooks como fuente de verdad del estado de pagos y suscripciones.",
+    "dependencies": [
+      "stripe",
+      "server-only"
+    ],
+    "skills": [
+      "stripe/ai@stripe-best-practices"
+    ],
+    "mcp": {
+      "stripe": {
+        "url": "https://mcp.stripe.com"
+      }
+    },
+    "env": {
+      "STRIPE_SECRET_KEY": "",
+      "STRIPE_WEBHOOK_SECRET": ""
+    },
+    "writeFiles": [
+      {
+        "path": "src/lib/stripe.ts",
+        "content": "import \"server-only\";\n\nimport Stripe from \"stripe\";\n\nexport const stripe = new Stripe(process.env.STRIPE_SECRET_KEY ?? \"\");\n"
+      }
+    ],
+    "setupTasks": [
+      "Stripe: copia la clave secreta de test en `STRIPE_SECRET_KEY` y crea el webhook (o usa `stripe listen`) para `STRIPE_WEBHOOK_SECRET`."
+    ]
+  },
+  {
+    "id": "resend",
+    "name": "Resend",
+    "kind": "email",
+    "frameworks": [
+      "nextjs",
+      "nodejs",
+      "bun"
+    ],
+    "url": "https://resend.com",
+    "description": "Email transaccional con una API simple.",
+    "usage": "Envía desde el servidor con `getResend().emails.send({ from, to, subject, html })` (de `src/lib/email.ts`). Nunca expongas `RESEND_API_KEY` al cliente.",
+    "dependencies": [
+      "resend"
+    ],
+    "skills": [
+      "resend/resend-skills@resend"
+    ],
+    "env": {
+      "RESEND_API_KEY": ""
+    },
+    "writeFiles": [
+      {
+        "path": "src/lib/email.ts",
+        "content": "import { Resend } from \"resend\";\n\n/** Created on use: the constructor throws without RESEND_API_KEY, which would break builds. */\nexport function getResend() {\n  return new Resend(process.env.RESEND_API_KEY);\n}\n"
+      }
+    ],
+    "setupTasks": [
+      "Resend: crea una API key en resend.com, ponla en `RESEND_API_KEY` y verifica tu dominio para enviar desde él."
+    ]
+  },
+  {
+    "id": "react-email",
+    "name": "Resend + React Email",
+    "kind": "email",
+    "frameworks": [
+      "nextjs"
+    ],
+    "url": "https://react.email",
+    "description": "Emails maquetados como componentes de React, enviados con Resend.",
+    "usage": "Las plantillas son componentes en `src/emails/`. Envíalas con `getResend().emails.send({ from, to, subject, react: <Plantilla /> })`. Usa los componentes de `@react-email/components`, no HTML a mano.",
+    "dependencies": [
+      "resend",
+      "@react-email/components"
+    ],
+    "skills": [
+      "resend/resend-skills@resend",
+      "resend/react-email@react-email"
+    ],
+    "env": {
+      "RESEND_API_KEY": ""
+    },
+    "writeFiles": [
+      {
+        "path": "src/lib/email.ts",
+        "content": "import { Resend } from \"resend\";\n\n/** Created on use: the constructor throws without RESEND_API_KEY, which would break builds. */\nexport function getResend() {\n  return new Resend(process.env.RESEND_API_KEY);\n}\n"
+      },
+      {
+        "path": "src/emails/welcome.tsx",
+        "content": "import { Body, Container, Heading, Html, Text } from \"@react-email/components\";\n\nexport default function WelcomeEmail({ name }: { name: string }) {\n  return (\n    <Html>\n      <Body>\n        <Container>\n          <Heading>Hola, {name}</Heading>\n          <Text>Gracias por registrarte.</Text>\n        </Container>\n      </Body>\n    </Html>\n  );\n}\n"
+      }
+    ],
+    "setupTasks": [
+      "Resend: crea una API key en resend.com, ponla en `RESEND_API_KEY` y verifica tu dominio."
+    ]
+  },
+  {
+    "id": "next-intl",
+    "name": "next-intl",
+    "kind": "i18n",
+    "frameworks": [
+      "nextjs"
+    ],
+    "url": "https://next-intl.dev",
+    "description": "Traducciones, formato de fechas y números para el App Router.",
+    "usage": "Los textos viven en `messages/<idioma>.json`. En Server Components usa `getTranslations()` y en Client Components `useTranslations()`. No escribas textos visibles directamente en los componentes.",
+    "dependencies": [
+      "next-intl"
+    ],
+    "writeFiles": [
+      {
+        "path": "src/i18n/request.ts",
+        "content": "import { getRequestConfig } from \"next-intl/server\";\n\nexport default getRequestConfig(async () => {\n  const locale = \"es\";\n  return { locale, messages: (await import(`../../messages/${locale}.json`)).default };\n});\n"
+      },
+      {
+        "path": "messages/es.json",
+        "content": "{\n  \"Home\": {\n    \"title\": \"Hola\"\n  }\n}\n"
+      }
+    ],
+    "setupTasks": [
+      "next-intl: envuelve la configuración de `next.config.ts` con `createNextIntlPlugin()` (de `next-intl/plugin`) y añade `<NextIntlClientProvider>` en `src/app/layout.tsx`."
+    ]
+  },
+  {
+    "id": "i18next-expo",
+    "name": "i18next",
+    "kind": "i18n",
+    "frameworks": [
+      "expo"
+    ],
+    "url": "https://www.i18next.com",
+    "description": "Traducciones con el idioma del dispositivo (expo-localization).",
+    "usage": "Las traducciones están en `src/i18n/index.ts`. En componentes usa `const { t } = useTranslation()`. No escribas textos visibles directamente en los componentes.",
+    "dependencies": [
+      "i18next",
+      "react-i18next",
+      "expo-localization"
+    ],
+    "skills": [
+      "i18next/i18next-cli@i18next-localization"
+    ],
+    "writeFiles": [
+      {
+        "path": "src/i18n/index.ts",
+        "content": "import { getLocales } from \"expo-localization\";\nimport i18n from \"i18next\";\nimport { initReactI18next } from \"react-i18next\";\n\nconst resources = {\n  es: { translation: { hello: \"Hola\" } },\n  en: { translation: { hello: \"Hello\" } },\n};\n\nvoid i18n.use(initReactI18next).init({\n  resources,\n  lng: getLocales()[0]?.languageCode ?? \"es\",\n  fallbackLng: \"es\",\n  interpolation: { escapeValue: false },\n});\n\nexport default i18n;\n"
+      },
+      {
+        "path": "src/app/_layout.tsx",
+        "mode": "prepend",
+        "content": "import \"@/i18n\";"
+      }
+    ]
+  },
+  {
+    "id": "vercel-ai-sdk",
+    "name": "Vercel AI SDK",
+    "kind": "ai",
+    "frameworks": [
+      "nextjs"
+    ],
+    "url": "https://ai-sdk.dev",
+    "description": "Streaming, chat y herramientas con cualquier modelo (Claude por defecto).",
+    "usage": "Llama a modelos desde Route Handlers o Server Actions con `streamText` / `generateText` de `ai` y el proveedor `anthropic(\"claude-opus-5-5\")`. En el cliente usa `useChat` de `@ai-sdk/react`. Hay un ejemplo en `src/app/api/chat/route.ts`.",
+    "dependencies": [
+      "ai",
+      "@ai-sdk/anthropic",
+      "@ai-sdk/react"
+    ],
+    "skills": [
+      "vercel/ai@ai-sdk"
+    ],
+    "env": {
+      "ANTHROPIC_API_KEY": ""
+    },
+    "writeFiles": [
+      {
+        "path": "src/app/api/chat/route.ts",
+        "content": "import { anthropic } from \"@ai-sdk/anthropic\";\nimport { streamText } from \"ai\";\n\nexport async function POST(request: Request) {\n  const { prompt } = (await request.json()) as { prompt: string };\n  const result = streamText({ model: anthropic(\"claude-opus-5-5\"), prompt });\n  return result.toTextStreamResponse();\n}\n"
+      }
+    ],
+    "setupTasks": [
+      "IA: crea una API key en console.anthropic.com y ponla en `ANTHROPIC_API_KEY`."
+    ]
+  },
+  {
+    "id": "claude-api",
+    "name": "Claude API",
+    "kind": "ai",
+    "frameworks": [
+      "nextjs",
+      "nodejs",
+      "bun"
+    ],
+    "url": "https://platform.claude.com/docs",
+    "description": "El SDK oficial de Anthropic para llamar a Claude.",
+    "usage": "Usa `askClaude()` de `src/lib/claude.ts` o el cliente `claude` para casos avanzados (streaming, herramientas). Comprueba siempre `stop_reason` antes de leer la respuesta. Consulta el skill `claude-api` antes de cambiar modelos o parámetros.",
+    "dependencies": [
+      "@anthropic-ai/sdk"
+    ],
+    "skills": [
+      "anthropics/skills@claude-api"
+    ],
+    "env": {
+      "ANTHROPIC_API_KEY": ""
+    },
+    "writeFiles": [
+      {
+        "path": "src/lib/claude.ts",
+        "content": "import Anthropic from \"@anthropic-ai/sdk\";\n\n/** Reads ANTHROPIC_API_KEY from the environment; only use it on the server. */\nexport const claude = new Anthropic();\n\nexport const CLAUDE_MODEL = \"claude-opus-5-5\";\n\n/**\n * One question, one answer. If the model declines, the API retries on a\n * fallback model in the same call (server-side fallbacks, beta); remove\n * `betas` and `fallbacks` to disable it.\n */\nexport async function askClaude(prompt: string): Promise<string> {\n  const response = await claude.beta.messages.create({\n    model: CLAUDE_MODEL,\n    max_tokens: 16000,\n    betas: [\"server-side-fallback-2026-07-01\"],\n    fallbacks: \"default\",\n    messages: [{ role: \"user\", content: prompt }],\n  });\n  if (response.stop_reason === \"refusal\") {\n    throw new Error(`Claude declined: ${response.stop_details?.explanation ?? \"no explanation\"}`);\n  }\n  return response.content.flatMap((block) => (block.type === \"text\" ? [block.text] : [])).join(\"\");\n}\n"
+      }
+    ],
+    "setupTasks": [
+      "IA: crea una API key en console.anthropic.com y ponla en `ANTHROPIC_API_KEY`."
+    ]
+  },
+  {
+    "id": "vitest",
+    "name": "Vitest",
+    "kind": "testing",
+    "frameworks": [
+      "nextjs"
+    ],
+    "url": "https://vitest.dev",
+    "description": "Tests unitarios y de componentes, rápidos y con la API de Jest.",
+    "usage": "Los tests van junto al código (`*.test.ts(x)`). Ejecútalos con `npm test`. Para componentes usa `@testing-library/react`. Antes de dar una tarea por terminada, los tests deben pasar.",
+    "devDependencies": [
+      "vitest",
+      "@vitejs/plugin-react",
+      "jsdom",
+      "@testing-library/react",
+      "@testing-library/dom",
+      "vite-tsconfig-paths"
+    ],
+    "skills": [
+      "antfu/skills@vitest"
+    ],
+    "writeFiles": [
+      {
+        "path": "vitest.config.mts",
+        "content": "import react from \"@vitejs/plugin-react\";\nimport tsconfigPaths from \"vite-tsconfig-paths\";\nimport { defineConfig } from \"vitest/config\";\n\nexport default defineConfig({\n  plugins: [tsconfigPaths(), react()],\n  test: { environment: \"jsdom\", exclude: [\"e2e/**\", \"node_modules/**\"] },\n});\n"
+      },
+      {
+        "path": "src/lib/example.test.ts",
+        "content": "import { describe, expect, it } from \"vitest\";\n\ndescribe(\"example\", () => {\n  it(\"works\", () => {\n    expect(1 + 1).toBe(2);\n  });\n});\n"
+      },
+      {
+        "path": "package.json",
+        "mode": "json-merge",
+        "content": "{\"scripts\": {\"test\": \"vitest run\", \"test:watch\": \"vitest\"}}"
+      }
+    ]
+  },
+  {
+    "id": "vitest-node",
+    "name": "Vitest",
+    "kind": "testing",
+    "frameworks": [
+      "nodejs"
+    ],
+    "url": "https://vitest.dev",
+    "description": "Tests unitarios rápidos para tu API.",
+    "usage": "Los tests van junto al código (`*.test.ts`). Prueba las rutas de Hono con `app.request(\"/ruta\")`. Ejecútalos con `npm test`.",
+    "devDependencies": [
+      "vitest"
+    ],
+    "skills": [
+      "antfu/skills@vitest"
+    ],
+    "writeFiles": [
+      {
+        "path": "src/example.test.ts",
+        "content": "import { describe, expect, it } from \"vitest\";\n\ndescribe(\"example\", () => {\n  it(\"works\", () => {\n    expect(1 + 1).toBe(2);\n  });\n});\n"
+      },
+      {
+        "path": "package.json",
+        "mode": "json-merge",
+        "content": "{\"scripts\": {\"test\": \"vitest run\"}}"
+      }
+    ]
+  },
+  {
+    "id": "playwright",
+    "name": "Playwright",
+    "kind": "testing",
+    "frameworks": [
+      "nextjs"
+    ],
+    "url": "https://playwright.dev",
+    "description": "Tests de punta a punta en navegadores reales.",
+    "usage": "Los tests de punta a punta van en `e2e/`. Ejecútalos con `npm run test:e2e` (arranca la app sola). Usa selectores por rol y texto (`getByRole`), no por clases CSS.",
+    "devDependencies": [
+      "@playwright/test"
+    ],
+    "skills": [
+      "microsoft/playwright-cli@playwright-cli"
+    ],
+    "writeFiles": [
+      {
+        "path": "playwright.config.ts",
+        "content": "import { defineConfig, devices } from \"@playwright/test\";\n\nexport default defineConfig({\n  testDir: \"./e2e\",\n  use: { baseURL: \"http://localhost:3000\" },\n  projects: [{ name: \"chromium\", use: { ...devices[\"Desktop Chrome\"] } }],\n  webServer: { command: \"{{pm}} run build && {{pm}} run start\", url: \"http://localhost:3000\", reuseExistingServer: true },\n});\n"
+      },
+      {
+        "path": "e2e/home.spec.ts",
+        "content": "import { expect, test } from \"@playwright/test\";\n\ntest(\"home loads\", async ({ page }) => {\n  await page.goto(\"/\");\n  await expect(page).toHaveTitle(/.+/);\n});\n"
+      },
+      {
+        "path": "package.json",
+        "mode": "json-merge",
+        "content": "{\"scripts\": {\"test:e2e\": \"playwright test\"}}"
+      }
+    ],
+    "setupTasks": [
+      "Playwright: descarga el navegador una vez con `npx playwright install chromium`."
+    ]
+  },
+  {
+    "id": "jest-expo",
+    "name": "Jest (jest-expo)",
+    "kind": "testing",
+    "frameworks": [
+      "expo"
+    ],
+    "url": "https://docs.expo.dev/develop/unit-testing/",
+    "description": "Tests unitarios y de componentes para Expo.",
+    "usage": "Los tests van en `__tests__/` o junto al código (`*.test.tsx`). Para componentes usa `@testing-library/react-native`. Ejecútalos con `npm test`.",
+    "devDependencies": [
+      "jest-expo",
+      "jest",
+      "@testing-library/react-native",
+      "@types/jest"
+    ],
+    "writeFiles": [
+      {
+        "path": "__tests__/example.test.ts",
+        "content": "describe(\"example\", () => {\n  it(\"works\", () => {\n    expect(1 + 1).toBe(2);\n  });\n});\n"
+      },
+      {
+        "path": "package.json",
+        "mode": "json-merge",
+        "content": "{\"scripts\": {\"test\": \"jest\"}, \"jest\": {\"preset\": \"jest-expo\"}}"
+      }
+    ]
+  },
+  {
+    "id": "biome",
+    "name": "Biome",
+    "kind": "quality",
+    "frameworks": [
+      "react",
+      "vue",
+      "svelte",
+      "solid",
+      "vanilla",
+      "nextjs",
+      "nodejs",
+      "bun",
+      "expo"
+    ],
+    "url": "https://biomejs.dev",
+    "description": "Formato y lint en una sola herramienta muy rápida.",
+    "usage": "Formatea con `npm run format` y revisa con `npm run check`. Respeta su configuración en `biome.json` en vez de añadir Prettier o reglas de ESLint duplicadas.",
+    "devDependencies": [
+      "@biomejs/biome"
+    ],
+    "writeFiles": [
+      {
+        "path": "biome.json",
+        "content": "{\n  \"formatter\": { \"enabled\": true, \"indentStyle\": \"space\", \"lineWidth\": 120 },\n  \"linter\": { \"enabled\": true, \"rules\": { \"recommended\": true } },\n  \"files\": { \"includes\": [\"**\", \"!**/node_modules\", \"!**/.next\", \"!**/dist\", \"!**/.expo\"] }\n}\n"
+      },
+      {
+        "path": "package.json",
+        "mode": "json-merge",
+        "content": "{\"scripts\": {\"format\": \"biome format --write .\", \"check\": \"biome check .\"}}"
+      }
+    ]
+  },
+  {
+    "id": "husky-lint-staged",
+    "name": "Husky + lint-staged",
+    "kind": "quality",
+    "frameworks": [
+      "react",
+      "vue",
+      "svelte",
+      "solid",
+      "vanilla",
+      "nextjs",
+      "nodejs",
+      "bun",
+      "expo"
+    ],
+    "url": "https://typicode.github.io/husky/",
+    "description": "Formatea los archivos modificados en cada commit.",
+    "usage": "Cada commit pasa por `lint-staged` (`.husky/pre-commit`). No uses `--no-verify` para saltártelo: si falla, arregla lo que indica.",
+    "devDependencies": [
+      "husky",
+      "lint-staged",
+      "prettier"
+    ],
+    "writeFiles": [
+      {
+        "path": ".husky/pre-commit",
+        "content": "npx lint-staged\n"
+      },
+      {
+        "path": "package.json",
+        "mode": "json-merge",
+        "content": "{\"scripts\": {\"prepare\": \"husky\"}, \"lint-staged\": {\"*\": \"prettier --ignore-unknown --write\"}}"
+      }
+    ],
+    "postInstall": [
+      "git init -q 2>/dev/null; npx husky"
+    ]
+  },
+  {
+    "id": "github-actions",
+    "name": "GitHub Actions",
+    "kind": "ci",
+    "frameworks": [
+      "react",
+      "vue",
+      "svelte",
+      "solid",
+      "vanilla",
+      "nextjs",
+      "nodejs",
+      "bun",
+      "expo"
+    ],
+    "url": "https://docs.github.com/actions",
+    "description": "Instala, revisa, compila y ejecuta los tests en cada push y PR.",
+    "usage": "El workflow está en `.github/workflows/ci.yml` y ejecuta los scripts `lint`, `build` y `test` si existen. Si añades un paso de calidad (typecheck, e2e), añádelo como script y al workflow.",
+    "writeFiles": [
+      {
+        "path": ".github/workflows/ci.yml",
+        "content": "name: CI\n\non:\n  push:\n    branches: [main]\n  pull_request:\n\njobs:\n  ci:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n{{ciSetup}}      - uses: actions/setup-node@v4\n        with:\n          node-version: 22\n      - run: {{pm}} install\n      # npm runs scripts for any package manager and skips missing ones.\n      - run: npm run --if-present lint\n      - run: npm run --if-present build\n      - run: npm run --if-present test\n"
+      }
+    ]
+  },
+  {
+    "id": "vercel",
+    "name": "Vercel",
+    "kind": "deploy",
+    "frameworks": [
+      "nextjs"
+    ],
+    "url": "https://vercel.com",
+    "description": "Despliegue con previsualización por cada PR.",
+    "usage": "Despliega conectando el repositorio en vercel.com (cada push a main va a producción y cada PR tiene su URL) o con `npx vercel`. Configura las variables de `.env.example` en el proyecto de Vercel.",
+    "skills": [
+      "vercel-labs/agent-skills@deploy-to-vercel"
+    ],
+    "setupTasks": [
+      "Vercel: importa el repositorio en vercel.com/new y copia allí las variables de `.env.example`."
+    ]
+  },
+  {
+    "id": "docker",
+    "name": "Docker",
+    "kind": "deploy",
+    "frameworks": [
+      "nextjs",
+      "nodejs"
+    ],
+    "url": "https://docs.docker.com",
+    "description": "Imagen lista para cualquier servidor o plataforma de contenedores.",
+    "usage": "Construye con `docker build -t app .` y arranca con `docker run -p 3000:3000 --env-file .env app`. Mantén `.dockerignore` al día para no copiar secretos ni `node_modules`.",
+    "writeFiles": [
+      {
+        "path": "Dockerfile",
+        "content": "FROM node:22-alpine\nWORKDIR /app\nRUN corepack enable\nCOPY . .\nRUN {{pm}} install && {{pm}} run build\nENV NODE_ENV=production\nEXPOSE 3000\nCMD [\"{{pm}}\", \"run\", \"start\"]\n"
+      },
+      {
+        "path": ".dockerignore",
+        "content": "node_modules\n.next\ndist\n.git\n.env\n.env.local\n"
+      }
+    ]
+  },
+  {
+    "id": "eas",
+    "name": "EAS (Expo Application Services)",
+    "kind": "deploy",
+    "frameworks": [
+      "expo"
+    ],
+    "url": "https://expo.dev/eas",
+    "description": "Builds en la nube, envío a las tiendas y actualizaciones OTA.",
+    "usage": "Compila con `npx eas-cli@latest build`, publica con `eas submit` y envía actualizaciones con `eas update`. Los perfiles están en `eas.json`.",
+    "skills": [
+      "expo/skills@eas-workflows",
+      "expo/skills@eas-update"
+    ],
+    "writeFiles": [
+      {
+        "path": "eas.json",
+        "content": "{\n  \"cli\": { \"appVersionSource\": \"remote\" },\n  \"build\": {\n    \"development\": { \"developmentClient\": true, \"distribution\": \"internal\" },\n    \"preview\": { \"distribution\": \"internal\" },\n    \"production\": { \"autoIncrement\": true }\n  },\n  \"submit\": { \"production\": {} }\n}\n"
+      }
+    ],
+    "setupTasks": [
+      "EAS: inicia sesión con `npx eas-cli@latest login` y vincula el proyecto con `npx eas-cli@latest init`."
+    ]
+  },
+  {
+    "id": "sentry-go",
+    "name": "Sentry",
+    "kind": "observability",
+    "frameworks": [
+      "go"
+    ],
+    "url": "https://sentry.io",
+    "description": "Errores y trazas para tu API en Go.",
+    "usage": "Se inicializa en `sentry.go` y el middleware de `sentryhttp` captura los panics de cada petición. Para errores que manejas tú usa `sentry.CaptureException(err)`.",
+    "dependencies": [
+      "github.com/getsentry/sentry-go",
+      "github.com/getsentry/sentry-go/http"
+    ],
+    "skills": [
+      "getsentry/sentry-agent-skills@sentry-go-sdk"
+    ],
+    "env": {
+      "SENTRY_DSN": ""
+    },
+    "writeFiles": [
+      {
+        "path": "sentry.go",
+        "content": "package main\n\nimport (\n\t\"log\"\n\t\"os\"\n\n\t\"github.com/getsentry/sentry-go\"\n)\n\n// Runs before main. Without SENTRY_DSN the SDK does nothing.\nfunc init() {\n\tif err := sentry.Init(sentry.ClientOptions{Dsn: os.Getenv(\"SENTRY_DSN\"), EnableTracing: true, TracesSampleRate: 0.1}); err != nil {\n\t\tlog.Printf(\"sentry: %v\", err)\n\t}\n}\n"
+      },
+      {
+        "path": "router.go",
+        "mode": "insert-before",
+        "anchor": "\t// Routes",
+        "content": "\tr.Use(sentryhttp.New(sentryhttp.Options{Repanic: true}).Handle)\n\n"
+      },
+      {
+        "path": "router.go",
+        "mode": "insert-before",
+        "anchor": "\t\"github.com/go-chi/chi/v5\"\n",
+        "content": "\tsentryhttp \"github.com/getsentry/sentry-go/http\"\n"
+      }
+    ],
+    "setupTasks": [
+      "Sentry: crea un proyecto Go en sentry.io y pon su DSN en `SENTRY_DSN`."
+    ]
+  },
+  {
+    "id": "sentry-python",
+    "name": "Sentry",
+    "kind": "observability",
+    "frameworks": [
+      "python"
+    ],
+    "url": "https://sentry.io",
+    "description": "Errores y trazas para tu API en Python (integración de FastAPI incluida).",
+    "usage": "Se inicializa en `app/observability.py`; los errores no controlados se reportan solos. Para errores que manejas tú usa `sentry_sdk.capture_exception(error)`.",
+    "dependencies": [
+      "sentry-sdk"
+    ],
+    "skills": [
+      "getsentry/sentry-agent-skills@sentry-python-sdk"
+    ],
+    "env": {
+      "SENTRY_DSN": ""
+    },
+    "writeFiles": [
+      {
+        "path": "app/observability.py",
+        "content": "import os\n\nimport sentry_sdk\n\n# Without SENTRY_DSN the SDK does nothing. FastAPI is instrumented automatically.\nsentry_sdk.init(dsn=os.environ.get(\"SENTRY_DSN\"), traces_sample_rate=0.1, send_default_pii=False)\n"
+      },
+      {
+        "path": "app/main.py",
+        "mode": "prepend",
+        "content": "import app.observability  # noqa: F401  (initialise Sentry first)"
+      }
+    ],
+    "setupTasks": [
+      "Sentry: crea un proyecto Python en sentry.io y pon su DSN en `SENTRY_DSN`."
+    ]
+  },
+  {
+    "id": "github-actions-go",
+    "name": "GitHub Actions",
+    "kind": "ci",
+    "frameworks": [
+      "go"
+    ],
+    "url": "https://docs.github.com/actions",
+    "description": "Revisa, compila y ejecuta los tests en cada push y PR.",
+    "usage": "El workflow está en `.github/workflows/ci.yml` (`go vet`, `go build` y `go test`). Si añades un paso de calidad, añádelo allí.",
+    "writeFiles": [
+      {
+        "path": ".github/workflows/ci.yml",
+        "content": "name: CI\n\non:\n  push:\n    branches: [main]\n  pull_request:\n\njobs:\n  ci:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - uses: actions/setup-go@v5\n        with:\n          go-version-file: go.mod\n      - run: go vet ./...\n      - run: go build ./...\n      - run: go test ./...\n"
+      }
+    ]
+  },
+  {
+    "id": "github-actions-python",
+    "name": "GitHub Actions",
+    "kind": "ci",
+    "frameworks": [
+      "python"
+    ],
+    "url": "https://docs.github.com/actions",
+    "description": "Instala las dependencias y ejecuta pytest en cada push y PR.",
+    "usage": "El workflow está en `.github/workflows/ci.yml` e instala desde `requirements.txt`: mantenlo al día. Si añades un paso de calidad (ruff, mypy), añádelo allí.",
+    "writeFiles": [
+      {
+        "path": ".github/workflows/ci.yml",
+        "content": "name: CI\n\non:\n  push:\n    branches: [main]\n  pull_request:\n\njobs:\n  ci:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - uses: actions/setup-python@v5\n        with:\n          python-version: \"3.12\"\n      - run: pip install -r requirements.txt\n      - run: python -m pytest -q\n"
+      }
+    ]
+  },
+  {
+    "id": "superpowers",
+    "name": "Superpowers",
+    "kind": "workflow",
+    "frameworks": [
+      "any"
+    ],
+    "url": "https://github.com/obra/superpowers",
+    "description": "Método de trabajo para agentes: lluvia de ideas, planes, TDD, depuración sistemática y verificación antes de dar algo por terminado.",
+    "usage": "Antes de programar algo no trivial, sigue el flujo de Superpowers: `brainstorming` para aclarar qué se quiere, `writing-plans` para un plan por pasos y `executing-plans` para seguirlo. Ante un fallo, `systematic-debugging` antes de tocar código. No digas que algo funciona sin comprobarlo (`verification-before-completion`).",
+    "skills": [
+      "obra/superpowers@using-superpowers",
+      "obra/superpowers@brainstorming",
+      "obra/superpowers@writing-plans",
+      "obra/superpowers@executing-plans",
+      "obra/superpowers@systematic-debugging",
+      "obra/superpowers@test-driven-development",
+      "obra/superpowers@verification-before-completion",
+      "obra/superpowers@requesting-code-review"
+    ]
+  },
+  {
+    "id": "mattpocock-skills",
+    "name": "Skills de Matt Pocock",
+    "kind": "workflow",
+    "frameworks": [
+      "any"
+    ],
+    "url": "https://github.com/mattpocock/skills",
+    "description": "grill-me (te pregunta hasta entender lo que quieres de verdad) e improve-codebase-architecture (propone cómo ordenar el código).",
+    "usage": "Si la petición es ambigua o grande, usa `grill-me` para hacer las preguntas necesarias antes de empezar. Cuando el código crezca o cueste cambiarlo, usa `improve-codebase-architecture` y propón la reorganización antes de aplicarla.",
+    "skills": [
+      "mattpocock/skills@grill-me",
+      "mattpocock/skills@improve-codebase-architecture"
+    ]
+  }
+]

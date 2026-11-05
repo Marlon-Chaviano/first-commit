@@ -1,0 +1,67 @@
+{
+  "$schema": "../../kit.schema.json",
+  "name": "spa-vite-react",
+  "version": "1.0.0",
+  "author": "kits",
+  "title": "SPA con Vite y React",
+  "category": "web",
+  "language": "typescript",
+  "description": "React + TypeScript con Vite y Tailwind CSS: arranque instantáneo y build rápido, sin servidor. Para paneles, herramientas internas y frontends de una API.",
+  "tags": [
+    "react",
+    "vite",
+    "spa",
+    "tailwind",
+    "typescript"
+  ],
+  "base": {
+    "command": "npx create-vite@latest {{name}} --template react-ts --no-interactive",
+    "install": "{{pm}} install"
+  },
+  "skills": [
+    "antfu/skills@vite",
+    "vercel-labs/agent-skills@vercel-react-best-practices",
+    "anthropics/skills@frontend-design"
+  ],
+  "verify": {
+    "command": "{{pm}} run build"
+  },
+  "libraries": {
+    "framework": [
+      "react",
+      "vanilla"
+    ],
+    "components": "none",
+    "animation": [],
+    "workflow": [
+      "superpowers",
+      "mattpocock-skills"
+    ]
+  },
+  "instructions": "## Cómo trabajar aquí\n\n- Componentes en `src/components/`, uno por archivo; importa con el alias `@/` (`@/components/...`).\n- Estilos con clases de Tailwind CSS v4 (`src/index.css` importa Tailwind).\n- Es una SPA: los datos vienen de una API; las variables públicas llevan el prefijo `VITE_`.\n- Antes de terminar: `npm run build` (incluye la comprobación de tipos).",
+  "devDependencies": [
+    "tailwindcss",
+    "@tailwindcss/vite"
+  ],
+  "writeFiles": [
+    {
+      "path": "vite.config.ts",
+      "content": "import { fileURLToPath } from 'node:url'\n\nimport tailwindcss from '@tailwindcss/vite'\nimport react from '@vitejs/plugin-react'\nimport { defineConfig } from 'vite'\n\n// https://vite.dev/config/\nexport default defineConfig({\n  plugins: [react(), tailwindcss()],\n  resolve: {\n    alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) },\n  },\n})\n"
+    },
+    {
+      "path": "tsconfig.json",
+      "content": "{\n  \"files\": [],\n  \"references\": [{ \"path\": \"./tsconfig.app.json\" }, { \"path\": \"./tsconfig.node.json\" }],\n  \"compilerOptions\": {\n    \"paths\": { \"@/*\": [\"./src/*\"] }\n  }\n}\n"
+    },
+    {
+      "path": "tsconfig.app.json",
+      "mode": "insert-before",
+      "anchor": "    \"jsx\": \"react-jsx\",",
+      "content": "    \"paths\": { \"@/*\": [\"./src/*\"] },\n"
+    },
+    {
+      "path": "src/index.css",
+      "mode": "prepend",
+      "content": "@import \"tailwindcss\";"
+    }
+  ]
+}

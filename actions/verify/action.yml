@@ -1,0 +1,45 @@
+name: Verify kit
+description: Installs your kit with several option combinations, builds each one and publishes a signed verification (badge "Verificado").
+branding:
+  icon: check-circle
+  color: gray-dark
+
+inputs:
+  kit:
+    description: Path to the folder with kit.json
+    default: "."
+  cli-package:
+    description: npm package of the CLI (change it if the product is renamed)
+    default: create-first-commit
+  api-url:
+    description: API that stores the verification (defaults to the CLI's own)
+    default: ""
+  upload:
+    description: "Publish the signed report. Needs `permissions: id-token: write`."
+    default: "true"
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-node@v4
+      with:
+        node-version: 22
+    - name: Enable pnpm and bun shims
+      shell: bash
+      run: corepack enable || true
+    - name: Test kit
+      shell: bash
+      env:
+        KITS_TELEMETRY: "0"
+        KITS_API_URL: ${{ inputs.api-url }}
+      run: |
+        if [ -z "$KITS_API_URL" ]; then unset KITS_API_URL; fi
+        UPLOAD=""
+        if [ "${{ inputs.upload }}" = "true" ]; then UPLOAD="--upload"; fi
+        npx -y ${{ inputs.cli-package }}@latest test "${{ inputs.kit }}" --report kits-test-report.json $UPLOAD
+    - name: Keep the report
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: kits-test-report-${{ runner.os }}
+        path: kits-test-report.json

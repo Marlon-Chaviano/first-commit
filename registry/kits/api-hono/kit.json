@@ -1,0 +1,142 @@
+{
+  "$schema": "../../kit.schema.json",
+  "name": "api-hono",
+  "version": "1.2.0",
+  "title": "API con Hono",
+  "description": "API REST tipada con Hono en Node, Bun o Cloudflare Workers. Validación con Zod y base de datos con Drizzle opcional.",
+  "category": "api",
+  "tags": [
+    "hono",
+    "api",
+    "typescript",
+    "zod",
+    "drizzle"
+  ],
+  "author": "kits",
+  "base": {
+    "command": "npx create-hono@latest {{name}} --template {{opt.runtime}} --pm {{pm}} --install"
+  },
+  "verify": {
+    "command": "npx tsc --noEmit && npm run --if-present test",
+    "matrix": [
+      {
+        "db": [
+          "drizzle-postgres"
+        ],
+        "observability": [
+          "sentry-node",
+          "posthog-node"
+        ]
+      },
+      {
+        "email": [
+          "resend"
+        ],
+        "ai": [
+          "claude-api"
+        ],
+        "testing": [
+          "vitest-node"
+        ],
+        "quality": [
+          "biome"
+        ],
+        "ci": [
+          "github-actions"
+        ],
+        "deploy": [
+          "docker"
+        ]
+      }
+    ]
+  },
+  "skills": [
+    "honojs/skills@hono"
+  ],
+  "options": [
+    {
+      "id": "runtime",
+      "label": "Runtime",
+      "default": "nodejs",
+      "choices": [
+        {
+          "id": "nodejs",
+          "label": "Node.js"
+        },
+        {
+          "id": "bun",
+          "label": "Bun"
+        },
+        {
+          "id": "cloudflare-workers",
+          "label": "Cloudflare Workers"
+        }
+      ]
+    },
+    {
+      "id": "validation",
+      "label": "Validación",
+      "default": "zod",
+      "choices": [
+        {
+          "id": "zod",
+          "label": "Zod",
+          "dependencies": [
+            "zod",
+            "@hono/zod-validator"
+          ],
+          "instructions": "## Validación\n\nValida params, query y body de cada ruta con `zValidator` de `@hono/zod-validator`. Nunca leas `c.req.json()` sin validar."
+        },
+        {
+          "id": "none",
+          "label": "Ninguna"
+        }
+      ]
+    },
+    {
+      "id": "db",
+      "label": "Base de datos",
+      "default": "none",
+      "choices": [
+        {
+          "id": "none",
+          "label": "Ninguna"
+        },
+        {
+          "id": "drizzle-postgres",
+          "label": "Drizzle + Postgres",
+          "dependencies": [
+            "drizzle-orm",
+            "postgres"
+          ],
+          "devDependencies": [
+            "drizzle-kit"
+          ],
+          "env": {
+            "DATABASE_URL": "postgres://postgres:postgres@localhost:5432/app"
+          },
+          "files": "files/drizzle",
+          "instructions": "## Base de datos\n\nEsquema en `src/db/schema.ts`, cliente en `src/db/index.ts`. Tras cambiar el esquema: `npx drizzle-kit generate` y `npx drizzle-kit migrate`. No edites migraciones ya aplicadas."
+        }
+      ]
+    }
+  ],
+  "instructions": "## Cómo trabajar aquí\n\n- Agrupa rutas por recurso con `new Hono()` y `app.route('/recurso', router)`.\n- Exporta el tipo de la app (`export type AppType = typeof app`) para usar el cliente RPC `hc` desde el frontend.",
+  "libraries": {
+    "framework": {
+      "option": "runtime"
+    },
+    "observability": [],
+    "email": "none",
+    "ai": [],
+    "testing": [],
+    "quality": [],
+    "ci": [],
+    "deploy": "none",
+    "workflow": [
+      "superpowers",
+      "mattpocock-skills"
+    ]
+  },
+  "language": "typescript"
+}

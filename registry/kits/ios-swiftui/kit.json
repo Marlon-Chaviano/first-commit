@@ -1,0 +1,52 @@
+{
+  "$schema": "../../kit.schema.json",
+  "name": "ios-swiftui",
+  "version": "1.1.0",
+  "title": "App de iOS con SwiftUI",
+  "description": "App nativa de iOS con SwiftUI y Swift Testing. El proyecto de Xcode se genera desde project.yml con XcodeGen, así tu agente edita YAML en vez del .xcodeproj.",
+  "category": "mobile",
+  "tags": [
+    "ios",
+    "swift",
+    "swiftui",
+    "xcode",
+    "xcodegen"
+  ],
+  "author": "kits",
+  "base": {
+    "command": "command -v xcodegen >/dev/null || { echo 'Necesitas XcodeGen: brew install xcodegen' >&2; exit 1; }; mkdir {{name}}"
+  },
+  "packageManagers": [
+    "swift"
+  ],
+  "files": "files/base",
+  "writeFiles": [
+    {
+      "path": "project.yml",
+      "content": "name: {{name}}\noptions:\n  bundleIdPrefix: com.example\n  deploymentTarget:\n    iOS: \"18.0\"\nsettings:\n  base:\n    SWIFT_VERSION: \"6.0\"\n    MARKETING_VERSION: \"1.0\"\n    CURRENT_PROJECT_VERSION: \"1\"\n    GENERATE_INFOPLIST_FILE: YES\ntargets:\n  {{name}}:\n    type: application\n    platform: iOS\n    sources: [Sources]\n    settings:\n      base:\n        PRODUCT_BUNDLE_IDENTIFIER: com.example.{{name}}\n        # Fixed module name, so tests can `@testable import Main` whatever the project is called.\n        PRODUCT_MODULE_NAME: Main\n        INFOPLIST_KEY_UILaunchScreen_Generation: YES\n        INFOPLIST_KEY_UIApplicationSceneManifest_Generation: YES\n  {{name}}Tests:\n    type: bundle.unit-test\n    platform: iOS\n    sources: [Tests]\n    dependencies:\n      - target: {{name}}\nschemes:\n  {{name}}:\n    build:\n      targets:\n        {{name}}: all\n    test:\n      targets: [{{name}}Tests]\n"
+    }
+  ],
+  "postInstall": [
+    "xcodegen generate"
+  ],
+  "skills": [
+    "twostraws/swiftui-agent-skill@swiftui-pro",
+    "avdlee/swiftui-agent-skill@swiftui-expert-skill"
+  ],
+  "verify": {
+    "command": "xcodegen generate && xcodebuild build-for-testing -project {{name}}.xcodeproj -scheme {{name}} -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO -quiet"
+  },
+  "options": [],
+  "setupTasks": [
+    "Xcode: abre el proyecto con `xed .` y elige tu equipo en Signing & Capabilities para probar en un iPhone real."
+  ],
+  "instructions": "## Cómo trabajar aquí\n\n- El proyecto de Xcode se genera: **nunca edites `*.xcodeproj`**. Cambia `project.yml` (targets, ajustes, paquetes de Swift en `packages:`) y ejecuta `xcodegen generate`.\n- Vistas en `Sources/`, una por archivo, con su `#Preview`. Estado con `@State`/`@Observable`, sin bibliotecas de terceros salvo que se pidan.\n- Tests con Swift Testing (`import Testing`, `@Test`, `#expect`) en `Tests/`; el módulo de la app se llama `Main` (`@testable import Main`).\n- Antes de terminar una tarea: `xcodegen generate && xcodebuild test -scheme <nombre> -destination 'platform=iOS Simulator,name=<iPhone>'` (lista los simuladores con `xcrun simctl list devices`).",
+  "language": "swift",
+  "libraries": {
+    "framework": "swiftui",
+    "workflow": [
+      "superpowers",
+      "mattpocock-skills"
+    ]
+  }
+}

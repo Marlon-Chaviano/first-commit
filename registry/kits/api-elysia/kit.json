@@ -1,0 +1,39 @@
+{
+  "$schema": "../../kit.schema.json",
+  "name": "api-elysia",
+  "version": "1.0.0",
+  "author": "kits",
+  "title": "API con Elysia en Bun",
+  "category": "api",
+  "language": "typescript",
+  "description": "API tipada de punta a punta con Elysia sobre Bun: validación integrada, OpenAPI y cliente con tipos.",
+  "tags": [
+    "bun",
+    "elysia",
+    "api",
+    "typescript"
+  ],
+  "base": {
+    "command": "bun create elysia {{name}}"
+  },
+  "packageManagers": [
+    "bun"
+  ],
+  "skills": [
+    "elysiajs/skills@elysiajs"
+  ],
+  "verify": {
+    "command": "bunx tsc --noEmit -p . && bun build src/index.ts --target bun --outdir .verify-build"
+  },
+  "libraries": {
+    "framework": [
+      "bun",
+      "elysia"
+    ],
+    "workflow": [
+      "superpowers",
+      "mattpocock-skills"
+    ]
+  },
+  "instructions": "## Cómo trabajar aquí\n\n- Rutas en `src/`, agrupadas con `new Elysia({ prefix: '/recurso' })` y montadas con `.use()`.\n- Valida params, query y body con `t` (TypeBox) en cada ruta; los tipos se infieren solos.\n- Arranca con `bun dev`. Antes de terminar: `bunx tsc --noEmit`."
+}

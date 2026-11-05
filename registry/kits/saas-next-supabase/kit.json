@@ -1,0 +1,124 @@
+{
+  "$schema": "../../kit.schema.json",
+  "name": "saas-next-supabase",
+  "version": "1.2.0",
+  "title": "SaaS con Next.js + Supabase",
+  "description": "Next.js con Supabase (auth y Postgres) y piezas del catálogo: Better Auth o Clerk, Drizzle, Stripe, Resend, i18n, IA, tests, CI y despliegue, con sus MCP y reglas para tu agente.",
+  "category": "saas",
+  "tags": [
+    "nextjs",
+    "supabase",
+    "stripe",
+    "auth",
+    "postgres"
+  ],
+  "author": "kits",
+  "base": {
+    "command": "npx create-next-app@latest {{name}} --ts --tailwind --eslint --app --src-dir --import-alias \"@/*\" --use-{{pm}} --disable-git --no-agent-feedback --yes"
+  },
+  "verify": {
+    "command": "{{pm}} run build && npm run --if-present test",
+    "matrix": [
+      {
+        "auth": [
+          "better-auth"
+        ],
+        "database": [
+          "drizzle-postgres"
+        ],
+        "payments": [
+          "stripe"
+        ],
+        "email": [
+          "resend"
+        ],
+        "testing": [
+          "vitest",
+          "playwright"
+        ],
+        "ci": [
+          "github-actions"
+        ],
+        "observability": [
+          "sentry-nextjs"
+        ]
+      },
+      {
+        "auth": [
+          "clerk"
+        ],
+        "payments": [
+          "none"
+        ],
+        "email": [
+          "react-email"
+        ],
+        "i18n": [
+          "next-intl"
+        ],
+        "ai": [
+          "vercel-ai-sdk",
+          "claude-api"
+        ],
+        "quality": [
+          "biome"
+        ],
+        "deploy": [
+          "docker"
+        ],
+        "observability": [
+          "posthog-nextjs"
+        ]
+      }
+    ]
+  },
+  "dependencies": [
+    "@supabase/supabase-js",
+    "@supabase/ssr"
+  ],
+  "skills": [
+    "supabase/agent-skills@supabase",
+    "supabase/agent-skills@supabase-postgres-best-practices",
+    "vercel-labs/agent-skills@vercel-react-best-practices",
+    "anthropics/skills@frontend-design"
+  ],
+  "mcp": {
+    "supabase": {
+      "url": "https://mcp.supabase.com/mcp"
+    }
+  },
+  "env": {
+    "NEXT_PUBLIC_SUPABASE_URL": "",
+    "NEXT_PUBLIC_SUPABASE_ANON_KEY": ""
+  },
+  "files": "files/supabase",
+  "options": [],
+  "libraries": {
+    "framework": [
+      "react",
+      "nextjs"
+    ],
+    "components": "shadcn",
+    "addons": [],
+    "animation": [],
+    "auth": "none",
+    "database": "none",
+    "payments": "stripe",
+    "email": "none",
+    "i18n": "none",
+    "ai": [],
+    "observability": [
+      "sentry-nextjs"
+    ],
+    "testing": [],
+    "quality": [],
+    "ci": [],
+    "deploy": "none",
+    "workflow": [
+      "superpowers",
+      "mattpocock-skills"
+    ]
+  },
+  "instructions": "## Cómo trabajar aquí\n\n- Clientes de Supabase en `src/lib/supabase/`: `client.ts` en componentes cliente, `server.ts` en Server Components, Route Handlers y Server Actions.\n- Toda tabla nueva lleva RLS. Usa el MCP de Supabase para ver el esquema antes de escribir consultas.\n- Para refrescar la sesión en cada request, sigue la guía actual de `@supabase/ssr` para Next.js (el skill `supabase` la tiene).",
+  "language": "typescript"
+}

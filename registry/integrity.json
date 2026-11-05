@@ -1,0 +1,66 @@
+{
+  "api-hono": {
+    "1.0.0": "sha256-+9gEAmtGUfu1jD/Fxr85LlsOS+VM9cQ+bSrwgA3EfPQ=",
+    "1.1.0": "sha256-6w6PfdP8NkDCWAnpbbKh+tUzm99+TivcKBl2J4UINk4=",
+    "1.2.0": "sha256-gx7hXGq6dX6Icvubp/6VL6FJ+bDUO2CgDMvNm51ApOU="
+  },
+  "chrome-extension": {
+    "1.0.0": "sha256-grENeCJwjD11nGetz3j3VTPtysoQhX0p79NmMQ0D7ds=",
+    "1.1.0": "sha256-w4RbfvD9bYyscbKRYt1Jn51vUi9hihA7Sh6K4gEdqv8=",
+    "1.2.0": "sha256-BmUIz8Op7ZniDokzcfqmMzRaBn7UjT5E2PE4ZfI4V/Q="
+  },
+  "landing-next": {
+    "1.0.0": "sha256-v0ITt1Vr7ajNyR9D7nDP24PrzMXj5MiN0Y1vz1c8Rm4=",
+    "1.1.0": "sha256-sK6Q3nuUbGjGPu11X45bKZ3TT33V5YSqE38lnxRNp1o=",
+    "1.2.0": "sha256-icS4FfGPofqoSoHmKNtTzLI4MwnuvGZ+03lLwPgmJCI="
+  },
+  "mobile-expo": {
+    "1.0.0": "sha256-iKvuDwxOAvjes5pIeIj9LlAYu6JWeXLvibTON8otV8M=",
+    "1.1.0": "sha256-9Y2ObHjJTD7mkm5Q0+JwJhowEh4eKVZJOmulKQgqils=",
+    "1.2.0": "sha256-ViRugZbuWd9HVtX7OkHN+u15n5RHX2TD57eCkW/Oxb8="
+  },
+  "saas-next-supabase": {
+    "1.0.0": "sha256-SjRUO1+keSaYqmqc6hGBrOC/P+sn2oqIlt5aqwmI3iI=",
+    "1.1.0": "sha256-tJV6hDm1AcQAoDf3OCVamBXOPbkD88jO34IKEXBoM7k=",
+    "1.2.0": "sha256-mK7GwvUnZzuFlStputMEvhBfqT7ky2pYm7EXN1YezTk="
+  },
+  "api-fastapi": {
+    "1.0.0": "sha256-MnYf1FQPo4kUaFI7EC6KpQnBfCGm8BFpRj4zUErzv60=",
+    "1.1.0": "sha256-M281fSNzkLSkelZLVsrs7xaEkYS1x5ewfIJ8wF+9aWM="
+  },
+  "api-go": {
+    "1.0.0": "sha256-GZpiFyqNiIPLsgOhCU23x0GYCaM40gz4q1rtb6GxW9g=",
+    "1.1.0": "sha256-UEjwFWXsERYcQ4LNr/Lg0Gbck3dibbBhUAvb0WcjmWs="
+  },
+  "ios-swiftui": {
+    "1.0.0": "sha256-dRBrHLiASXX5A84PneKLZq6qbQJ7CQFFwNJcBYG2xmM=",
+    "1.1.0": "sha256-6CWNdocWCvJQTbRR+ZPEumgl+vtRORhZiiQlI2jy+Ag="
+  },
+  "api-django": {
+    "1.0.0": "sha256-/2F2CHU+zzaHpNYaZw7/udmHl35FTMzRS3LWjBbdFhQ="
+  },
+  "api-elysia": {
+    "1.0.0": "sha256-wlq4mDhP1sOJLIPVa5K2tapOv8/aTeziucWdHipy3tY="
+  },
+  "api-spring-boot": {
+    "1.0.0": "sha256-3jIZWiMhgrB2PRnk2ek6aalLtf0pIcuDLFRS2L9fyuA="
+  },
+  "spa-vite-react": {
+    "1.0.0": "sha256-7eQoElNygX23WTcfBb+EmElN3kF7CUNpgWZEVo979UA="
+  },
+  "web-astro": {
+    "1.0.0": "sha256-FNppcYM1jsCqAHMhMW5bTtO1hVmZcYo68sLD5IDK3o4="
+  },
+  "web-laravel": {
+    "1.0.0": "sha256-QJUc3uk2CL3a1W6eGWKFenM6EpaWG+EWZmQg9vYI3l4="
+  },
+  "web-nuxt": {
+    "1.0.0": "sha256-oT+qPmPkrQtUadONb8cs3yOcBSgI3r1lfDv2d9RFUVY="
+  },
+  "web-rails": {
+    "1.0.0": "sha256-vZFj/M9ZTrOCn3ncCKjwz9+t6SejH2mdDHpCcRqJ6Lk="
+  },
+  "web-sveltekit": {
+    "1.0.0": "sha256-uZKuqd8ja3JdbbK/ieWYO8QJJuJrjrl18Og0Vg1r0Vs="
+  }
+}

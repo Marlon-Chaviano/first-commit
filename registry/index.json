@@ -1,0 +1,613 @@
+[
+  {
+    "name": "api-django",
+    "version": "1.0.0",
+    "title": "Backend con Django",
+    "description": "Django con su admin, ORM y migraciones, en un entorno virtual propio. Para backends con base de datos y panel de administración desde el primer día.",
+    "category": "api",
+    "tags": [
+      "python",
+      "django",
+      "orm",
+      "admin"
+    ],
+    "author": "kits",
+    "skills": 12,
+    "options": [
+      "Skills de trabajo"
+    ],
+    "language": "python",
+    "libraries": [
+      "Superpowers",
+      "Skills de Matt Pocock"
+    ]
+  },
+  {
+    "name": "api-elysia",
+    "version": "1.0.0",
+    "title": "API con Elysia en Bun",
+    "description": "API tipada de punta a punta con Elysia sobre Bun: validación integrada, OpenAPI y cliente con tipos.",
+    "category": "api",
+    "tags": [
+      "bun",
+      "elysia",
+      "api",
+      "typescript"
+    ],
+    "author": "kits",
+    "skills": 11,
+    "options": [
+      "Skills de trabajo"
+    ],
+    "language": "typescript",
+    "libraries": [
+      "Superpowers",
+      "Skills de Matt Pocock"
+    ]
+  },
+  {
+    "name": "api-fastapi",
+    "version": "1.1.0",
+    "title": "API con FastAPI",
+    "description": "API en Python con FastAPI, entorno virtual propio y tests con pytest. Documentación OpenAPI automática.",
+    "category": "api",
+    "tags": [
+      "python",
+      "fastapi",
+      "api",
+      "pytest"
+    ],
+    "author": "kits",
+    "skills": 12,
+    "options": [
+      "Observabilidad",
+      "Integración continua",
+      "Skills de trabajo"
+    ],
+    "language": "python",
+    "libraries": [
+      "Sentry",
+      "GitHub Actions",
+      "Superpowers",
+      "Skills de Matt Pocock"
+    ]
+  },
+  {
+    "name": "api-go",
+    "version": "1.1.0",
+    "title": "API con Go y chi",
+    "description": "API HTTP en Go con el router chi: middlewares estándar, JSON y tests con httptest. Sin frameworks pesados.",
+    "category": "api",
+    "tags": [
+      "go",
+      "chi",
+      "api"
+    ],
+    "author": "kits",
+    "skills": 14,
+    "options": [
+      "Observabilidad",
+      "Integración continua",
+      "Skills de trabajo"
+    ],
+    "language": "go",
+    "libraries": [
+      "Sentry",
+      "GitHub Actions",
+      "Superpowers",
+      "Skills de Matt Pocock"
+    ]
+  },
+  {
+    "name": "api-hono",
+    "version": "1.2.0",
+    "title": "API con Hono",
+    "description": "API REST tipada con Hono en Node, Bun o Cloudflare Workers. Validación con Zod y base de datos con Drizzle opcional.",
+    "category": "api",
+    "tags": [
+      "hono",
+      "api",
+      "typescript",
+      "zod",
+      "drizzle"
+    ],
+    "author": "kits",
+    "skills": 17,
+    "options": [
+      "Runtime",
+      "Validación",
+      "Base de datos",
+      "Email transaccional",
+      "IA",
+      "Observabilidad",
+      "Tests",
+      "Calidad de código",
+      "Integración continua",
+      "Despliegue",
+      "Skills de trabajo"
+    ],
+    "language": "typescript",
+    "libraries": [
+      "Drizzle + Postgres",
+      "Resend",
+      "Claude API",
+      "Sentry",
+      "PostHog",
+      "Vitest",
+      "Biome",
+      "Husky + lint-staged",
+      "GitHub Actions",
+      "Docker",
+      "Superpowers",
+      "Skills de Matt Pocock"
+    ]
+  },
+  {
+    "name": "api-spring-boot",
+    "version": "1.0.0",
+    "title": "API con Spring Boot",
+    "description": "Spring Boot con Java 17, Maven, Web, Validation y Actuator: una API REST lista para producción desde el primer commit.",
+    "category": "api",
+    "tags": [
+      "java",
+      "spring",
+      "spring-boot",
+      "maven"
+    ],
+    "author": "kits",
+    "skills": 11,
+    "options": [
+      "Skills de trabajo"
+    ],
+    "language": "java",
+    "libraries": [
+      "Superpowers",
+      "Skills de Matt Pocock"
+    ]
+  },
+  {
+    "name": "chrome-extension",
+    "version": "1.2.0",
+    "title": "Extensión de navegador con WXT",
+    "description": "Extensión para Chrome, Firefox y Edge con WXT (Manifest V3, hot reload) y el framework de UI que prefieras.",
+    "category": "extension",
+    "tags": [
+      "chrome-extension",
+      "wxt",
+      "manifest-v3"
+    ],
+    "author": "kits",
+    "skills": 25,
+    "options": [
+      "Framework de UI",
+      "Componentes de UI",
+      "Bibliotecas complementarias",
+      "Animaciones",
+      "Calidad de código",
+      "Integración continua",
+      "Skills de trabajo"
+    ],
+    "language": "typescript",
+    "libraries": [
+      "shadcn/ui",
+      "HeroUI",
+      "Mantine",
+      "Material UI",
+      "Chakra UI",
+      "daisyUI",
+      "shadcn-vue",
+      "PrimeVue",
+      "Vuetify",
+      "shadcn-svelte",
+      "Skeleton",
+      "Flowbite Svelte",
+      "Bits UI",
+      "Kobalte",
+      "Kokonut UI",
+      "Magic UI",
+      "Aceternity UI",
+      "Bklit UI",
+      "React Bits",
+      "Animate UI",
+      "Motion Primitives",
+      "Cult UI",
+      "SmoothUI",
+      "Motion",
+      "Motion for Vue",
+      "GSAP",
+      "anime.js",
+      "AutoAnimate",
+      "React Spring",
+      "Lottie",
+      "React Three Fiber",
+      "Biome",
+      "Husky + lint-staged",
+      "GitHub Actions",
+      "Superpowers",
+      "Skills de Matt Pocock"
+    ]
+  },
+  {
+    "name": "ios-swiftui",
+    "version": "1.1.0",
+    "title": "App de iOS con SwiftUI",
+    "description": "App nativa de iOS con SwiftUI y Swift Testing. El proyecto de Xcode se genera desde project.yml con XcodeGen, así tu agente edita YAML en vez del .xcodeproj.",
+    "category": "mobile",
+    "tags": [
+      "ios",
+      "swift",
+      "swiftui",
+      "xcode",
+      "xcodegen"
+    ],
+    "author": "kits",
+    "skills": 12,
+    "options": [
+      "Skills de trabajo"
+    ],
+    "language": "swift",
+    "libraries": [
+      "Superpowers",
+      "Skills de Matt Pocock"
+    ]
+  },
+  {
+    "name": "landing-next",
+    "version": "1.2.0",
+    "title": "Landing page con Next.js",
+    "description": "Next.js + Tailwind con skills de diseño, buenas prácticas de React y despliegue en Vercel. Para landings que no parezcan hechas por IA.",
+    "category": "landing",
+    "tags": [
+      "nextjs",
+      "tailwind",
+      "design",
+      "vercel"
+    ],
+    "author": "kits",
+    "skills": 28,
+    "options": [
+      "Extras",
+      "Componentes de UI",
+      "Bibliotecas complementarias",
+      "Animaciones",
+      "Idiomas (i18n)",
+      "Observabilidad",
+      "Tests",
+      "Calidad de código",
+      "Integración continua",
+      "Despliegue",
+      "Skills de trabajo"
+    ],
+    "language": "typescript",
+    "libraries": [
+      "shadcn/ui",
+      "HeroUI",
+      "Mantine",
+      "Material UI",
+      "Chakra UI",
+      "daisyUI",
+      "Kokonut UI",
+      "Magic UI",
+      "Aceternity UI",
+      "Bklit UI",
+      "React Bits",
+      "Animate UI",
+      "Motion Primitives",
+      "Cult UI",
+      "SmoothUI",
+      "Motion",
+      "GSAP",
+      "anime.js",
+      "AutoAnimate",
+      "React Spring",
+      "Lottie",
+      "React Three Fiber",
+      "next-intl",
+      "Sentry",
+      "PostHog",
+      "Vercel Analytics",
+      "Vitest",
+      "Playwright",
+      "Biome",
+      "Husky + lint-staged",
+      "GitHub Actions",
+      "Vercel",
+      "Docker",
+      "Superpowers",
+      "Skills de Matt Pocock"
+    ]
+  },
+  {
+    "name": "mobile-expo",
+    "version": "1.2.0",
+    "title": "App móvil con Expo",
+    "description": "React Native + Expo Router listo para iOS, Android y web, con los skills oficiales de Expo para que tu agente no use APIs viejas.",
+    "category": "mobile",
+    "tags": [
+      "react-native",
+      "expo",
+      "expo-router",
+      "typescript"
+    ],
+    "author": "kits",
+    "skills": 26,
+    "options": [
+      "Estilos",
+      "Backend",
+      "Componentes de UI",
+      "Animaciones",
+      "Idiomas (i18n)",
+      "Observabilidad",
+      "Tests",
+      "Despliegue",
+      "Skills de trabajo"
+    ],
+    "language": "typescript",
+    "libraries": [
+      "React Native Reusables",
+      "Tamagui",
+      "gluestack-ui",
+      "React Native Paper",
+      "Moti",
+      "Lottie React Native",
+      "i18next",
+      "Sentry",
+      "PostHog",
+      "Jest (jest-expo)",
+      "EAS (Expo Application Services)",
+      "Superpowers",
+      "Skills de Matt Pocock"
+    ]
+  },
+  {
+    "name": "saas-next-supabase",
+    "version": "1.2.0",
+    "title": "SaaS con Next.js + Supabase",
+    "description": "Next.js con Supabase (auth y Postgres) y piezas del catálogo: Better Auth o Clerk, Drizzle, Stripe, Resend, i18n, IA, tests, CI y despliegue, con sus MCP y reglas para tu agente.",
+    "category": "saas",
+    "tags": [
+      "nextjs",
+      "supabase",
+      "stripe",
+      "auth",
+      "postgres"
+    ],
+    "author": "kits",
+    "skills": 37,
+    "options": [
+      "Componentes de UI",
+      "Bibliotecas complementarias",
+      "Animaciones",
+      "Autenticación",
+      "Base de datos",
+      "Pagos",
+      "Email transaccional",
+      "Idiomas (i18n)",
+      "IA",
+      "Observabilidad",
+      "Tests",
+      "Calidad de código",
+      "Integración continua",
+      "Despliegue",
+      "Skills de trabajo"
+    ],
+    "language": "typescript",
+    "libraries": [
+      "shadcn/ui",
+      "HeroUI",
+      "Mantine",
+      "Material UI",
+      "Chakra UI",
+      "daisyUI",
+      "Kokonut UI",
+      "Magic UI",
+      "Aceternity UI",
+      "Bklit UI",
+      "React Bits",
+      "Animate UI",
+      "Motion Primitives",
+      "Cult UI",
+      "SmoothUI",
+      "Motion",
+      "GSAP",
+      "anime.js",
+      "AutoAnimate",
+      "React Spring",
+      "Lottie",
+      "React Three Fiber",
+      "Better Auth",
+      "Clerk",
+      "Drizzle + Postgres",
+      "Stripe",
+      "Resend",
+      "Resend + React Email",
+      "next-intl",
+      "Vercel AI SDK",
+      "Claude API",
+      "Sentry",
+      "PostHog",
+      "Vercel Analytics",
+      "Vitest",
+      "Playwright",
+      "Biome",
+      "Husky + lint-staged",
+      "GitHub Actions",
+      "Vercel",
+      "Docker",
+      "Superpowers",
+      "Skills de Matt Pocock"
+    ]
+  },
+  {
+    "name": "spa-vite-react",
+    "version": "1.0.0",
+    "title": "SPA con Vite y React",
+    "description": "React + TypeScript con Vite y Tailwind CSS: arranque instantáneo y build rápido, sin servidor. Para paneles, herramientas internas y frontends de una API.",
+    "category": "web",
+    "tags": [
+      "react",
+      "vite",
+      "spa",
+      "tailwind",
+      "typescript"
+    ],
+    "author": "kits",
+    "skills": 21,
+    "options": [
+      "Componentes de UI",
+      "Animaciones",
+      "Skills de trabajo"
+    ],
+    "language": "typescript",
+    "libraries": [
+      "shadcn/ui",
+      "HeroUI",
+      "Mantine",
+      "Material UI",
+      "Chakra UI",
+      "daisyUI",
+      "Motion",
+      "GSAP",
+      "anime.js",
+      "AutoAnimate",
+      "React Spring",
+      "Lottie",
+      "React Three Fiber",
+      "Superpowers",
+      "Skills de Matt Pocock"
+    ]
+  },
+  {
+    "name": "web-astro",
+    "version": "1.0.0",
+    "title": "Web de contenido con Astro",
+    "description": "Sitio rápido con Astro: páginas estáticas por defecto, islas interactivas solo donde hacen falta. Para blogs, docs y webs de producto.",
+    "category": "web",
+    "tags": [
+      "astro",
+      "content",
+      "static",
+      "typescript"
+    ],
+    "author": "kits",
+    "skills": 15,
+    "options": [
+      "Animaciones",
+      "Skills de trabajo"
+    ],
+    "language": "typescript",
+    "libraries": [
+      "Motion",
+      "GSAP",
+      "anime.js",
+      "AutoAnimate",
+      "Superpowers",
+      "Skills de Matt Pocock"
+    ]
+  },
+  {
+    "name": "web-laravel",
+    "version": "1.0.0",
+    "title": "App web con Laravel",
+    "description": "Laravel con Eloquent, migraciones, colas y Artisan: apps y APIs en PHP con todo integrado.",
+    "category": "web",
+    "tags": [
+      "php",
+      "laravel",
+      "eloquent"
+    ],
+    "author": "kits",
+    "skills": 11,
+    "options": [
+      "Skills de trabajo"
+    ],
+    "language": "php",
+    "libraries": [
+      "Superpowers",
+      "Skills de Matt Pocock"
+    ]
+  },
+  {
+    "name": "web-nuxt",
+    "version": "1.0.0",
+    "title": "App web con Nuxt",
+    "description": "Nuxt con Vue 3 y TypeScript: renderizado en servidor, rutas por archivos e imports automáticos.",
+    "category": "web",
+    "tags": [
+      "nuxt",
+      "vue",
+      "ssr",
+      "typescript"
+    ],
+    "author": "kits",
+    "skills": 16,
+    "options": [
+      "Componentes de UI",
+      "Animaciones",
+      "Skills de trabajo"
+    ],
+    "language": "typescript",
+    "libraries": [
+      "daisyUI",
+      "shadcn-vue",
+      "PrimeVue",
+      "Vuetify",
+      "Motion for Vue",
+      "GSAP",
+      "anime.js",
+      "AutoAnimate",
+      "Superpowers",
+      "Skills de Matt Pocock"
+    ]
+  },
+  {
+    "name": "web-rails",
+    "version": "1.0.0",
+    "title": "App web con Ruby on Rails",
+    "description": "Rails 8 con Hotwire, SQLite y Propshaft: una app completa (vistas, base de datos, jobs) sin montar nada más.",
+    "category": "web",
+    "tags": [
+      "ruby",
+      "rails",
+      "hotwire",
+      "sqlite"
+    ],
+    "author": "kits",
+    "skills": 11,
+    "options": [
+      "Skills de trabajo"
+    ],
+    "language": "ruby",
+    "libraries": [
+      "Superpowers",
+      "Skills de Matt Pocock"
+    ]
+  },
+  {
+    "name": "web-sveltekit",
+    "version": "1.0.0",
+    "title": "App web con SvelteKit",
+    "description": "SvelteKit con Svelte 5 y TypeScript: rutas en el sistema de archivos, carga de datos en el servidor y los skills oficiales de Svelte.",
+    "category": "web",
+    "tags": [
+      "svelte",
+      "sveltekit",
+      "typescript"
+    ],
+    "author": "kits",
+    "skills": 15,
+    "options": [
+      "Animaciones",
+      "Skills de trabajo"
+    ],
+    "language": "typescript",
+    "libraries": [
+      "Motion",
+      "GSAP",
+      "anime.js",
+      "AutoAnimate",
+      "Superpowers",
+      "Skills de Matt Pocock"
+    ]
+  }
+]

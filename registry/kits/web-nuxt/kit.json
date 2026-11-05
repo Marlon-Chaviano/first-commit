@@ -1,0 +1,40 @@
+{
+  "$schema": "../../kit.schema.json",
+  "name": "web-nuxt",
+  "version": "1.0.0",
+  "author": "kits",
+  "title": "App web con Nuxt",
+  "category": "web",
+  "language": "typescript",
+  "description": "Nuxt con Vue 3 y TypeScript: renderizado en servidor, rutas por archivos e imports automáticos.",
+  "tags": [
+    "nuxt",
+    "vue",
+    "ssr",
+    "typescript"
+  ],
+  "base": {
+    "command": "npx nuxi@latest init {{name}} --template minimal --packageManager {{pm}} --gitInit=false --no-install --force",
+    "install": "{{pm}} install"
+  },
+  "skills": [
+    "onmax/nuxt-skills@nuxt",
+    "anthropics/skills@frontend-design"
+  ],
+  "verify": {
+    "command": "{{pm}} run build"
+  },
+  "libraries": {
+    "framework": [
+      "vue",
+      "nuxt"
+    ],
+    "components": "none",
+    "animation": [],
+    "workflow": [
+      "superpowers",
+      "mattpocock-skills"
+    ]
+  },
+  "instructions": "## Cómo trabajar aquí\n\n- Páginas en `app/pages/`, componentes en `app/components/` (se importan solos) y lógica reutilizable en `app/composables/`.\n- Datos con `useFetch` / `useAsyncData`, no con `fetch` dentro de `onMounted`.\n- API propia en `server/api/`.\n- Antes de terminar: `npm run build`."
+}

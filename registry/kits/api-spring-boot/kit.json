@@ -1,0 +1,38 @@
+{
+  "$schema": "../../kit.schema.json",
+  "name": "api-spring-boot",
+  "version": "1.0.0",
+  "author": "kits",
+  "title": "API con Spring Boot",
+  "category": "api",
+  "language": "java",
+  "description": "Spring Boot con Java 17, Maven, Web, Validation y Actuator: una API REST lista para producción desde el primer commit.",
+  "tags": [
+    "java",
+    "spring",
+    "spring-boot",
+    "maven"
+  ],
+  "base": {
+    "command": "curl -fsSL https://start.spring.io/starter.tgz -d type=maven-project -d language=java -d javaVersion=17 -d dependencies=web,validation,actuator -d groupId=com.example -d artifactId={{name}} -d name={{name}} -d baseDir={{name}} | tar -xzf -"
+  },
+  "packageManagers": [
+    "maven"
+  ],
+  "skills": [
+    "github/awesome-copilot@java-springboot"
+  ],
+  "verify": {
+    "command": "./mvnw -q -B test"
+  },
+  "libraries": {
+    "framework": [
+      "spring"
+    ],
+    "workflow": [
+      "superpowers",
+      "mattpocock-skills"
+    ]
+  },
+  "instructions": "## Cómo trabajar aquí\n\n- Código en `src/main/java`, por capas: `controller` (HTTP), `service` (lógica) y `repository` (datos).\n- Valida la entrada con `@Valid` y Bean Validation; devuelve DTOs, nunca entidades.\n- Configuración en `src/main/resources/application.properties`; secretos por variables de entorno.\n- Arranca con `./mvnw spring-boot:run`. Antes de terminar: `./mvnw test`."
+}

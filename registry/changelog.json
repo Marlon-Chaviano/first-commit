@@ -1,0 +1,49 @@
+[
+  {
+    "date": "2026-11-05",
+    "title": "Perfiles de marca, más lenguajes y skills de trabajo",
+    "items": [
+      "Perfiles de marca: colores, fuentes, reglas y documentación de un cliente, aplicados a cualquier kit con --brand.",
+      "9 kits nuevos: Astro, SvelteKit, Nuxt, Vite + React, Elysia, Django, Rails, Laravel y Spring Boot.",
+      "Superpowers y las skills de Matt Pocock (grill-me, improve-codebase-architecture) en todos los kits.",
+      "Páginas por lenguaje, iconos de agentes y lenguajes, y la barra con el comando siempre a mano en cada kit."
+    ]
+  },
+  {
+    "date": "2026-11-05",
+    "title": "Equipos, kits privados y kits de pago",
+    "items": [
+      "Organizaciones con registro privado: solo sus miembros ven e instalan sus kits.",
+      "Políticas de bibliotecas obligatorias y prohibidas, comprobadas por `kitsh doctor` en CI.",
+      "Los creadores pueden vender kits (pago único) y cobrar en su cuenta de Stripe.",
+      "Newsletter semanal, novedades con RSS y páginas de precios, términos y privacidad."
+    ]
+  },
+  {
+    "date": "2026-11-04",
+    "title": "Stacks, comparativas e insignia para tu README",
+    "items": [
+      "Páginas de stacks: combinaciones probadas (Next.js + Supabase + Stripe, Expo + NativeWind…) instalables en un comando.",
+      "Comparativas entre bibliotecas de la misma categoría con datos de uso reales.",
+      "Insignia SVG con las instalaciones de tu kit, lista para pegar en el README."
+    ]
+  },
+  {
+    "date": "2026-11-04",
+    "title": "Tu agente crea el proyecto",
+    "items": [
+      "Servidor MCP: `kitsh mcp` en local (busca, recomienda, planea y crea proyectos) y un endpoint remoto de solo lectura.",
+      "\"Describe tu proyecto\" en la home recomienda un kit con sus opciones.",
+      "Pestaña Prompt en cada kit para pegarla en Claude Code, Cursor o Codex."
+    ]
+  },
+  {
+    "date": "2026-11-04",
+    "title": "Catálogo completo y kits para Python, Go y iOS",
+    "items": [
+      "Nuevas categorías: auth, base de datos, pagos, email, idiomas, IA, tests, calidad, CI y despliegue.",
+      "Kits api-fastapi, api-go e ios-swiftui.",
+      "Busca kits por biblioteca en el ranking."
+    ]
+  }
+]

@@ -1,0 +1,642 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+$"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+(?:-[\\w.]+)?$"
+    },
+    "extends": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "mobile",
+        "web",
+        "landing",
+        "saas",
+        "api",
+        "extension",
+        "other"
+      ]
+    },
+    "tags": {
+      "default": [],
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "author": {
+      "type": "string"
+    },
+    "base": {
+      "type": "object",
+      "properties": {
+        "command": {
+          "type": "string"
+        },
+        "install": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "command"
+      ]
+    },
+    "addCommand": {
+      "type": "object",
+      "properties": {
+        "dependencies": {
+          "type": "string"
+        },
+        "devDependencies": {
+          "type": "string"
+        }
+      }
+    },
+    "packageManagers": {
+      "default": [
+        "npm",
+        "pnpm",
+        "bun"
+      ],
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "npm",
+          "pnpm",
+          "bun",
+          "deno",
+          "uv",
+          "pip",
+          "go",
+          "swift",
+          "bundler",
+          "composer",
+          "maven",
+          "cargo"
+        ]
+      }
+    },
+    "language": {
+      "type": "string",
+      "enum": [
+        "typescript",
+        "python",
+        "go",
+        "ruby",
+        "php",
+        "java",
+        "swift",
+        "rust",
+        "kotlin",
+        "dart",
+        "elixir",
+        "csharp"
+      ]
+    },
+    "verify": {
+      "type": "object",
+      "properties": {
+        "command": {
+          "default": "{{pm}} run build",
+          "type": "string"
+        },
+        "matrix": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "propertyNames": {
+              "type": "string"
+            },
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "options": {
+      "default": [],
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9-]*$"
+          },
+          "label": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "type": {
+            "default": "select",
+            "type": "string",
+            "enum": [
+              "select",
+              "multi"
+            ]
+          },
+          "default": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "choices": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9-]+$"
+                },
+                "label": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "requires": {
+                  "type": "object",
+                  "propertyNames": {
+                    "type": "string"
+                  },
+                  "additionalProperties": {
+                    "minItems": 1,
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "dependencies": {
+                  "default": [],
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "devDependencies": {
+                  "default": [],
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "skills": {
+                  "default": [],
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "pattern": "^[\\w.-]+\\/[\\w.-]+@[\\w.:-]+$"
+                  }
+                },
+                "mcp": {
+                  "default": {},
+                  "type": "object",
+                  "propertyNames": {
+                    "type": "string"
+                  },
+                  "additionalProperties": {
+                    "anyOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "command": {
+                            "type": "string"
+                          },
+                          "args": {
+                            "default": [],
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "env": {
+                            "type": "object",
+                            "propertyNames": {
+                              "type": "string"
+                            },
+                            "additionalProperties": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "required": [
+                          "command"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "url": {
+                            "type": "string",
+                            "format": "uri"
+                          },
+                          "headers": {
+                            "type": "object",
+                            "propertyNames": {
+                              "type": "string"
+                            },
+                            "additionalProperties": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "required": [
+                          "url"
+                        ]
+                      }
+                    ]
+                  }
+                },
+                "env": {
+                  "default": {},
+                  "type": "object",
+                  "propertyNames": {
+                    "type": "string"
+                  },
+                  "additionalProperties": {
+                    "type": "string"
+                  }
+                },
+                "files": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  ]
+                },
+                "instructions": {
+                  "type": "string"
+                },
+                "postInstall": {
+                  "default": [],
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "writeFiles": {
+                  "default": [],
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "path": {
+                        "type": "string",
+                        "pattern": "^(?!\\/)(?!(?:.*\\/)?\\.\\.(?:\\/|$))[\\w./@()[\\]-]+$"
+                      },
+                      "content": {
+                        "type": "string"
+                      },
+                      "mode": {
+                        "default": "create",
+                        "type": "string",
+                        "enum": [
+                          "create",
+                          "append",
+                          "prepend",
+                          "insert-before",
+                          "json-merge"
+                        ]
+                      },
+                      "anchor": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "path",
+                      "content"
+                    ]
+                  }
+                },
+                "setupTasks": {
+                  "default": [],
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "required": [
+                "id",
+                "label"
+              ]
+            }
+          }
+        },
+        "required": [
+          "id",
+          "label",
+          "default",
+          "choices"
+        ]
+      }
+    },
+    "libraries": {
+      "type": "object",
+      "properties": {
+        "framework": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "minItems": 1,
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            {
+              "type": "object",
+              "properties": {
+                "option": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "option"
+              ]
+            }
+          ]
+        },
+        "components": {
+          "type": "string"
+        },
+        "addons": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "animation": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "auth": {
+          "type": "string"
+        },
+        "database": {
+          "type": "string"
+        },
+        "payments": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "i18n": {
+          "type": "string"
+        },
+        "ai": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "observability": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "testing": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "quality": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "ci": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "deploy": {
+          "type": "string"
+        },
+        "workflow": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "framework"
+      ]
+    },
+    "dependencies": {
+      "default": [],
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "devDependencies": {
+      "default": [],
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "skills": {
+      "default": [],
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[\\w.-]+\\/[\\w.-]+@[\\w.:-]+$"
+      }
+    },
+    "mcp": {
+      "default": {},
+      "type": "object",
+      "propertyNames": {
+        "type": "string"
+      },
+      "additionalProperties": {
+        "anyOf": [
+          {
+            "type": "object",
+            "properties": {
+              "command": {
+                "type": "string"
+              },
+              "args": {
+                "default": [],
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "env": {
+                "type": "object",
+                "propertyNames": {
+                  "type": "string"
+                },
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "command"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "url": {
+                "type": "string",
+                "format": "uri"
+              },
+              "headers": {
+                "type": "object",
+                "propertyNames": {
+                  "type": "string"
+                },
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "url"
+            ]
+          }
+        ]
+      }
+    },
+    "env": {
+      "default": {},
+      "type": "object",
+      "propertyNames": {
+        "type": "string"
+      },
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "files": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "instructions": {
+      "type": "string"
+    },
+    "postInstall": {
+      "default": [],
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "writeFiles": {
+      "default": [],
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string",
+            "pattern": "^(?!\\/)(?!(?:.*\\/)?\\.\\.(?:\\/|$))[\\w./@()[\\]-]+$"
+          },
+          "content": {
+            "type": "string"
+          },
+          "mode": {
+            "default": "create",
+            "type": "string",
+            "enum": [
+              "create",
+              "append",
+              "prepend",
+              "insert-before",
+              "json-merge"
+            ]
+          },
+          "anchor": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "path",
+          "content"
+        ]
+      }
+    },
+    "setupTasks": {
+      "default": [],
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "name",
+    "version",
+    "title",
+    "description",
+    "category",
+    "author",
+    "base"
+  ]
+}

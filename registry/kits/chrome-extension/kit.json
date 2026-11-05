@@ -1,0 +1,97 @@
+{
+  "$schema": "../../kit.schema.json",
+  "name": "chrome-extension",
+  "version": "1.2.0",
+  "title": "Extensión de navegador con WXT",
+  "description": "Extensión para Chrome, Firefox y Edge con WXT (Manifest V3, hot reload) y el framework de UI que prefieras.",
+  "category": "extension",
+  "tags": [
+    "chrome-extension",
+    "wxt",
+    "manifest-v3"
+  ],
+  "author": "kits",
+  "base": {
+    "command": "npx wxt@latest init {{name}} --template {{opt.framework}} --pm {{pm}}",
+    "install": "{{pm}} install"
+  },
+  "verify": {
+    "command": "{{pm}} run build",
+    "matrix": [
+      {
+        "framework": [
+          "vue"
+        ],
+        "components": [
+          "primevue"
+        ],
+        "animation": [
+          "motion-vue"
+        ]
+      },
+      {
+        "framework": [
+          "react"
+        ],
+        "quality": [
+          "biome"
+        ],
+        "ci": [
+          "github-actions"
+        ]
+      }
+    ]
+  },
+  "skills": [
+    "googlechrome/modern-web-guidance@chrome-extensions",
+    "pproenca/dot-skills@wxt-browser-extensions"
+  ],
+  "options": [
+    {
+      "id": "framework",
+      "label": "Framework de UI",
+      "default": "react",
+      "choices": [
+        {
+          "id": "react",
+          "label": "React",
+          "skills": [
+            "vercel-labs/agent-skills@vercel-react-best-practices"
+          ]
+        },
+        {
+          "id": "vue",
+          "label": "Vue"
+        },
+        {
+          "id": "svelte",
+          "label": "Svelte"
+        },
+        {
+          "id": "solid",
+          "label": "Solid"
+        },
+        {
+          "id": "vanilla",
+          "label": "Vanilla TS"
+        }
+      ]
+    }
+  ],
+  "libraries": {
+    "framework": {
+      "option": "framework"
+    },
+    "components": "none",
+    "addons": [],
+    "animation": [],
+    "quality": [],
+    "ci": [],
+    "workflow": [
+      "superpowers",
+      "mattpocock-skills"
+    ]
+  },
+  "instructions": "## Cómo trabajar aquí\n\n- Entry points en `entrypoints/` (popup, background, content scripts); WXT genera el manifest a partir de ellos.\n- Pide solo los permisos mínimos en `wxt.config.ts`.\n- `npm run dev` abre un navegador con la extensión cargada y hot reload.",
+  "language": "typescript"
+}

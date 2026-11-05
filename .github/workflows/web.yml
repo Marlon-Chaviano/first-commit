@@ -1,0 +1,47 @@
+# Web: typecheck, lint, tests and performance budgets (Lighthouse ≥ 90 in
+# performance, accessibility and SEO on the home page, a kit and a stack).
+name: Web
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm typecheck
+      - run: pnpm --filter web lint
+      - run: pnpm test
+      - run: pnpm registry:index
+
+  lighthouse:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      # No database or Redis: the site renders with empty counters, which is what we measure.
+      - working-directory: apps/web
+        run: NEXT_DIST_DIR=.next-audit pnpm exec next build && npx --yes @lhci/cli@0.16 autorun
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: lighthouse
+          path: apps/web/.lighthouseci

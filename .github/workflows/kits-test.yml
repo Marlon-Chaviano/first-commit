@@ -1,0 +1,74 @@
+# Tests official kits that changed. On main, results are published (signed with
+# GitHub OIDC) and give the kit its "Verificado" badge. PRs only test: forks
+# don't get OIDC tokens.
+name: Kits test
+
+on:
+  pull_request:
+    paths: ["registry/kits/**", "registry/libraries.json", "packages/**"]
+  push:
+    branches: [main]
+    paths: ["registry/kits/**", "registry/libraries.json", "packages/**"]
+  workflow_dispatch:
+    inputs:
+      kits:
+        description: Kits to test, space separated (empty = all)
+        default: ""
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  changed:
+    runs-on: ubuntu-latest
+    outputs:
+      kits: ${{ steps.kits.outputs.kits }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - id: kits
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ -n "${{ inputs.kits }}" ]; then
+            kits="${{ inputs.kits }}"
+          elif [ "${{ github.event_name }}" = "workflow_dispatch" ] || git diff --name-only "${{ github.event.pull_request.base.sha || github.event.before }}" HEAD | grep -qE '^(registry/libraries.json|packages/)'; then
+            # The catalog or the CLI changed: every kit is affected.
+            kits=$(ls registry/kits)
+          else
+            kits=$(git diff --name-only "${{ github.event.pull_request.base.sha || github.event.before }}" HEAD | sed -n 's#^registry/kits/\([^/]*\)/.*#\1#p' | sort -u)
+          fi
+          echo "kits=$(echo $kits | jq -Rc 'split(" ") | map(select(length > 0))')" >> "$GITHUB_OUTPUT"
+
+  test:
+    needs: changed
+    if: needs.changed.outputs.kits != '[]'
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        kit: ${{ fromJson(needs.changed.outputs.kits) }}
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter create-first-commit build
+      - name: create-first-commit test
+        env:
+          KITS_REGISTRY: ${{ github.workspace }}/registry
+          KITS_TELEMETRY: "0"
+          KITS_API_URL: ${{ vars.KITS_API_URL }}
+        run: |
+          UPLOAD=""
+          if [ "${{ github.event_name }}" != "pull_request" ] && [ -n "$KITS_API_URL" ]; then UPLOAD="--upload"; fi
+          node packages/cli/dist/index.js test registry/kits/${{ matrix.kit }} --pm pnpm --report report.json $UPLOAD
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: report-${{ matrix.kit }}-${{ matrix.os }}
+          path: report.json

@@ -1,0 +1,39 @@
+{
+  "$schema": "../../kit.schema.json",
+  "name": "web-sveltekit",
+  "version": "1.0.0",
+  "author": "kits",
+  "title": "App web con SvelteKit",
+  "category": "web",
+  "language": "typescript",
+  "description": "SvelteKit con Svelte 5 y TypeScript: rutas en el sistema de archivos, carga de datos en el servidor y los skills oficiales de Svelte.",
+  "tags": [
+    "svelte",
+    "sveltekit",
+    "typescript"
+  ],
+  "base": {
+    "command": "npx sv@latest create {{name}} --template minimal --types ts --no-add-ons --no-install",
+    "install": "{{pm}} install"
+  },
+  "skills": [
+    "sveltejs/ai-tools@svelte-code-writer",
+    "sveltejs/ai-tools@svelte-core-bestpractices",
+    "anthropics/skills@frontend-design"
+  ],
+  "verify": {
+    "command": "{{pm}} run build"
+  },
+  "libraries": {
+    "framework": [
+      "svelte",
+      "sveltekit"
+    ],
+    "animation": [],
+    "workflow": [
+      "superpowers",
+      "mattpocock-skills"
+    ]
+  },
+  "instructions": "## Cómo trabajar aquí\n\n- Rutas en `src/routes/` (`+page.svelte`, `+page.server.ts` para cargar datos en el servidor).\n- Svelte 5: usa runes (`$state`, `$derived`, `$props`), no la sintaxis antigua (`export let`, `$:`).\n- Antes de terminar: `npm run check` y `npm run build`."
+}

@@ -1,0 +1,44 @@
+{
+  "$schema": "../../kit.schema.json",
+  "name": "api-django",
+  "version": "1.0.0",
+  "author": "kits",
+  "title": "Backend con Django",
+  "category": "api",
+  "language": "python",
+  "description": "Django con su admin, ORM y migraciones, en un entorno virtual propio. Para backends con base de datos y panel de administración desde el primer día.",
+  "tags": [
+    "python",
+    "django",
+    "orm",
+    "admin"
+  ],
+  "base": {
+    "command": "mkdir {{name}} && cd {{name}} && python3 -m venv .venv && .venv/bin/pip install -q django && .venv/bin/django-admin startproject config ."
+  },
+  "packageManagers": [
+    "pip"
+  ],
+  "files": "files/base",
+  "postInstall": [
+    ".venv/bin/pip freeze > requirements.txt",
+    ".venv/bin/python manage.py migrate --noinput"
+  ],
+  "skills": [
+    "affaan-m/ecc@django-patterns",
+    "getsentry/skills@django-perf-review"
+  ],
+  "verify": {
+    "command": ".venv/bin/python manage.py check && .venv/bin/python manage.py test"
+  },
+  "libraries": {
+    "framework": [
+      "django"
+    ],
+    "workflow": [
+      "superpowers",
+      "mattpocock-skills"
+    ]
+  },
+  "instructions": "## Cómo trabajar aquí\n\n- Activa el entorno con `source .venv/bin/activate`. Arranca con `python manage.py runserver`.\n- Cada dominio es una app (`python manage.py startapp pedidos`) registrada en `INSTALLED_APPS`.\n- Tras cambiar modelos: `python manage.py makemigrations` y `migrate`. No edites migraciones ya aplicadas.\n- Tras instalar un paquete, actualiza `requirements.txt`. Antes de terminar: `python manage.py check` y `python manage.py test`."
+}

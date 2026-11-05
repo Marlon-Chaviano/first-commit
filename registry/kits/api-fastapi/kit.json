@@ -1,0 +1,61 @@
+{
+  "$schema": "../../kit.schema.json",
+  "name": "api-fastapi",
+  "version": "1.1.0",
+  "title": "API con FastAPI",
+  "description": "API en Python con FastAPI, entorno virtual propio y tests con pytest. Documentación OpenAPI automática.",
+  "category": "api",
+  "tags": [
+    "python",
+    "fastapi",
+    "api",
+    "pytest"
+  ],
+  "author": "kits",
+  "base": {
+    "command": "mkdir {{name}} && cd {{name}} && python3 -m venv .venv"
+  },
+  "packageManagers": [
+    "pip"
+  ],
+  "dependencies": [
+    "fastapi",
+    "uvicorn"
+  ],
+  "devDependencies": [
+    "pytest",
+    "httpx"
+  ],
+  "files": "files/base",
+  "postInstall": [
+    ".venv/bin/pip freeze > requirements.txt"
+  ],
+  "skills": [
+    "fastapi/fastapi@fastapi"
+  ],
+  "verify": {
+    "command": ".venv/bin/python -m pytest -q",
+    "matrix": [
+      {
+        "observability": [
+          "sentry-python"
+        ],
+        "ci": [
+          "github-actions-python"
+        ]
+      }
+    ]
+  },
+  "options": [],
+  "libraries": {
+    "framework": "python",
+    "observability": [],
+    "ci": [],
+    "workflow": [
+      "superpowers",
+      "mattpocock-skills"
+    ]
+  },
+  "instructions": "## Cómo trabajar aquí\n\n- Activa el entorno con `source .venv/bin/activate`. Arranca con `fastapi dev app/main.py` (docs en `/docs`).\n- Agrupa rutas por recurso con `APIRouter` en `app/routers/` e inclúyelas en `app/main.py`.\n- Valida entradas y salidas con modelos de Pydantic; anota tipos en todas las funciones.\n- Tras instalar un paquete con pip, actualiza `requirements.txt` (`pip freeze > requirements.txt`).\n- Antes de terminar una tarea: `python -m pytest`.",
+  "language": "python"
+}

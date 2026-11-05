@@ -1,0 +1,40 @@
+{
+  "$schema": "../../kit.schema.json",
+  "name": "web-astro",
+  "version": "1.0.0",
+  "author": "kits",
+  "title": "Web de contenido con Astro",
+  "category": "web",
+  "language": "typescript",
+  "description": "Sitio rápido con Astro: páginas estáticas por defecto, islas interactivas solo donde hacen falta. Para blogs, docs y webs de producto.",
+  "tags": [
+    "astro",
+    "content",
+    "static",
+    "typescript"
+  ],
+  "base": {
+    "command": "npx create-astro@latest {{name}} --template minimal --no-install --no-git --skip-houston --yes",
+    "install": "{{pm}} install"
+  },
+  "skills": [
+    "astrolicious/agent-skills@astro",
+    "anthropics/skills@frontend-design",
+    "vercel-labs/agent-skills@web-design-guidelines"
+  ],
+  "verify": {
+    "command": "{{pm}} run build"
+  },
+  "libraries": {
+    "framework": [
+      "astro",
+      "vanilla"
+    ],
+    "animation": [],
+    "workflow": [
+      "superpowers",
+      "mattpocock-skills"
+    ]
+  },
+  "instructions": "## Cómo trabajar aquí\n\n- Páginas en `src/pages/` (cada archivo es una ruta) y componentes `.astro` en `src/components/`.\n- Por defecto todo es HTML estático: añade JavaScript en el cliente solo con una isla (`client:visible`, `client:idle`) cuando haga falta interacción.\n- Contenido en Markdown con content collections (`src/content/`).\n- Antes de terminar: `npm run build`."
+}

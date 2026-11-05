@@ -1,0 +1,10 @@
+node_modules
+dist
+.next
+.vercel
+*.tsbuildinfo
+.DS_Store
+.env*
+!.env.example
+.next-audit
+.lighthouseci
