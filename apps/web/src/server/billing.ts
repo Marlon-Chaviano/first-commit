@@ -11,15 +11,10 @@ import { type PlanId } from "./plans";
 import { REGISTRY_TAG } from "./registry";
 import { stripe } from "./stripe";
 import type { TokenUser } from "./tokens";
+import { DomainError } from "./errors";
 
-export class BillingError extends Error {
-  constructor(
-    readonly status: number,
-    message: string,
-  ) {
-    super(message);
-  }
-}
+/** Billing errors for the person; see DomainError. */
+export class BillingError extends DomainError {}
 
 export type Subject = { kind: "user"; id: string } | { kind: "org"; id: string };
 

@@ -1,33 +1,19 @@
 import { installEventSchema } from "@kits/schema";
-import { Ratelimit } from "@upstash/ratelimit";
 import type { NextRequest } from "next/server";
 
 import { recordInstall } from "@/server/metrics/ingest";
-import { keys } from "@/server/metrics/keys";
-import { isLocalRedis, redis } from "@/server/redis";
+import { clientIp, rateLimit } from "@/server/rate-limit";
 import { getIndex } from "@/server/registry";
 
-// @upstash/ratelimit's Lua scripts use an Upstash-only flag, so the limiter is
-// skipped against the local Redis from docker-compose (it works on Upstash).
-const ratelimit = redis && !isLocalRedis
-  ? new Ratelimit({ redis, limiter: Ratelimit.slidingWindow(30, "1 m"), prefix: keys.rateLimit, analytics: false })
-  : null;
+const limit = rateLimit("events", 30, "1 m");
 
 /**
  * POST /api/v1/events — install telemetry from the CLI.
  * Always answers fast and never with details: the CLI fires and forgets.
  */
 export async function POST(request: NextRequest) {
-  const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "anonymous";
-  if (ratelimit) {
-    try {
-      const { success } = await ratelimit.limit(ip);
-      if (!success) return new Response(null, { status: 429 });
-    } catch (error) {
-      // Fail open: a broken limiter must not block install counting.
-      console.error("[events] rate limiter unavailable", error);
-    }
-  }
+  // Fails open: a broken limiter must not block install counting.
+  if (!(await limit.allow(clientIp(request)))) return new Response(null, { status: 429 });
 
   let body: unknown;
   try {

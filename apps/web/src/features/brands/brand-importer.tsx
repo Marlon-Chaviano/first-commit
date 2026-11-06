@@ -1,6 +1,6 @@
 "use client";
 
-import { cliCommand, detectFromCss, detectFromJson, detectFromPixels, type BrandDetection } from "@kits/schema";
+import { cliCommand, detectFromCss, detectFromJson, detectFromPixels, isEmptyDetection, svgColors, type BrandDetection } from "@kits/schema";
 import { GlobeIcon, LoaderCircleIcon, UploadIcon } from "lucide-react";
 import { useRef, useState, useTransition } from "react";
 import { toast } from "sonner";
@@ -40,8 +40,7 @@ export async function detectFile(file: File): Promise<BrandDetection> {
   if (name.endsWith(".css") || name.endsWith(".scss")) return detectFromCss(await file.text());
   if (name.endsWith(".svg")) {
     // fill="#e11d48" / stroke=… / style="fill:…": the logo's colors, counted like CSS declarations.
-    const svg = await file.text();
-    const colors = svg.match(/#[0-9a-fA-F]{3,8}\b|rgba?\([^)]+\)/g) ?? [];
+    const colors = svgColors(await file.text());
     return withLogo(file, detectFromCss(colors.map((c, i) => `.c${i} { color: ${c} }`).join("\n")));
   }
   if (file.type.startsWith("image/")) {
@@ -70,7 +69,7 @@ export function BrandImporter({ onDetect }: { onDetect: (d: BrandDetection) => v
   const input = useRef<HTMLInputElement>(null);
 
   const apply = (d: BrandDetection, source: string) => {
-    if (!Object.keys(d.profile.colors).length && !d.profile.title && !d.profile.fonts) {
+    if (isEmptyDetection(d)) {
       toast.error(`No brand found in ${source}`);
       return;
     }

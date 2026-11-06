@@ -1,6 +1,6 @@
 "use client";
 
-import { brandLogo, cliCommand, type BrandDetection, type BrandProfile } from "@kits/schema";
+import { applyDetection, brandLogo, cliCommand, emptyBrandProfile, normalizeBrandProfile, type BrandDetection, type BrandProfile } from "@kits/schema";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
@@ -17,6 +17,8 @@ import { BrandAssetsField, BrandLinksField } from "./brand-assets";
 import { BrandImporter } from "./brand-importer";
 
 type Colors = BrandProfile["colors"];
+const lines = (text: string) => text.split("\n").map((r) => r.trim()).filter(Boolean);
+
 const COLOR_FIELDS: { key: keyof Colors; label: string; required?: boolean }[] = [
   { key: "primary", label: "Primary", required: true },
   { key: "primaryForeground", label: "Text on primary" },
@@ -29,18 +31,9 @@ const COLOR_FIELDS: { key: keyof Colors; label: string; required?: boolean }[] =
   { key: "danger", label: "Error" },
 ];
 
-const EMPTY: BrandProfile = {
-  name: "",
-  title: "",
-  colors: { primary: "#111111", primaryForeground: "#ffffff", background: "#ffffff", foreground: "#111111", border: "#e5e5e5" },
-  fonts: {},
-  rules: [],
-  docs: {},
-  assets: {},
-  social: {},
-};
+/** A new profile's form starts empty (the draft's placeholders would read as values). */
+const EMPTY: BrandProfile = { ...emptyBrandProfile(), name: "", title: "" };
 
-/** Brand profile form with a live preview of the colors, fonts and radius. */
 /**
  * The full form. `initial` edits a saved profile; `draft` starts a new one prefilled (from the creator's
  * review step), without the importer, since the detection already happened.
@@ -48,12 +41,7 @@ const EMPTY: BrandProfile = {
 export function BrandEditor({ owners, initial, draft, initialOwner }: { owners: string[]; initial?: BrandProfile; draft?: BrandProfile; initialOwner?: string }) {
   const router = useRouter();
   const [owner, setOwner] = useState(initialOwner ?? owners[0] ?? "");
-  // Profiles saved before `assets` existed keep their logo URL: it moves into the new field.
-  const [p, setP] = useState<BrandProfile>(() => {
-    const start = initial ?? draft ?? EMPTY;
-    const logo = brandLogo(start);
-    return { ...start, assets: { ...start.assets, ...(logo ? { logo } : {}) }, social: start.social ?? {}, logo: undefined };
-  });
+  const [p, setP] = useState<BrandProfile>(() => normalizeBrandProfile(initial ?? draft ?? EMPTY));
   const [rules, setRules] = useState(((initial ?? draft)?.rules ?? []).join("\n"));
   const [guide, setGuide] = useState((initial ?? draft)?.docs["guide.md"] ?? "");
   const [pending, start] = useTransition();
@@ -62,29 +50,13 @@ export function BrandEditor({ owners, initial, draft, initialOwner }: { owners: 
   const setColor = (key: keyof Colors, value: string) => setP((prev) => ({ ...prev, colors: { ...prev.colors, [key]: value || undefined } }));
   const slug = `${owner}/${p.name || "name"}`;
 
-  /** Merges a detection into the form: detected values win, everything else stays as typed. */
-  const applyDetection = (d: BrandDetection) => {
-    setP((prev) => {
-      const title = prev.title || d.profile.title || "";
-      return {
-        ...prev,
-        ...(d.profile.voice ? { voice: d.profile.voice } : {}),
-        // Detected images and links fill the gaps; what the person already set stays.
-        assets: { ...d.profile.assets, ...prev.assets },
-        social: { ...d.profile.social, ...prev.social },
-        website: prev.website ?? d.profile.website,
-        description: prev.description || d.profile.description,
-        title,
-        name: prev.name || (editing ? prev.name : title.toLowerCase().normalize("NFD").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")),
-        colors: { ...prev.colors, ...d.profile.colors },
-        ...(d.profile.dark ? { dark: d.profile.dark } : {}),
-        fonts: { ...prev.fonts, ...d.profile.fonts },
-        radius: d.profile.radius ?? prev.radius,
-        docs: { ...prev.docs, ...d.profile.docs },
-      };
-    });
-    if (d.profile.rules?.length) setRules(d.profile.rules.join("\n"));
-    if (d.profile.docs?.["guide.md"]) setGuide(d.profile.docs["guide.md"]);
+  /** The shared merge rule (brand-draft): detected colors and fonts win, nothing the person set is overwritten. */
+  const onDetect = (d: BrandDetection) => {
+    const current = { ...p, rules: lines(rules), docs: guide.trim() ? { ...p.docs, "guide.md": guide } : p.docs };
+    const next = applyDetection(current, d, { keepName: editing });
+    setP(next);
+    setRules(next.rules.join("\n"));
+    setGuide(next.docs["guide.md"] ?? "");
   };
 
   const submit = () =>
@@ -92,7 +64,7 @@ export function BrandEditor({ owners, initial, draft, initialOwner }: { owners: 
       const docs = { ...p.docs };
       if (guide.trim()) docs["guide.md"] = guide;
       else delete docs["guide.md"];
-      const profile = { ...p, rules: rules.split("\n").map((r) => r.trim()).filter(Boolean), docs };
+      const profile = { ...p, rules: lines(rules), docs };
       const r = await saveBrandAction(owner, profile);
       if (!r.ok) return void toast.error(r.error);
       toast.success("Profile saved");
@@ -102,7 +74,7 @@ export function BrandEditor({ owners, initial, draft, initialOwner }: { owners: 
   return (
     <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_320px]">
       <div className="flex flex-col gap-8">
-      {!draft && <BrandImporter onDetect={applyDetection} />}
+      {!draft && <BrandImporter onDetect={onDetect} />}
       <form
         className="flex flex-col gap-8"
         onSubmit={(e) => {

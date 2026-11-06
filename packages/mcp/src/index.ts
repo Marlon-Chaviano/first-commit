@@ -80,6 +80,8 @@ export function describeSteps(steps: Step[], root: string): string[] {
         return `${s.title} ${rel(s.path)}`;
       case "git":
         return s.title;
+      case "brand":
+        return `${s.title}: docs/brand, CSS variables, AGENTS.md rules${s.images.length ? `, images (${s.images.join(", ")})` : ""}`;
     }
   });
 }

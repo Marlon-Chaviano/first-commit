@@ -4,10 +4,10 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { homedir, platform } from "node:os";
 import { isAbsolute, join } from "node:path";
 
-import { BRAND, splitKitRef, type InstallEvent, type Selections } from "@kits/schema";
+import { splitKitRef, type InstallEvent, type Selections } from "@kits/schema";
 
-/** Where the CLI reports installs. Override with KITS_API_URL (e.g. http://localhost:3200). */
-const DEFAULT_API_URL = BRAND.siteUrl;
+import { api } from "./api";
+
 
 export function telemetryEnabled(): boolean {
   return !(process.env.DO_NOT_TRACK === "1" || process.env.KITS_TELEMETRY === "0" || process.env.CI);
@@ -39,12 +39,7 @@ export async function reportEvent(
       os: platform(),
       anonId: await anonymousId(),
     };
-    await fetch(`${process.env.KITS_API_URL ?? DEFAULT_API_URL}/api/v1/events`, {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify(event),
-      signal: AbortSignal.timeout(1500),
-    });
+    await api("/api/v1/events", { method: "POST", auth: "none", body: event, timeoutMs: 1500 });
   } catch {
     // Offline, blocked or slow: telemetry must never affect the install.
   }

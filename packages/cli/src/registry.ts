@@ -19,7 +19,7 @@ import { downloadTemplate } from "giget";
 
 import { hashKitDir, unpackArchive, verifyIntegrity, type IntegrityMap } from "@kits/schema/node";
 
-import { getToken } from "./account";
+import { api, apiUrl } from "./api";
 import { isLocalPath, locateKit, needsPublishedLookup, versionMismatch, type KitLocation, type PublishedKit } from "./kit-location";
 
 /** Where official kits live. Override with KITS_REGISTRY (a local path or gh:owner/repo/path). */
@@ -112,39 +112,18 @@ function githubRawBase(source: string): string {
   return `https://raw.githubusercontent.com/${owner}/${repo}/main/${path.join("/")}`;
 }
 
-const apiBase = () => process.env.KITS_API_URL ?? BRAND.siteUrl;
-const authHeaders = async (): Promise<Record<string, string>> => {
-  const token = await getToken();
-  return token ? { authorization: `Bearer ${token}` } : {};
-};
-
 async function downloadArchive(slug: string, version: string): Promise<Buffer> {
-  const res = await fetch(`${apiBase()}/api/v1/kits/${slug}?version=${encodeURIComponent(version)}&archive=1`, {
-    headers: await authHeaders(),
-    signal: AbortSignal.timeout(60_000),
-  });
-  if (res.status === 402) {
-    const { buyUrl } = (await res.json().catch(() => ({}))) as { buyUrl?: string };
-    throw new Error(`it's a paid kit. Buy it at ${buyUrl ?? apiBase()} and log in with \`${BRAND.cli} login\``);
-  }
+  const res = await api<Buffer>(`/api/v1/kits/${slug}?version=${encodeURIComponent(version)}&archive=1`, { as: "buffer", timeoutMs: 60_000 });
+  if (res.ok) return res.data;
+  if (res.status === 402) throw new Error(`it's a paid kit. Buy it at ${(res.body?.buyUrl as string | undefined) ?? apiUrl()} and log in with \`${BRAND.cli} login\``);
   if (res.status === 401 || res.status === 404) throw new Error(`you don't have access. If it belongs to your organization, log in with \`${BRAND.cli} login\``);
-  if (!res.ok) throw new Error(`the registry responded ${res.status}`);
-  return Buffer.from(await res.arrayBuffer());
+  throw new Error(res.status ? `the registry responded ${res.status}` : res.error!);
 }
 
 /** Asks the registry whether "owner/name" is a published kit. Unreachable or 404: treat it as a GitHub path. */
 async function lookupPublished(slug: string, version?: string): Promise<PublishedKit | null> {
   if (slug.split("/").length !== 2) return null;
-  try {
-    // With a token, members also see their organization's private kits.
-    const res = await fetch(`${apiBase()}/api/v1/kits/${slug}${version ? `?version=${encodeURIComponent(version)}` : ""}`, {
-      headers: await authHeaders(),
-      signal: AbortSignal.timeout(3000),
-    });
-    if (!res.ok) return null;
-    const data = (await res.json()) as PublishedKit & { official?: boolean };
-    return data.official ? null : data;
-  } catch {
-    return null;
-  }
+  // With a token, members also see their organization's private kits.
+  const res = await api<PublishedKit & { official?: boolean }>(`/api/v1/kits/${slug}${version ? `?version=${encodeURIComponent(version)}` : ""}`, { timeoutMs: 3000 });
+  return res.ok && !res.data.official ? res.data : null;
 }

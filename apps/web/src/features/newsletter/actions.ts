@@ -1,26 +1,19 @@
 "use server";
 
-import { Ratelimit } from "@upstash/ratelimit";
 import { headers } from "next/headers";
 import { z } from "zod";
 
-import { keys } from "@/server/metrics/keys";
 import { confirmSubscription, subscribe, unsubscribe } from "@/server/newsletter";
-import { isLocalRedis, redis } from "@/server/redis";
+import { clientIp, rateLimit } from "@/server/rate-limit";
 
-const ratelimit = redis && !isLocalRedis ? new Ratelimit({ redis, limiter: Ratelimit.slidingWindow(5, "1 h"), prefix: `${keys.rateLimit}:newsletter` }) : null;
+const limit = rateLimit("newsletter", 5, "1 h");
 
 export type SubscribeState = { status: "idle" | "sent" | "already" | "error"; message?: string };
 
 export async function subscribeAction(_prev: SubscribeState, form: FormData): Promise<SubscribeState> {
   const email = z.email().safeParse(String(form.get("email") ?? "").trim());
   if (!email.success) return { status: "error", message: "Enter a valid email" };
-  const ip = (await headers()).get("x-forwarded-for")?.split(",")[0]?.trim() ?? "anonymous";
-  try {
-    if (ratelimit && !(await ratelimit.limit(ip)).success) return { status: "error", message: "Too many attempts, try again later" };
-  } catch (error) {
-    console.error("[newsletter] rate limiter unavailable", error);
-  }
+  if (!(await limit.allow(clientIp(await headers())))) return { status: "error", message: "Too many attempts, try again later" };
   try {
     const result = await subscribe(email.data);
     if (result === "unavailable") return { status: "error", message: "The newsletter isn't available right now" };

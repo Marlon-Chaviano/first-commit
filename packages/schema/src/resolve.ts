@@ -145,9 +145,9 @@ export function validateSelections(kit: Kit, sel: Selections): void {
  * The `npx create-first-commit init ...` command for a set of selections. Only flags that
  * differ from the kit defaults are included, so the default command stays short.
  */
-export function buildInitCommand(kitRef: string, kit: Kit, sel: Selections, projectName?: string): string {
+export function buildInitCommand(kitRef: string, kit: Kit, sel: Selections, projectName?: string, brandRef?: string): string {
   // `init` is the CLI's default command, like create-vite: npx create-first-commit@latest landing-next
-  return ["npx", `${BRAND.cli}@latest`, ...initArgs(kitRef, kit, sel, projectName).slice(1)].join(" ");
+  return ["npx", `${BRAND.cli}@latest`, ...initArgs(kitRef, kit, sel, projectName).slice(1), ...(brandRef ? ["--brand", brandRef] : [])].join(" ");
 }
 
 /** Arguments of `init` for these selections; only what differs from the kit's defaults. */

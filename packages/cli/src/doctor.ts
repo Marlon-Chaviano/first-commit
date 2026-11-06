@@ -1,10 +1,10 @@
 import { existsSync, readFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 
-import { BRAND, cliCommand, parseSkillRef, type KitsLock } from "@kits/schema";
+import { cliCommand, parseSkillRef, type KitsLock } from "@kits/schema";
 import pc from "picocolors";
 
-import { getToken } from "./account";
+import { api } from "./api";
 import type { ParsedArgs } from "./args";
 import { detectFramework } from "./create/frameworks";
 import { installedLibraries, readDeps } from "./create/detect";
@@ -164,22 +164,14 @@ async function usedLibraries(dir: string, lock: KitsLock): Promise<Set<string>> 
 
 export async function checkPolicy(dir: string, lock: KitsLock): Promise<Finding[]> {
   const org = lock.kit!.split("/")[0]!;
-  const token = await getToken();
-  let res: Response;
-  try {
-    res = await fetch(`${process.env.KITS_API_URL ?? BRAND.siteUrl}/api/v1/orgs/${org}/policy`, {
-      headers: token ? { authorization: `Bearer ${token}` } : {},
-      signal: AbortSignal.timeout(5000),
-    });
-  } catch {
-    return [{ level: "info", check: "policy", message: `Couldn't check ${org}'s policy.` }];
-  }
+  const res = await api<{ policy: { required: string[]; forbidden: string[] } }>(`/api/v1/orgs/${org}/policy`, { timeoutMs: 5000 });
+  if (res.status === 0) return [{ level: "info", check: "policy", message: `Couldn't check ${org}'s policy.` }];
   if (res.status === 404) return []; // Not an organization (a user's kit) or not a member.
   if (res.status === 401) {
     return [{ level: "warning", check: "policy", message: `The kit belongs to ${org}: log in to check its policy.`, fix: `${cliCommand("login")} (in CI: KITS_TOKEN)` }];
   }
   if (!res.ok) return [{ level: "info", check: "policy", message: `Couldn't check ${org}'s policy (${res.status}).` }];
-  const { policy } = (await res.json()) as { policy: { required: string[]; forbidden: string[] } };
+  const { policy } = res.data;
   const used = await usedLibraries(dir, lock);
   const findings: Finding[] = [];
   const missing = policy.required.filter((id) => !used.has(id));

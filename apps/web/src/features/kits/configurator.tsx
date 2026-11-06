@@ -1,19 +1,6 @@
 "use client";
 
-import {
-  AGENTS,
-  buildInitCommand,
-  defaultSelections,
-  LIBRARY_OPTION_IDS,
-  pruneSelections,
-  requirementsMet,
-  requirementText,
-  resolve,
-  selectionsFrom,
-  type Choice,
-  type Kit,
-  type Selections,
-} from "@kits/schema";
+import { AGENTS, buildInitCommand, defaultSelections, LIBRARY_OPTION_IDS, pruneSelections, requirementsMet, requirementText, resolve, selectionsFrom, type Choice, type Kit, type Selections, isProjectName } from "@kits/schema";
 import { BanIcon, PackageIcon, PaletteIcon, PlusIcon, SearchIcon, SparklesIcon, XIcon, type LucideIcon } from "lucide-react";
 import { toast } from "sonner";
 import { useEffect, useRef, useState } from "react";
@@ -39,6 +26,7 @@ import { formatCount } from "@/lib/format";
 import { SKILL_BLURBS } from "@/lib/skill-blurbs";
 import type { SkillResult } from "@/app/api/v1/skills/route";
 
+import type { BrandChoice } from "../brands/actions";
 import { BrandPicker } from "./brand-picker";
 import { PlanPreview } from "./plan-preview";
 import { AuditBadge } from "./audit-badge";
@@ -64,7 +52,7 @@ export function Configurator({
 }) {
   const [sel, setSel] = useState<Selections>(() => initial ?? defaultSelections(kit));
   const [name, setName] = useState("");
-  const [brand, setBrand] = useState("");
+  const [brand, setBrand] = useState<BrandChoice | null>(null);
   // When the install command scrolls out of view, a bar at the bottom keeps it one click away.
   const installRef = useRef<HTMLElement>(null);
   const asideRef = useStickyColumn();
@@ -82,8 +70,7 @@ export function Configurator({
   // Ignore removals of skills whose choice is no longer selected.
   const effective = { ...sel, removeSkills: sel.removeSkills.filter((s) => offered.includes(s)) };
   const resolved = resolve(kit, effective);
-  const validBrand = /^[a-z0-9-]+\/[a-z0-9-]+$/.test(brand.trim());
-  const command = `${buildInitCommand(kitRef, kit, effective, /^[\w.-]+$/.test(name) ? name : undefined)}${validBrand ? ` --brand ${brand.trim()}` : ""}`;
+  const command = buildInitCommand(kitRef, kit, effective, isProjectName(name) ? name : undefined, brand?.slug);
   // Changing one option can invalidate others (Vue drops React libraries, HeroUI drops shadcn add-ons).
   const update = (patch: Partial<Selections>) => setSel((s) => pruneSelections(kit, { ...s, ...patch }));
 
@@ -93,7 +80,7 @@ export function Configurator({
   const packSkills = new Set(packs.flatMap((o) => o.choices.flatMap((c) => c.skills)));
   const toggleSkill = (ref: string, on: boolean) =>
     update({ removeSkills: on ? sel.removeSkills.filter((s) => s !== ref) : [...sel.removeSkills, ref] });
-  const projectName = /^[\w.-]+$/.test(name) ? name : kit.name;
+  const projectName = isProjectName(name) ? name : kit.name;
   const counts = [
     [resolved.dependencies.length + resolved.devDependencies.length, "dependencies"],
     [resolved.skills.length, "skills"],
@@ -177,7 +164,7 @@ export function Configurator({
               <FieldLabel htmlFor="project-name">Name</FieldLabel>
               <Input id="project-name" value={name} onChange={(e) => setName(e.target.value)} placeholder={kit.name} className="font-mono" />
             </Field>
-            <BrandPicker value={brand} onChange={setBrand} />
+            <BrandPicker value={brand?.slug ?? ""} onChange={setBrand} />
           </div>
           <div className="grid gap-3 border-t py-5 sm:grid-cols-[180px_minmax(0,1fr)] sm:gap-6">
             <p className="pt-1.5 text-sm font-medium">Agents</p>
@@ -289,7 +276,7 @@ export function Configurator({
         </Panel>
 
         <Panel title="What will run" description="The CLI's exact steps with these options, in order. It shows them again and waits for your yes before running anything.">
-          <PlanPreview kit={kit} sel={effective} name={projectName} />
+          <PlanPreview kit={kit} sel={effective} name={projectName} brand={brand && { ref: brand.slug, title: brand.title, images: brand.images }} />
         </Panel>
       </div>
 

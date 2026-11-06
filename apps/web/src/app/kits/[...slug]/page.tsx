@@ -28,9 +28,8 @@ import { readRecommendation } from "@/features/recommend/href";
 import { OriginIcon } from "@/components/shared/origin-icon";
 import { formatCount } from "@/lib/format";
 import { getKitStats } from "@/server/metrics/queries";
-import { canReadKit } from "@/server/orgs";
+import { canReadKit, kitAccess } from "@/server/kit-access";
 import { findCommunityVersion, getIndex, getKitPage } from "@/server/registry";
-import { hasLicense } from "@/server/billing";
 import { env } from "@/server/env";
 import { billingEnabled } from "@/server/stripe";
 import { getViewer } from "@/server/session";
@@ -276,7 +275,8 @@ const PLATFORMS: Record<string, string> = { linux: "Linux", darwin: "macOS", win
 async function premiumState(meta: { priceCents?: number | null; slug: string; owner?: { handle: string } }, viewer: Awaited<ReturnType<typeof getViewer>>) {
   if (!meta.priceCents) return null;
   const row = await findCommunityVersion(meta.slug);
-  const licensed = Boolean(row && viewer && (row.ownerId === viewer.id || (await hasLicense(row.kitId, viewer.id))));
+  // Owner, site admin or a license: the same answer the download route gives.
+  const licensed = Boolean(row && (await kitAccess(row, viewer)).install);
   return { priceCents: meta.priceCents, licensed, canBuy: Boolean(viewer) && billingEnabled, feePercent: env.PLATFORM_FEE_PERCENT };
 }
 

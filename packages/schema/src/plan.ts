@@ -3,6 +3,7 @@ import { importAgentsMd, INSTRUCTION_STUBS, MCP_TARGETS, mergeEnv, upsertKitSect
 import { nodeRunner, packageManager, type PackageManager } from "./package-managers";
 import { parseSkillRef, resolve, type Selections } from "./resolve";
 import type { Kit, McpServer, WriteFile } from "./schema";
+import { BRAND_ASSETS, brandLogo, type BrandAssetKind, type BrandProfile } from "./brand-profile";
 
 /**
  * Path operations, injected so the planner runs in Node (CLI, with node:path)
@@ -25,7 +26,43 @@ export type Step =
   | { kind: "run"; title: string; command: string; cwd: string; optional?: boolean }
   | { kind: "copy"; title: string; from: string; to: string }
   | { kind: "write"; title: string; path: string; merge: Merge; optional?: boolean }
-  | { kind: "git"; title: string; cwd: string };
+  | { kind: "git"; title: string; cwd: string }
+  | BrandStep;
+
+/**
+ * Applying a brand profile: its images downloaded into the project, then BRAND.md, tokens, the CSS
+ * variables and the AGENTS.md rules. One step, because where the CSS goes (the first global stylesheet
+ * that exists) is only known once the base project has been created.
+ */
+export interface BrandStep {
+  kind: "brand";
+  title: string;
+  cwd: string;
+  /** "acme/web" or "./brand.json": what `--brand` received. */
+  ref: string;
+  /** The loaded profile (the CLI); absent where it isn't available (the website when logged out). */
+  profile?: BrandProfile;
+  /** The images it brings, by label ("Logo", "Favicon"…), for the plan. */
+  images: string[];
+}
+
+/** What a plan needs to apply a brand: the ref, and the profile or just its image kinds when known. */
+export interface PlanBrand {
+  ref: string;
+  profile?: BrandProfile | null;
+  title?: string;
+  images?: BrandAssetKind[];
+}
+
+/** The brand step for a project directory; also the whole plan of `brand <ref>` in an existing project. */
+export function brandStep(brand: PlanBrand, cwd: string): BrandStep {
+  const profile = brand.profile ?? undefined;
+  const kinds = profile
+    ? (Object.keys(BRAND_ASSETS) as BrandAssetKind[]).filter((k) => (k === "logo" ? brandLogo(profile) : profile.assets[k]))
+    : (brand.images ?? []);
+  const title = profile?.title ?? brand.title;
+  return { kind: "brand", title: title ? `Apply the ${title} brand` : `Apply brand ${brand.ref}`, cwd, ref: brand.ref, ...(profile ? { profile } : {}), images: kinds.map((k) => BRAND_ASSETS[k].label) };
+}
 
 /** Variables available in kit commands and files: {{name}}, {{pm}}, {{pmx}}, {{ciSetup}}, {{opt.<id>}}. */
 export function templateVars(sel: Selections, name: string): Record<string, string> {
@@ -113,9 +150,11 @@ export interface PlanInput {
   parentDir: string;
   name: string;
   git: boolean;
+  /** --brand: applied after the kit's files and AGENTS.md, before the initial commit. */
+  brand?: PlanBrand | null;
 }
 
-export function buildPlan({ kit, kitDir, sel, parentDir, name, git, paths = posixPaths }: PlanInput): Step[] {
+export function buildPlan({ kit, kitDir, sel, parentDir, name, git, brand, paths = posixPaths }: PlanInput): Step[] {
   const { join, basename } = paths;
   const resolvePath = paths.resolve;
   const r = resolve(kit, sel);
@@ -176,6 +215,7 @@ export function buildPlan({ kit, kitDir, sel, parentDir, name, git, paths = posi
     if (stub) steps.push({ kind: "write", title: `Link ${stub} to AGENTS.md`, path: join(projectDir, stub), merge: importAgentsMd });
   }
 
+  if (brand) steps.push(brandStep(brand, projectDir));
   if (git) steps.push({ kind: "git", title: "Initial commit", cwd: projectDir });
   return steps;
 }

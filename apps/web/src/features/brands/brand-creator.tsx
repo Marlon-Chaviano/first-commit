@@ -2,7 +2,9 @@
 
 import {
   BRAND_ASSETS,
-  brandProfileSchema,
+  brandSlug,
+  emptyBrandProfile,
+  finishBrand,
   readableOn,
   SOCIAL_NETWORKS,
   type BrandDetection,
@@ -29,7 +31,6 @@ import { ACCEPT, detectFile, imageAsDataUrl, MAX_IMAGE_BYTES } from "./brand-imp
 type Review = { detection: BrandDetection; source: string };
 type Step = { kind: "start" } | { kind: "review" } | { kind: "edit"; draft: BrandProfile; from: "review" | "start" };
 
-const slugify = (text: string) => text.toLowerCase().normalize("NFD").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 40);
 
 /** What the server reads while detecting, shown in turn so the wait explains itself. */
 const STAGES = ["Reading the page", "Loading its stylesheets", "Checking the logo and icons", "Weighing the colors"];
@@ -80,9 +81,7 @@ export function BrandCreator({ owners }: { owners: string[] }) {
   );
 }
 
-function blank(): BrandProfile {
-  return brandProfileSchema.parse({ name: "brand", title: "Brand", colors: { primary: "#0a0a0a", primaryForeground: "#ffffff", background: "#ffffff", foreground: "#0a0a0a", border: "#e5e5e5" } });
-}
+const blank = emptyBrandProfile;
 
 // ── Step 1: start ────────────────────────────────────────────────────────────
 
@@ -225,7 +224,7 @@ function ReviewStep({
   const c = detection.candidates;
   const [owner, setOwner] = useState(owners[0] ?? "");
   const [title, setTitle] = useState(d.title ?? "");
-  const [name, setName] = useState(slugify(d.title ?? ""));
+  const [name, setName] = useState(brandSlug(d.title ?? ""));
   const [nameEdited, setNameEdited] = useState(false);
   const [logo, setLogo] = useState(d.assets?.logo ?? d.logo);
   const [icon, setIcon] = useState(d.assets?.icon);
@@ -241,19 +240,17 @@ function ReviewStep({
   const primaries = withCurrent(c?.primary ?? [], d.colors.primary, "the detection").slice(0, 6);
   const fonts = [...new Set([d.fonts?.sans, d.fonts?.heading, ...(c?.fonts ?? []).map((f) => f.value)].filter(Boolean) as string[])];
 
+  // The person's picks on top of the detection, finished by the shared rule (defaults, slug, text color).
   const profile = (): BrandProfile =>
-    brandProfileSchema.parse({
-      ...d,
-      name: name || "brand",
-      title: title || name || "Brand",
-      colors: { ...d.colors, primary, primaryForeground: readableOn(primary), background, foreground },
-      fonts: { ...d.fonts, sans: sans || undefined, heading: heading || undefined },
-      assets: { ...d.assets, logo: logo || undefined, icon: icon || undefined },
-      logo: undefined,
-      rules: d.rules ?? [],
-      docs: d.docs ?? {},
-      social: d.social ?? {},
-    });
+    finishBrand(
+      {
+        ...d,
+        colors: { ...d.colors, primary, primaryForeground: readableOn(primary), background, foreground },
+        fonts: { ...d.fonts, sans: sans || undefined, heading: heading || undefined },
+        assets: { ...d.assets, logo: logo || undefined, icon: icon || undefined },
+      },
+      { name, title },
+    );
 
   const also = [
     d.description && "description",
@@ -303,7 +300,7 @@ function ReviewStep({
                   required
                   onChange={(e) => {
                     setTitle(e.target.value);
-                    if (!nameEdited) setName(slugify(e.target.value));
+                    if (!nameEdited) setName(brandSlug(e.target.value));
                   }}
                   placeholder="Acme"
                 />

@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import { BRAND } from "./brand";
+import { isSafeSvg } from "./brand-images";
 
 /**
  * A brand profile: a company's colors, fonts and UI rules plus its own docs.
@@ -25,6 +26,14 @@ const paletteSchema = z.object({
 });
 export type BrandPalette = z.infer<typeof paletteSchema>;
 
+const decodeBase64 = (data: string) => {
+  try {
+    return new TextDecoder().decode(Uint8Array.from(atob(data), (c) => c.charCodeAt(0)));
+  } catch {
+    return "<script>";
+  }
+};
+
 /** An image as an http(s) URL, or a small file uploaded in the editor and stored inline as a data: URL. */
 const imageRef = z.union([
   z.url({ protocol: /^https?$/ }),
@@ -32,7 +41,7 @@ const imageRef = z.union([
     .string()
     .max(300_000, "Images uploaded to a profile must be under 200 KB")
     .regex(/^data:image\/(png|jpeg|webp|gif|svg\+xml|x-icon|vnd\.microsoft\.icon);base64,[A-Za-z0-9+/=]+$/, "An image URL or an uploaded PNG, JPEG, WebP, GIF, SVG or ICO"),
-]);
+]).refine((value) => !value.startsWith("data:image/svg+xml;base64,") || isSafeSvg(decodeBase64(value.slice(26))), "SVGs can't contain scripts or event handlers");
 
 export const BRAND_ASSETS = {
   logo: { label: "Logo", hint: "For light backgrounds", file: "logo" },

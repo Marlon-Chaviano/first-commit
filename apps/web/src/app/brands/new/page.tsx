@@ -5,7 +5,7 @@ import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { BackLink } from "@/features/brands/back-link";
 import { BrandCreator } from "@/features/brands/brand-creator";
-import { listUserOrgs } from "@/server/orgs";
+import { capabilitiesFor, listUserOrgs, type OrgRole } from "@/server/orgs";
 import { getViewer } from "@/server/session";
 
 export const metadata: Metadata = { title: "New brand profile", robots: { index: false } };
@@ -29,6 +29,6 @@ async function Editor() {
   const viewer = await getViewer();
   if (!viewer?.handle) redirect("/login?next=/brands/new");
   // Org profiles need admin; members see the org's profiles but don't create them.
-  const orgs = (await listUserOrgs(viewer.id)).filter((o) => o.role !== "member").map((o) => o.org.slug);
+  const orgs = (await listUserOrgs(viewer.id)).filter((o) => capabilitiesFor(o.role as OrgRole, viewer.id).canEditBrands).map((o) => o.org.slug);
   return <BrandCreator owners={[viewer.handle, ...orgs]} />;
 }

@@ -15,7 +15,7 @@ import { listMyBrandsAction, type BrandChoice } from "../brands/actions";
 const NONE = "none";
 
 /** Picks one of the viewer's brand profiles for --brand. Signed out, it explains how to get one. */
-export function BrandPicker({ value, onChange }: { value: string; onChange: (slug: string) => void }) {
+export function BrandPicker({ value, onChange }: { value: string; onChange: (brand: BrandChoice | null) => void }) {
   const { data: session, isPending } = authClient.useSession();
   const [brands, setBrands] = useState<BrandChoice[] | null>(null);
   const signedIn = Boolean(session);
@@ -43,7 +43,7 @@ export function BrandPicker({ value, onChange }: { value: string; onChange: (slu
         <Select
           items={[{ value: NONE, label: "No brand" }, ...list.map((b) => ({ value: b.slug, label: b.title }))]}
           value={current ? value : NONE}
-          onValueChange={(v) => onChange(!v || v === NONE ? "" : String(v))}
+          onValueChange={(v) => onChange(list.find((b) => b.slug === v) ?? null)}
           disabled={locked}
         >
           <SelectTrigger id="brand" className="min-w-0 flex-1">

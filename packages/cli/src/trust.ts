@@ -1,6 +1,8 @@
 import { isAbsolute } from "node:path";
 
-import { BRAND, splitKitRef } from "@kits/schema";
+import { splitKitRef } from "@kits/schema";
+
+import { api } from "./api";
 
 export type Trust = "local" | "official" | "verified" | "unverified";
 
@@ -13,14 +15,6 @@ export async function kitTrust(ref: string, version: string): Promise<Trust> {
   const { base } = splitKitRef(ref);
   if (base.startsWith(".") || isAbsolute(base)) return "local";
   if (!base.includes("/")) return "official";
-  try {
-    const api = process.env.KITS_API_URL ?? BRAND.siteUrl;
-    const res = await fetch(`${api}/api/v1/verifications?kit=${encodeURIComponent(base)}&version=${encodeURIComponent(version)}`, {
-      signal: AbortSignal.timeout(2000),
-    });
-    if (!res.ok) return "unverified";
-    return ((await res.json()) as { verified?: boolean }).verified ? "verified" : "unverified";
-  } catch {
-    return "unverified";
-  }
+  const res = await api<{ verified?: boolean }>(`/api/v1/verifications?kit=${encodeURIComponent(base)}&version=${encodeURIComponent(version)}`, { auth: "none", timeoutMs: 2000 });
+  return res.ok && res.data?.verified ? "verified" : "unverified";
 }

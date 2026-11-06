@@ -2,10 +2,9 @@ import type { NextRequest } from "next/server";
 
 import { BRAND } from "@kits/schema";
 
-import { hasLicense } from "@/server/billing";
-import { canReadKit } from "@/server/orgs";
+import { kitAccess } from "@/server/kit-access";
 import { findCommunityVersion, getArchive, getIndex } from "@/server/registry";
-import { getRequestUser, isAdmin } from "@/server/session";
+import { getRequestUser } from "@/server/session";
 
 /**
  * GET /api/v1/kits/<slug>[?version=] — where to download a kit and how to check it.
@@ -23,11 +22,11 @@ export async function GET(request: NextRequest, { params }: RouteContext<"/api/v
   const row = await findCommunityVersion(slug, version);
   if (!row || row.status !== "active") return notFound(slug);
   const user = await getRequestUser(request);
+  const access = await kitAccess(row, user);
   // Private kits: members only, and the same 404 as a missing kit for everyone else.
-  if (row.visibility !== "public" && !(await canReadKit(row, user))) return notFound(slug);
-
+  if (!access.read) return notFound(slug);
   // Premium kits: the files need a license (or being the owner or an admin).
-  const locked = Boolean(row.priceCents) && row.ownerId !== user?.id && !isAdmin(user) && !(await hasLicense(row.kitId, user?.id));
+  const locked = !access.install;
   if (request.nextUrl.searchParams.get("archive") === "1") {
     if (locked) {
       return Response.json({ error: `${slug} is a paid kit: buy it at ${BRAND.siteUrl}/kits/${slug}`, buyUrl: `${BRAND.siteUrl}/kits/${slug}` }, { status: 402 });

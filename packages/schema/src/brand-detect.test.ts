@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
-import { cleanFamily, completeProfile, metaRefreshUrl, shellCanonical, detectFromCss, detectFromJson, detectFromManifest, detectFromPixels, detectFromSite, mergeDetections, parseColor, readHtml } from "./brand-detect";
+import { cleanFamily, metaRefreshUrl, shellCanonical, detectFromCss, detectFromJson, detectFromManifest, detectFromPixels, detectFromSite, mergeDetections, parseColor, readHtml } from "./brand-detect";
+import { completeProfile } from "./brand-draft";
 import { brandProfileSchema, socialNetworkOf } from "./brand-profile";
 
 describe("parseColor", () => {

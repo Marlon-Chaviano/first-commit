@@ -1,26 +1,15 @@
-import { Ratelimit } from "@upstash/ratelimit";
 import type { NextRequest } from "next/server";
 
 import { reportSchema } from "@/lib/reports";
-import { keys } from "@/server/metrics/keys";
-import { isLocalRedis, redis } from "@/server/redis";
+import { clientIp, rateLimit } from "@/server/rate-limit";
 import { saveReport } from "@/server/reports";
 
-const ratelimit =
-  redis && !isLocalRedis
-    ? new Ratelimit({ redis, limiter: Ratelimit.slidingWindow(5, "1 h"), prefix: `${keys.rateLimit}:reports` })
-    : null;
+const limit = rateLimit("reports", 5, "1 h");
 
 /** POST /api/v1/reports — "Denunciar este kit". */
 export async function POST(request: NextRequest) {
-  const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "anonymous";
-  if (ratelimit) {
-    try {
-      if (!(await ratelimit.limit(ip)).success) return Response.json({ error: "Too many reports, try again later" }, { status: 429 });
-    } catch (error) {
-      console.error("[reports] rate limiter unavailable", error);
-    }
-  }
+  const ip = clientIp(request);
+  if (!(await limit.allow(ip))) return Response.json({ error: "Too many reports, try again later" }, { status: 429 });
   const parsed = reportSchema.safeParse(await request.json().catch(() => null));
   if (!parsed.success) return Response.json({ error: parsed.error.issues[0]?.message ?? "Invalid data" }, { status: 400 });
   if (!(await saveReport(parsed.data, ip))) return Response.json({ error: "Reports unavailable" }, { status: 503 });

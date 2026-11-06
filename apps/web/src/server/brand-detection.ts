@@ -1,23 +1,22 @@
 import "server-only";
 
-import { detectFromSite, metaRefreshUrl, readHtml, shellCanonical, type BrandDetection } from "@kits/schema";
+import { detectFromSite, imageExtension, isEmptyDetection, isSafeSvg, MAX_BRAND_IMAGE_BYTES, metaRefreshUrl, readHtml, shellCanonical, type BrandDetection } from "@kits/schema";
 
 import { safeFetch, safeFetchText, UnsafeUrlError } from "./safe-fetch";
 
-const IMAGE_TYPE = /^image\/(png|jpeg|webp|gif|svg\+xml|x-icon|vnd\.microsoft\.icon|avif)$/;
 /** Big sites split CSS into dozens of files: read up to this many in parallel. */
 const MAX_STYLESHEETS = 48;
 
 /** Loads an image candidate: null if it's missing, not an image or too big. SVGs come back as text. */
 async function probeImage(url: string): Promise<{ url: string; svg?: string } | null> {
   try {
-    const res = await safeFetch(url, { maxBytes: 2_000_000, timeoutMs: 6000, accept: "image/*,*/*" });
-    const looksSvg = res.contentType === "image/svg+xml" || (/\.svg(\?|$)/i.test(url) && res.bytes.subarray(0, 200).toString("utf8").includes("<svg"));
-    // Favicons are often served as octet-stream: the file name decides then.
-    const type = res.contentType || "";
-    if (!IMAGE_TYPE.test(type) && !looksSvg && !(/\.(ico|png)(\?|$)/i.test(url) && /octet-stream/.test(type))) return null;
-    if (res.bytes.length < 16) return null;
-    return { url, ...(looksSvg ? { svg: res.bytes.toString("utf8") } : {}) };
+    const res = await safeFetch(url, { maxBytes: MAX_BRAND_IMAGE_BYTES, timeoutMs: 6000, accept: "image/*,*/*" });
+    const ext = imageExtension(res.contentType, url);
+    if (!ext || res.bytes.length < 16) return null;
+    if (ext !== "svg") return { url };
+    // An SVG that could run code is never offered, the same rule the CLI and uploads follow.
+    const svg = res.bytes.toString("utf8");
+    return isSafeSvg(svg) ? { url, svg } : null;
   } catch {
     return null;
   }
@@ -106,7 +105,7 @@ export async function detectBrandFromUrl(input: string): Promise<{ ok: true; dat
       .filter((svg): svg is string => Boolean(svg));
 
     const detection = detectFromSite(html, css, page.url, { manifest, logoSvgs, reachable: new Set(probes.map((p) => p.url)) });
-    if (!Object.keys(detection.profile.colors).length && !detection.profile.title && !detection.profile.assets) {
+    if (isEmptyDetection(detection)) {
       return { ok: false, error: "Nothing found on that website. Try uploading its logo or a stylesheet." };
     }
     return { ok: true, data: detection };

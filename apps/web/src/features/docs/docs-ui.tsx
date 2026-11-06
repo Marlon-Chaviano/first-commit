@@ -1,3 +1,4 @@
+import { slugify } from "@kits/schema";
 import { LinkIcon } from "lucide-react";
 import { isValidElement } from "react";
 
@@ -23,8 +24,6 @@ function textOf(node: React.ReactNode): string {
   return "";
 }
 
-const slugify = (text: string) =>
-  text.toLowerCase().normalize("NFD").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 
 /** Section heading with a stable anchor: hovering shows the link, and the "On this page" rail lists it. */
 export function H2({ id, children }: { id?: string; children: React.ReactNode }) {

@@ -11,12 +11,11 @@ import { formatCount } from "@/lib/format";
 import { getKitHistory } from "@/server/accounts";
 import { getKitStats } from "@/server/metrics/queries";
 import { PriceForm } from "@/features/billing/buttons";
-import { userPlan } from "@/server/billing";
-import { getOrgById, roleIn } from "@/server/orgs";
-import { effectivePlan, PLANS } from "@/server/plans";
+import { kitAccess, kitPlan } from "@/server/kit-access";
+import { PLANS } from "@/server/plans";
 import { billingEnabled } from "@/server/stripe";
 import { findCommunityVersion } from "@/server/registry";
-import { getViewer, isAdmin } from "@/server/session";
+import { getViewer } from "@/server/session";
 
 export const metadata: Metadata = { title: "Kit statistics" };
 
@@ -35,13 +34,9 @@ async function Stats({ slug: slugPromise }: { slug: Promise<string> }) {
   const viewer = await getViewer();
   if (!viewer) redirect("/login?next=/account");
   const kit = await findCommunityVersion(slug);
-  if (!kit) notFound();
-  // Detailed numbers are for the owner (and moderators); the public page shows totals.
-  const orgAdmin = kit.orgId ? ["owner", "admin"].includes((await roleIn(kit.orgId, viewer.id)) ?? "") : false;
-  if (kit.ownerId !== viewer.id && !isAdmin(viewer) && !orgAdmin) notFound();
-
-  // Plan of whoever pays for these numbers: the org for org kits, the owner otherwise.
-  const plan = effectivePlan(kit.orgId ? (await getOrgById(kit.orgId))?.plan : await userPlan(kit.ownerId ?? viewer.id), billingEnabled);
+  // Detailed numbers are for whoever manages the kit; the public page shows totals.
+  if (!kit || !(await kitAccess(kit, viewer)).manage) notFound();
+  const plan = await kitPlan(kit, viewer.id);
   const days = PLANS[plan].historyDays;
   const [live, history] = await Promise.all([getKitStats(slug), getKitHistory(slug, days)]);
   const breakdown = Object.entries(live.breakdown).sort((a, b) => b[1] - a[1]);

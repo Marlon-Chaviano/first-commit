@@ -74,3 +74,19 @@ test("finalize runs after every choice's setup, and isn't optional", () => {
   expect(runs.slice(0, 4).map((s) => s.command)).toEqual(["mkdir app", "echo kit", "echo web", "npm install"]);
   expect(runs[3]?.optional).toBeFalsy();
 });
+
+describe("brand step", () => {
+  const kit = parseKit({ name: "demo", version: "1.0.0", title: "Demo", description: "", category: "web", author: "a", base: { command: "mkdir {{name}}" } });
+  const plan = (brand?: Parameters<typeof buildPlan>[0]["brand"]) => buildPlan({ kit, kitDir: "kit", sel: defaultSelections(kit), parentDir: ".", name: "app", git: true, brand });
+
+  it("goes after the kit's files and before the initial commit", () => {
+    const steps = plan({ ref: "acme/web", title: "Acme", images: ["logo", "icon"] });
+    expect(steps.map((s) => s.kind).slice(-2)).toEqual(["brand", "git"]);
+    expect(steps.at(-2)).toMatchObject({ kind: "brand", title: "Apply the Acme brand", ref: "acme/web", images: ["Logo", "Favicon"] });
+  });
+
+  it("names the ref when the profile isn't known, and is absent without --brand", () => {
+    expect(plan({ ref: "acme/web" }).at(-2)).toMatchObject({ title: "Apply brand acme/web", images: [] });
+    expect(plan().some((s) => s.kind === "brand")).toBe(false);
+  });
+});

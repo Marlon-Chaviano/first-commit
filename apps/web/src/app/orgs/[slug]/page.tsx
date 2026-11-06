@@ -11,10 +11,12 @@ import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { BillingPanel } from "@/features/billing/billing-panel";
+import { KitActions } from "@/features/account/kit-actions";
 import { AddMemberForm, DeleteOrgButton, PolicyForm, RemoveMemberButton } from "@/features/orgs/org-forms";
 import { formatCount } from "@/lib/format";
 import { getKitStats } from "@/server/metrics/queries";
-import { getOrg, listMembers, listOrgKits, roleIn } from "@/server/orgs";
+import { kitAccess } from "@/server/kit-access";
+import { getOrg, listMembers, listOrgKits, orgCapabilities, type OrgRole } from "@/server/orgs";
 import { PLANS, planOf } from "@/server/plans";
 import { getViewer } from "@/server/session";
 import { billingEnabled } from "@/server/stripe";
@@ -36,11 +38,14 @@ async function Org({ slug: slugPromise }: { slug: Promise<string> }) {
   if (!viewer) redirect("/login?next=/account/orgs");
   const org = await getOrg(await slugPromise);
   // Non-members get the same 404 as a missing org.
-  const role = org ? await roleIn(org.id, viewer.id) : null;
-  if (!org || !role) notFound();
-  const admin = role === "admin" || role === "owner";
+  const can = org ? await orgCapabilities(org, viewer) : null;
+  if (!org || !can?.isMember) notFound();
+  const role = can.role!;
   const [members, kits] = await Promise.all([listMembers(org.id), listOrgKits(org.id)]);
-  const stats = await Promise.all(kits.map((k) => getKitStats(k.slug)));
+  const [stats, access] = await Promise.all([
+    Promise.all(kits.map((k) => getKitStats(k.slug))),
+    Promise.all(kits.map((k) => kitAccess({ ...k, kitId: k.id }, viewer))),
+  ]);
   const plan = PLANS[planOf(org.plan)];
 
   return (
@@ -79,6 +84,7 @@ async function Org({ slug: slugPromise }: { slug: Promise<string> }) {
                 <TableHead className="label-mono text-right text-muted-foreground">Installs</TableHead>
                 <TableHead className="label-mono text-right text-muted-foreground">People</TableHead>
                 <TableHead className="label-mono text-right text-muted-foreground">Updates</TableHead>
+                <TableHead />
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -91,6 +97,7 @@ async function Org({ slug: slugPromise }: { slug: Promise<string> }) {
                   <TableCell className="text-right font-mono">{formatCount(stats[i]!.installs)}</TableCell>
                   <TableCell className="text-right font-mono">{formatCount(stats[i]!.unique)}</TableCell>
                   <TableCell className="text-right font-mono">{formatCount(stats[i]!.retention.update ?? 0)}</TableCell>
+                  <TableCell className="w-10 text-right">{access[i]!.manage && <KitActions slug={k.slug} status={k.status} />}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -117,7 +124,7 @@ async function Org({ slug: slugPromise }: { slug: Promise<string> }) {
                   <Badge variant="outline">{m.role}</Badge>
                 </TableCell>
                 <TableCell className="text-right">
-                  {(m.userId === viewer.id || (admin && (m.role !== "owner" || role === "owner"))) && (
+                  {can.canRemove({ userId: m.userId, role: m.role as OrgRole }) && (
                     <RemoveMemberButton org={org.slug} userId={m.userId} self={m.userId === viewer.id} />
                   )}
                 </TableCell>
@@ -125,13 +132,13 @@ async function Org({ slug: slugPromise }: { slug: Promise<string> }) {
             ))}
           </TableBody>
         </Table>
-        {admin && <AddMemberForm org={org.slug} canAddOwners={role === "owner"} />}
+        {can.canAddMembers && <AddMemberForm org={org.slug} canAddOwners={can.canAddOwners} />}
       </section>
 
       <section className="flex flex-col gap-4">
         <h2 className="label-mono">Library policy</h2>
         <Separator />
-        <PolicyForm org={org.slug} required={org.policy.required} forbidden={org.policy.forbidden} editable={admin} />
+        <PolicyForm org={org.slug} required={org.policy.required} forbidden={org.policy.forbidden} editable={can.canEditPolicy} />
         <p className="text-sm text-muted-foreground">In CI, with a member&apos;s token:</p>
         <Command command={`KITS_TOKEN=\${{ secrets.KITS_TOKEN }} ${cliCommand("doctor")}`} />
       </section>
@@ -140,11 +147,11 @@ async function Org({ slug: slugPromise }: { slug: Promise<string> }) {
         <section className="flex flex-col gap-4">
           <h2 className="label-mono">Plan</h2>
           <Separator />
-          <BillingPanel subject={{ kind: "org", slug: org.slug }} plan={planOf(org.plan)} canManage={role === "owner"} seats={members.length} />
+          <BillingPanel subject={{ kind: "org", slug: org.slug }} plan={planOf(org.plan)} canManage={can.canManageBilling} seats={members.length} />
         </section>
       )}
 
-      {role === "owner" && (
+      {can.canDelete && (
         <section className="flex flex-col gap-4">
           <h2 className="label-mono">Danger zone</h2>
           <DeleteOrgButton org={org.slug} />

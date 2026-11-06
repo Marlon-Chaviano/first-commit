@@ -7,7 +7,9 @@ import { dirname, join, relative } from "node:path";
 import * as p from "@clack/prompts";
 import pc from "picocolors";
 
-import type { Step } from "@kits/schema";
+import type { BrandStep, Step } from "@kits/schema";
+
+import { describeBrandStep, runBrandStep } from "./brand";
 
 export function describe(step: Step, root: string): string {
   switch (step.kind) {
@@ -19,8 +21,12 @@ export function describe(step: Step, root: string): string {
       return `${step.title} ${pc.dim(relative(root, step.path))}`;
     case "git":
       return step.title;
+    case "brand":
+      return describeBrandStep(step);
   }
 }
+
+const runBrand = async (step: BrandStep) => (await runBrandStep(step)).skipped;
 
 export interface ExecuteOptions {
   /** File descriptor that receives command output instead of the terminal (create-first-commit test). */
@@ -73,6 +79,11 @@ export async function execute(steps: Step[], root: string, opts: ExecuteOptions 
       case "git":
         await commit(step.cwd);
         break;
+      case "brand": {
+        const skipped = await runBrand(step);
+        if (skipped.length && !quiet) p.log.warn(`Brand images skipped:\n${skipped.join("\n")}`);
+        break;
+      }
     }
   }
   return failed;
@@ -123,6 +134,7 @@ async function executeWithProgress(steps: Step[], root: string, opts: ExecuteOpt
   // clack's spinner with our own bar: its built-in progress() is magenta, and dots would make the line jump.
   const bar = p.spinner({ indicator: "timer", styleFrame: (frame) => frame });
   let done = 0;
+  const skippedImages: string[] = [];
   // One line, always: the bar, the counter, the step and, if there's room, the latest output.
   const label = (i: number, hint = "") => {
     const counter = `${Math.min(i + 1, steps.length)}/${steps.length}`;
@@ -150,6 +162,7 @@ async function executeWithProgress(steps: Step[], root: string, opts: ExecuteOpt
           });
         } else if (step.kind === "copy") await cp(step.from, step.to, { recursive: true, force: true });
         else if (step.kind === "write") await writeStep(step);
+        else if (step.kind === "brand") skippedImages.push(...(await runBrand(step)));
         else await commit(step.cwd);
       } catch (error) {
         if (!("optional" in step && step.optional)) {
@@ -169,6 +182,7 @@ async function executeWithProgress(steps: Step[], root: string, opts: ExecuteOpt
     bar.stop(`${steps.length} steps${failed.length ? pc.yellow(` · ${failed.length} skipped`) : ""}`);
     // The log matters when something was skipped; otherwise it's just there if wanted.
     if (failed.length) p.log.info(`Log: ${pc.underline(logPath)}`);
+    if (skippedImages.length) p.log.warn(`Brand images skipped:\n${skippedImages.join("\n")}`);
     return failed;
   } finally {
     closeSync(fd);

@@ -18,15 +18,10 @@ import { effectivePlan, MAX_KITS_PER_ACCOUNT, planAllows } from "./plans";
 import { billingEnabled } from "./stripe";
 import { kitSource, REGISTRY_TAG } from "./registry";
 import type { TokenUser } from "./tokens";
+import { DomainError } from "./errors";
 
-export class PublishError extends Error {
-  constructor(
-    readonly status: number,
-    message: string,
-  ) {
-    super(message);
-  }
-}
+/** Publish errors for the person; see DomainError. */
+export class PublishError extends DomainError {}
 
 export interface PublishSource {
   /** "owner/repo" on GitHub. */

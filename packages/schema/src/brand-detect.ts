@@ -769,13 +769,3 @@ export function detectFromPixels(data: ArrayLike<number>): BrandDetection {
   if (!primary) return { profile: { colors: {} }, found: [] };
   return { profile: { colors: { primary, primaryForeground: readableOn(primary) } }, found: ["primary: the logo's dominant color"] };
 }
-
-/**
- * A complete, valid profile from a detection: missing required colors get
- * neutral defaults (white background, near-black text). For `brand detect`.
- */
-export function completeProfile(d: BrandDetection, name: string, title: string): BrandProfile {
-  const colors = { background: "#ffffff", foreground: "#0a0a0a", primary: "#0a0a0a", ...d.profile.colors };
-  if (!colors.primaryForeground) colors.primaryForeground = readableOn(colors.primary);
-  return brandProfileSchema.parse({ rules: [], docs: {}, fonts: {}, ...d.profile, name, title: d.profile.title ?? title, colors });
-}

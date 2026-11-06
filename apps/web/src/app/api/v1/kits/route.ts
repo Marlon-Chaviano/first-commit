@@ -1,16 +1,13 @@
 import { cliCommand } from "@kits/schema";
-import { Ratelimit } from "@upstash/ratelimit";
 import type { NextRequest } from "next/server";
 import { z } from "zod";
 
-import { keys } from "@/server/metrics/keys";
 import { publishKit, PublishError } from "@/server/publish";
-import { isLocalRedis, redis } from "@/server/redis";
+import { rateLimit } from "@/server/rate-limit";
 import { getAllEntries } from "@/server/registry";
 import { getRequestUser } from "@/server/session";
 
-const publishLimit =
-  redis && !isLocalRedis ? new Ratelimit({ redis, limiter: Ratelimit.slidingWindow(10, "1 h"), prefix: `${keys.rateLimit}:publish` }) : null;
+const limit = rateLimit("publish", 10, "1 h");
 
 /** GET /api/v1/kits?q=&category=&official=1|0 — official and community kits. */
 export async function GET(request: NextRequest) {
@@ -39,13 +36,7 @@ const publishBody = z.object({
 export async function POST(request: NextRequest) {
   const user = await getRequestUser(request);
   if (!user) return Response.json({ error: `Log in or use a token (${cliCommand("login")})` }, { status: 401 });
-  if (publishLimit) {
-    try {
-      if (!(await publishLimit.limit(user.id)).success) return Response.json({ error: "Too many publishes, try again in an hour" }, { status: 429 });
-    } catch (error) {
-      console.error("[publish] rate limiter unavailable", error);
-    }
-  }
+  if (!(await limit.allow(user.id))) return Response.json({ error: "Too many publishes, try again in an hour" }, { status: 429 });
   const parsed = publishBody.safeParse(await request.json().catch(() => null));
   if (!parsed.success) return Response.json({ error: "Invalid data" }, { status: 400 });
   try {

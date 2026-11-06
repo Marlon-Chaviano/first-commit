@@ -3,10 +3,11 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { homedir } from "node:os";
 import { isAbsolute, join } from "node:path";
 
-import { BRAND, cliCommand } from "@kits/schema";
+import { cliCommand } from "@kits/schema";
 import pc from "picocolors";
 
 import { readLock } from "./lockfile";
+import { api } from "./api";
 import { loadIndex } from "./registry";
 
 const DAY = 24 * 60 * 60 * 1000;
@@ -43,6 +44,6 @@ async function latestVersion(kit: string): Promise<string | null> {
     return existsSync(path) ? ((JSON.parse(await readFile(path, "utf8")) as { version?: string }).version ?? null) : null;
   }
   if (!kit.includes("/")) return (await loadIndex()).find((e) => e.name === kit)?.version ?? null;
-  const res = await fetch(`${process.env.KITS_API_URL ?? BRAND.siteUrl}/api/v1/kits/${kit}`, { signal: AbortSignal.timeout(2000) });
-  return res.ok ? ((await res.json()) as { version?: string }).version ?? null : null;
+  const res = await api<{ version?: string }>(`/api/v1/kits/${kit}`, { auth: "none", timeoutMs: 2000 });
+  return res.ok ? (res.data?.version ?? null) : null;
 }

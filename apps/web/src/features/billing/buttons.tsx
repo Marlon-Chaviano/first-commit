@@ -6,10 +6,11 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
+import type { Result } from "@/server/action";
 import { buyKitAction, checkoutAction, onboardingAction, portalAction, refundAction, setPriceAction, type BillingTarget } from "./actions";
 
 /** Runs an action that redirects to Stripe; shows the error if it returns one. */
-function StripeButton({ action, children, variant = "default" }: { action: () => Promise<{ ok: false; error: string }>; children: React.ReactNode; variant?: "default" | "outline" }) {
+function StripeButton({ action, children, variant = "default" }: { action: () => Promise<Result<never>>; children: React.ReactNode; variant?: "default" | "outline" }) {
   const [pending, start] = useTransition();
   return (
     <Button

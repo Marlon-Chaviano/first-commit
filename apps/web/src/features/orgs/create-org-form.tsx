@@ -1,5 +1,6 @@
 "use client";
 
+import { slugify } from "@kits/schema";
 import { ArrowLeftIcon, LoaderCircleIcon, MailIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
@@ -12,7 +13,8 @@ import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp
 
 import { createOrgAction, sendOrgCodeAction } from "./actions";
 
-const toSlug = (name: string) => name.toLowerCase().normalize("NFD").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 39);
+/** Org identifiers are GitHub-style: at most 39 characters. */
+const toSlug = (name: string) => slugify(name, 39);
 const RESEND_SECONDS = 60;
 
 /** Two steps: the org and a work email, then the 6-digit code sent to that email. */

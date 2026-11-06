@@ -2,33 +2,16 @@ import { existsSync } from "node:fs";
 import { join, resolve as resolvePath } from "node:path";
 
 import * as p from "@clack/prompts";
-import {
-  AGENTS,
-  BRAND,
-  buildPlan,
-  allKitSkills,
-  buildInitCommand,
-  defaultSelections,
-  PACKAGE_MANAGERS,
-  pmFromUserAgent,
-  pruneSelections,
-  requirementsMet,
-  resolve,
-  selectionsFrom,
-  skillRefSchema,
-  validateSelections,
-  type Kit,
-  type PackageManager,
-  type Selections,
-} from "@kits/schema";
+import { AGENTS, BRAND, buildPlan, allKitSkills, buildInitCommand, defaultSelections, PACKAGE_MANAGERS, pmFromUserAgent, pruneSelections, requirementsMet, resolve, selectionsFrom, skillRefSchema, validateSelections, type Kit, type PackageManager, type Selections, isProjectName } from "@kits/schema";
 import pc from "picocolors";
 
 import { listFlag, parseArgs, type ParsedArgs } from "./args";
+import { apiUrl } from "./api";
 import { create } from "./create";
 import { lockKitRef, managedFiles, newLock, writeLock } from "./lockfile";
 import { login, logout, publish, whoami } from "./account";
 import { add } from "./add";
-import { applyBrand, brand, describeBrand, downloadBrandAssets, loadBrand } from "./brand";
+import { brand, loadBrand } from "./brand";
 import { doctor } from "./doctor";
 import { mcp } from "./mcp";
 import { updateNotice } from "./notice";
@@ -160,29 +143,38 @@ async function init(args: ParsedArgs) {
       ? guard(await p.text({ message: "Project name", placeholder: kit.name, defaultValue: kit.name }))
       : kit.name;
   }
-  if (!/^[\w.-]+$/.test(name)) throw new Error(`Invalid project name: "${name}"`);
+  if (!isProjectName(name)) throw new Error(`Invalid project name: "${name}" (letters, numbers, dots, hyphens and underscores)`);
   const parentDir = process.cwd();
   if (existsSync(join(parentDir, name))) throw new Error(`A directory named "${name}" already exists`);
 
   const sel = await collectSelections(kit, args, interactive);
   validateSelections(kit, sel);
 
-  const steps = buildPlan({ kit, kitDir: loaded.dir, sel, parentDir, name, git: !args.switches.has("no-git"), paths: nodePaths });
   const projectDir = resolvePath(parentDir, name);
-  // --brand acme/web: the company's colors, fonts, rules and docs, applied after the kit.
+  // --brand acme/web: the company's colors, fonts, logo, rules and docs, a step of the plan like the rest.
   const brandRef = args.flags.get("brand")?.[0];
   const brandProfile = brandRef ? await loadBrand(brandRef) : null;
+  const steps = buildPlan({
+    kit,
+    kitDir: loaded.dir,
+    sel,
+    parentDir,
+    name,
+    git: !args.switches.has("no-git"),
+    paths: nodePaths,
+    brand: brandRef && brandProfile ? { ref: brandRef, profile: brandProfile } : null,
+  });
 
   const trust = await kitTrust(ref, kit.version);
   const unverified = trust === "unverified";
   p.note(
-    [...steps.map((s) => describe(s, projectDir)), ...(brandProfile ? [describeBrand(brandProfile)] : [])]
+    steps.map((s) => describe(s, projectDir))
       .map((line, i) => `${pc.dim(`${i + 1}.`)} ${line}`)
       .join("\n"),
     unverified ? "Plan · UNVERIFIED community kit" : trust === "verified" ? "Plan · verified kit" : "Plan",
   );
   if (args.switches.has("dry-run")) {
-    p.outro(`Dry run: nothing was run.\n   ${pc.dim(buildInitCommand(ref, kit, sel, name))}`);
+    p.outro(`Dry run: nothing was run.\n   ${pc.dim(buildInitCommand(ref, kit, sel, name, brandRef))}`);
     return;
   }
   // Kits run shell commands: show them and ask before running anything from a third party.
@@ -218,11 +210,6 @@ async function init(args: ParsedArgs) {
     if (existsSync(projectDir)) throw new Error(`${(error as Error).message}\n   ${pc.dim(`The incomplete project is in ./${name}. Delete it before trying again.`)}`);
     throw error;
   }
-  if (brandProfile) {
-    const images = await downloadBrandAssets(brandProfile, projectDir);
-    applyBrand(brandProfile, projectDir, images.files);
-    if (images.skipped.length) p.log.warn(`Brand images skipped:\n${images.skipped.join("\n")}`);
-  }
   const r = resolve(kit, sel);
   // kits.lock: what `update`, `add` and `doctor` need to know about this project.
   await writeLock(
@@ -230,7 +217,7 @@ async function init(args: ParsedArgs) {
     newLock({
       kit: lockKitRef(ref),
       version: kit.version,
-      registry: process.env.KITS_API_URL ?? BRAND.siteUrl,
+      registry: apiUrl(),
       sel,
       r,
       managed: managedFiles(projectDir, loaded.dir, r),

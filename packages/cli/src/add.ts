@@ -2,24 +2,7 @@ import { existsSync } from "node:fs";
 import { basename, join, resolve } from "node:path";
 
 import * as p from "@clack/prompts";
-import {
-  applyWrite,
-  BRAND,
-  dependencySteps,
-  FRAMEWORK_LABELS,
-  importAgentsMd,
-  INSTRUCTION_STUBS,
-  libraryRule,
-  mcpSteps,
-  mergeEnv,
-  skillRefSchema,
-  skillSteps,
-  templateVars,
-  upsertBlock,
-  type KitsLock,
-  type Library,
-  type Step,
-} from "@kits/schema";
+import { applyWrite, BRAND, dependencySteps, FRAMEWORK_LABELS, importAgentsMd, INSTRUCTION_STUBS, libraryRule, mcpSteps, mergeEnv, skillRefSchema, skillSteps, templateVars, upsertBlock, type KitsLock, type Library, type Step, slugify } from "@kits/schema";
 import pc from "picocolors";
 
 import { listFlag, type ParsedArgs } from "./args";
@@ -174,10 +157,8 @@ function requirementMet(
 
 function agentStubs(agents: string[], dir: string): Step[] {
   return agents.flatMap((a) =>
-    INSTRUCTION_STUBS[a] ? [{ kind: "write" as const, title: `Enlazar ${INSTRUCTION_STUBS[a]} con AGENTS.md`, path: join(dir, INSTRUCTION_STUBS[a]!), merge: importAgentsMd }] : [],
+    INSTRUCTION_STUBS[a] ? [{ kind: "write" as const, title: `Link ${INSTRUCTION_STUBS[a]} to AGENTS.md`, path: join(dir, INSTRUCTION_STUBS[a]!), merge: importAgentsMd }] : [],
   );
 }
 
-function slug(value: string): string {
-  return value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
-}
+const slug = (value: string) => slugify(value);

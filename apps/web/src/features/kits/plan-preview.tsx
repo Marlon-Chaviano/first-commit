@@ -1,7 +1,7 @@
 "use client";
 
-import { buildPlan, type Kit, type Selections, type Step } from "@kits/schema";
-import { ChevronDownIcon, FileTextIcon, FolderInputIcon, GitCommitHorizontalIcon, TerminalIcon, type LucideIcon } from "lucide-react";
+import { buildPlan, type Kit, type PlanBrand, type Selections, type Step } from "@kits/schema";
+import { ChevronDownIcon, FileTextIcon, FolderInputIcon, GitCommitHorizontalIcon, PaletteIcon, TerminalIcon, type LucideIcon } from "lucide-react";
 import { useState } from "react";
 
 import { Badge } from "@/components/ui/badge";
@@ -14,7 +14,7 @@ type Item = { kind: "step"; step: Step } | { kind: "files"; steps: WriteStep[] }
 
 const SKILLS_FROM = /^Install skills from (.+)$/;
 
-const ICONS: Record<Step["kind"], LucideIcon> = { run: TerminalIcon, write: FileTextIcon, copy: FolderInputIcon, git: GitCommitHorizontalIcon };
+const ICONS: Record<Step["kind"], LucideIcon> = { run: TerminalIcon, write: FileTextIcon, copy: FolderInputIcon, git: GitCommitHorizontalIcon, brand: PaletteIcon };
 /** Steps shown before "Show all": enough to see the shape of the plan without a wall of steps. */
 const FIRST = 6;
 
@@ -22,9 +22,9 @@ const FIRST = 6;
  * The same steps `--dry-run` prints, computed with the shared planner: what
  * will run on the user's machine, before they copy the command.
  */
-export function PlanPreview({ kit, sel, name }: { kit: Kit; sel: Selections; name: string }) {
+export function PlanPreview({ kit, sel, name, brand }: { kit: Kit; sel: Selections; name: string; brand?: PlanBrand | null }) {
   const [all, setAll] = useState(false);
-  const steps = buildPlan({ kit, kitDir: "kit", sel, parentDir: ".", name, git: true });
+  const steps = buildPlan({ kit, kitDir: "kit", sel, parentDir: ".", name, git: true, brand });
   const project = `./${name}/`;
   const rel = (path: string) => (path.startsWith(project) ? path.slice(project.length) : path);
 
@@ -106,6 +106,18 @@ function StepRow({ step, rel }: { step: Step; rel: (p: string) => string }) {
         </code>
       )}
       {step.kind === "copy" && <code className="font-mono text-xs text-muted-foreground">{rel(step.to)}</code>}
+      {step.kind === "brand" && (
+        <span className="flex flex-wrap gap-1.5">
+          {["docs/brand", "CSS variables", "AGENTS.md rules"].map((part) => (
+            <Badge key={part} variant="outline" className="font-mono text-[11px] font-normal">
+              {part}
+            </Badge>
+          ))}
+          {step.images.length > 0 && (
+            <span className="w-full text-xs text-muted-foreground">Download brand images: {step.images.join(", ").toLowerCase()}</span>
+          )}
+        </span>
+      )}
     </>
   );
 }

@@ -20,6 +20,9 @@ export * from "./stacks";
 export * from "./languages";
 export * from "./brand-profile";
 export * from "./brand-detect";
+export * from "./brand-draft";
+export * from "./brand-images";
+export * from "./slug";
 
 /** Entry in registry/index.json — what `create-first-commit list` and the website show before loading a kit. */
 export interface RegistryEntry {

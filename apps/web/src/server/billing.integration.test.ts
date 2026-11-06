@@ -34,6 +34,7 @@ describe.skipIf(!run)("orgs, billing and premium kits (Postgres + stripe-mock)",
     db: typeof import("./db");
     schema: typeof import("./db/schema");
     orgs: typeof import("./orgs");
+    access: typeof import("./kit-access");
     billing: typeof import("./billing");
     stripe: typeof import("./stripe");
     orm: typeof import("drizzle-orm");
@@ -50,6 +51,7 @@ describe.skipIf(!run)("orgs, billing and premium kits (Postgres + stripe-mock)",
       db: await import("./db"),
       schema: await import("./db/schema"),
       orgs: await import("./orgs"),
+      access: await import("./kit-access"),
       billing: await import("./billing"),
       stripe: await import("./stripe"),
       orm: await import("drizzle-orm"),
@@ -74,8 +76,8 @@ describe.skipIf(!run)("orgs, billing and premium kits (Postgres + stripe-mock)",
     expect(await m.orgs.roleIn(org.id, bob!.id)).toBe("member");
     await expect(m.orgs.addMember(org, bob!, eve!.handle, "member")).rejects.toThrow(/permission/);
     await expect(m.orgs.createOrg(eve!, { slug: ana!.handle!, name: "x", verified: { email: "eve@acme.test", domain: "acme.test" } })).rejects.toThrow(/is a user/);
-    expect(await m.orgs.canReadKit({ visibility: "org", orgId: org.id }, bob!)).toBe(true);
-    expect(await m.orgs.canReadKit({ visibility: "org", orgId: org.id }, eve!)).toBe(false);
+    expect(await m.access.canReadKit({ visibility: "org", orgId: org.id }, bob!)).toBe(true);
+    expect(await m.access.canReadKit({ visibility: "org", orgId: org.id }, eve!)).toBe(false);
   });
 
   it("opens a Teams checkout accepted by Stripe's API (stripe-mock validates every parameter)", async () => {

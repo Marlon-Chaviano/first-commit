@@ -14,6 +14,7 @@ import {
 } from "@kits/schema";
 
 import type { ParsedArgs } from "./args";
+import { api } from "./api";
 import { loadCatalog, loadIndex, loadKit } from "./registry";
 
 /**
@@ -58,14 +59,9 @@ export async function mcp(args: ParsedArgs, version: string): Promise<void> {
 async function recommendRemote(description: string): Promise<(Recommendation & { source: ResolvedRecommendation["source"] }) | null> {
   if (process.env.KITS_OFFLINE) return null;
   try {
-    const res = await fetch(`${process.env.KITS_API_URL ?? BRAND.siteUrl}/api/v1/recommend`, {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({ description }),
-      signal: AbortSignal.timeout(20_000),
-    });
+    const res = await api<{ source?: string }>("/api/v1/recommend", { method: "POST", auth: "none", body: { description }, timeoutMs: 20_000 });
     if (!res.ok) return null;
-    const body = (await res.json()) as { source?: string };
+    const body = res.data;
     const rec = recommendationSchema.parse(body);
     return { ...rec, source: body.source === "claude" ? "claude" : "heuristic" };
   } catch {

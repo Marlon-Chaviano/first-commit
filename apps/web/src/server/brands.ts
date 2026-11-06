@@ -5,17 +5,12 @@ import { and, asc, eq, inArray, isNull } from "drizzle-orm";
 
 import { db } from "./db";
 import { brandProfiles, orgMembers, orgs } from "./db/schema";
-import { getOrg, requireRole } from "./orgs";
+import { getOrg, OrgError, orgCapabilities } from "./orgs";
 import type { TokenUser } from "./tokens";
+import { DomainError } from "./errors";
 
-export class BrandError extends Error {
-  constructor(
-    readonly status: number,
-    message: string,
-  ) {
-    super(message);
-  }
-}
+/** Brand errors for the person; see DomainError. */
+export class BrandError extends DomainError {}
 
 export type BrandRow = typeof brandProfiles.$inferSelect;
 
@@ -54,7 +49,7 @@ export async function saveBrand(viewer: TokenUser, owner: string, input: unknown
   if (owner !== viewer.handle) {
     const org = await getOrg(owner);
     if (!org) throw new BrandError(404, `The "${owner}" organization doesn't exist`);
-    await requireRole(org, viewer, "admin");
+    if (!(await orgCapabilities(org, viewer)).canEditBrands) throw new OrgError(403, "Only the organization's owners and admins edit its brand profiles");
     orgId = org.id;
   }
   const slug = `${owner}/${profile.name}`;
@@ -74,7 +69,7 @@ export async function deleteBrand(viewer: TokenUser, slug: string): Promise<void
   if (!found) throw new BrandError(404, "Profile not found");
   if (found.row.orgId) {
     const [org] = await db!.select().from(orgs).where(eq(orgs.id, found.row.orgId)).limit(1);
-    await requireRole(org!, viewer, "admin");
+    if (!(await orgCapabilities(org!, viewer)).canEditBrands) throw new OrgError(403, "Only the organization's owners and admins edit its brand profiles");
   }
   await db!.delete(brandProfiles).where(eq(brandProfiles.id, found.row.id));
 }

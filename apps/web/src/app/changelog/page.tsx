@@ -1,4 +1,4 @@
-import { BRAND } from "@kits/schema";
+import { BRAND, slugify } from "@kits/schema";
 import { LinkIcon, RssIcon } from "lucide-react";
 import type { Metadata } from "next";
 
@@ -14,7 +14,6 @@ export const metadata: Metadata = {
 };
 
 const formatDate = new Intl.DateTimeFormat("en", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" });
-const slugify = (text: string) => text.toLowerCase().normalize("NFD").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 
 export default async function ChangelogPage() {
   const entries = await getChangelog();
