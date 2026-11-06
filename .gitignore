@@ -8,3 +8,4 @@ dist
 !.env.example
 .next-audit
 .lighthouseci
+.neon
