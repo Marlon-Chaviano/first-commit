@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from "@/components/ui/empty";
 import { SubscribeForm } from "@/features/newsletter/subscribe-form";
 import { getChangelog, type ChangelogEntry } from "@/server/newsletter";
 import { BrandName } from "@/components/shared/brand-name";
@@ -41,6 +42,15 @@ export default async function ChangelogPage() {
         </div>
         <SubscribeForm />
       </section>
+
+      {days.length === 0 && (
+        <Empty className="mt-16 border">
+          <EmptyHeader>
+            <EmptyTitle>Nothing here yet</EmptyTitle>
+            <EmptyDescription>The first release notes land here. Subscribe above or follow the RSS feed to hear about them.</EmptyDescription>
+          </EmptyHeader>
+        </Empty>
+      )}
 
       <ol className="changelog-rail relative mt-16">
         {days.map(([date, group], i) => (
