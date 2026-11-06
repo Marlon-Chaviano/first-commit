@@ -38,22 +38,22 @@ const publishBody = z.object({
 /** POST /api/v1/kits — publish a version. Browser session or `Authorization: Bearer kits_…`. */
 export async function POST(request: NextRequest) {
   const user = await getRequestUser(request);
-  if (!user) return Response.json({ error: `Inicia sesión o usa un token (${cliCommand("login")})` }, { status: 401 });
+  if (!user) return Response.json({ error: `Log in or use a token (${cliCommand("login")})` }, { status: 401 });
   if (publishLimit) {
     try {
-      if (!(await publishLimit.limit(user.id)).success) return Response.json({ error: "Demasiadas publicaciones, prueba en una hora" }, { status: 429 });
+      if (!(await publishLimit.limit(user.id)).success) return Response.json({ error: "Too many publishes, try again in an hour" }, { status: 429 });
     } catch (error) {
-      console.error("[publish] rate limiter no disponible", error);
+      console.error("[publish] rate limiter unavailable", error);
     }
   }
   const parsed = publishBody.safeParse(await request.json().catch(() => null));
-  if (!parsed.success) return Response.json({ error: "Datos no válidos" }, { status: 400 });
+  if (!parsed.success) return Response.json({ error: "Invalid data" }, { status: 400 });
   try {
     const result = await publishKit(user, parsed.data);
     return Response.json(result, { status: result.created ? 201 : 200 });
   } catch (error) {
     if (error instanceof PublishError) return Response.json({ error: error.message }, { status: error.status });
     console.error("[publish]", error);
-    return Response.json({ error: "No se pudo publicar" }, { status: 500 });
+    return Response.json({ error: "Couldn't publish" }, { status: 500 });
   }
 }

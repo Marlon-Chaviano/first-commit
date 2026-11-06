@@ -1,12 +1,12 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "web-sveltekit",
-  "version": "1.0.0",
-  "author": "kits",
-  "title": "App web con SvelteKit",
+  "version": "1.1.0",
+  "author": "Marlon Chaviano",
+  "title": "Web app with SvelteKit",
   "category": "web",
   "language": "typescript",
-  "description": "SvelteKit con Svelte 5 y TypeScript: rutas en el sistema de archivos, carga de datos en el servidor y los skills oficiales de Svelte.",
+  "description": "SvelteKit with Svelte 5 and TypeScript: file-system routes, server-side data loading and Svelte's official skills.",
   "tags": [
     "svelte",
     "sveltekit",
@@ -18,11 +18,23 @@
   },
   "skills": [
     "sveltejs/ai-tools@svelte-code-writer",
-    "sveltejs/ai-tools@svelte-core-bestpractices",
-    "anthropics/skills@frontend-design"
+    "sveltejs/ai-tools@svelte-core-bestpractices"
   ],
   "verify": {
-    "command": "{{pm}} run build"
+    "command": "{{pm}} run build",
+    "matrix": [
+      {
+        "styling-lib": [
+          "tailwind-sveltekit"
+        ],
+        "data": [
+          "tanstack-query-svelte"
+        ],
+        "forms": [
+          "zod"
+        ]
+      }
+    ]
   },
   "libraries": {
     "framework": [
@@ -30,10 +42,15 @@
       "sveltekit"
     ],
     "animation": [],
+    "design": [
+      "design-pack"
+    ],
     "workflow": [
-      "superpowers",
-      "mattpocock-skills"
-    ]
+      "essentials"
+    ],
+    "styling": "none",
+    "data": "none",
+    "forms": []
   },
-  "instructions": "## Cómo trabajar aquí\n\n- Rutas en `src/routes/` (`+page.svelte`, `+page.server.ts` para cargar datos en el servidor).\n- Svelte 5: usa runes (`$state`, `$derived`, `$props`), no la sintaxis antigua (`export let`, `$:`).\n- Antes de terminar: `npm run check` y `npm run build`."
+  "instructions": "## How to work here\n\n- Routes in `src/routes/` (`+page.svelte`, `+page.server.ts` to load data on the server).\n- Svelte 5: use runes (`$state`, `$derived`, `$props`), not the old syntax (`export let`, `$:`).\n- Before finishing: `npm run check` and `npm run build`."
 }

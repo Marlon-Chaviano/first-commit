@@ -1,0 +1,63 @@
+{
+  "$schema": "../../kit.schema.json",
+  "version": "1.0.0",
+  "author": "Marlon Chaviano",
+  "name": "monorepo-django-react",
+  "title": "Django + React in one repo",
+  "category": "monorepo",
+  "language": "python",
+  "description": "A Django backend with Django REST Framework and a React + Vite frontend in the same repo, with CORS configured to develop both at once.",
+  "tags": [
+    "django",
+    "drf",
+    "react",
+    "vite",
+    "fullstack"
+  ],
+  "base": {
+    "command": "mkdir -p {{name}}/backend && cd {{name}}/backend && python3 -m venv .venv && .venv/bin/pip install -q django djangorestframework django-cors-headers && .venv/bin/django-admin startproject config . && cd .. && npx -y create-vite@latest frontend --template react-ts --no-interactive",
+    "install": "cd frontend && npm install"
+  },
+  "packageManagers": [
+    "pip"
+  ],
+  "skills": [
+    "affaan-m/ecc@django-patterns",
+    "vercel-labs/agent-skills@vercel-react-best-practices"
+  ],
+  "writeFiles": [
+    {
+      "path": "backend/config/settings.py",
+      "content": "\n# --- API (first-commit) ---\nINSTALLED_APPS += [\"rest_framework\", \"corsheaders\"]\nMIDDLEWARE.insert(0, \"corsheaders.middleware.CorsMiddleware\")\nCORS_ALLOWED_ORIGINS = [\"http://localhost:5173\"]\n",
+      "mode": "append"
+    },
+    {
+      "path": "backend/config/api.py",
+      "content": "from rest_framework.decorators import api_view\nfrom rest_framework.response import Response\n\n\n@api_view([\"GET\"])\ndef health(request):\n    return Response({\"ok\": True})\n"
+    },
+    {
+      "path": "backend/config/urls.py",
+      "content": "\nfrom config.api import health  # noqa: E402\n\nurlpatterns += [path(\"api/health/\", health)]\n",
+      "mode": "append"
+    },
+    {
+      "path": "backend/requirements.txt",
+      "content": "django\ndjangorestframework\ndjango-cors-headers\n"
+    }
+  ],
+  "libraries": {
+    "framework": [
+      "react"
+    ],
+    "design": [
+      "design-pack"
+    ],
+    "workflow": [
+      "essentials"
+    ]
+  },
+  "verify": {
+    "command": "cd backend && .venv/bin/python manage.py check && .venv/bin/python manage.py test && cd ../frontend && npm run build"
+  },
+  "instructions": "## How to work here\n\n- `backend/` is Django + DRF (start with `cd backend && .venv/bin/python manage.py runserver`) and `frontend/` is React + Vite (`cd frontend && npm run dev`).\n- The API lives under `/api/`; the frontend calls it with the `VITE_API_URL` URL. CORS only allows the frontend's origin (`CORS_ALLOWED_ORIGINS`).\n- Before finishing: `manage.py test` in `backend/` and `npm run build` in `frontend/`.\n- Each app lives in its own folder with its own dependencies; don't mix code from one into another.\n- Whatever backend and frontend share (types, API contracts) is defined in one place and documented.\n"
+}

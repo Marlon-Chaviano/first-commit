@@ -1,12 +1,12 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "web-nuxt",
-  "version": "1.0.0",
-  "author": "kits",
-  "title": "App web con Nuxt",
+  "version": "1.1.0",
+  "author": "Marlon Chaviano",
+  "title": "Web app with Nuxt",
   "category": "web",
   "language": "typescript",
-  "description": "Nuxt con Vue 3 y TypeScript: renderizado en servidor, rutas por archivos e imports automáticos.",
+  "description": "Nuxt with Vue 3 and TypeScript: server rendering, file-based routes and auto-imports.",
   "tags": [
     "nuxt",
     "vue",
@@ -19,10 +19,26 @@
   },
   "skills": [
     "onmax/nuxt-skills@nuxt",
-    "anthropics/skills@frontend-design"
+    "vuejs-ai/skills@vue-best-practices"
   ],
   "verify": {
-    "command": "{{pm}} run build"
+    "command": "{{pm}} run build",
+    "matrix": [
+      {
+        "styling-lib": [
+          "tailwind-nuxt"
+        ],
+        "state": [
+          "pinia"
+        ],
+        "data": [
+          "tanstack-query-vue"
+        ],
+        "forms": [
+          "zod"
+        ]
+      }
+    ]
   },
   "libraries": {
     "framework": [
@@ -31,10 +47,16 @@
     ],
     "components": "none",
     "animation": [],
+    "design": [
+      "design-pack"
+    ],
     "workflow": [
-      "superpowers",
-      "mattpocock-skills"
-    ]
+      "essentials"
+    ],
+    "styling": "none",
+    "state": "none",
+    "data": "none",
+    "forms": []
   },
-  "instructions": "## Cómo trabajar aquí\n\n- Páginas en `app/pages/`, componentes en `app/components/` (se importan solos) y lógica reutilizable en `app/composables/`.\n- Datos con `useFetch` / `useAsyncData`, no con `fetch` dentro de `onMounted`.\n- API propia en `server/api/`.\n- Antes de terminar: `npm run build`."
+  "instructions": "## How to work here\n\n- Pages in `app/pages/`, components in `app/components/` (auto-imported) and reusable logic in `app/composables/`.\n- Data with `useFetch` / `useAsyncData`, not with `fetch` inside `onMounted`.\n- Your own API in `server/api/`.\n- Before finishing: `npm run build`."
 }

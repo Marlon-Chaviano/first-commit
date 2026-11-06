@@ -1,0 +1,85 @@
+{
+  "$schema": "../../kit.schema.json",
+  "version": "1.0.0",
+  "author": "Marlon Chaviano",
+  "name": "vscode-extension",
+  "title": "VS Code extension",
+  "category": "extension",
+  "language": "typescript",
+  "description": "A VS Code (and Cursor) extension in TypeScript: commands, settings and F5 debugging ready, packageable with vsce.",
+  "tags": [
+    "vscode",
+    "cursor",
+    "extension",
+    "typescript"
+  ],
+  "base": {
+    "command": "mkdir {{name}} && cd {{name}} && printf '%s\\n' '{\"name\": \"{{name}}\", \"version\": \"0.1.0\", \"private\": true, \"displayName\": \"{{name}}\", \"description\": \"\", \"publisher\": \"tu-publisher\", \"main\": \"./dist/extension.js\", \"engines\": {\"vscode\": \"^1.95.0\"}, \"categories\": [\"Other\"], \"activationEvents\": [], \"contributes\": {\"commands\": [{\"command\": \"{{name}}.helloWorld\", \"title\": \"Hello World\"}]}}' > package.json"
+  },
+  "packageManagers": [
+    "npm",
+    "pnpm",
+    "bun"
+  ],
+  "devDependencies": [
+    "typescript",
+    "@types/node",
+    "@types/vscode@~1.95.0",
+    "@vscode/vsce"
+  ],
+  "skills": [
+    "github/awesome-copilot@vscode-ext-commands"
+  ],
+  "writeFiles": [
+    {
+      "path": "package.json",
+      "content": "{\n  \"scripts\": {\n    \"build\": \"tsc -p .\",\n    \"watch\": \"tsc -watch -p .\",\n    \"package\": \"vsce package --no-dependencies\"\n  }\n}",
+      "mode": "json-merge"
+    },
+    {
+      "path": "tsconfig.json",
+      "content": "{\n  \"compilerOptions\": {\n    \"module\": \"Node16\",\n    \"target\": \"ES2022\",\n    \"lib\": [\n      \"ES2022\"\n    ],\n    \"outDir\": \"dist\",\n    \"rootDir\": \"src\",\n    \"strict\": true,\n    \"sourceMap\": true,\n    \"skipLibCheck\": true,\n    \"types\": [\n      \"node\",\n      \"vscode\"\n    ]\n  },\n  \"include\": [\n    \"src\"\n  ]\n}\n"
+    },
+    {
+      "path": "src/extension.ts",
+      "content": "import * as vscode from \"vscode\";\n\n/** Runs the first time one of the extension's commands is used. */\nexport function activate(context: vscode.ExtensionContext) {\n  context.subscriptions.push(\n    vscode.commands.registerCommand(\"{{name}}.helloWorld\", () => {\n      vscode.window.showInformationMessage(\"Hello from {{name}}!\");\n    }),\n  );\n}\n\nexport function deactivate() {}\n"
+    },
+    {
+      "path": ".vscode/launch.json",
+      "content": "{\n  \"version\": \"0.2.0\",\n  \"configurations\": [\n    {\n      \"name\": \"Ejecutar la extensi\\u00f3n\",\n      \"type\": \"extensionHost\",\n      \"request\": \"launch\",\n      \"args\": [\n        \"--extensionDevelopmentPath=${workspaceFolder}\"\n      ],\n      \"outFiles\": [\n        \"${workspaceFolder}/dist/**/*.js\"\n      ],\n      \"preLaunchTask\": \"npm: watch\"\n    }\n  ]\n}\n"
+    },
+    {
+      "path": ".vscodeignore",
+      "content": "src/**\n.vscode/**\n**/*.map\ntsconfig.json\n"
+    },
+    {
+      "path": ".gitignore",
+      "content": "node_modules\ndist\n*.vsix\n"
+    }
+  ],
+  "libraries": {
+    "framework": "nodejs",
+    "quality": [],
+    "ci": [],
+    "workflow": [
+      "essentials"
+    ]
+  },
+  "verify": {
+    "command": "{{pm}} run build",
+    "matrix": [
+      {
+        "quality": [
+          "biome"
+        ],
+        "ci": [
+          "github-actions"
+        ]
+      }
+    ]
+  },
+  "setupTasks": [
+    "VS Code: set your `publisher` and `displayName` in `package.json` before publishing (`npx vsce publish`)."
+  ],
+  "instructions": "## How to work here\n\n- Each command is declared in `contributes.commands` in `package.json` **and** registered in `src/extension.ts` with `vscode.commands.registerCommand` (same id in both places).\n- Put everything you register into `context.subscriptions` so it's released when the extension is deactivated.\n- Press F5 to open a VS Code window with the extension loaded.\n- Before finishing: `npm run build`. To package: `npm run package` (produces the `.vsix`)."
+}

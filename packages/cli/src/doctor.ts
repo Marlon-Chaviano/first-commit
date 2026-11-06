@@ -36,8 +36,8 @@ export async function doctor(args: ParsedArgs): Promise<void> {
   if (args.switches.has("json")) {
     console.log(JSON.stringify({ ok: !findings.some((f) => f.level === "error"), kit: lock?.kit ?? null, version: lock?.version ?? null, findings }, null, 2));
   } else {
-    console.log(`\n${pc.bold("doctor")} ${pc.dim(lock?.kit ? `${lock.kit}@${lock.version}` : "proyecto sin kits.lock")}\n`);
-    if (!findings.length) console.log(`${pc.green("✓")} Todo en orden.`);
+    console.log(`\n${pc.bold("doctor")} ${pc.dim(lock?.kit ? `${lock.kit}@${lock.version}` : "project without kits.lock")}\n`);
+    if (!findings.length) console.log(`${pc.green("✓")} All good.`);
     for (const f of findings) {
       const icon = f.level === "error" ? pc.red("✗") : f.level === "warning" ? pc.yellow("!") : pc.cyan("i");
       console.log(`${icon} ${pc.dim(`[${f.check}]`)} ${f.message}${f.fix ? `\n    ${pc.dim("→")} ${f.fix}` : ""}`);
@@ -53,8 +53,8 @@ export async function diagnose(dir: string, lock: KitsLock | null, online = true
     findings.push({
       level: "info",
       check: "kits.lock",
-      message: "Este proyecto no tiene kits.lock: solo se revisan las variables de entorno.",
-      fix: cliCommand("add <biblioteca>") + " crea uno",
+      message: "This project has no kits.lock: only environment variables are checked.",
+      fix: cliCommand("add <library>") + " creates one",
     });
   }
 
@@ -68,18 +68,18 @@ export async function diagnose(dir: string, lock: KitsLock | null, online = true
     if (components.length && installed.components.some((l) => chosen.has(l.id))) {
       findings.push({
         level: "error",
-        check: "componentes",
-        message: `Hay otra biblioteca de componentes instalada (${components.map((l) => l.name).join(", ")}); la regla de AGENTS.md solo permite la elegida.`,
-        fix: `Quítala, o cámbiala de forma explícita con ${cliCommand(`add ${components[0]!.id} --force`)}`,
+        check: "components",
+        message: `Another component library is installed (${components.map((l) => l.name).join(", ")}); the AGENTS.md rule only allows the chosen one.`,
+        fix: `Remove it, or switch explicitly with ${cliCommand(`add ${components[0]!.id} --force`)}`,
       });
     }
     const animation = installed.animation.filter((l) => !chosen.has(l.id));
     if (animation.length) {
       findings.push({
         level: "warning",
-        check: "animaciones",
-        message: `Bibliotecas de animación no elegidas en el kit: ${animation.map((l) => l.name).join(", ")}.`,
-        fix: `Si la usas a propósito, regístrala con ${cliCommand(`add ${animation[0]!.id}`)}`,
+        check: "animation",
+        message: `Animation libraries not chosen in the kit: ${animation.map((l) => l.name).join(", ")}.`,
+        fix: `If you use it on purpose, register it with ${cliCommand(`add ${animation[0]!.id}`)}`,
       });
     }
   }
@@ -94,9 +94,9 @@ export async function diagnose(dir: string, lock: KitsLock | null, online = true
     const missing = Object.keys(example).filter((k) => !(k in actual) && !process.env[k]);
     const empty = Object.keys(example).filter((k) => k in actual && !actual[k] && !process.env[k]);
     if (missing.length) {
-      findings.push({ level: "warning", check: "entorno", message: `Variables sin definir: ${missing.join(", ")}.`, fix: "cp .env.example .env y rellénalas" });
+      findings.push({ level: "warning", check: "env", message: `Undefined variables: ${missing.join(", ")}.`, fix: "cp .env.example .env and fill them in" });
     }
-    if (empty.length) findings.push({ level: "warning", check: "entorno", message: `Variables vacías: ${empty.join(", ")}.` });
+    if (empty.length) findings.push({ level: "warning", check: "env", message: `Empty variables: ${empty.join(", ")}.` });
   }
 
   if (lock) {
@@ -108,7 +108,7 @@ export async function diagnose(dir: string, lock: KitsLock | null, online = true
         findings.push({
           level: "error",
           check: "skills",
-          message: `El skill ${skill} no está instalado para ${without.join(", ")}.`,
+          message: `The ${skill} skill isn't installed for ${without.join(", ")}.`,
           fix: `npx skills@latest add ${source} --skill ${skill} --agent ${without.join(" ")} --yes`,
         });
       }
@@ -119,9 +119,9 @@ export async function diagnose(dir: string, lock: KitsLock | null, online = true
     if (gone.length) {
       findings.push({
         level: "warning",
-        check: "archivos",
-        message: `Archivos del kit que ya no existen: ${gone.join(", ")}.`,
-        fix: "Si los borraste a propósito, ignóralo; `update` no los restaurará.",
+        check: "files",
+        message: `Kit files that no longer exist: ${gone.join(", ")}.`,
+        fix: "If you deleted them on purpose, ignore this; `update` won't restore them.",
       });
     }
 
@@ -130,10 +130,10 @@ export async function diagnose(dir: string, lock: KitsLock | null, online = true
       try {
         const { kit } = await loadKit(lock.kit);
         if (kit.version !== lock.version) {
-          findings.push({ level: "info", check: "versión", message: `Hay una versión nueva de ${lock.kit}: ${lock.version} → ${kit.version}.`, fix: cliCommand("update") });
+          findings.push({ level: "info", check: "version", message: `A new version of ${lock.kit} is out: ${lock.version} → ${kit.version}.`, fix: cliCommand("update") });
         }
       } catch {
-        findings.push({ level: "info", check: "versión", message: `No se pudo consultar la última versión de ${lock.kit}.` });
+        findings.push({ level: "info", check: "version", message: `Couldn't check the latest version of ${lock.kit}.` });
       }
     }
   }
@@ -172,23 +172,23 @@ export async function checkPolicy(dir: string, lock: KitsLock): Promise<Finding[
       signal: AbortSignal.timeout(5000),
     });
   } catch {
-    return [{ level: "info", check: "política", message: `No se pudo consultar la política de ${org}.` }];
+    return [{ level: "info", check: "policy", message: `Couldn't check ${org}'s policy.` }];
   }
   if (res.status === 404) return []; // Not an organization (a user's kit) or not a member.
   if (res.status === 401) {
-    return [{ level: "warning", check: "política", message: `El kit es de ${org}: inicia sesión para comprobar su política.`, fix: `${cliCommand("login")} (en CI: KITS_TOKEN)` }];
+    return [{ level: "warning", check: "policy", message: `The kit belongs to ${org}: log in to check its policy.`, fix: `${cliCommand("login")} (in CI: KITS_TOKEN)` }];
   }
-  if (!res.ok) return [{ level: "info", check: "política", message: `No se pudo consultar la política de ${org} (${res.status}).` }];
+  if (!res.ok) return [{ level: "info", check: "policy", message: `Couldn't check ${org}'s policy (${res.status}).` }];
   const { policy } = (await res.json()) as { policy: { required: string[]; forbidden: string[] } };
   const used = await usedLibraries(dir, lock);
   const findings: Finding[] = [];
   const missing = policy.required.filter((id) => !used.has(id));
   if (missing.length) {
-    findings.push({ level: "error", check: "política", message: `${org} exige: ${missing.join(", ")}.`, fix: cliCommand(`add ${missing[0]}`) });
+    findings.push({ level: "error", check: "policy", message: `${org} exige: ${missing.join(", ")}.`, fix: cliCommand(`add ${missing[0]}`) });
   }
   const banned = policy.forbidden.filter((id) => used.has(id));
   if (banned.length) {
-    findings.push({ level: "error", check: "política", message: `${org} prohíbe: ${banned.join(", ")}.`, fix: "Quítala del proyecto o pide a un admin que cambie la política" });
+    findings.push({ level: "error", check: "policy", message: `${org} forbids: ${banned.join(", ")}.`, fix: "Remove it from the project or ask an admin to change the policy" });
   }
   return findings;
 }

@@ -22,7 +22,7 @@ export function FeaturedButton({ slug, featured }: { slug: string; featured: boo
         })
       }
     >
-      {featured ? "Quitar de destacados" : "Destacar"}
+      {featured ? "Remove from featured" : "Feature"}
     </Button>
   );
 }

@@ -1,0 +1,43 @@
+{
+  "$schema": "../../kit.schema.json",
+  "version": "1.0.0",
+  "author": "Marlon Chaviano",
+  "name": "saas-laravel",
+  "title": "SaaS with Laravel and React",
+  "category": "saas",
+  "language": "php",
+  "description": "Laravel's official starter kit with React and Inertia: sign-up, login, email verification, account settings and a dashboard with shadcn/ui.",
+  "tags": [
+    "php",
+    "laravel",
+    "react",
+    "inertia",
+    "shadcn"
+  ],
+  "base": {
+    "command": "composer create-project laravel/react-starter-kit {{name}} --no-interaction --prefer-dist",
+    "install": "npm install"
+  },
+  "packageManagers": [
+    "composer"
+  ],
+  "skills": [
+    "jeffallan/claude-skills@laravel-specialist",
+    "vercel-labs/agent-skills@vercel-react-best-practices"
+  ],
+  "libraries": {
+    "framework": [
+      "laravel"
+    ],
+    "design": [
+      "design-pack"
+    ],
+    "workflow": [
+      "essentials"
+    ]
+  },
+  "verify": {
+    "command": "npm run build && php artisan test"
+  },
+  "instructions": "## How to work here\n\n- Routes are in `routes/web.php`; each page is a React component in `resources/js/pages/` rendered with `Inertia::render()`.\n- Validate in Form Requests and authorize with Policies; the UI only hides what the server already forbids.\n- UI components in `resources/js/components/ui/` (shadcn/ui).\n- Before finishing: `npm run build && php artisan test`."
+}

@@ -1,0 +1,82 @@
+{
+  "$schema": "../../kit.schema.json",
+  "version": "1.0.0",
+  "author": "Marlon Chaviano",
+  "name": "saas-django",
+  "title": "SaaS with Django",
+  "category": "saas",
+  "language": "python",
+  "description": "Django for a SaaS: accounts with django-allauth (sign-up, email login and password reset), admin, ORM and tests, with optional Postgres and Sentry.",
+  "tags": [
+    "python",
+    "django",
+    "allauth",
+    "saas"
+  ],
+  "base": {
+    "command": "mkdir {{name}} && cd {{name}} && python3 -m venv .venv && .venv/bin/pip install -q django django-allauth && .venv/bin/django-admin startproject config ."
+  },
+  "packageManagers": [
+    "pip"
+  ],
+  "skills": [
+    "affaan-m/ecc@django-patterns",
+    "getsentry/skills@django-perf-review"
+  ],
+  "writeFiles": [
+    {
+      "path": "config/settings.py",
+      "content": "\n# --- Accounts with django-allauth (first-commit) ---\nINSTALLED_APPS += [\"allauth\", \"allauth.account\"]\nMIDDLEWARE += [\"allauth.account.middleware.AccountMiddleware\"]\nAUTHENTICATION_BACKENDS = [\n    \"django.contrib.auth.backends.ModelBackend\",\n    \"allauth.account.auth_backends.AuthenticationBackend\",\n]\nACCOUNT_LOGIN_METHODS = {\"email\"}\nACCOUNT_SIGNUP_FIELDS = [\"email*\", \"password1*\", \"password2*\"]\nLOGIN_REDIRECT_URL = \"/\"\n",
+      "mode": "append"
+    },
+    {
+      "path": "config/urls.py",
+      "content": "\nfrom django.urls import include  # noqa: E402\n\nurlpatterns += [path(\"accounts/\", include(\"allauth.urls\"))]\n",
+      "mode": "append"
+    },
+    {
+      "path": "requirements.txt",
+      "content": "django\ndjango-allauth\n"
+    },
+    {
+      "path": ".gitignore",
+      "content": ".venv\n__pycache__\n*.sqlite3\n.env\n"
+    }
+  ],
+  "libraries": {
+    "framework": [
+      "django"
+    ],
+    "database": "none",
+    "observability": [],
+    "testing": [],
+    "quality": [],
+    "ci": [],
+    "design": [
+      "design-pack"
+    ],
+    "workflow": [
+      "essentials"
+    ]
+  },
+  "verify": {
+    "command": ".venv/bin/python manage.py check && .venv/bin/python manage.py migrate --noinput && .venv/bin/python manage.py test && (test ! -f pytest.ini || .venv/bin/python -m pytest -q)",
+    "matrix": [
+      {
+        "database": [
+          "django-postgres"
+        ],
+        "testing": [
+          "pytest-django"
+        ],
+        "quality": [
+          "ruff"
+        ],
+        "ci": [
+          "github-actions-django"
+        ]
+      }
+    ]
+  },
+  "instructions": "## How to work here\n\n- Accounts come from django-allauth (`/accounts/login/`, `/accounts/signup/`); customize its templates by copying them into `templates/account/`, don't edit the package.\n- Protect views with `@login_required` (or `LoginRequiredMixin`) and check on the server that each object belongs to the user.\n- Organize by domain apps (`python manage.py startapp <name>`); model changes always through `makemigrations`.\n- Before finishing: `manage.py check && manage.py test`."
+}

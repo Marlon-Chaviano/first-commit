@@ -2,65 +2,241 @@
   "api-hono": {
     "1.0.0": "sha256-+9gEAmtGUfu1jD/Fxr85LlsOS+VM9cQ+bSrwgA3EfPQ=",
     "1.1.0": "sha256-6w6PfdP8NkDCWAnpbbKh+tUzm99+TivcKBl2J4UINk4=",
-    "1.2.0": "sha256-gx7hXGq6dX6Icvubp/6VL6FJ+bDUO2CgDMvNm51ApOU="
+    "1.2.0": "sha256-gx7hXGq6dX6Icvubp/6VL6FJ+bDUO2CgDMvNm51ApOU=",
+    "1.3.0": "sha256-s/jyaRjxqVm9gBLQJtMEBrCZbOmEOc0xenNlVHFe0zc="
   },
   "chrome-extension": {
     "1.0.0": "sha256-grENeCJwjD11nGetz3j3VTPtysoQhX0p79NmMQ0D7ds=",
     "1.1.0": "sha256-w4RbfvD9bYyscbKRYt1Jn51vUi9hihA7Sh6K4gEdqv8=",
-    "1.2.0": "sha256-BmUIz8Op7ZniDokzcfqmMzRaBn7UjT5E2PE4ZfI4V/Q="
+    "1.2.0": "sha256-BmUIz8Op7ZniDokzcfqmMzRaBn7UjT5E2PE4ZfI4V/Q=",
+    "1.3.0": "sha256-lspqXbB/ZARzCuUOaaXdIWbE8vyCMGLZIzW5Vot5LjU="
   },
   "landing-next": {
     "1.0.0": "sha256-v0ITt1Vr7ajNyR9D7nDP24PrzMXj5MiN0Y1vz1c8Rm4=",
     "1.1.0": "sha256-sK6Q3nuUbGjGPu11X45bKZ3TT33V5YSqE38lnxRNp1o=",
-    "1.2.0": "sha256-icS4FfGPofqoSoHmKNtTzLI4MwnuvGZ+03lLwPgmJCI="
+    "1.2.0": "sha256-icS4FfGPofqoSoHmKNtTzLI4MwnuvGZ+03lLwPgmJCI=",
+    "1.3.0": "sha256-Dd589dVcKhQq0e80/JfXmqexKrbP0m8b/kqSBKxXwwI="
   },
   "mobile-expo": {
     "1.0.0": "sha256-iKvuDwxOAvjes5pIeIj9LlAYu6JWeXLvibTON8otV8M=",
     "1.1.0": "sha256-9Y2ObHjJTD7mkm5Q0+JwJhowEh4eKVZJOmulKQgqils=",
-    "1.2.0": "sha256-ViRugZbuWd9HVtX7OkHN+u15n5RHX2TD57eCkW/Oxb8="
+    "1.2.0": "sha256-ViRugZbuWd9HVtX7OkHN+u15n5RHX2TD57eCkW/Oxb8=",
+    "1.3.0": "sha256-zoq/6//XaEyQPI6YKhF05cJZosVtpzw1qGhrTUUFcHg="
   },
   "saas-next-supabase": {
     "1.0.0": "sha256-SjRUO1+keSaYqmqc6hGBrOC/P+sn2oqIlt5aqwmI3iI=",
     "1.1.0": "sha256-tJV6hDm1AcQAoDf3OCVamBXOPbkD88jO34IKEXBoM7k=",
-    "1.2.0": "sha256-mK7GwvUnZzuFlStputMEvhBfqT7ky2pYm7EXN1YezTk="
+    "1.2.0": "sha256-mK7GwvUnZzuFlStputMEvhBfqT7ky2pYm7EXN1YezTk=",
+    "1.3.0": "sha256-WUOVXQ5qjVcOC/KM8Dg3a13VmccnWF8ZLMPLjCwKfx4="
   },
   "api-fastapi": {
     "1.0.0": "sha256-MnYf1FQPo4kUaFI7EC6KpQnBfCGm8BFpRj4zUErzv60=",
-    "1.1.0": "sha256-M281fSNzkLSkelZLVsrs7xaEkYS1x5ewfIJ8wF+9aWM="
+    "1.1.0": "sha256-M281fSNzkLSkelZLVsrs7xaEkYS1x5ewfIJ8wF+9aWM=",
+    "1.2.0": "sha256-x8fShFqx8xfmKxl5HArt2F86/1Yukv+YEk5fdoTIL6c="
   },
   "api-go": {
     "1.0.0": "sha256-GZpiFyqNiIPLsgOhCU23x0GYCaM40gz4q1rtb6GxW9g=",
-    "1.1.0": "sha256-UEjwFWXsERYcQ4LNr/Lg0Gbck3dibbBhUAvb0WcjmWs="
+    "1.1.0": "sha256-UEjwFWXsERYcQ4LNr/Lg0Gbck3dibbBhUAvb0WcjmWs=",
+    "1.2.0": "sha256-DA5/Bt2RIn6k65bt1n+xJ5c0I8giSEDfSdwzr291lFo="
   },
   "ios-swiftui": {
     "1.0.0": "sha256-dRBrHLiASXX5A84PneKLZq6qbQJ7CQFFwNJcBYG2xmM=",
-    "1.1.0": "sha256-6CWNdocWCvJQTbRR+ZPEumgl+vtRORhZiiQlI2jy+Ag="
+    "1.1.0": "sha256-6CWNdocWCvJQTbRR+ZPEumgl+vtRORhZiiQlI2jy+Ag=",
+    "1.2.0": "sha256-aliRPGcQmlyjidKrHgV5VRjCu5RxJ77YXcliLTz2he8="
   },
   "api-django": {
-    "1.0.0": "sha256-/2F2CHU+zzaHpNYaZw7/udmHl35FTMzRS3LWjBbdFhQ="
+    "1.0.0": "sha256-/2F2CHU+zzaHpNYaZw7/udmHl35FTMzRS3LWjBbdFhQ=",
+    "1.1.0": "sha256-ND4f43tEmHw96x/coj2deNLYshHF9dshjNgnMu3AIak="
   },
   "api-elysia": {
-    "1.0.0": "sha256-wlq4mDhP1sOJLIPVa5K2tapOv8/aTeziucWdHipy3tY="
+    "1.0.0": "sha256-wlq4mDhP1sOJLIPVa5K2tapOv8/aTeziucWdHipy3tY=",
+    "1.1.0": "sha256-gUccCvOte2vhk7BY+c5TNxnsKlMg05Yw1/LtoGus5Y0="
   },
   "api-spring-boot": {
-    "1.0.0": "sha256-3jIZWiMhgrB2PRnk2ek6aalLtf0pIcuDLFRS2L9fyuA="
+    "1.0.0": "sha256-3jIZWiMhgrB2PRnk2ek6aalLtf0pIcuDLFRS2L9fyuA=",
+    "1.1.0": "sha256-9Et1SEU/CzuE4ZA5B9rw7aYsh77woagAYHq2k70ZgcE="
   },
   "spa-vite-react": {
-    "1.0.0": "sha256-7eQoElNygX23WTcfBb+EmElN3kF7CUNpgWZEVo979UA="
+    "1.0.0": "sha256-7eQoElNygX23WTcfBb+EmElN3kF7CUNpgWZEVo979UA=",
+    "1.1.0": "sha256-09D306Ak9WQtgvLJkEqaT2V6GfBcl1hsYsLWzYtrweI="
   },
   "web-astro": {
-    "1.0.0": "sha256-FNppcYM1jsCqAHMhMW5bTtO1hVmZcYo68sLD5IDK3o4="
+    "1.0.0": "sha256-FNppcYM1jsCqAHMhMW5bTtO1hVmZcYo68sLD5IDK3o4=",
+    "1.1.0": "sha256-SjGQe6XN4D9Nn4+uRNNdYfUKS6eETwYNUzk6Ou1JIGk="
   },
   "web-laravel": {
-    "1.0.0": "sha256-QJUc3uk2CL3a1W6eGWKFenM6EpaWG+EWZmQg9vYI3l4="
+    "1.0.0": "sha256-QJUc3uk2CL3a1W6eGWKFenM6EpaWG+EWZmQg9vYI3l4=",
+    "1.1.0": "sha256-8lQkWLV6oS42rjye8SsURzaV+duvwAsbom02xGmvI6o="
   },
   "web-nuxt": {
-    "1.0.0": "sha256-oT+qPmPkrQtUadONb8cs3yOcBSgI3r1lfDv2d9RFUVY="
+    "1.0.0": "sha256-oT+qPmPkrQtUadONb8cs3yOcBSgI3r1lfDv2d9RFUVY=",
+    "1.1.0": "sha256-NCBcOT0tKY2r89XXoqtnHj5X1ahbKYqI0n0a+Cf6E7Q="
   },
   "web-rails": {
-    "1.0.0": "sha256-vZFj/M9ZTrOCn3ncCKjwz9+t6SejH2mdDHpCcRqJ6Lk="
+    "1.0.0": "sha256-vZFj/M9ZTrOCn3ncCKjwz9+t6SejH2mdDHpCcRqJ6Lk=",
+    "1.1.0": "sha256-C/Rl2FMUPfVW3di3B1RyyFi2rAYkZociREn1DcegaHk="
   },
   "web-sveltekit": {
-    "1.0.0": "sha256-uZKuqd8ja3JdbbK/ieWYO8QJJuJrjrl18Og0Vg1r0Vs="
+    "1.0.0": "sha256-uZKuqd8ja3JdbbK/ieWYO8QJJuJrjrl18Og0Vg1r0Vs=",
+    "1.1.0": "sha256-Y8i1KdIkyenyhbBNZmmoyADuwTi4hmQwD/xZ+cnd3FE="
+  },
+  "monorepo-turbo": {
+    "1.0.0": "sha256-eQNN1VfV+kKViSeITdkuy7krEkW3Ew7Eb8WUaN5nPFo="
+  },
+  "discord-bot": {
+    "1.0.0": "sha256-dBTzF3Bm4jHzU3fplfQhgKaemo+T2sTEsQNC67aQE0c="
+  },
+  "figma-plugin": {
+    "1.0.0": "sha256-VzZnmbd8Z/ycs1FQS6fDNOyb64FRZ+77u0B7pCi136M="
+  },
+  "github-action": {
+    "1.0.0": "sha256-YumQJs7G0s8r+7AzHfdDU5NlwSaBZKcovxzP3PhLk7c="
+  },
+  "mcp-server-python": {
+    "1.0.0": "sha256-k+ghatMF+D+ZarcwYVNkwAbuaBtb+hZDmsFIxDSyVvc="
+  },
+  "mcp-server-ts": {
+    "1.0.0": "sha256-DFPl4NXNQHRo8yJvEuXdxRvNIQpVVb1nE9Area830eM="
+  },
+  "obsidian-plugin": {
+    "1.0.0": "sha256-dweK58VhJRYPGq62q3Scd9zXg3e1w9ClcM748QvarFQ="
+  },
+  "raycast-extension": {
+    "1.0.0": "sha256-oOm7W2/XdmyRplVqqK03mcYNZDGdE5FYJupgBqNRmF8="
+  },
+  "slack-app": {
+    "1.0.0": "sha256-HxkqneO8XOkPg2i6nDCkDLYvfI6rX9LpWgm6lQF7W8o="
+  },
+  "vscode-extension": {
+    "1.0.0": "sha256-+7XsTAVVeyjLwAG6ycVeOK24kD4/bPQPV6ITzjmI15A="
+  },
+  "blog-astro": {
+    "1.0.0": "sha256-+zVzsOeZLQoqNlZanYqfIA61lcUkdeztYMn1QZURa2I="
+  },
+  "docs-fumadocs": {
+    "1.0.0": "sha256-STun0fU2+GHt/dsQ4LIfmrWGKBz66sfUySjODy8vHsc="
+  },
+  "docs-starlight": {
+    "1.0.0": "sha256-avJNs/5IAOX4Jxsd32NoSNH+fCdmNc3Js780sBWf5Tk="
+  },
+  "docs-vitepress": {
+    "1.0.0": "sha256-W8pwecKoKRkvzEzfbtApCFcIIu4rdbenntmG7TXCEwE="
+  },
+  "landing-astro": {
+    "1.0.0": "sha256-rUPNgwbF/naJNNv479/a3HqXSGa8H01X7nCOxKRezDs="
+  },
+  "landing-nuxt": {
+    "1.0.0": "sha256-NeTpFzbS7U3O6+Q848S3Ei1zuU3Ym9FkbB6P97+OY3c="
+  },
+  "landing-sveltekit": {
+    "1.0.0": "sha256-j4z7NTR6Y5nOkUfji4LVLkhTtvQsClDGlQaqMvqDTnI="
+  },
+  "portfolio-astro": {
+    "1.0.0": "sha256-JRC49evEG8nZf1vsiZUrMlus95qYENqZFPrklEQ/8kE="
+  },
+  "waitlist-next": {
+    "1.0.0": "sha256-twuUFius+M1kBc/5tYWffFr4hguYZqBfgfzrl6s0F5M="
+  },
+  "api-fastify": {
+    "1.0.0": "sha256-mClKF7W4usC1R6+q/hVlhvvC84RVP6EnVUQatF7t06E="
+  },
+  "api-nestjs": {
+    "1.0.0": "sha256-aFcCbjRQo45GUCzQu27RW8IgoSJRLtKBVeaqtML9gZM="
+  },
+  "api-rails": {
+    "1.0.0": "sha256-11QQDUDeqJ+Aadz6akRRHHqcEGRqIbE2AToiiCkmons="
+  },
+  "web-angular": {
+    "1.0.0": "sha256-UKmgNMO/yz8jxg8Ii9MBLBq4QD7SIQ1VEg8iqjttxuw="
+  },
+  "web-react-router": {
+    "1.0.0": "sha256-IJ+acu3Lpkivy1z3zsth7V6gZwkRqpEffdsEECrQSIY="
+  },
+  "web-tanstack-start": {
+    "1.0.0": "sha256-EkzHFA6mvcOEjMa1qfj6qBYFIIZfOmNrHSYEoj0pR/4="
+  },
+  "web-vue-vite": {
+    "1.0.0": "sha256-FFdfyTBEOArB+7phVCT7csJYcAZLqqI88kmI8uhuyXk="
+  },
+  "saas-ai-next": {
+    "1.0.0": "sha256-Ga6t7ow/RUW+V5uAB3P8g82HKgnVTqTyA21+Ij03tWw="
+  },
+  "saas-laravel": {
+    "1.0.0": "sha256-+4IbN2uiGoGK3gM0tXVF7fIvDTWtjr6/s7wlx8Qe6S4="
+  },
+  "saas-next-better-auth": {
+    "1.0.0": "sha256-c+WCEttu4pSNRLAVXTL2k0S6iK7MYS4LbSgaLI8Y1tU="
+  },
+  "saas-nuxt": {
+    "1.0.0": "sha256-ZpBm1Dt9ugM5/TJwARIsDE+cT0Y5OvUv8yZiytOJsyI="
+  },
+  "saas-rails": {
+    "1.0.0": "sha256-Z88JjA1lrQGFTRRoL8y2UKzP01gzcrD3Axty/10teVk="
+  },
+  "saas-sveltekit": {
+    "1.0.0": "sha256-NyQoVLwTi0CiRl5vMiElRFpxZvMyUcaWpYuG1oVhszo="
+  },
+  "saas-t3": {
+    "1.0.0": "sha256-UILrHO+TgUgmfeou6JH6nM4Q3GA89CrLV00W4BkOTFM="
+  },
+  "saas-tanstack-start": {
+    "1.0.0": "sha256-s0ZPdccBpUe0RyOktaWWpxkdWl7d48EbEsP6WnMnzes="
+  },
+  "mobile-expo-supabase": {
+    "1.0.0": "sha256-NCvOc9g4UzblspEMQaDgRn41Egc0TlCKKDPnSbNvFJg="
+  },
+  "mobile-ignite": {
+    "1.0.0": "sha256-AVdppr+t59v1S5161OI7ab9lqTXx45ZyZ84eJFNHWzA="
+  },
+  "mobile-ionic-angular": {
+    "1.0.0": "sha256-58637sA5txWCHJp+J3BuUGbpFxDTyDsEfC3yuMczQ9w="
+  },
+  "mobile-ionic-react": {
+    "1.0.0": "sha256-JXrm/Fz9iOuHSYjbNPjyvlubsuYfxEH/+7MyXvr/U80="
+  },
+  "mobile-lynx": {
+    "1.0.0": "sha256-C6zfDMR/Urp2Vko0zp3wb4nK4uHHo1WyaoXjlEfbbQ8="
+  },
+  "monorepo-bun": {
+    "1.0.0": "sha256-c52kp4borHHlHfZXFoOekpkUrmsuRJW5/JiXtY4N5oc="
+  },
+  "monorepo-django-react": {
+    "1.0.0": "sha256-QLWopYNtlePiIU2tKEQ2Q0A/4K6Ke+QKrq6TH+K+FKY="
+  },
+  "monorepo-go": {
+    "1.0.0": "sha256-KTvqejpZ7wy9b0bNq1DcCoDyIOBQM26W4s27AqGu/Ic="
+  },
+  "monorepo-nx": {
+    "1.0.0": "sha256-mIj/EvhheS5MO8CSm19pr076T/HVcu/9uAVQ8RcEugM="
+  },
+  "monorepo-packages": {
+    "1.0.0": "sha256-qrLPn77buVQYofaIoHW7eIdH1h+ZgpapJgAteOU3WkY="
+  },
+  "monorepo-rails-react": {
+    "1.0.0": "sha256-ueQyM0c2Dt6fucEMD73Ku7/OjjKNU8iw63UiO8uqA/Y="
+  },
+  "monorepo-spring-react": {
+    "1.0.0": "sha256-OB4vmd1fbXYWm/czlpamyrKZtxNNdGcUeRIcTzaVkCM="
+  },
+  "monorepo-t3-turbo": {
+    "1.0.0": "sha256-DYjAk0VxPjVKG6LV1+NHfF828RMc2/UnqONcdXDjyHI="
+  },
+  "monorepo-uv": {
+    "1.0.0": "sha256-dtvOl8qJZDdPokQix2tYAUwAn3+LQCAq/0Dlp2vHJNY="
+  },
+  "api-laravel": {
+    "1.0.0": "sha256-usbDcfHpZUgHbpjArw+Mua3shyW51GkLPO8tQ8FD3AI="
+  },
+  "saas-django": {
+    "1.0.0": "sha256-bwNadst/vBa537Jf6+8+Cpa/cYDJqdA+ASIqAqM4iPI="
+  },
+  "android-compose": {
+    "1.0.0": "sha256-S1BI3iA3iQudJ795Z5FrO8Q3fkXPfz3QIXddd5c/amw="
+  },
+  "mobile-flutter": {
+    "1.0.0": "sha256-hd0i68b5iWJaXUrqfRVjjWa3rI+YI0ojwxkvZfh+NRQ="
+  },
+  "mobile-kmp": {
+    "1.0.0": "sha256-SFlcGMTT1QMm50tw/bxXtHxmqAW1REY1Imnl9AZAVtY="
   }
 }

@@ -46,14 +46,14 @@ export async function getBrand(slug: string, viewer: TokenUser | null): Promise<
  * profiles need admin (they define the company's identity for everyone).
  */
 export async function saveBrand(viewer: TokenUser, owner: string, input: unknown): Promise<string> {
-  if (!db) throw new BrandError(503, "Sin base de datos");
+  if (!db) throw new BrandError(503, "No database");
   const parsed = brandProfileSchema.safeParse(input);
-  if (!parsed.success) throw new BrandError(400, parsed.error.issues[0]?.message ?? "Perfil no válido");
+  if (!parsed.success) throw new BrandError(400, parsed.error.issues[0]?.message ?? "Invalid profile");
   const profile = parsed.data;
   let orgId: string | null = null;
   if (owner !== viewer.handle) {
     const org = await getOrg(owner);
-    if (!org) throw new BrandError(404, `No existe la organización "${owner}"`);
+    if (!org) throw new BrandError(404, `The "${owner}" organization doesn't exist`);
     await requireRole(org, viewer, "admin");
     orgId = org.id;
   }
@@ -71,7 +71,7 @@ export async function saveBrand(viewer: TokenUser, owner: string, input: unknown
 
 export async function deleteBrand(viewer: TokenUser, slug: string): Promise<void> {
   const found = await getBrand(slug, viewer);
-  if (!found) throw new BrandError(404, "Perfil no encontrado");
+  if (!found) throw new BrandError(404, "Profile not found");
   if (found.row.orgId) {
     const [org] = await db!.select().from(orgs).where(eq(orgs.id, found.row.orgId)).limit(1);
     await requireRole(org!, viewer, "admin");

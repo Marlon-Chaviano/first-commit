@@ -1,12 +1,12 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "web-laravel",
-  "version": "1.0.0",
-  "author": "kits",
-  "title": "App web con Laravel",
+  "version": "1.1.0",
+  "author": "Marlon Chaviano",
+  "title": "Web app with Laravel",
   "category": "web",
   "language": "php",
-  "description": "Laravel con Eloquent, migraciones, colas y Artisan: apps y APIs en PHP con todo integrado.",
+  "description": "Laravel with Eloquent, migrations, queues and Artisan: PHP apps and APIs with everything built in.",
   "tags": [
     "php",
     "laravel",
@@ -22,16 +22,32 @@
     "jeffallan/claude-skills@laravel-specialist"
   ],
   "verify": {
-    "command": "php artisan test"
+    "command": "php artisan test",
+    "matrix": [
+      {
+        "testing": [
+          "pest"
+        ]
+      },
+      {
+        "auth": [
+          "laravel-sanctum"
+        ]
+      }
+    ]
   },
   "libraries": {
     "framework": [
       "laravel"
     ],
+    "design": [
+      "design-pack"
+    ],
     "workflow": [
-      "superpowers",
-      "mattpocock-skills"
-    ]
+      "essentials"
+    ],
+    "auth": "none",
+    "testing": []
   },
-  "instructions": "## Cómo trabajar aquí\n\n- Genera con Artisan (`php artisan make:model Pedido -mcr`) en vez de crear archivos a mano.\n- Valida con Form Requests y protege las rutas con middleware y policies.\n- Tras cambiar el esquema: `php artisan migrate`. Antes de terminar: `php artisan test`."
+  "instructions": "## How to work here\n\n- Generate with Artisan (`php artisan make:model Order -mcr`) instead of creating files by hand.\n- Validate with Form Requests and protect routes with middleware and policies.\n- After changing the schema: `php artisan migrate`. Before finishing: `php artisan test`."
 }

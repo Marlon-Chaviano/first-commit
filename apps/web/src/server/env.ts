@@ -47,7 +47,7 @@ const schema = z.object({
   STRIPE_API_URL: z.url().optional(),
   /** Platform commission on premium kits, in percent. */
   PLATFORM_FEE_PERCENT: z.coerce.number().min(0).max(50).default(15),
-  /** Optional: Claude for "Describe tu proyecto". Without it the keyword recommender answers. */
+  /** Optional: Claude for "Describe your project". Without it the keyword recommender answers. */
   ANTHROPIC_API_KEY: z.string().min(1).optional(),
   /** Model for the recommender. Haiku by default: it's the cheapest and the task is small. */
   RECOMMEND_MODEL: z.string().default("claude-haiku-4-5"),

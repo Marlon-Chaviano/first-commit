@@ -1,0 +1,42 @@
+{
+  "$schema": "../../kit.schema.json",
+  "version": "1.0.0",
+  "author": "Marlon Chaviano",
+  "name": "web-angular",
+  "title": "Web app with Angular",
+  "category": "web",
+  "language": "typescript",
+  "description": "Modern Angular: standalone components, signals, the new control flow and esbuild builds, from the official CLI.",
+  "tags": [
+    "angular",
+    "typescript",
+    "signals"
+  ],
+  "base": {
+    "command": "npx -y @angular/cli@latest new {{name}} --defaults --skip-git --skip-install --style=css --ssr=false --package-manager {{pm}}",
+    "install": "{{pm}} install"
+  },
+  "packageManagers": [
+    "npm",
+    "pnpm",
+    "bun"
+  ],
+  "skills": [
+    "angular/angular@angular-developer"
+  ],
+  "libraries": {
+    "framework": [
+      "angular"
+    ],
+    "design": [
+      "design-pack"
+    ],
+    "workflow": [
+      "essentials"
+    ]
+  },
+  "verify": {
+    "command": "{{pm}} run build"
+  },
+  "instructions": "## How to work here\n\n- Standalone components, state with `signal()`/`computed()` and templates with the new control flow (`@if`, `@for`). No new NgModules.\n- Generate pieces with the CLI (`npx ng g component <name>`) to follow the project's conventions.\n- Before finishing: `npm run build`."
+}

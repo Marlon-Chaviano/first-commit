@@ -11,6 +11,9 @@ import { parseSkillRef } from "@kits/schema";
  * from `--list` that still install by name, so a missing one gets a real
  * install attempt in a temp folder before being reported.
  */
+/** Per repository: a huge or unreachable repo is reported as missing instead of blocking the check. */
+const TIMEOUT_MS = 180_000;
+
 export function checkSkills(refs: Iterable<string>, onSource?: (source: string, ok: boolean) => void): { missing: string[] } {
   const bySource = new Map<string, string[]>();
   for (const ref of refs) {
@@ -27,6 +30,7 @@ export function checkSkills(refs: Iterable<string>, onSource?: (source: string, 
         cwd,
         encoding: "utf8",
         stdio: ["ignore", "pipe", "pipe"],
+        timeout: TIMEOUT_MS,
       }).replace(/\x1b\[[0-9;?]*[A-Za-z]/g, "");
     } catch {
       // Network hiccup or rate limit: fall through to trying a real install.
@@ -45,6 +49,7 @@ function installs(source: string, skill: string): boolean {
     execFileSync("npx", ["-y", "skills@latest", "add", source, "--skill", skill, "--agent", "claude-code", "--yes"], {
       cwd: dir,
       stdio: "ignore",
+      timeout: TIMEOUT_MS,
     });
     return existsSync(join(dir, ".claude", "skills", skill));
   } catch {

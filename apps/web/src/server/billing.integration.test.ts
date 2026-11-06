@@ -68,12 +68,12 @@ describe.skipIf(!run)("orgs, billing and premium kits (Postgres + stripe-mock)",
   });
 
   it("creates an org, adds a member and refuses outsiders", async () => {
-    const org = await m.orgs.createOrg(ana!, { slug: `it-acme-${tag}`, name: "Acme" });
+    const org = await m.orgs.createOrg(ana!, { slug: `it-acme-${tag}`, name: "Acme", verified: { email: "ana@acme.test", domain: "acme.test" } });
     orgId = org.id;
     await m.orgs.addMember(org, ana!, bob!.handle, "member");
     expect(await m.orgs.roleIn(org.id, bob!.id)).toBe("member");
-    await expect(m.orgs.addMember(org, bob!, eve!.handle, "member")).rejects.toThrow(/permiso/);
-    await expect(m.orgs.createOrg(eve!, { slug: ana!.handle, name: "x" })).rejects.toThrow(/usuario/);
+    await expect(m.orgs.addMember(org, bob!, eve!.handle, "member")).rejects.toThrow(/permission/);
+    await expect(m.orgs.createOrg(eve!, { slug: ana!.handle!, name: "x", verified: { email: "eve@acme.test", domain: "acme.test" } })).rejects.toThrow(/is a user/);
     expect(await m.orgs.canReadKit({ visibility: "org", orgId: org.id }, bob!)).toBe(true);
     expect(await m.orgs.canReadKit({ visibility: "org", orgId: org.id }, eve!)).toBe(false);
   });
@@ -128,13 +128,13 @@ describe.skipIf(!run)("orgs, billing and premium kits (Postgres + stripe-mock)",
     await db!.insert(m.schema.kits).values({ id: kitId, slug, ownerId: ana!.id, repo: "local/dev", latestVersion: "1.0.0", title: "Paid", description: "d", category: "web" });
     await db!.insert(m.schema.kitVersions).values({ kitId, version: "1.0.0", commitSha: "local", manifest: {}, integrity: "x", archive: packDir(dir) });
 
-    await expect(m.billing.setKitPrice(ana!, slug, 1900)).rejects.toThrow(/cobros/);
+    await expect(m.billing.setKitPrice(ana!, slug, 1900)).rejects.toThrow(/payouts/);
     await m.billing.handleStripeEvent(event("account.updated", { id: account.stripeAccountId, charges_enabled: true, payouts_enabled: true }));
     await m.billing.setKitPrice(ana!, slug, 1900);
-    await expect(m.billing.setKitPrice(bob!, slug, 500)).rejects.toThrow(/no encontrado/i);
+    await expect(m.billing.setKitPrice(bob!, slug, 500)).rejects.toThrow(/not found/i);
 
     expect(await m.billing.createKitCheckout(eve!, slug)).toMatch(/^https?:\/\//);
-    await expect(m.billing.createKitCheckout(ana!, slug)).rejects.toThrow(/Ya tienes/);
+    await expect(m.billing.createKitCheckout(ana!, slug)).rejects.toThrow(/already have/);
 
     expect(await m.billing.hasLicense(kitId, eve!.id)).toBe(false);
     const paid = event("checkout.session.completed", {

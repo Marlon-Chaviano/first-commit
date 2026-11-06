@@ -13,15 +13,15 @@ const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: { default: `${BRAND.name}: de carpeta vacía a primer commit`, template: `%s · ${BRAND.name}` },
+  title: { default: `${BRAND.name}: from empty folder to first commit`, template: `%s · ${BRAND.name}` },
   metadataBase: new URL(BRAND.siteUrl),
   description:
-    "Un comando y tu proyecto arranca con dependencias, skills y MCP listos para tu agente.",
+    "One command and your project starts with dependencies, skills and MCP ready for your agent.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="es" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
+    <html lang="en" data-scroll-behavior="smooth" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
       <body className="flex min-h-full flex-col">
         <TooltipProvider>
           <SiteHeader />

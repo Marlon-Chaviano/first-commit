@@ -7,8 +7,13 @@ Registro de *workspace kits*: una web (catálogo + configurador) y un CLI (`crea
 ```
 packages/schema/        Fuente única del formato kit.json, resolución de opciones, planificador
                         (buildPlan), generador del comando, verify y eventos. Lo usan web y CLI.
+  src/load.ts           loadKitFrom(top, source): extends → parse → catálogo (→ admitir). Toda carga de kits pasa por aquí
+  src/selections.ts     selectionsFrom(kit, petición, política): la única forma de construir Selections
+  src/package-managers.ts  Una fila por gestor de paquetes (lenguaje, exec, add, lockfiles, CI)
+  src/node/registry.ts  registrySource(dir) y loadRegistryKits(dir): la carpeta registry/ como fuente (tests, scripts)
 packages/cli/           CLI create-first-commit: args → registry (descarga + extends) → plan → exec → telemetry
   src/create/           `create-first-commit create`: detecta framework, bibliotecas, skills, MCP… y escribe un kit
+  src/kit-location.ts   locateKit: decide de dónde viene un kit y cómo se verifica (puro, con tests)
   src/test.ts           `create-first-commit test`: instala combinaciones, ejecuta verify y sube el informe (OIDC)
   src/update.ts, add.ts, doctor.ts, lockfile.ts, notice.ts
                         Retención: kits.lock, actualizar sin pisar cambios, añadir del catálogo, diagnosticar
@@ -36,13 +41,13 @@ apps/web/src/
   features/orgs, billing, newsletter, recommend
                         Organizaciones, planes y kits de pago (Stripe), newsletter y "Describe tu proyecto"
   emails/               Plantillas de React Email (blanco y negro, estilos en línea)
-  lib/                  Utilidades puras compartidas cliente/servidor
+  lib/                  Utilidades puras compartidas cliente/servidor (kit-query: búsqueda y facetas de kits)
 docs/                   Arquitectura (ARCHITECTURE.md) y roadmap por fases (roadmap/)
 ```
 
 ## Reglas
 
-- **UI**: siempre componentes de shadcn (`pnpm dlx shadcn@latest add <comp>` dentro de `apps/web`). Nada de colores crudos: solo tokens semánticos (`bg-background`, `text-muted-foreground`, `border-border`…). El diseño es **solo blanco y negro**, inspirado en skills.sh: títulos de sección con la utilidad `label-mono`, Geist + Geist Mono.
+- **UI**: siempre componentes de shadcn (`pnpm dlx shadcn@latest add <comp>` dentro de `apps/web`). Nada de colores crudos: solo tokens semánticos (`bg-background`, `text-muted-foreground`, `border-border`…). El diseño es **solo blanco y negro**, inspirado en skills.sh (única excepción: los colores de estado `--success`, `--info`, `--warning` y `--destructive`, solo para feedback: toasts y el nivel de riesgo de las auditorías): títulos de sección con la utilidad `label-mono`, Geist + Geist Mono.
 - **Next.js 16** con Cache Components: lee `apps/web/node_modules/next/dist/docs/` antes de usar APIs de caché o de rutas. Los datos se cachean con `"use cache"` + `cacheLife` + `cacheTag`.
 - **Servidor**: todo lo que toque Redis, Postgres o secretos va en `src/server/` con `import "server-only"`. Todo servicio es opcional: sin variables de entorno la web debe seguir funcionando.
 - **Cuentas**: la sesión se lee con `getViewer()` (páginas y acciones) o `getRequestUser()` (route handlers: sesión o token `kits_…`), siempre dentro de `<Suspense>`. Toda acción comprueba permisos en el servidor (dueño o `isAdmin`). `handle` y `role` nunca se aceptan como entrada.

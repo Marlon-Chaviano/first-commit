@@ -3,7 +3,7 @@ import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import { join, relative } from "node:path";
 
-import { LIBRARY_KINDS, type Catalog, type Library, type LibraryKind, type McpServer, type PackageManager } from "@kits/schema";
+import { BRAND, LIBRARY_KINDS, pmFromLockfiles, type Catalog, type Library, type LibraryKind, type McpServer, type PackageManager } from "@kits/schema";
 
 import { detectFramework, isBaseline, type FrameworkMatch } from "./frameworks";
 
@@ -42,7 +42,7 @@ const SOURCE_ROOTS = new Set(["src", "app", "lib", "components"]);
 /** `baseOverride`: the scaffold command, for frameworks kits doesn't recognize. */
 export async function detectProject(dir: string, catalog: Catalog, baseOverride?: string): Promise<Detection> {
   const pkgPath = join(dir, "package.json");
-  if (!existsSync(pkgPath)) throw new Error(`No hay package.json en ${dir}. create-first-commit create necesita un proyecto JavaScript/TypeScript.`);
+  if (!existsSync(pkgPath)) throw new Error(`No package.json in ${dir}. ${BRAND.cli} create needs a JavaScript/TypeScript project.`);
   const pkg = JSON.parse(await readFile(pkgPath, "utf8")) as {
     name?: string;
     dependencies?: Record<string, string>;
@@ -55,12 +55,12 @@ export async function detectProject(dir: string, catalog: Catalog, baseOverride?
   const detected = detectFramework(all);
   const framework: FrameworkMatch | null = baseOverride
     ? {
-        ...(detected ?? { id: "custom", label: "Proyecto propio", category: "other", frameworks: [], ui: false, baseline: [] }),
+        ...(detected ?? { id: "custom", label: "Custom project", category: "other", frameworks: [], ui: false, baseline: [] }),
         base: { command: baseOverride },
       }
     : detected;
   if (!framework) {
-    throw new Error("No reconozco el framework (Next.js, Expo, Hono, WXT o Vite). Usa --base \"<comando que crea el proyecto>\".");
+    throw new Error("Unrecognized framework (Next.js, Expo, Hono, WXT or Vite). Use --base \"<command that creates the project>\".");
   }
 
   const libraries = matchLibraries(dir, catalog, framework, all);
@@ -245,9 +245,7 @@ function groupFiles(files: string[]): Detection["fileGroups"] {
 }
 
 export function detectPm(dir: string): PackageManager {
-  if (existsSync(join(dir, "pnpm-lock.yaml"))) return "pnpm";
-  if (existsSync(join(dir, "bun.lock")) || existsSync(join(dir, "bun.lockb"))) return "bun";
-  return "npm";
+  return pmFromLockfiles((file) => existsSync(join(dir, file)));
 }
 
 function gitRemote(dir: string): string | undefined {

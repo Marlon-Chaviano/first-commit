@@ -22,7 +22,7 @@ import { REGISTRY } from "./registry";
 const changelogSchema = z.array(z.object({ date: z.iso.date(), title: z.string(), items: z.array(z.string()) }));
 export type ChangelogEntry = z.infer<typeof changelogSchema>[number];
 
-/** registry/changelog.json, newest first. Feeds /novedades and the weekly digest. */
+/** registry/changelog.json, newest first. Feeds /changelog and the weekly digest. */
 export async function getChangelog(): Promise<ChangelogEntry[]> {
   "use cache";
   cacheLife("max");
@@ -36,13 +36,22 @@ const siteUrl = () => env.BETTER_AUTH_URL ?? BRAND.siteUrl;
 /** Unsubscribe links are signed: they work forever without storing a second secret per subscriber. */
 function signature(id: string): string {
   const secret = env.BETTER_AUTH_SECRET ?? env.CRON_SECRET;
-  if (!secret && process.env.NODE_ENV === "production") throw new Error("Falta BETTER_AUTH_SECRET para firmar las bajas");
+  if (!secret && process.env.NODE_ENV === "production") throw new Error("BETTER_AUTH_SECRET is missing to sign unsubscribe links");
   return createHmac("sha256", secret ?? "dev-only").update(`unsubscribe:${id}`).digest("base64url");
 }
 
+/** The page behind the email's "Unsubscribe" link: it asks before doing anything, so link scanners can't unsubscribe anyone. */
 export function unsubscribeUrl(id: string): string {
-  return `${siteUrl()}/novedades/baja?id=${id}&sig=${signature(id)}`;
+  return `${siteUrl()}/changelog/unsubscribe?id=${id}&sig=${signature(id)}`;
 }
+
+/** RFC 8058 one-click endpoint (List-Unsubscribe-Post): mail clients POST to it. */
+export function oneClickUnsubscribeUrl(id: string): string {
+  return `${siteUrl()}/api/newsletter/unsubscribe?id=${id}&sig=${signature(id)}`;
+}
+
+/** A confirm link is valid for a week after the last subscribe attempt. */
+const CONFIRM_TTL_MS = 7 * 86_400_000;
 
 export type SubscribeResult = "sent" | "already" | "unavailable";
 
@@ -57,13 +66,15 @@ export async function subscribe(rawEmail: string): Promise<SubscribeResult> {
     .insert(newsletterSubscribers)
     .values({ email, tokenHash: sha(token), status: "pending" })
     .onConflictDoUpdate({ target: newsletterSubscribers.email, set: { tokenHash: sha(token), status: "pending", createdAt: new Date() } });
-  const confirmUrl = `${siteUrl()}/novedades/confirmar?token=${token}`;
-  await sendEmail({
+  const confirmUrl = `${siteUrl()}/changelog/confirm?token=${token}`;
+  const sent = await sendEmail({
     to: email,
-    subject: `Confirma tu suscripción a ${BRAND.name}`,
+    subject: `Confirm your subscription to ${BRAND.name}`,
     html: await render(ConfirmEmail({ brand: BRAND.name, confirmUrl })),
-    text: `Confirma tu suscripción: ${confirmUrl}`,
+    text: `Confirm your subscription: ${confirmUrl}`,
   });
+  // Without an email provider nobody could ever confirm; in development the email is logged instead.
+  if (!sent && process.env.NODE_ENV === "production") return "unavailable";
   return "sent";
 }
 
@@ -72,7 +83,13 @@ export async function confirmSubscription(token: string): Promise<boolean> {
   const rows = await db
     .update(newsletterSubscribers)
     .set({ status: "confirmed", confirmedAt: new Date() })
-    .where(and(eq(newsletterSubscribers.tokenHash, sha(token)), eq(newsletterSubscribers.status, "pending")))
+    .where(
+      and(
+        eq(newsletterSubscribers.tokenHash, sha(token)),
+        eq(newsletterSubscribers.status, "pending"),
+        gte(newsletterSubscribers.createdAt, new Date(Date.now() - CONFIRM_TTL_MS)),
+      ),
+    )
     .returning({ id: newsletterSubscribers.id });
   return rows.length > 0;
 }
@@ -109,9 +126,9 @@ export interface DigestResult {
  */
 export async function sendWeeklyDigest(now = new Date()): Promise<DigestResult> {
   const week = isoWeek(now);
-  if (!db) return { week, status: "skipped", reason: "sin base de datos", recipients: 0 };
+  if (!db) return { week, status: "skipped", reason: "no database", recipients: 0 };
   const last = (await db.select().from(newsletterIssues).orderBy(desc(newsletterIssues.sentAt)).limit(1))[0];
-  if (last?.week === week) return { week, status: "skipped", reason: "ya enviado esta semana", recipients: 0 };
+  if (last?.week === week) return { week, status: "skipped", reason: "already sent this week", recipients: 0 };
 
   const since = last?.sentAt ?? new Date(now.getTime() - 7 * 86_400_000);
   const news = (await getChangelog()).filter((e) => new Date(`${e.date}T23:59:59Z`) > since).slice(0, 3);
@@ -119,13 +136,13 @@ export async function sendWeeklyDigest(now = new Date()): Promise<DigestResult> 
   const active = and(eq(kits.status, "active"), eq(kits.official, false), eq(kits.visibility, "public"));
   const featured = (await db.select().from(kits).where(and(active, isNotNull(kits.featuredAt), gte(kits.featuredAt, since))).orderBy(desc(kits.featuredAt)).limit(3)).map(toDigest);
   const newKits = (await db.select().from(kits).where(and(active, gte(kits.createdAt, since))).orderBy(desc(kits.createdAt)).limit(5)).map(toDigest);
-  if (!news.length && !featured.length && !newKits.length) return { week, status: "skipped", reason: "nada nuevo", recipients: 0 };
+  if (!news.length && !featured.length && !newKits.length) return { week, status: "skipped", reason: "nothing new", recipients: 0 };
 
   const subscribers = await db.select({ id: newsletterSubscribers.id, email: newsletterSubscribers.email }).from(newsletterSubscribers).where(eq(newsletterSubscribers.status, "confirmed"));
-  const subject = news[0]?.title ?? featured[0]?.title ?? `Kits nuevos en ${BRAND.name}`;
+  const subject = news[0]?.title ?? featured[0]?.title ?? `New kits on ${BRAND.name}`;
   // Claim the week first: a retried or concurrent run hits the unique index and stops here.
   const claimed = await db.insert(newsletterIssues).values({ week, subject, recipients: 0 }).onConflictDoNothing().returning({ id: newsletterIssues.id });
-  if (!claimed.length) return { week, status: "skipped", reason: "ya enviado esta semana", recipients: 0 };
+  if (!claimed.length) return { week, status: "skipped", reason: "already sent this week", recipients: 0 };
 
   const emails = await Promise.all(
     subscribers.map(async (s) => {
@@ -134,7 +151,7 @@ export async function sendWeeklyDigest(now = new Date()): Promise<DigestResult> 
         to: s.email,
         subject,
         html: await render(DigestEmail({ brand: BRAND.name, siteUrl: siteUrl(), unsubscribeUrl: unsub, news, featured, newKits })),
-        headers: { "List-Unsubscribe": `<${unsub}>`, "List-Unsubscribe-Post": "List-Unsubscribe=One-Click" },
+        headers: { "List-Unsubscribe": `<${oneClickUnsubscribeUrl(s.id)}>`, "List-Unsubscribe-Post": "List-Unsubscribe=One-Click" },
       };
     }),
   );

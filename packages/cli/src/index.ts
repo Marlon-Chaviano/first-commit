@@ -10,9 +10,11 @@ import {
   buildInitCommand,
   defaultSelections,
   PACKAGE_MANAGERS,
+  pmFromUserAgent,
   pruneSelections,
   requirementsMet,
   resolve,
+  selectionsFrom,
   skillRefSchema,
   validateSelections,
   type Kit,
@@ -26,7 +28,7 @@ import { create } from "./create";
 import { lockKitRef, managedFiles, newLock, writeLock } from "./lockfile";
 import { login, logout, publish, whoami } from "./account";
 import { add } from "./add";
-import { applyBrand, brand, describeBrand, loadBrand } from "./brand";
+import { applyBrand, brand, describeBrand, downloadBrandAssets, loadBrand } from "./brand";
 import { doctor } from "./doctor";
 import { mcp } from "./mcp";
 import { updateNotice } from "./notice";
@@ -34,6 +36,7 @@ import { test } from "./test";
 import { update } from "./update";
 import { kitTrust } from "./trust";
 import { describe, execute } from "./exec";
+import { closest, commandHelp, helpText } from "./help";
 import { nodePaths } from "./paths";
 import { loadIndex, loadKit } from "./registry";
 import { reportInstall } from "./telemetry";
@@ -42,78 +45,18 @@ const VERSION = "0.1.0";
 
 const CLI = `npx ${BRAND.cli}`;
 
-const HELP = `
-${pc.bold(BRAND.name)} — workspaces listos para programar con tu agente
-
-${pc.bold("Uso")}
-  ${CLI}                         elige un kit y crea el proyecto
-  ${CLI} <kit> [nombre] [opciones]  crea el proyecto (o: init <kit>)
-  ${CLI} list
-  ${CLI} info <kit>
-  ${CLI} create [carpeta]        convierte un proyecto en un kit
-  ${CLI} create --blank <nombre> kit vacío para escribir a mano
-  ${CLI} test [kit]              instala y compila el kit con varias combinaciones
-  ${CLI} login | logout | whoami  sesión para publicar (token de ${BRAND.siteUrl}/cuenta)
-  ${CLI} publish [carpeta]       publica el kit en el commit actual (debe estar en GitHub)
-                                 --org <org>: en el registro privado de tu organización
-
-${pc.bold("Dentro de un proyecto")}
-  ${CLI} update [versión]        trae las mejoras del kit (no toca tus archivos modificados)
-  ${CLI} add <biblioteca|skill>  añade sentry, posthog, kokonutui… o owner/repo@skill
-  ${CLI} doctor [--json]         comprueba que el proyecto sigue sus reglas
-  ${CLI} brand <dueño/nombre>    aplica un perfil de marca (colores, fuentes, reglas y docs de la empresa)
-  ${CLI} brand detect [carpeta]  crea un brand.json a partir de los estilos de un proyecto
-
-${pc.bold("Para agentes")}
-  ${CLI} mcp                     servidor MCP (stdio): buscar, recomendar, planear y crear proyectos
-
-${pc.bold("Kits")}
-  mobile-expo            kit oficial
-  usuario/repo[/ruta]    kit de la comunidad en GitHub
-  ./ruta/al/kit          kit local
-
-${pc.bold("Opciones al crear")}
-  --<opción> <valor>     elige una opción del kit (ver \`${BRAND.cli} info <kit>\`)
-  --skill <owner/repo@skill>   añade un skill (repetible)
-  --no-skill <owner/repo@skill> quita un skill del kit (repetible)
-  --no-skills            no instala ningún skill
-  --agent <a,b>          agentes: ${AGENTS.map((a) => a.id).join(", ")}
-  --pm <npm|pnpm|bun>    gestor de paquetes
-  --dry-run              muestra el plan sin ejecutar nada
-  --no-git               no hace commit inicial
-  --brand <dueño/nombre> aplica un perfil de marca (o --brand ./brand.json)
-  --allow-commands       con -y, permite ejecutar un kit de la comunidad sin verificar
-  -y, --yes              sin preguntas: usa los valores por defecto
-
-${pc.bold("Opciones de create")}
-  --out <carpeta>        dónde escribir el kit (por defecto ./kit)
-  --name, --title, --description, --category
-  --include <rutas>      archivos propios a copiar, separados por coma
-  --base "<comando>"     comando que crea el proyecto, si el framework no se reconoce
-  -y, --yes              sin preguntas
-
-${pc.bold("Opciones de test")}
-  --only-defaults        prueba solo los valores por defecto
-  --max <n>              máximo de combinaciones
-  --timeout <min>        tiempo máximo por comando (20)
-  --report <archivo>     dónde escribir el informe (kits-test-report.json)
-  --skip-skills          no comprueba que los skills existen
-  --keep                 conserva los proyectos de prueba (por defecto se borran)
-  --upload               envía el informe firmado (solo en GitHub Actions)
-
-${pc.dim(`${BRAND.name} cuenta instalaciones de forma anónima (kit, opciones, agentes).`)}
-${pc.dim("Desactívalo con DO_NOT_TRACK=1.")}
-`;
-
-const COMMANDS = new Set(["init", "create", "test", "login", "logout", "whoami", "publish", "update", "add", "doctor", "mcp", "brand", "list", "ls", "info"]);
+const COMMANDS = new Set(["help", "init", "create", "test", "login", "logout", "whoami", "publish", "update", "add", "doctor", "mcp", "brand", "list", "ls", "info"]);
 
 async function main() {
   const args = parseArgs(process.argv.slice(2));
-  if (args.switches.has("version")) return console.log(VERSION);
-  if (args.switches.has("help")) return console.log(HELP);
+  if (args.switches.has("version")) return console.log(`${BRAND.cli} ${VERSION}`);
+  if (args.switches.has("help") || args.command === "help") {
+    const topic = args.command === "help" ? args.positionals[0] : args.command;
+    return console.log((topic && commandHelp(topic)) ?? helpText(VERSION));
+  }
   // Like create-vite: no command in a terminal opens the kit picker; a kit name means `init`.
   if (!args.command) {
-    if (!process.stdin.isTTY) return console.log(HELP);
+    if (!process.stdin.isTTY) return console.log(helpText(VERSION));
     return init(args);
   }
   if (!COMMANDS.has(args.command)) return init({ ...args, positionals: [args.command, ...args.positionals], command: "init" });
@@ -149,7 +92,7 @@ async function main() {
     case "info":
       return info(args);
     default:
-      throw new Error(`Comando desconocido "${args.command}". Ejecuta \`${CLI} --help\`.`);
+      throw new Error(`Unknown command "${args.command}". Run \`${CLI} --help\`.`);
   }
 }
 
@@ -163,12 +106,12 @@ async function list() {
 
 async function info(args: ParsedArgs) {
   const ref = args.positionals[0];
-  if (!ref) throw new Error(`Uso: ${CLI} info <kit>`);
+  if (!ref) throw new Error(`Usage: ${CLI} info <kit>`);
   const { kit } = await loadKit(ref);
   console.log(`\n${pc.bold(kit.title)} ${pc.dim(`(${kit.name}@${kit.version})`)}\n${kit.description}\n`);
   for (const o of kit.options) {
     const defaults = Array.isArray(o.default) ? o.default : [o.default];
-    console.log(`${pc.cyan(`--${o.id}`)} ${pc.dim(o.type === "multi" ? "(varios, separados por coma)" : "")}`);
+    console.log(`${pc.cyan(`--${o.id}`)} ${pc.dim(o.type === "multi" ? "(several, comma-separated)" : "")}`);
     for (const c of o.choices) console.log(`  ${defaults.includes(c.id) ? pc.green("●") : "○"} ${c.id.padEnd(20)} ${pc.dim(c.label)}`);
   }
   console.log(`\n${pc.bold("Skills")}`);
@@ -180,24 +123,32 @@ async function init(args: ParsedArgs) {
   const interactive = Boolean(process.stdin.isTTY) && !args.switches.has("yes");
   let ref = args.positionals[0];
   if (!ref) {
-    if (!interactive) throw new Error(`Uso: ${CLI} <kit> [nombre]`);
+    if (!interactive) throw new Error(`Usage: ${CLI} <kit> [name]`);
     const entries = await loadIndex();
     ref = guard(
       await p.select({
-        message: "¿Qué quieres crear?",
+        message: "What do you want to create?",
         options: entries.map((e) => ({ value: e.name, label: e.title, hint: e.name })),
       }),
     );
   }
 
-  p.intro(pc.bgCyan(pc.black(` ${BRAND.name} `)));
+  p.intro(pc.bgWhite(pc.black(` ${BRAND.name} `)));
   const spinner = p.spinner();
-  spinner.start(`Cargando ${ref}`);
+  spinner.start(`Loading ${ref}`);
   let loaded: Awaited<ReturnType<typeof loadKit>>;
   try {
     loaded = await loadKit(ref);
   } catch (error) {
-    spinner.error(`No se pudo cargar ${ref}`);
+    spinner.error(`Couldn't load ${ref}`);
+    // A mistyped official kit or command: suggest the closest ones instead of only failing.
+    if (!ref.includes("/") && !ref.startsWith(".")) {
+      const names = await loadIndex()
+        .then((entries) => entries.map((e) => e.name))
+        .catch(() => [] as string[]);
+      const suggestions = closest(ref, [...names, ...COMMANDS]);
+      if (suggestions.length) throw new Error(`"${ref}" isn't a kit or a command. Did you mean ${suggestions.map((s) => pc.cyan(s)).join(", ")}?\n   ${pc.dim(`${CLI} list shows every kit.`)}`);
+    }
     throw error;
   }
   spinner.stop(`${loaded.kit.title}`);
@@ -206,12 +157,12 @@ async function init(args: ParsedArgs) {
   let name = args.positionals[1];
   if (!name) {
     name = interactive
-      ? guard(await p.text({ message: "Nombre del proyecto", placeholder: kit.name, defaultValue: kit.name }))
+      ? guard(await p.text({ message: "Project name", placeholder: kit.name, defaultValue: kit.name }))
       : kit.name;
   }
-  if (!/^[\w.-]+$/.test(name)) throw new Error(`Nombre de proyecto no válido: "${name}"`);
+  if (!/^[\w.-]+$/.test(name)) throw new Error(`Invalid project name: "${name}"`);
   const parentDir = process.cwd();
-  if (existsSync(join(parentDir, name))) throw new Error(`Ya existe un directorio "${name}"`);
+  if (existsSync(join(parentDir, name))) throw new Error(`A directory named "${name}" already exists`);
 
   const sel = await collectSelections(kit, args, interactive);
   validateSelections(kit, sel);
@@ -228,38 +179,50 @@ async function init(args: ParsedArgs) {
     [...steps.map((s) => describe(s, projectDir)), ...(brandProfile ? [describeBrand(brandProfile)] : [])]
       .map((line, i) => `${pc.dim(`${i + 1}.`)} ${line}`)
       .join("\n"),
-    unverified ? "Plan · kit de la comunidad SIN VERIFICAR" : trust === "verified" ? "Plan · kit verificado" : "Plan",
+    unverified ? "Plan · UNVERIFIED community kit" : trust === "verified" ? "Plan · verified kit" : "Plan",
   );
   if (args.switches.has("dry-run")) {
-    p.outro(`Dry run: no se ha ejecutado nada.\n   ${pc.dim(buildInitCommand(ref, kit, sel, name))}`);
+    p.outro(`Dry run: nothing was run.\n   ${pc.dim(buildInitCommand(ref, kit, sel, name))}`);
     return;
   }
   // Kits run shell commands: show them and ask before running anything from a third party.
   if (unverified) {
     if (!interactive && !args.switches.has("allow-commands")) {
       throw new Error(
-        `${ref} es un kit de la comunidad sin verificar. Revisa el plan con --dry-run y añade --allow-commands para ejecutarlo sin preguntas.`,
+        `${ref} is an unverified community kit. Review the plan with --dry-run and add --allow-commands to run it without prompts.`,
       );
     }
     if (interactive) {
       p.log.warn(
-        "Este kit no está verificado: nadie ha comprobado que funcione ni qué ejecuta. Revisa los comandos del plan como revisarías un script.",
+        "This kit isn't verified: nobody has checked that it works or what it runs. Review the plan's commands as you would review a script.",
       );
-      if (!guard(await p.confirm({ message: "¿Confías en este kit y quieres ejecutar sus comandos?", initialValue: false }))) {
-        p.cancel("Cancelado.");
+      if (!guard(await p.confirm({ message: "Do you trust this kit and want to run its commands?", initialValue: false }))) {
+        p.cancel("Cancelled.");
         return;
       }
     }
   }
-  if (interactive && !guard(await p.confirm({ message: "¿Ejecutar este plan?" }))) {
-    p.cancel("Cancelado.");
+  if (interactive && !guard(await p.confirm({ message: "Run this plan?" }))) {
+    p.cancel("Cancelled.");
     return;
   }
 
   // The commit goes last, after kits.lock exists, so the lock is part of it.
   const gitStep = steps.at(-1)?.kind === "git" ? steps.pop() : undefined;
-  const failed = await execute(steps, projectDir);
-  if (brandProfile) applyBrand(brandProfile, projectDir);
+  const verbose = args.switches.has("verbose");
+  let failed: Awaited<ReturnType<typeof execute>>;
+  try {
+    failed = await execute(steps, projectDir, { verbose });
+  } catch (error) {
+    // The half-made project would block the next attempt ("already exists"): say what to do.
+    if (existsSync(projectDir)) throw new Error(`${(error as Error).message}\n   ${pc.dim(`The incomplete project is in ./${name}. Delete it before trying again.`)}`);
+    throw error;
+  }
+  if (brandProfile) {
+    const images = await downloadBrandAssets(brandProfile, projectDir);
+    applyBrand(brandProfile, projectDir, images.files);
+    if (images.skipped.length) p.log.warn(`Brand images skipped:\n${images.skipped.join("\n")}`);
+  }
   const r = resolve(kit, sel);
   // kits.lock: what `update`, `add` and `doctor` need to know about this project.
   await writeLock(
@@ -274,18 +237,18 @@ async function init(args: ParsedArgs) {
       brand: brandProfile && brandRef ? { ref: brandRef, title: brandProfile.title } : null,
     }),
   );
-  if (gitStep) await execute([gitStep], projectDir);
+  if (gitStep) await execute([gitStep], projectDir, { verbose: true });
   await reportInstall(ref, kit.version, sel, r.skills, VERSION);
 
   const next = [`cd ${name}`];
-  if (Object.keys(r.env).length) next.push("cp .env.example .env   # y rellena las claves");
+  if (Object.keys(r.env).length) next.push("cp .env.example .env   # and fill in the keys");
   next.push(...sel.agents.filter((a) => a in AGENT_COMMANDS).map((a) => AGENT_COMMANDS[a]!));
-  p.note(next.join("\n"), "Siguiente paso");
+  p.note(next.join("\n"), "Next steps");
   if (failed.length) {
-    p.log.warn(`${failed.length} paso(s) fallaron. Puedes reintentarlos a mano:\n${failed.map((s) => `  ${describe(s, projectDir)}`).join("\n")}`);
-    p.outro(pc.yellow("Proyecto creado con avisos."));
+    p.log.warn(`${failed.length} step(s) failed. You can retry them by hand:\n${failed.map((s) => `  ${describe(s, projectDir)}`).join("\n")}`);
+    p.outro(pc.yellow("Project created with warnings."));
   } else {
-    p.outro(`${pc.green("Listo.")} ${r.skills.length} skills instalados para ${sel.agents.join(", ")}.`);
+    p.outro(`${pc.green("Done.")} ${r.skills.length} ${r.skills.length === 1 ? "skill" : "skills"} installed for ${sel.agents.join(", ")}.`);
   }
 }
 
@@ -323,11 +286,13 @@ async function collectSelections(kit: Kit, args: ParsedArgs, interactive: boolea
       }
     }
   }
-  sel = pruneSelections(kit, sel, explicit);
+  // Flags are checked strictly (a missing requirement is an error, not a silent drop); the rest is pruned.
+  const flags = Object.fromEntries([...explicit].map((id) => [id, sel.options[id] ?? []]));
+  sel = selectionsFrom(kit, { base: sel, options: flags }, { requirements: "throw" }).selections;
 
   const added = listFlag(args, "skill") ?? [];
   for (const s of added) {
-    if (!skillRefSchema.safeParse(s).success) throw new Error(`Skill no válido "${s}". Formato: owner/repo@skill`);
+    if (!skillRefSchema.safeParse(s).success) throw new Error(`Invalid skill "${s}". Format: owner/repo@skill`);
   }
   sel.addSkills = added;
   const removed = listFlag(args, "no-skill") ?? [];
@@ -339,7 +304,7 @@ async function collectSelections(kit: Kit, args: ParsedArgs, interactive: boolea
     const kitSkills = resolve(kit, sel).skills;
     const keep = guard(
       await p.multiselect({
-        message: "Skills a instalar",
+        message: "Skills to install",
         options: kitSkills.map((s) => ({ value: s, label: s })),
         initialValues: kitSkills,
         required: false,
@@ -352,12 +317,12 @@ async function collectSelections(kit: Kit, args: ParsedArgs, interactive: boolea
   if (agents) {
     const known = new Set<string>(AGENTS.map((a) => a.id));
     // Unknown ids still go to the skills CLI, which supports many more agents.
-    for (const a of agents) if (!known.has(a)) p.log.warn(`Agente "${a}": se instalarán los skills, pero kits no sabe configurar su MCP.`);
+    for (const a of agents) if (!known.has(a)) p.log.warn(`Agent "${a}": skills will be installed, but ${BRAND.name} doesn't know how to configure its MCP.`);
     sel.agents = agents;
   } else if (interactive) {
     sel.agents = guard(
       await p.multiselect({
-        message: "¿Con qué agentes vas a trabajar?",
+        message: "Which agents will you work with?",
         options: AGENTS.map((a) => ({ value: a.id, label: a.label })),
         initialValues: sel.agents,
         required: true,
@@ -365,14 +330,15 @@ async function collectSelections(kit: Kit, args: ParsedArgs, interactive: boolea
     );
   }
 
-  const pm = args.flags.get("pm")?.[0] ?? detectPm();
+  // `pnpm dlx <cli>` / `bunx <cli>` → that package manager; plain npx asks (or defaults to npm).
+  const pm = args.flags.get("pm")?.[0] ?? pmFromUserAgent(process.env.npm_config_user_agent ?? "");
   if (pm) {
-    if (!PACKAGE_MANAGERS.includes(pm as PackageManager)) throw new Error(`--pm debe ser ${PACKAGE_MANAGERS.join(", ")}`);
+    if (!PACKAGE_MANAGERS.includes(pm as PackageManager)) throw new Error(`--pm must be one of ${PACKAGE_MANAGERS.join(", ")}`);
     sel.pm = pm as PackageManager;
   } else if (interactive && kit.packageManagers.length > 1) {
     sel.pm = guard(
       await p.select({
-        message: "Gestor de paquetes",
+        message: "Package manager",
         options: kit.packageManagers.map((m) => ({ value: m, label: m })),
         initialValue: sel.pm,
       }),
@@ -381,17 +347,9 @@ async function collectSelections(kit: Kit, args: ParsedArgs, interactive: boolea
   return sel;
 }
 
-/** `pnpm dlx <cli>` / `bunx <cli>` → use that package manager. Plain npx asks (or defaults to npm). */
-function detectPm(): PackageManager | undefined {
-  const ua = process.env.npm_config_user_agent ?? "";
-  if (ua.startsWith("pnpm")) return "pnpm";
-  if (ua.startsWith("bun")) return "bun";
-  return undefined;
-}
-
 function guard<T>(value: T): Exclude<T, symbol> {
   if (p.isCancel(value)) {
-    p.cancel("Cancelado.");
+    p.cancel("Cancelled.");
     process.exit(0);
   }
   return value as Exclude<T, symbol>;

@@ -18,10 +18,10 @@ function walk(dir: string): string[] {
 /** Packs a kit folder (same files hashKitDir hashes). Throws over the size limits. */
 export function packDir(dir: string): Buffer {
   const files = walk(dir).sort();
-  if (files.length > ARCHIVE_LIMITS.files) throw new Error(`El kit tiene ${files.length} archivos (máximo ${ARCHIVE_LIMITS.files})`);
+  if (files.length > ARCHIVE_LIMITS.files) throw new Error(`The kit has ${files.length} files (maximum ${ARCHIVE_LIMITS.files})`);
   const entries = Object.fromEntries(files.map((f) => [relative(dir, f).split(sep).join("/"), readFileSync(f).toString("base64")]));
   const archive = gzipSync(JSON.stringify({ v: 1, files: entries }));
-  if (archive.length > ARCHIVE_LIMITS.bytes) throw new Error(`El kit ocupa ${(archive.length / 1024 / 1024).toFixed(1)} MB comprimido (máximo 5 MB)`);
+  if (archive.length > ARCHIVE_LIMITS.bytes) throw new Error(`The kit is ${(archive.length / 1024 / 1024).toFixed(1)} MB compressed (maximum 5 MB)`);
   return archive;
 }
 
@@ -29,12 +29,12 @@ export function packDir(dir: string): Buffer {
 export function unpackArchive(archive: Buffer, dir: string): void {
   if (archive.length > ARCHIVE_LIMITS.bytes) throw new Error("Archivo de kit demasiado grande");
   const parsed = JSON.parse(gunzipSync(archive, { maxOutputLength: 64 * 1024 * 1024 }).toString("utf8")) as { v?: number; files?: Record<string, string> };
-  if (parsed.v !== 1 || !parsed.files) throw new Error("Formato de kit no reconocido");
+  if (parsed.v !== 1 || !parsed.files) throw new Error("Unrecognized kit format");
   const root = resolve(dir);
   for (const [path, content] of Object.entries(parsed.files)) {
     const target = resolve(root, path);
     if (path.startsWith("/") || path.includes("\0") || (target !== root && !target.startsWith(root + sep))) {
-      throw new Error(`Ruta no permitida en el kit: ${path}`);
+      throw new Error(`Path not allowed in the kit: ${path}`);
     }
     mkdirSync(dirname(target), { recursive: true });
     writeFileSync(target, Buffer.from(content, "base64"));

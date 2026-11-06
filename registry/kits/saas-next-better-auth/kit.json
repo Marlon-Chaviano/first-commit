@@ -1,0 +1,86 @@
+{
+  "$schema": "../../kit.schema.json",
+  "version": "1.0.0",
+  "author": "Marlon Chaviano",
+  "name": "saas-next-better-auth",
+  "title": "SaaS with Next.js and Better Auth",
+  "category": "saas",
+  "language": "typescript",
+  "description": "A SaaS foundation with no third-party dependency for accounts: Next.js, Better Auth with your own database (Drizzle + Neon), Stripe, Resend and shadcn/ui.",
+  "tags": [
+    "nextjs",
+    "better-auth",
+    "drizzle",
+    "neon",
+    "stripe",
+    "shadcn"
+  ],
+  "base": {
+    "command": "npx create-next-app@latest {{name}} --ts --tailwind --eslint --app --src-dir --import-alias \"@/*\" --use-{{pm}} --disable-git --no-agent-feedback --yes"
+  },
+  "skills": [
+    "vercel-labs/openreview@next-best-practices",
+    "vercel-labs/agent-skills@vercel-react-best-practices"
+  ],
+  "libraries": {
+    "framework": [
+      "react",
+      "nextjs"
+    ],
+    "components": "shadcn",
+    "addons": [],
+    "animation": [],
+    "auth": "better-auth",
+    "database": "drizzle-neon",
+    "payments": "stripe",
+    "email": "resend",
+    "i18n": "none",
+    "ai": [],
+    "observability": [],
+    "testing": [],
+    "quality": [],
+    "ci": [],
+    "deploy": "vercel",
+    "design": [
+      "design-pack"
+    ],
+    "workflow": [
+      "essentials"
+    ],
+    "state": "none",
+    "data": "none",
+    "forms": []
+  },
+  "verify": {
+    "command": "{{pm}} run build && npm run --if-present test",
+    "matrix": [
+      {
+        "database": [
+          "drizzle-postgres"
+        ],
+        "payments": [
+          "polar"
+        ],
+        "testing": [
+          "vitest"
+        ],
+        "ci": [
+          "github-actions"
+        ]
+      },
+      {
+        "payments": [
+          "lemonsqueezy"
+        ],
+        "observability": [
+          "sentry-nextjs"
+        ],
+        "forms": [
+          "react-hook-form",
+          "zod"
+        ]
+      }
+    ]
+  },
+  "instructions": "## How to work here\n\n- Every permission check happens on the server (Server Components, Server Actions, Route Handlers), never only on the client.\n- Secrets (`*_SECRET`, `*_API_KEY`) are only read on the server; public variables are prefixed with `NEXT_PUBLIC_`.\n- Payment webhooks are the source of truth for the user's plan.\n- Before finishing: `npm run build`."
+}

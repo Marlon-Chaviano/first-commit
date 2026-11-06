@@ -1,9 +1,9 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "saas-next-supabase",
-  "version": "1.2.0",
-  "title": "SaaS con Next.js + Supabase",
-  "description": "Next.js con Supabase (auth y Postgres) y piezas del catálogo: Better Auth o Clerk, Drizzle, Stripe, Resend, i18n, IA, tests, CI y despliegue, con sus MCP y reglas para tu agente.",
+  "version": "1.3.0",
+  "title": "SaaS with Next.js + Supabase",
+  "description": "Next.js with Supabase (auth and Postgres) and pieces from the catalog: Better Auth or Clerk, Drizzle, Stripe, Resend, i18n, AI, tests, CI and deployment, with their MCP servers and rules for your agent.",
   "category": "saas",
   "tags": [
     "nextjs",
@@ -12,7 +12,7 @@
     "auth",
     "postgres"
   ],
-  "author": "kits",
+  "author": "Marlon Chaviano",
   "base": {
     "command": "npx create-next-app@latest {{name}} --ts --tailwind --eslint --app --src-dir --import-alias \"@/*\" --use-{{pm}} --disable-git --no-agent-feedback --yes"
   },
@@ -69,6 +69,58 @@
         "observability": [
           "posthog-nextjs"
         ]
+      },
+      {
+        "state": [
+          "zustand"
+        ],
+        "data": [
+          "tanstack-query"
+        ],
+        "forms": [
+          "react-hook-form"
+        ]
+      },
+      {
+        "database": [
+          "drizzle-neon"
+        ],
+        "payments": [
+          "lemonsqueezy"
+        ],
+        "deploy": [
+          "netlify"
+        ]
+      },
+      {
+        "database": [
+          "drizzle-turso"
+        ],
+        "payments": [
+          "polar"
+        ],
+        "deploy": [
+          "render"
+        ]
+      },
+      {
+        "database": [
+          "mongoose"
+        ],
+        "payments": [
+          "paddle"
+        ],
+        "deploy": [
+          "railway"
+        ]
+      },
+      {
+        "payments": [
+          "mercadopago"
+        ],
+        "deploy": [
+          "fly"
+        ]
       }
     ]
   },
@@ -80,7 +132,7 @@
     "supabase/agent-skills@supabase",
     "supabase/agent-skills@supabase-postgres-best-practices",
     "vercel-labs/agent-skills@vercel-react-best-practices",
-    "anthropics/skills@frontend-design"
+    "vercel-labs/openreview@next-best-practices"
   ],
   "mcp": {
     "supabase": {
@@ -114,11 +166,16 @@
     "quality": [],
     "ci": [],
     "deploy": "none",
+    "design": [
+      "design-pack"
+    ],
     "workflow": [
-      "superpowers",
-      "mattpocock-skills"
-    ]
+      "essentials"
+    ],
+    "state": "none",
+    "data": "none",
+    "forms": []
   },
-  "instructions": "## Cómo trabajar aquí\n\n- Clientes de Supabase en `src/lib/supabase/`: `client.ts` en componentes cliente, `server.ts` en Server Components, Route Handlers y Server Actions.\n- Toda tabla nueva lleva RLS. Usa el MCP de Supabase para ver el esquema antes de escribir consultas.\n- Para refrescar la sesión en cada request, sigue la guía actual de `@supabase/ssr` para Next.js (el skill `supabase` la tiene).",
+  "instructions": "## How to work here\n\n- Supabase clients in `src/lib/supabase/`: `client.ts` in client components, `server.ts` in Server Components, Route Handlers and Server Actions.\n- Every new table gets RLS. Use the Supabase MCP to look at the schema before writing queries.\n- To refresh the session on every request, follow the current `@supabase/ssr` guide for Next.js (the `supabase` skill has it).",
   "language": "typescript"
 }

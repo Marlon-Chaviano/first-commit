@@ -1,0 +1,47 @@
+{
+  "$schema": "../../kit.schema.json",
+  "version": "1.0.0",
+  "author": "Marlon Chaviano",
+  "name": "api-laravel",
+  "title": "API with Laravel",
+  "category": "api",
+  "language": "php",
+  "description": "Laravel as an API: routes in routes/api.php, token auth with Sanctum, Eloquent, validation with Form Requests and tests ready to go.",
+  "tags": [
+    "php",
+    "laravel",
+    "api",
+    "sanctum",
+    "eloquent"
+  ],
+  "base": {
+    "command": "command -v composer >/dev/null || { echo 'Necesitas Composer: https://getcomposer.org' >&2; exit 1; }; composer create-project laravel/laravel {{name}} --no-interaction --prefer-dist --quiet"
+  },
+  "packageManagers": [
+    "composer"
+  ],
+  "skills": [
+    "jeffallan/claude-skills@laravel-specialist"
+  ],
+  "libraries": {
+    "framework": [
+      "laravel"
+    ],
+    "auth": "laravel-sanctum",
+    "testing": [],
+    "workflow": [
+      "essentials"
+    ]
+  },
+  "verify": {
+    "command": "php artisan test",
+    "matrix": [
+      {
+        "testing": [
+          "pest"
+        ]
+      }
+    ]
+  },
+  "instructions": "## How to work here\n\n- API routes go in `routes/api.php` (prefix `/api`); protect them with `auth:sanctum`.\n- Respond with API Resources (`php artisan make:resource`) and validate with Form Requests (`php artisan make:request`); never return models as they are.\n- Database changes only through migrations.\n- Before finishing: `php artisan test`."
+}

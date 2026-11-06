@@ -30,7 +30,7 @@ describe("integrity", () => {
     const dir = kit(files);
     const map = { a: { "1.0.0": hashKitDir(dir) } };
     expect(() => verifyIntegrity(dir, "a", "1.0.0", map)).not.toThrow();
-    expect(() => verifyIntegrity(kit({ ...files, "kit.json": "{}" }), "a", "1.0.0", map)).toThrow(/integridad/);
-    expect(() => verifyIntegrity(dir, "a", "2.0.0", map)).toThrow(/No hay hash/);
+    expect(() => verifyIntegrity(kit({ ...files, "kit.json": "{}" }), "a", "1.0.0", map)).toThrow(/integrity/);
+    expect(() => verifyIntegrity(dir, "a", "2.0.0", map)).toThrow(/no published hash/);
   });
 });

@@ -37,7 +37,7 @@ function progress() {
 export async function test(args: ParsedArgs, cliVersion: string): Promise<void> {
   const ref = args.positionals[0] ?? ".";
   const startedAt = new Date();
-  p.intro(pc.bgCyan(pc.black(` ${BRAND.name} test `)));
+  p.intro(pc.bgWhite(pc.black(` ${BRAND.name} test `)));
 
   const loaded = await loadKit(ref);
   const { kit } = loaded;
@@ -49,17 +49,17 @@ export async function test(args: ParsedArgs, cliVersion: string): Promise<void> 
   const command = kit.verify?.command ?? DEFAULT_VERIFY_COMMAND;
   // Per command, so one hung install fails its combination instead of blocking the run forever.
   const timeoutMs = Number(args.flags.get("timeout")?.[0] ?? 20) * 60_000;
-  p.log.info(`${kit.name}@${kit.version} · ${combos.length} combinaciones · verificación: ${command}`);
+  p.log.info(`${kit.name}@${kit.version} · ${combos.length} combinations · check: ${command}`);
 
   // Skills are checked once (they don't affect the build) instead of installed per combination.
   let skills: VerificationReport["skills"] = { checked: 0, missing: [] };
   const refs = allKitSkills(kit);
   if (!args.switches.has("skip-skills") && refs.length) {
     const spinner = progress();
-    spinner.start(`Comprobando ${refs.length} skills`);
+    spinner.start(`Checking ${refs.length} skills`);
     skills = { checked: refs.length, ...checkSkills(refs) };
-    if (skills.missing.length) spinner.error(`Skills que no existen: ${skills.missing.join(", ")}`);
-    else spinner.stop(`${refs.length} skills existen`);
+    if (skills.missing.length) spinner.error(`Skills that don't exist: ${skills.missing.join(", ")}`);
+    else spinner.stop(`${refs.length} skills exist`);
   }
 
   const keep = args.switches.has("keep");
@@ -82,7 +82,7 @@ export async function test(args: ParsedArgs, cliVersion: string): Promise<void> 
       // Strict: a setup step that only warns during `init` still fails verification.
       if (failed.length) failedStep = failed.map((s) => s.title).join(", ");
       else {
-        failedStep = "Verificación";
+        failedStep = "Check";
         await run(fillTemplate(command, templateVars(sel, "app")), projectDir, fd, timeoutMs);
         failedStep = undefined;
       }
@@ -100,7 +100,7 @@ export async function test(args: ParsedArgs, cliVersion: string): Promise<void> 
     results.push({ label: combo.label, options: sel.options, pm: sel.pm, ok, durationMs: Date.now() - started, failedStep, error });
     const secs = Math.round((Date.now() - started) / 1000);
     if (ok) spinner.stop(`${pc.green("✓")} ${combo.label} ${pc.dim(`${secs}s`)}`);
-    else spinner.error(`${combo.label} — falló en "${failedStep}" ${pc.dim(`(log: ${logPath})`)}`);
+    else spinner.error(`${combo.label} — failed at "${failedStep}" ${pc.dim(`(log: ${logPath})`)}`);
   }
 
   const report: VerificationReport = {
@@ -117,13 +117,13 @@ export async function test(args: ParsedArgs, cliVersion: string): Promise<void> 
   };
   const reportPath = resolve(args.flags.get("report")?.[0] ?? "kits-test-report.json");
   await writeFile(reportPath, JSON.stringify(report, null, 2) + "\n");
-  p.log.info(`Informe: ${relative(process.cwd(), reportPath)} · logs: ${logDir}`);
+  p.log.info(`Report: ${relative(process.cwd(), reportPath)} · logs: ${logDir}`);
 
   if (args.switches.has("upload")) await upload(report);
 
-  if (report.ok) p.outro(pc.green(`${kit.name}@${kit.version} verificado: ${results.length} combinaciones correctas.`));
+  if (report.ok) p.outro(pc.green(`${kit.name}@${kit.version} verified: ${results.length} combinations passed.`));
   else {
-    p.outro(pc.red(`${results.filter((r) => !r.ok).length} de ${results.length} combinaciones fallaron.`));
+    p.outro(pc.red(`${results.filter((r) => !r.ok).length} of ${results.length} combinations failed.`));
     process.exitCode = 1;
   }
 }
@@ -160,12 +160,12 @@ async function upload(report: VerificationReport): Promise<void> {
   const url = process.env.ACTIONS_ID_TOKEN_REQUEST_URL;
   const token = process.env.ACTIONS_ID_TOKEN_REQUEST_TOKEN;
   if (!url || !token) {
-    throw new Error("--upload solo funciona en GitHub Actions con `permissions: id-token: write`.");
+    throw new Error("--upload only works in GitHub Actions with `permissions: id-token: write`.");
   }
   const oidc = await fetch(`${url}&audience=${encodeURIComponent(VERIFICATION_AUDIENCE)}`, {
     headers: { authorization: `bearer ${token}` },
   });
-  if (!oidc.ok) throw new Error(`No se pudo obtener el token OIDC de GitHub (${oidc.status})`);
+  if (!oidc.ok) throw new Error(`Couldn't get GitHub's OIDC token (${oidc.status})`);
   const { value } = (await oidc.json()) as { value: string };
 
   const api = process.env.KITS_API_URL ?? BRAND.siteUrl;
@@ -174,6 +174,6 @@ async function upload(report: VerificationReport): Promise<void> {
     headers: { "content-type": "application/json", authorization: `Bearer ${value}` },
     body: JSON.stringify(report),
   });
-  if (!res.ok) throw new Error(`La API rechazó el informe (${res.status}): ${await res.text()}`);
-  p.log.success(`Informe enviado a ${api}`);
+  if (!res.ok) throw new Error(`The API rejected the report (${res.status}): ${await res.text()}`);
+  p.log.success(`Report sent to ${api}`);
 }

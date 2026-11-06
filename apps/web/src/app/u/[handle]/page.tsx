@@ -56,7 +56,7 @@ async function Profile({ handle }: { handle: Promise<string> }) {
             <TableHeader>
               <TableRow className="hover:bg-transparent">
                 <TableHead className="label-mono text-muted-foreground">Kit</TableHead>
-                <TableHead className="label-mono w-24 text-right text-muted-foreground">Instalaciones</TableHead>
+                <TableHead className="label-mono w-24 text-right text-muted-foreground">Installs</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -74,7 +74,7 @@ async function Profile({ handle }: { handle: Promise<string> }) {
             </TableBody>
           </Table>
         ) : (
-          <p className="text-sm text-muted-foreground">Todavía no ha publicado kits.</p>
+          <p className="text-sm text-muted-foreground">No kits published yet.</p>
         )}
       </section>
     </>

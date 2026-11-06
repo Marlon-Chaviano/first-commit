@@ -70,7 +70,9 @@ Cada categoría nueva multiplica las combinaciones posibles. Las piezas técnica
 
 - **Más lenguajes y frameworks**, todos verificados con `create-first-commit test`: `web-astro`, `web-sveltekit`, `web-nuxt` (3 combinaciones), `spa-vite-react` (con Tailwind y alias `@/`, 3 combinaciones con shadcn/ui), `api-elysia` (Bun), `api-django`, `web-rails`, `web-laravel` y `api-spring-boot`. En total 17 kits oficiales en TypeScript, Python, Go, Ruby, PHP, Java y Swift.
 - Gestores nuevos: `deno`, `bundler`, `composer`, `maven` y `cargo`. Campo `language` en `kit.json` (o deducido del gestor).
-- **Skills de trabajo** en todos los kits (categoría `workflow`, activada por defecto y desactivable): Superpowers (brainstorming, planes, TDD, depuración sistemática, verificación, revisión) y `grill-me` e `improve-codebase-architecture` de Matt Pocock.
+- **Pack first-commit** en todos los kits (categoría `workflow`, biblioteca `essentials`, activada por defecto y desactivable): Superpowers (brainstorming, planes, TDD, depuración sistemática, verificación, revisión), `grill-me` e `improve-codebase-architecture` de Matt Pocock y `find-skills` de Vercel.
+- **Skills oficiales del framework**: Next.js → `next-best-practices`; Nuxt y Vue → `vue-best-practices` (+ `vue-pinia-best-practices` con Pinia); Svelte → `svelte-code-writer` y `svelte-core-bestpractices`; React → `vercel-react-best-practices`.
+- **Más opciones en Next.js**: bases de datos Neon, Turso y MongoDB; pagos Lemon Squeezy, Polar, Paddle y Mercado Pago; despliegue en Netlify, Render, Railway y Fly.io.
 - Pendientes por herramientas en esta máquina: Rust (el Rust de Homebrew no enlaza con su LLVM: `brew reinstall rust`), Kotlin, Dart/Flutter (espacio en disco), Elixir y C#. Sus páginas de lenguaje existen e invitan a publicar el primer kit.
 
 ## Estado de los criterios

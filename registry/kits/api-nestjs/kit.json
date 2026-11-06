@@ -1,0 +1,55 @@
+{
+  "$schema": "../../kit.schema.json",
+  "version": "1.0.0",
+  "author": "Marlon Chaviano",
+  "name": "api-nestjs",
+  "title": "API with NestJS",
+  "category": "api",
+  "language": "typescript",
+  "description": "An API with NestJS: modules, controllers and dependency injection, validation, tests with Jest and an architecture that holds up for large teams.",
+  "tags": [
+    "nestjs",
+    "api",
+    "typescript",
+    "node"
+  ],
+  "base": {
+    "command": "npx -y @nestjs/cli@latest new {{name}} --package-manager {{pm}} --skip-git --skip-install --strict",
+    "install": "{{pm}} install"
+  },
+  "packageManagers": [
+    "npm",
+    "pnpm",
+    "bun"
+  ],
+  "libraries": {
+    "framework": "nodejs",
+    "email": "none",
+    "ai": [],
+    "ci": [],
+    "deploy": "none",
+    "workflow": [
+      "essentials"
+    ]
+  },
+  "verify": {
+    "command": "{{pm}} run build && {{pm}} test",
+    "matrix": [
+      {
+        "email": [
+          "resend"
+        ],
+        "ai": [
+          "claude-api"
+        ],
+        "ci": [
+          "github-actions"
+        ],
+        "deploy": [
+          "docker"
+        ]
+      }
+    ]
+  },
+  "instructions": "## How to work here\n\n- Organize by domain modules (`src/<domain>/`), each with its module, controller and service. Generate pieces with `npx nest g resource <name>`.\n- Logic lives in services; controllers only translate HTTP. Inject dependencies through the constructor.\n- Validate input with DTOs and `ValidationPipe`.\n- Before finishing: `npm run build && npm test`."
+}

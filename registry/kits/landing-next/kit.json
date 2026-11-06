@@ -1,9 +1,9 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "landing-next",
-  "version": "1.2.0",
-  "title": "Landing page con Next.js",
-  "description": "Next.js + Tailwind con skills de diseño, buenas prácticas de React y despliegue en Vercel. Para landings que no parezcan hechas por IA.",
+  "version": "1.3.0",
+  "title": "Landing page with Next.js",
+  "description": "Next.js + Tailwind with design skills, React best practices and deployment on Vercel. For landing pages that don't look AI-made.",
   "category": "landing",
   "tags": [
     "nextjs",
@@ -11,7 +11,7 @@
     "design",
     "vercel"
   ],
-  "author": "kits",
+  "author": "Marlon Chaviano",
   "base": {
     "command": "npx create-next-app@latest {{name}} --ts --tailwind --eslint --app --src-dir --import-alias \"@/*\" --use-{{pm}} --disable-git --no-agent-feedback --yes"
   },
@@ -55,10 +55,9 @@
     ]
   },
   "skills": [
-    "anthropics/skills@frontend-design",
-    "vercel-labs/agent-skills@web-design-guidelines",
     "vercel-labs/agent-skills@vercel-react-best-practices",
-    "vercel-labs/agent-skills@deploy-to-vercel"
+    "vercel-labs/agent-skills@deploy-to-vercel",
+    "vercel-labs/openreview@next-best-practices"
   ],
   "options": [
     {
@@ -69,8 +68,8 @@
       "choices": [
         {
           "id": "seo",
-          "label": "SEO y Open Graph",
-          "instructions": "## SEO\n\nCada página exporta `metadata` (título, descripción, Open Graph). Genera `src/app/sitemap.ts`, `src/app/robots.ts` y una imagen OG con `opengraph-image.tsx`."
+          "label": "SEO and Open Graph",
+          "instructions": "## SEO\n\nEvery page exports `metadata` (title, description, Open Graph). Generate `src/app/sitemap.ts`, `src/app/robots.ts` and an OG image with `opengraph-image.tsx`."
         }
       ]
     }
@@ -93,11 +92,14 @@
     "quality": [],
     "ci": [],
     "deploy": "vercel",
+    "design": [
+      "design-pack"
+    ],
     "workflow": [
-      "superpowers",
-      "mattpocock-skills"
-    ]
+      "essentials"
+    ],
+    "forms": []
   },
-  "instructions": "## Cómo trabajar aquí\n\n- Secciones de la landing como componentes en `src/components/sections/`.\n- Antes de escribir UI, lee el skill `frontend-design` y define dirección visual (tipografía, color, ritmo).\n- Revisa el resultado con `web-design-guidelines` antes de dar algo por terminado.",
+  "instructions": "## How to work here\n\n- Landing sections as components in `src/components/sections/`.\n- Before writing UI, read the `frontend-design` skill and set a visual direction (typography, color, rhythm).\n- Review the result with `web-design-guidelines` before calling anything done.",
   "language": "typescript"
 }

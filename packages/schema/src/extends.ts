@@ -22,7 +22,7 @@ export type PathResolver = (dir: string, path: string) => string;
 export const MAX_EXTENDS_DEPTH = 3;
 
 /** Lists concatenated without duplicates (by value, or by JSON for objects). */
-const CONCAT = ["tags", "dependencies", "devDependencies", "skills", "postInstall", "setupTasks", "writeFiles", "packageManagers"];
+const CONCAT = ["tags", "dependencies", "devDependencies", "skills", "postInstall", "finalize", "setupTasks", "writeFiles", "packageManagers"];
 /** Objects merged key by key, child wins. */
 const MERGE = ["mcp", "env", "libraries", "addCommand"];
 /** Never inherited: they identify the child. */
@@ -45,12 +45,12 @@ export async function resolveExtends(
   const path = [...chain, kit];
   const names = () => path.map((k) => String(k.raw.name ?? "?")).join(" → ");
   if (path.length > MAX_EXTENDS_DEPTH) {
-    throw new Error(`"extends" admite como máximo ${MAX_EXTENDS_DEPTH} niveles: ${names()} → ${parentRef}`);
+    throw new Error(`"extends" allows at most ${MAX_EXTENDS_DEPTH} levels: ${names()} → ${parentRef}`);
   }
   const parent = await load(parentRef);
   // Compare folders, not refs: "../b" and "b" can be the same kit.
   if (path.some((k) => k.dir === parent.dir)) {
-    throw new Error(`"extends" forma un ciclo: ${names()} → ${String(parent.raw.name ?? parentRef)}`);
+    throw new Error(`"extends" forms a cycle: ${names()} → ${String(parent.raw.name ?? parentRef)}`);
   }
   return mergeKits(await resolveExtends(parent, load, resolvePath, path), raw);
 }
@@ -81,9 +81,11 @@ export function mergeKits(parent: Raw, child: Raw): Raw {
 }
 
 /** Options merge by id: a child option replaces the parent's whole option; new ones are appended. */
+/** Same id: merged field by field, so a child can change just the default ({ id, default }). */
 function mergeOptions(parent: Raw[], child: Raw[]): Raw[] {
   const byId = new Map(child.map((o) => [o.id, o]));
-  const merged = parent.map((o) => byId.get(o.id) ?? o);
+  const defined = (o: Raw) => Object.fromEntries(Object.entries(o).filter(([, v]) => v !== undefined));
+  const merged = parent.map((o) => (byId.has(o.id) ? { ...o, ...defined(byId.get(o.id)!) } : o));
   const parentIds = new Set(parent.map((o) => o.id));
   return [...merged, ...child.filter((o) => !parentIds.has(o.id))];
 }

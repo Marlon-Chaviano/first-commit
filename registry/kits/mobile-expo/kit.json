@@ -1,9 +1,9 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "mobile-expo",
-  "version": "1.2.0",
-  "title": "App móvil con Expo",
-  "description": "React Native + Expo Router listo para iOS, Android y web, con los skills oficiales de Expo para que tu agente no use APIs viejas.",
+  "version": "1.3.0",
+  "title": "Mobile app with Expo",
+  "description": "React Native + Expo Router ready for iOS, Android and web, with Expo's official skills so your agent doesn't reach for outdated APIs.",
   "category": "mobile",
   "tags": [
     "react-native",
@@ -11,7 +11,7 @@
     "expo-router",
     "typescript"
   ],
-  "author": "kits",
+  "author": "Marlon Chaviano",
   "base": {
     "command": "npx create-expo-app@latest {{name}} --template default --no-install --yes",
     "install": "{{pm}} install"
@@ -41,6 +41,17 @@
         "deploy": [
           "eas"
         ]
+      },
+      {
+        "state": [
+          "zustand"
+        ],
+        "data": [
+          "tanstack-query"
+        ],
+        "forms": [
+          "react-hook-form"
+        ]
       }
     ]
   },
@@ -56,18 +67,18 @@
   "options": [
     {
       "id": "styling",
-      "label": "Estilos",
+      "label": "Styling",
       "default": "stylesheet",
       "choices": [
         {
           "id": "stylesheet",
-          "label": "StyleSheet + tema de Expo",
-          "description": "El sistema de temas que trae la plantilla oficial."
+          "label": "StyleSheet + Expo theme",
+          "description": "The theming system that ships with the official template."
         },
         {
           "id": "nativewind",
           "label": "NativeWind (Tailwind)",
-          "description": "Clases de Tailwind en React Native.",
+          "description": "Tailwind classes in React Native.",
           "dependencies": [
             "nativewind",
             "react-native-css-interop",
@@ -79,7 +90,7 @@
             "babel-preset-expo"
           ],
           "files": "files/nativewind",
-          "instructions": "## Estilos\n\nEste proyecto usa **NativeWind v4** (Tailwind 3). Escribe estilos con `className`; los tokens de diseño viven en `tailwind.config.js` y `src/global.css`. No mezcles `StyleSheet.create` salvo para animaciones."
+          "instructions": "## Styling\n\nThis project uses **NativeWind v4** (Tailwind 3). Write styles with `className`; design tokens live in `tailwind.config.js` and `src/global.css`. Don't mix in `StyleSheet.create` except for animations."
         }
       ]
     },
@@ -90,12 +101,12 @@
       "choices": [
         {
           "id": "none",
-          "label": "Ninguno"
+          "label": "None"
         },
         {
           "id": "supabase",
           "label": "Supabase",
-          "description": "Auth, Postgres y storage. Incluye cliente configurado y el MCP de Supabase.",
+          "description": "Auth, Postgres and storage. Includes a configured client and the Supabase MCP.",
           "dependencies": [
             "@supabase/supabase-js",
             "@react-native-async-storage/async-storage",
@@ -115,7 +126,7 @@
             "EXPO_PUBLIC_SUPABASE_ANON_KEY": ""
           },
           "files": "files/supabase",
-          "instructions": "## Backend\n\nSupabase está configurado en `src/lib/supabase.ts` (sesión persistida con AsyncStorage). Rellena `.env` a partir de `.env.example`. Usa el MCP de Supabase para inspeccionar el esquema antes de escribir consultas, y protege cada tabla con RLS."
+          "instructions": "## Backend\n\nSupabase is configured in `src/lib/supabase.ts` (session persisted with AsyncStorage). Fill in `.env` from `.env.example`. Use the Supabase MCP to inspect the schema before writing queries, and protect every table with RLS."
         }
       ]
     }
@@ -131,11 +142,16 @@
     "i18n": "none",
     "testing": [],
     "deploy": "none",
+    "design": [
+      "design-pack-native"
+    ],
     "workflow": [
-      "superpowers",
-      "mattpocock-skills"
-    ]
+      "essentials"
+    ],
+    "state": "none",
+    "data": "none",
+    "forms": []
   },
-  "instructions": "## Cómo trabajar aquí\n\n- Pantallas en `src/app/` (Expo Router); componentes en `src/components/`.\n- Añade dependencias con `npx expo install`, nunca con `npm install` directamente.\n- Antes de terminar una tarea: `npx tsc --noEmit` y `npx expo lint`.",
+  "instructions": "## How to work here\n\n- Screens in `src/app/` (Expo Router); components in `src/components/`.\n- Add dependencies with `npx expo install`, never with `npm install` directly.\n- Before finishing a task: `npx tsc --noEmit` and `npx expo lint`.",
   "language": "typescript"
 }

@@ -1,0 +1,44 @@
+{
+  "$schema": "../../kit.schema.json",
+  "version": "1.0.0",
+  "author": "Marlon Chaviano",
+  "name": "mobile-flutter",
+  "title": "Cross-platform app with Flutter",
+  "category": "mobile",
+  "language": "dart",
+  "description": "Flutter with the official CLI: one Dart codebase for iOS, Android and web, with hot reload, widget tests and the Flutter team's architecture guides.",
+  "tags": [
+    "flutter",
+    "dart",
+    "ios",
+    "android",
+    "mobile"
+  ],
+  "base": {
+    "command": "command -v flutter >/dev/null || { echo 'Necesitas Flutter: https://docs.flutter.dev/get-started/install' >&2; exit 1; }; flutter create {{name}} --org com.example --platforms ios,android,web --empty"
+  },
+  "packageManagers": [
+    "flutter"
+  ],
+  "skills": [
+    "flutter/agent-plugins@flutter-apply-architecture-best-practices",
+    "flutter/agent-plugins@flutter-build-responsive-layout",
+    "flutter/agent-plugins@flutter-add-widget-test",
+    "flutter/agent-plugins@flutter-setup-declarative-routing"
+  ],
+  "libraries": {
+    "framework": [
+      "flutter"
+    ],
+    "design": [
+      "design-pack-native"
+    ],
+    "workflow": [
+      "essentials"
+    ]
+  },
+  "verify": {
+    "command": "flutter analyze && flutter test"
+  },
+  "instructions": "## How to work here\n\n- Keep the UI (widgets in `lib/ui/`) apart from the logic (ViewModels) and the data (repositories and services in `lib/data/`), as Flutter's architecture guide recommends.\n- Small widgets, `const` whenever possible; no business logic inside `build()`.\n- Add packages with `flutter pub add`.\n- Before finishing: `flutter analyze && flutter test`."
+}

@@ -1,0 +1,39 @@
+{
+  "$schema": "../../kit.schema.json",
+  "version": "1.0.0",
+  "author": "Marlon Chaviano",
+  "name": "docs-starlight",
+  "title": "Docs with Starlight",
+  "category": "landing",
+  "language": "typescript",
+  "description": "A documentation site with Starlight (Astro): navigation, search, dark mode, i18n and Markdown/MDX pages from minute one.",
+  "tags": [
+    "docs",
+    "astro",
+    "starlight",
+    "markdown"
+  ],
+  "base": {
+    "command": "npx create-astro@latest {{name}} --template starlight --no-install --no-git --skip-houston --yes",
+    "install": "{{pm}} install"
+  },
+  "skills": [
+    "astrolicious/agent-skills@astro"
+  ],
+  "libraries": {
+    "framework": [
+      "astro",
+      "vanilla"
+    ],
+    "design": [
+      "design-pack"
+    ],
+    "workflow": [
+      "essentials"
+    ]
+  },
+  "verify": {
+    "command": "{{pm}} run build"
+  },
+  "instructions": "## How to work here\n\n- Each page is a `.md`/`.mdx` file in `src/content/docs/`; the file path is the URL. The sidebar is defined in `astro.config.mjs` (`sidebar`).\n- Use Starlight components (`Tabs`, `Card`, `Aside`, `Steps`) in MDX instead of custom HTML.\n- Write for readers in a hurry: a clear title, one paragraph of context, then the steps.\n- Before finishing: `npm run build` (it also checks internal links)."
+}

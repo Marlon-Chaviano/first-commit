@@ -11,6 +11,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
     <Sonner
       theme={theme as ToasterProps["theme"]}
       className="toaster group"
+      richColors
       icons={{
         success: (
           <CircleCheckIcon className="size-4" />
@@ -34,6 +35,19 @@ const Toaster = ({ ...props }: ToasterProps) => {
           "--normal-text": "var(--popover-foreground)",
           "--normal-border": "var(--border)",
           "--border-radius": "var(--radius)",
+          // Each kind of toast tinted with its status color: green done, blue info, amber warning, red error.
+          "--success-bg": "color-mix(in oklch, var(--success) 12%, var(--popover))",
+          "--success-text": "var(--success)",
+          "--success-border": "color-mix(in oklch, var(--success) 40%, var(--border))",
+          "--info-bg": "color-mix(in oklch, var(--info) 12%, var(--popover))",
+          "--info-text": "var(--info)",
+          "--info-border": "color-mix(in oklch, var(--info) 40%, var(--border))",
+          "--warning-bg": "color-mix(in oklch, var(--warning) 12%, var(--popover))",
+          "--warning-text": "var(--warning)",
+          "--warning-border": "color-mix(in oklch, var(--warning) 40%, var(--border))",
+          "--error-bg": "color-mix(in oklch, var(--destructive) 12%, var(--popover))",
+          "--error-text": "var(--destructive)",
+          "--error-border": "color-mix(in oklch, var(--destructive) 40%, var(--border))",
         } as React.CSSProperties
       }
       toastOptions={{

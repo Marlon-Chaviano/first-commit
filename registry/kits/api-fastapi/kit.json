@@ -1,9 +1,9 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "api-fastapi",
-  "version": "1.1.0",
-  "title": "API con FastAPI",
-  "description": "API en Python con FastAPI, entorno virtual propio y tests con pytest. Documentación OpenAPI automática.",
+  "version": "1.2.0",
+  "title": "API with FastAPI",
+  "description": "A Python API with FastAPI, its own virtual environment and tests with pytest. Automatic OpenAPI docs.",
   "category": "api",
   "tags": [
     "python",
@@ -11,7 +11,7 @@
     "api",
     "pytest"
   ],
-  "author": "kits",
+  "author": "Marlon Chaviano",
   "base": {
     "command": "mkdir {{name}} && cd {{name}} && python3 -m venv .venv"
   },
@@ -34,7 +34,7 @@
     "fastapi/fastapi@fastapi"
   ],
   "verify": {
-    "command": ".venv/bin/python -m pytest -q",
+    "command": ".venv/bin/python -c \"import importlib, pkgutil, app; [importlib.import_module(f'app.{m.name}') for m in pkgutil.iter_modules(app.__path__)]\" && .venv/bin/python -m pytest -q && (test ! -x .venv/bin/ruff || .venv/bin/ruff check .)",
     "matrix": [
       {
         "observability": [
@@ -42,6 +42,14 @@
         ],
         "ci": [
           "github-actions-python"
+        ]
+      },
+      {
+        "database": [
+          "sqlmodel"
+        ],
+        "quality": [
+          "ruff"
         ]
       }
     ]
@@ -52,10 +60,11 @@
     "observability": [],
     "ci": [],
     "workflow": [
-      "superpowers",
-      "mattpocock-skills"
-    ]
+      "essentials"
+    ],
+    "database": "none",
+    "quality": []
   },
-  "instructions": "## Cómo trabajar aquí\n\n- Activa el entorno con `source .venv/bin/activate`. Arranca con `fastapi dev app/main.py` (docs en `/docs`).\n- Agrupa rutas por recurso con `APIRouter` en `app/routers/` e inclúyelas en `app/main.py`.\n- Valida entradas y salidas con modelos de Pydantic; anota tipos en todas las funciones.\n- Tras instalar un paquete con pip, actualiza `requirements.txt` (`pip freeze > requirements.txt`).\n- Antes de terminar una tarea: `python -m pytest`.",
+  "instructions": "## How to work here\n\n- Activate the environment with `source .venv/bin/activate`. Start with `fastapi dev app/main.py` (docs at `/docs`).\n- Group routes by resource with `APIRouter` in `app/routers/` and include them in `app/main.py`.\n- Validate inputs and outputs with Pydantic models; type-annotate every function.\n- After installing a package with pip, update `requirements.txt` (`pip freeze > requirements.txt`).\n- Before finishing a task: `python -m pytest`.",
   "language": "python"
 }

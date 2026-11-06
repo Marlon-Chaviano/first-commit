@@ -13,10 +13,28 @@ import { cn } from "@/lib/utils";
 
 import { detectBrandFromUrlAction } from "./actions";
 
-const ACCEPT = ".css,.scss,.json,.svg,.png,.jpg,.jpeg,.webp";
+export const ACCEPT = ".css,.scss,.json,.svg,.png,.jpg,.jpeg,.webp";
+
+/** A small image as a data: URL, so an uploaded logo can be stored in the profile itself. */
+export async function imageAsDataUrl(file: File, maxBytes = MAX_IMAGE_BYTES): Promise<string | null> {
+  if (!file.type.startsWith("image/") || file.size > maxBytes) return null;
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(typeof reader.result === "string" ? reader.result : null);
+    reader.onerror = () => resolve(null);
+    reader.readAsDataURL(file);
+  });
+}
+export const MAX_IMAGE_BYTES = 200_000;
+
+/** Adds the uploaded logo itself to a detection made from its colors. */
+async function withLogo(file: File, d: BrandDetection): Promise<BrandDetection> {
+  const logo = await imageAsDataUrl(file);
+  return logo ? { profile: { ...d.profile, assets: { ...d.profile.assets, logo } }, found: [...d.found, "logo: the uploaded file"] } : d;
+}
 
 /** Reads one file in the browser: stylesheets and tokens as text, logos as pixels. */
-async function detectFile(file: File): Promise<BrandDetection> {
+export async function detectFile(file: File): Promise<BrandDetection> {
   const name = file.name.toLowerCase();
   if (name.endsWith(".json")) return detectFromJson(JSON.parse(await file.text()));
   if (name.endsWith(".css") || name.endsWith(".scss")) return detectFromCss(await file.text());
@@ -24,7 +42,7 @@ async function detectFile(file: File): Promise<BrandDetection> {
     // fill="#e11d48" / stroke=… / style="fill:…": the logo's colors, counted like CSS declarations.
     const svg = await file.text();
     const colors = svg.match(/#[0-9a-fA-F]{3,8}\b|rgba?\([^)]+\)/g) ?? [];
-    return detectFromCss(colors.map((c, i) => `.c${i} { color: ${c} }`).join("\n"));
+    return withLogo(file, detectFromCss(colors.map((c, i) => `.c${i} { color: ${c} }`).join("\n")));
   }
   if (file.type.startsWith("image/")) {
     const bitmap = await createImageBitmap(file);
@@ -34,13 +52,13 @@ async function detectFile(file: File): Promise<BrandDetection> {
     canvas.height = size;
     const ctx = canvas.getContext("2d")!;
     ctx.drawImage(bitmap, 0, 0, size, size);
-    return detectFromPixels(ctx.getImageData(0, 0, size, size).data);
+    return withLogo(file, detectFromPixels(ctx.getImageData(0, 0, size, size).data));
   }
-  throw new Error("Formato no soportado: usa CSS, JSON, SVG o una imagen");
+  throw new Error("Unsupported format: use CSS, JSON, SVG or an image");
 }
 
 /**
- * "Detectar la marca": from a website, a file (stylesheet, tokens, brand.json,
+ * "Detect the brand": from a website, a file (stylesheet, tokens, brand.json,
  * logo) or a project via the CLI. The result fills the form; nothing is saved
  * until the user reviews it.
  */
@@ -53,12 +71,12 @@ export function BrandImporter({ onDetect }: { onDetect: (d: BrandDetection) => v
 
   const apply = (d: BrandDetection, source: string) => {
     if (!Object.keys(d.profile.colors).length && !d.profile.title && !d.profile.fonts) {
-      toast.error(`No se encontró ninguna marca en ${source}`);
+      toast.error(`No brand found in ${source}`);
       return;
     }
     onDetect(d);
     setFound(d.found);
-    toast.success(`Marca detectada en ${source}: revisa los valores antes de guardar`);
+    toast.success(`Brand detected in ${source}: review the values before saving`);
   };
 
   const fromFile = (file: File | undefined) => {
@@ -75,14 +93,14 @@ export function BrandImporter({ onDetect }: { onDetect: (d: BrandDetection) => v
   return (
     <section className="flex flex-col gap-4 rounded-lg border p-4">
       <div className="flex flex-col gap-1">
-        <h2 className="font-semibold">Detectar la marca</h2>
-        <p className="text-sm text-pretty text-muted-foreground">Rellena el perfil a partir de lo que ya existe; después solo revisas y ajustas.</p>
+        <h2 className="font-semibold">Detect the brand</h2>
+        <p className="text-sm text-pretty text-muted-foreground">Fills in the profile from what already exists; then you just review and adjust.</p>
       </div>
       <Tabs defaultValue="web" className="gap-4">
         <TabsList variant="line" className="font-mono">
-          <TabsTrigger value="web" className="text-xs">Desde una web</TabsTrigger>
-          <TabsTrigger value="file" className="text-xs">Desde un archivo</TabsTrigger>
-          <TabsTrigger value="project" className="text-xs">Desde tu proyecto</TabsTrigger>
+          <TabsTrigger value="web" className="text-xs">From a website</TabsTrigger>
+          <TabsTrigger value="file" className="text-xs">From a file</TabsTrigger>
+          <TabsTrigger value="project" className="text-xs">From your project</TabsTrigger>
         </TabsList>
 
         <TabsContent value="web">
@@ -96,19 +114,19 @@ export function BrandImporter({ onDetect }: { onDetect: (d: BrandDetection) => v
               });
             }}
           >
-            <InputGroup>
+            <InputGroup className="h-10">
               <InputGroupAddon>
                 <GlobeIcon />
               </InputGroupAddon>
-              <InputGroupInput value={url} onChange={(e) => setUrl(e.target.value)} placeholder="acme.com" aria-label="Dirección de la web" className="font-mono text-sm" />
+              <InputGroupInput value={url} onChange={(e) => setUrl(e.target.value)} placeholder="acme.com" aria-label="Website address" className="font-mono text-sm" />
               <InputGroupAddon align="inline-end">
-                <InputGroupButton type="submit" variant="default" size="sm" disabled={pending || !url.trim()}>
+                <InputGroupButton type="submit" variant="default" size="attached" disabled={pending || !url.trim()}>
                   {pending ? <LoaderCircleIcon className="animate-spin" /> : null}
-                  Detectar
+                  Detect
                 </InputGroupButton>
               </InputGroupAddon>
             </InputGroup>
-            <p className="mt-2 text-xs text-muted-foreground">Lee su color de tema, sus hojas de estilo (variables de color, fuentes, radio) y su nombre.</p>
+            <p className="mt-2 text-xs text-muted-foreground">Reads its theme color, its stylesheets (color variables, fonts, radius) and its name.</p>
           </form>
         </TabsContent>
 
@@ -133,28 +151,28 @@ export function BrandImporter({ onDetect }: { onDetect: (d: BrandDetection) => v
             )}
           >
             {pending ? <LoaderCircleIcon className="size-5 animate-spin" /> : <UploadIcon className="size-5 text-muted-foreground" />}
-            <span className="text-sm">Arrastra un archivo o haz clic para elegirlo</span>
+            <span className="text-sm">Drop a file or click to choose one</span>
             <span className="font-mono text-xs text-muted-foreground">globals.css · tokens .json · brand.json · logo (SVG, PNG, JPG)</span>
           </button>
           <input ref={input} type="file" accept={ACCEPT} className="hidden" onChange={(e) => fromFile(e.target.files?.[0] ?? undefined)} />
         </TabsContent>
 
         <TabsContent value="project" className="flex flex-col gap-3">
-          <p className="text-sm text-muted-foreground">Dentro de un proyecto que ya tiene la marca (lee su hoja de estilos global y su nombre):</p>
+          <p className="text-sm text-muted-foreground">Inside a project that already has the brand (it reads its global stylesheet and its name):</p>
           <Command command={cliCommand("brand detect")} />
           <p className="text-sm text-muted-foreground">
-            Genera un <code className="font-mono">brand.json</code>. Úsalo directamente con <code className="font-mono">--brand ./brand.json</code> o súbelo en
-            «Desde un archivo» para guardarlo aquí.
+            It generates a <code className="font-mono">brand.json</code>. Use it directly with <code className="font-mono">--brand ./brand.json</code> or upload it in
+            &quot;From a file&quot; to save it here.
           </p>
           <p className="text-sm text-muted-foreground">
-            ¿Prefieres que lo haga tu agente? Pídeselo con el skill <code className="font-mono">extract-design-system</code>.
+            Rather have your agent do it? Ask it to, with the <code className="font-mono">extract-design-system</code> skill.
           </p>
         </TabsContent>
       </Tabs>
 
       {found.length > 0 && (
         <div className="flex flex-col gap-1.5 border-t pt-3">
-          <p className="label-mono text-muted-foreground">Detectado</p>
+          <p className="label-mono text-muted-foreground">Detected</p>
           <ul className="flex flex-wrap gap-1.5 font-mono text-xs text-muted-foreground">
             {found.map((f) => (
               <li key={f} className="rounded-md bg-muted px-2 py-0.5">
@@ -163,7 +181,7 @@ export function BrandImporter({ onDetect }: { onDetect: (d: BrandDetection) => v
             ))}
           </ul>
           <Button variant="link" size="sm" className="self-start px-0" onClick={() => setFound([])}>
-            Ocultar
+            Hide
           </Button>
         </div>
       )}

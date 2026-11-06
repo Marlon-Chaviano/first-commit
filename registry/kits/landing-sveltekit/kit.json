@@ -1,0 +1,52 @@
+{
+  "$schema": "../../kit.schema.json",
+  "version": "1.0.0",
+  "author": "Marlon Chaviano",
+  "name": "landing-sveltekit",
+  "title": "Landing page with SvelteKit",
+  "category": "landing",
+  "language": "typescript",
+  "description": "A prerendered SvelteKit landing page with Tailwind CSS: ready-made sections, per-page SEO and no JavaScript you don't need.",
+  "tags": [
+    "svelte",
+    "sveltekit",
+    "landing",
+    "tailwind"
+  ],
+  "base": {
+    "command": "npx sv@latest create {{name}} --template minimal --types ts --no-add-ons --no-install && rm {{name}}/src/routes/+page.svelte",
+    "install": "{{pm}} install"
+  },
+  "skills": [
+    "sveltejs/ai-tools@svelte-code-writer",
+    "sveltejs/ai-tools@svelte-core-bestpractices"
+  ],
+  "writeFiles": [
+    {
+      "path": "src/routes/+layout.ts",
+      "content": "// Static HTML for every page.\nexport const prerender = true;\n"
+    },
+    {
+      "path": "src/routes/+page.svelte",
+      "content": "<script lang=\"ts\">\n  // Placeholder copy: replace it with your product's.\n  const features = [\n    { title: \"Fast\", text: \"Prerendered: HTML ready instantly.\" },\n    { title: \"Easy to edit\", text: \"Every section is a small block.\" },\n    { title: \"SEO-ready\", text: \"A title and description per page.\" }\n  ];\n</script>\n\n<svelte:head>\n  <title>Product — what it does in one sentence</title>\n  <meta name=\"description\" content=\"A 150-character description with the product's main promise.\" />\n  <meta property=\"og:title\" content=\"Product — what it does in one sentence\" />\n</svelte:head>\n\n<main>\n  <section class=\"mx-auto max-w-3xl px-6 py-24 text-center\">\n    <h1 class=\"text-5xl font-semibold tracking-tight text-balance\">Your product's main promise</h1>\n    <p class=\"mt-6 text-lg text-neutral-600\">One sentence on who it's for and what problem it solves.</p>\n    <a href=\"#start\" class=\"mt-10 inline-block rounded-full bg-neutral-950 px-6 py-3 text-white\">Start for free</a>\n  </section>\n\n  <section class=\"mx-auto grid max-w-5xl gap-6 px-6 py-16 sm:grid-cols-3\">\n    {#each features as f (f.title)}\n      <div class=\"rounded-2xl border p-6\">\n        <h2 class=\"font-semibold\">{f.title}</h2>\n        <p class=\"mt-2 text-sm text-neutral-600\">{f.text}</p>\n      </div>\n    {/each}\n  </section>\n\n  <section id=\"start\" class=\"mx-auto max-w-3xl px-6 py-24 text-center\">\n    <h2 class=\"text-3xl font-semibold tracking-tight\">Get started today</h2>\n  </section>\n</main>\n"
+    }
+  ],
+  "libraries": {
+    "framework": [
+      "svelte",
+      "sveltekit"
+    ],
+    "styling": "tailwind-sveltekit",
+    "animation": [],
+    "design": [
+      "design-pack"
+    ],
+    "workflow": [
+      "essentials"
+    ]
+  },
+  "verify": {
+    "command": "{{pm}} run build"
+  },
+  "instructions": "## How to work here\n\n- It's a landing page: each section is a small, clear block (hero, features, FAQ, call to action). One main message and one main button.\n- The sample copy is a placeholder: replace it with the product's before designing.\n- SEO: every page has its own title, description and Open Graph; images have `alt` text and dimensions.\n- Before finishing: `npm run build`."
+}

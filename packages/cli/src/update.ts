@@ -6,7 +6,6 @@ import * as p from "@clack/prompts";
 import {
   agentsSection,
   applyWrite,
-  defaultSelections,
   dependencySteps,
   fillTemplate,
   importAgentsMd,
@@ -14,12 +13,11 @@ import {
   listDiff,
   mcpSteps,
   mergeEnv,
-  pruneSelections,
   resolve as resolveKit,
+  selectionsFrom,
   skillSteps,
   templateVars,
   upsertKitSection,
-  type Selections,
   type Step,
 } from "@kits/schema";
 import pc from "picocolors";
@@ -41,26 +39,20 @@ export async function update(args: ParsedArgs, guard: <T>(v: T) => Exclude<T, sy
   const dir = resolve(args.flags.get("dir")?.[0] ?? ".");
   const interactive = Boolean(process.stdin.isTTY) && !args.switches.has("yes");
   const lock = await readLock(dir);
-  if (!lock) throw new Error("No hay kits.lock en esta carpeta. ¿Es un proyecto creado con un kit?");
-  if (!lock.kit) throw new Error("Este proyecto no se creó con un kit: usa `add` para añadir piezas del catálogo.");
+  if (!lock) throw new Error("No kits.lock in this folder. Was this project created from a kit?");
+  if (!lock.kit) throw new Error("This project wasn't created from a kit: use `add` to add pieces from the catalog.");
 
-  p.intro(pc.bgCyan(pc.black(" update ")));
+  p.intro(pc.bgWhite(pc.black(" update ")));
   const target = args.positionals[0];
   const loaded = await loadKit(target ? `${lock.kit}@${target}` : lock.kit);
   const { kit } = loaded;
   if (kit.version === lock.version && !args.switches.has("force")) {
-    p.outro(`${lock.kit} ya está en la última versión (${kit.version}).`);
+    p.outro(`${lock.kit} is already on the latest version (${kit.version}).`);
     return;
   }
 
   // Keep the user's choices; options the new version added take their defaults.
-  const defaults = defaultSelections(kit);
-  const sel: Selections = pruneSelections(kit, {
-    ...defaults,
-    options: { ...defaults.options, ...lock.options },
-    agents: lock.agents,
-    pm: lock.pm,
-  });
+  const { selections: sel } = selectionsFrom(kit, { options: lock.options, agents: lock.agents, pm: lock.pm }, { requirements: "prune", unknown: "ignore" });
   const r = resolveKit(kit, sel);
   const vars = templateVars(sel, basename(dir));
 
@@ -81,17 +73,17 @@ export async function update(args: ParsedArgs, guard: <T>(v: T) => Exclude<T, sy
     if (action === "write") {
       fileSteps.push(step());
       managed[path] = newHash;
-    } else if (action === "skip-deleted") skipped.push(`${path} (lo borraste; no se restaura)`);
-    else if (action === "skip-modified") skipped.push(`${path} (modificado por ti)`);
+    } else if (action === "skip-deleted") skipped.push(`${path} (you deleted it; not restored)`);
+    else if (action === "skip-modified") skipped.push(`${path} (you modified it)`);
   };
   for (const file of r.writeFiles) {
     const content = fillTemplate(file.content, vars);
     if (file.mode === "create") {
       const body = content.endsWith("\n") ? content : `${content}\n`;
-      consider(file.path, sha(body), () => ({ kind: "write", title: "Actualizar archivo", path: join(dir, file.path), merge: () => body }));
+      consider(file.path, sha(body), () => ({ kind: "write", title: "Update file", path: join(dir, file.path), merge: () => body }));
     } else {
       // Patches to the user's own files are idempotent: applied only if missing.
-      fileSteps.push({ kind: "write", title: "Revisar", path: join(dir, file.path), merge: applyWrite({ ...file, content }), optional: true });
+      fileSteps.push({ kind: "write", title: "Check", path: join(dir, file.path), merge: applyWrite({ ...file, content }), optional: true });
     }
   }
   for (const folder of r.files) {
@@ -108,36 +100,36 @@ export async function update(args: ParsedArgs, guard: <T>(v: T) => Exclude<T, sy
     ...fileSteps,
     ...skillSteps({ skills: skills.added, agents: sel.agents, pm: sel.pm, cwd: dir }),
     ...mcpSteps({ mcp: r.mcp, agents: sel.agents, projectDir: dir, join }),
-    ...(Object.keys(r.env).length ? [{ kind: "write" as const, title: "Variables de entorno", path: join(dir, ".env.example"), merge: mergeEnv(r.env) }] : []),
-    { kind: "write", title: "Instrucciones para el agente", path: join(dir, "AGENTS.md"), merge: upsertKitSection(agentsSection(kit, r), kit.title) },
+    ...(Object.keys(r.env).length ? [{ kind: "write" as const, title: "Environment variables", path: join(dir, ".env.example"), merge: mergeEnv(r.env) }] : []),
+    { kind: "write", title: "Agent instructions", path: join(dir, "AGENTS.md"), merge: upsertKitSection(agentsSection(kit, r), kit.title) },
     ...sel.agents.flatMap((a) =>
-      INSTRUCTION_STUBS[a] ? [{ kind: "write" as const, title: `Enlazar ${INSTRUCTION_STUBS[a]} con AGENTS.md`, path: join(dir, INSTRUCTION_STUBS[a]!), merge: importAgentsMd }] : [],
+      INSTRUCTION_STUBS[a] ? [{ kind: "write" as const, title: `Link ${INSTRUCTION_STUBS[a]} to AGENTS.md`, path: join(dir, INSTRUCTION_STUBS[a]!), merge: importAgentsMd }] : [],
     ),
   ];
 
   const summary = [
     `${lock.version} → ${pc.bold(kit.version)}`,
-    deps.added.length + devDeps.added.length && `dependencias nuevas: ${[...deps.added, ...devDeps.added].join(", ")}`,
-    skills.added.length && `skills nuevos: ${skills.added.join(", ")}`,
-    skills.removed.length && pc.dim(`skills que el kit ya no usa (siguen instalados): ${skills.removed.join(", ")}`),
-    deps.removed.length + devDeps.removed.length && pc.dim(`dependencias que el kit ya no usa (no se desinstalan): ${[...deps.removed, ...devDeps.removed].join(", ")}`),
-    droppedOptions.length && pc.yellow(`opciones que cambian por la nueva versión: ${droppedOptions.join(", ")}`),
-    skipped.length && pc.yellow(`archivos que no se tocan:\n  ${skipped.join("\n  ")}`),
-    r.postInstall.length && pc.dim("los comandos de configuración del kit no se vuelven a ejecutar"),
+    deps.added.length + devDeps.added.length && `new dependencies: ${[...deps.added, ...devDeps.added].join(", ")}`,
+    skills.added.length && `new skills: ${skills.added.join(", ")}`,
+    skills.removed.length && pc.dim(`skills the kit no longer uses (still installed): ${skills.removed.join(", ")}`),
+    deps.removed.length + devDeps.removed.length && pc.dim(`dependencies the kit no longer uses (not uninstalled): ${[...deps.removed, ...devDeps.removed].join(", ")}`),
+    droppedOptions.length && pc.yellow(`options changed by the new version: ${droppedOptions.join(", ")}`),
+    skipped.length && pc.yellow(`files left untouched:\n  ${skipped.join("\n  ")}`),
+    r.postInstall.length && pc.dim("the kit's setup commands aren't run again"),
   ].filter(Boolean);
   p.note(summary.join("\n"), `${lock.kit}`);
   p.note(steps.map((s, i) => `${pc.dim(`${i + 1}.`)} ${describe(s, dir)}`).join("\n"), "Plan");
 
   if (args.switches.has("dry-run")) {
-    p.outro("Dry run: no se ha cambiado nada.");
+    p.outro("Dry run: nothing was changed.");
     return;
   }
-  if (interactive && !guard(await p.confirm({ message: "¿Aplicar la actualización?" }))) {
+  if (interactive && !guard(await p.confirm({ message: "Apply the update?" }))) {
     p.cancel("Cancelado.");
     return;
   }
 
-  const failed = await execute(steps, dir);
+  const failed = await execute(steps, dir, { verbose: args.switches.has("verbose") });
   await writeLock(dir, {
     ...lock,
     version: kit.version,
@@ -148,8 +140,8 @@ export async function update(args: ParsedArgs, guard: <T>(v: T) => Exclude<T, sy
     managedFiles: managed,
   });
   await reportEvent("update", lock.kit, kit.version, sel, r.skills, cliVersion);
-  if (failed.length) p.log.warn(`${failed.length} paso(s) fallaron:\n${failed.map((s) => `  ${describe(s, dir)}`).join("\n")}`);
-  p.outro(`${pc.green("Actualizado")} a ${lock.kit}@${kit.version}. Revisa los cambios con git diff.`);
+  if (failed.length) p.log.warn(`${failed.length} step(s) failed:\n${failed.map((s) => `  ${describe(s, dir)}`).join("\n")}`);
+  p.outro(`${pc.green("Updated")} to ${lock.kit}@${kit.version}. Review the changes with git diff.`);
 }
 
 /**

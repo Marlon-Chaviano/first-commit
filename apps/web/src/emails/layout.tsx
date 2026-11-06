@@ -7,7 +7,7 @@ export const font = "Geist, -apple-system, Segoe UI, Helvetica, Arial, sans-seri
 
 export function EmailLayout({ preview, brand, footer, children }: { preview: string; brand: string; footer: React.ReactNode; children: React.ReactNode }) {
   return (
-    <Html lang="es">
+    <Html lang="en">
       <Head />
       <Preview>{preview}</Preview>
       <Body style={{ backgroundColor: "#ffffff", color: ink, fontFamily: font, margin: 0, padding: "24px 0" }}>

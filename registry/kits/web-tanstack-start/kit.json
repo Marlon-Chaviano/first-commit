@@ -1,0 +1,70 @@
+{
+  "$schema": "../../kit.schema.json",
+  "version": "1.0.0",
+  "author": "Marlon Chaviano",
+  "name": "web-tanstack-start",
+  "title": "Web app with TanStack Start",
+  "category": "web",
+  "language": "typescript",
+  "description": "TanStack Start: full-stack React with end-to-end typed routes, server functions, SSR and streaming, with Tailwind CSS.",
+  "tags": [
+    "react",
+    "tanstack",
+    "tanstack-start",
+    "ssr",
+    "tailwind"
+  ],
+  "base": {
+    "command": "npx -y @tanstack/cli@latest create {{name}} --framework React --package-manager {{pm}} --no-install --no-git --no-examples --toolchain biome --no-intent --yes",
+    "install": "{{pm}} install"
+  },
+  "packageManagers": [
+    "npm",
+    "pnpm",
+    "bun"
+  ],
+  "skills": [
+    "vercel-labs/agent-skills@vercel-react-best-practices"
+  ],
+  "libraries": {
+    "framework": [
+      "react",
+      "vanilla"
+    ],
+    "components": "none",
+    "animation": [],
+    "state": "none",
+    "data": "none",
+    "forms": [],
+    "quality": [],
+    "ci": [],
+    "design": [
+      "design-pack"
+    ],
+    "workflow": [
+      "essentials"
+    ]
+  },
+  "verify": {
+    "command": "{{pm}} run build",
+    "matrix": [
+      {
+        "state": [
+          "zustand"
+        ],
+        "forms": [
+          "react-hook-form"
+        ]
+      },
+      {
+        "animation": [
+          "motion"
+        ],
+        "ci": [
+          "github-actions"
+        ]
+      }
+    ]
+  },
+  "instructions": "## How to work here\n\n- Routes are files in `src/routes/` (the route tree is generated for you). Load data in each route's `loader` and use `createServerFn` for whatever must run on the server.\n- Each route's params and search are typed: validate `search` with `validateSearch`.\n- Before finishing: `npm run build`."
+}

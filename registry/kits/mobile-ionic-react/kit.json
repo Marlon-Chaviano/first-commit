@@ -1,0 +1,59 @@
+{
+  "$schema": "../../kit.schema.json",
+  "version": "1.0.0",
+  "author": "Marlon Chaviano",
+  "name": "mobile-ionic-react",
+  "title": "Mobile app with Ionic and React",
+  "category": "mobile",
+  "language": "typescript",
+  "description": "Ionic with React and Capacitor: one web codebase for iOS, Android and PWA, with Ionic's mobile components and access to native APIs.",
+  "tags": [
+    "ionic",
+    "capacitor",
+    "react",
+    "pwa",
+    "mobile"
+  ],
+  "base": {
+    "command": "npx -y @ionic/cli@latest start {{name}} tabs --type=react --capacitor --no-deps --no-git --no-interactive",
+    "install": "{{pm}} install"
+  },
+  "packageManagers": [
+    "npm",
+    "pnpm"
+  ],
+  "skills": [
+    "vercel-labs/agent-skills@vercel-react-best-practices"
+  ],
+  "libraries": {
+    "framework": [
+      "react"
+    ],
+    "state": "none",
+    "data": "none",
+    "forms": [],
+    "design": [
+      "design-pack-native"
+    ],
+    "workflow": [
+      "essentials"
+    ]
+  },
+  "verify": {
+    "command": "{{pm}} run build",
+    "matrix": [
+      {
+        "state": [
+          "zustand"
+        ],
+        "data": [
+          "tanstack-query"
+        ]
+      }
+    ]
+  },
+  "setupTasks": [
+    "Capacitor: to test on a device, add the platform (`npx cap add ios` or `npx cap add android`) and then `npx cap sync`."
+  ],
+  "instructions": "## How to work here\n\n- Use Ionic components (`IonPage`, `IonHeader`, `IonList`…) so the app looks native on each platform; pages go in `src/pages/`.\n- Native APIs (camera, files, notifications) are used through Capacitor plugins, never with browser APIs that don't exist on mobile.\n- After changing web code: `npm run build && npx cap sync`. Before finishing: `npm run build`."
+}

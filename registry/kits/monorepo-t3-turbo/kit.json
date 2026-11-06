@@ -1,0 +1,48 @@
+{
+  "$schema": "../../kit.schema.json",
+  "version": "1.0.0",
+  "author": "Marlon Chaviano",
+  "name": "monorepo-t3-turbo",
+  "title": "T3 monorepo with Turborepo",
+  "category": "monorepo",
+  "language": "typescript",
+  "description": "create-t3-turbo: Next.js and Expo in the same repo sharing an API with tRPC, Drizzle, Better Auth and UI, all typed end to end with Turborepo.",
+  "tags": [
+    "t3",
+    "turborepo",
+    "nextjs",
+    "expo",
+    "trpc",
+    "drizzle"
+  ],
+  "base": {
+    "command": "npx -y create-turbo@latest {{name}} -e https://github.com/t3-oss/create-t3-turbo -m pnpm --skip-install --no-git",
+    "install": "pnpm install"
+  },
+  "packageManagers": [
+    "pnpm"
+  ],
+  "skills": [
+    "vercel/turborepo@turborepo",
+    "trpc/trpc@trpc-router",
+    "better-auth/skills@better-auth-best-practices",
+    "vercel-labs/openreview@next-best-practices",
+    "expo/skills@expo-overview"
+  ],
+  "libraries": {
+    "framework": [
+      "react",
+      "nextjs"
+    ],
+    "design": [
+      "design-pack"
+    ],
+    "workflow": [
+      "essentials"
+    ]
+  },
+  "verify": {
+    "command": "SKIP_ENV_VALIDATION=1 pnpm turbo run build --filter=./apps/nextjs"
+  },
+  "instructions": "## How to work here\n\n- Apps in `apps/` (`nextjs`, `expo`) and packages in `packages/` (`api` with the tRPC routers, `db` with Drizzle, `auth`, `ui`, `validators`).\n- The API is written once in `packages/api` and both web and mobile use it; never duplicate an endpoint inside an app.\n- Run from the root: `pnpm dev`, `pnpm build`, `pnpm typecheck`, `pnpm lint`.\n- Each app lives in its own folder with its own dependencies; don't mix code from one into another.\n- Whatever backend and frontend share (types, API contracts) is defined in one place and documented.\n"
+}

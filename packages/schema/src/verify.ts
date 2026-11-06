@@ -10,7 +10,7 @@ export const DEFAULT_VERIFY_COMMAND = "{{pm}} run build";
 export const VERIFICATION_AUDIENCE = BRAND.name;
 
 export interface TestCombination {
-  /** "valores por defecto" or the flags that differ, e.g. "--styling nativewind". */
+  /** "defaults" or the flags that differ, e.g. "--styling nativewind". */
   label: string;
   sel: Selections;
 }
@@ -21,7 +21,7 @@ export interface TestCombination {
  */
 export function testCombinations(kit: Kit): TestCombination[] {
   const base: Selections = { ...defaultSelections(kit), removeSkills: allKitSkills(kit), agents: ["claude-code"] };
-  const combos: TestCombination[] = [{ label: "valores por defecto", sel: base }];
+  const combos: TestCombination[] = [{ label: "defaults", sel: base }];
 
   const variant = (overrides: Record<string, string[]>): TestCombination => {
     const sel = pruneSelections(kit, { ...base, options: { ...base.options, ...overrides } }, new Set(Object.keys(overrides)));

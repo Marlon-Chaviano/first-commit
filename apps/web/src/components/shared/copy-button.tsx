@@ -7,14 +7,14 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 /** `stretch`: the button covers its positioned parent, so the whole block copies on click. */
-export function CopyButton({ text, label = "Copiar", stretch = false }: { text: string; label?: string; stretch?: boolean }) {
+export function CopyButton({ text, label = "Copy", stretch = false }: { text: string; label?: string; stretch?: boolean }) {
   const [copied, setCopied] = useState(false);
   return (
     <Button
       variant="ghost"
       size="icon-sm"
-      aria-label={copied ? "Copiado" : label}
-      title={copied ? "Copiado" : label}
+      aria-label={copied ? "Copied" : label}
+      title={copied ? "Copied" : label}
       className={cn(stretch && "after:absolute after:inset-0 after:rounded-lg after:content-['']")}
       onClick={async () => {
         await navigator.clipboard.writeText(text);

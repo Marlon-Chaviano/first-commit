@@ -1,0 +1,161 @@
+{
+  "$schema": "../../kit.schema.json",
+  "name": "monorepo-turbo",
+  "version": "1.0.0",
+  "author": "Marlon Chaviano",
+  "title": "Monorepo with Turborepo",
+  "category": "monorepo",
+  "language": "typescript",
+  "description": "One repo for your whole product: pick the web app (Next.js or Vite), and optionally a mobile app with Expo, an API with Hono and docs with Starlight. Shared UI and config packages, and cached builds with Turborepo.",
+  "tags": [
+    "monorepo",
+    "turborepo",
+    "nextjs",
+    "expo",
+    "hono",
+    "typescript"
+  ],
+  "base": {
+    "command": "npx create-turbo@latest {{name}} -m {{pm}} --skip-install --no-git && rm -rf {{name}}/apps/docs"
+  },
+  "packageManagers": [
+    "pnpm",
+    "bun",
+    "npm"
+  ],
+  "skills": [
+    "vercel/turborepo@turborepo"
+  ],
+  "finalize": [
+    "npm pkg set packageManager=\"{{pm}}@$({{pm}} --version)\"",
+    "{{pm}} install"
+  ],
+  "verify": {
+    "command": "{{pm}} run build",
+    "matrix": [
+      {
+        "web": [
+          "vite"
+        ],
+        "apps": [
+          "api",
+          "docs"
+        ]
+      },
+      {
+        "web": [
+          "none"
+        ],
+        "apps": [
+          "mobile",
+          "api"
+        ]
+      }
+    ]
+  },
+  "options": [
+    {
+      "id": "web",
+      "label": "Web app",
+      "description": "The main app in apps/web.",
+      "type": "select",
+      "default": "next",
+      "choices": [
+        {
+          "id": "next",
+          "label": "Next.js",
+          "description": "App Router, using the shared @repo/ui package.",
+          "skills": [
+            "vercel-labs/openreview@next-best-practices",
+            "vercel-labs/agent-skills@vercel-react-best-practices"
+          ]
+        },
+        {
+          "id": "vite",
+          "label": "Vite + React",
+          "description": "SPA with Vite and React.",
+          "postInstall": [
+            "rm -rf apps/web && npx create-vite@latest apps/web --template react-ts --no-interactive && npm pkg set name=web --prefix apps/web"
+          ],
+          "skills": [
+            "antfu/skills@vite",
+            "vercel-labs/agent-skills@vercel-react-best-practices"
+          ]
+        },
+        {
+          "id": "none",
+          "label": "None",
+          "postInstall": [
+            "rm -rf apps/web"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "apps",
+      "label": "More apps",
+      "description": "The product's other apps, each in its own apps/ folder.",
+      "type": "multi",
+      "default": [
+        "api"
+      ],
+      "choices": [
+        {
+          "id": "api",
+          "label": "API (Hono)",
+          "description": "Node.js API with Hono in apps/api.",
+          "postInstall": [
+            "npx -y tiged honojs/starter/templates/nodejs apps/api && rm -f apps/api/pnpm-workspace.yaml && npm pkg set name=api --prefix apps/api"
+          ],
+          "skills": [
+            "honojs/skills@hono"
+          ]
+        },
+        {
+          "id": "mobile",
+          "label": "Mobile (Expo)",
+          "description": "iOS and Android app with Expo in apps/mobile.",
+          "postInstall": [
+            "npx create-expo-app@latest apps/mobile --template blank-typescript --no-install && npm pkg set name=mobile --prefix apps/mobile"
+          ],
+          "skills": [
+            "expo/skills@expo-overview",
+            "expo/skills@expo-router",
+            "vercel-labs/agent-skills@vercel-react-native-skills"
+          ]
+        },
+        {
+          "id": "docs",
+          "label": "Docs (Starlight)",
+          "description": "Documentation site with Astro Starlight in apps/docs.",
+          "postInstall": [
+            "npx create-astro@latest apps/docs --template starlight --no-install --no-git --yes && npm pkg set name=docs --prefix apps/docs"
+          ],
+          "skills": [
+            "astrolicious/agent-skills@astro"
+          ]
+        }
+      ]
+    }
+  ],
+  "libraries": {
+    "framework": [
+      "react",
+      "nextjs"
+    ],
+    "design": [
+      "design-pack"
+    ],
+    "workflow": [
+      "essentials"
+    ]
+  },
+  "writeFiles": [
+    {
+      "path": "turbo.json",
+      "mode": "json-merge",
+      "content": "{\"tasks\": {\"build\": {\"outputs\": [\"dist/**\"]}}}"
+    }
+  ],
+  "instructions": "## How to work here\n\n- It's a monorepo: apps live in `apps/` (`web`, `api`, `mobile`, `docs`) and shared code in `packages/` (`@repo/ui`, `@repo/typescript-config`, `@repo/eslint-config`).\n- Run tasks from the root with Turborepo: `pnpm run build`, `pnpm run dev`, `pnpm run lint` (or `npm`/`bun`, depending on the project's package manager). For a single app: `pnpm turbo run dev --filter=web`.\n- Dependencies are added to the app or package that uses them, not to the root (except tools like `turbo` or `prettier`).\n- Anything several apps use goes into a package in `packages/`; never copy it from one app to another.\n- Before finishing: `pnpm run build` from the root."
+}

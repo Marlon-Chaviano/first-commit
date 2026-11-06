@@ -11,19 +11,19 @@ import { useTypewriter } from "@/hooks/use-typewriter";
 
 import { recommendationHref } from "./href";
 
-const EXAMPLES = ["Landing para lanzar mi app, con animaciones y analítica", "App de recetas para iOS y Android con login", "SaaS de reservas con pagos y emails", "API en Python para un inventario"];
+const EXAMPLES = ["Landing page to launch my app, with animations and analytics", "Recipes app for iOS and Android with login", "Booking SaaS with payments and emails", "Python API for an inventory"];
 
 /** Placeholder ideas, typed one after another while the field is empty. */
 const PLACEHOLDERS = [
-  "Una app de reservas para peluquerías con pagos…",
-  "Un blog técnico en Astro con buen SEO…",
-  "Una API en Go para procesar pedidos…",
-  "Un panel interno en React para ver métricas…",
-  "Una extensión de Chrome que resume artículos…",
-  "Una app móvil para registrar entrenamientos…",
+  "A booking app for hair salons with payments…",
+  "A tech blog on Astro with great SEO…",
+  "A Go API to process orders…",
+  "An internal React dashboard for metrics…",
+  "A Chrome extension that summarizes articles…",
+  "A mobile app to log workouts…",
 ] as const;
 
-/** "Describe tu proyecto" → recommended kit, opened in the configurator with the options already chosen. */
+/** "Describe your project" → recommended kit, opened in the configurator with the options already chosen. */
 export function DescribeProject() {
   const router = useRouter();
   const [description, setDescription] = useState("");
@@ -43,7 +43,7 @@ export function DescribeProject() {
       });
       const body = (await res.json().catch(() => ({}))) as { kit?: string; options?: Record<string, string[]>; reasons?: string[]; error?: string };
       if (!res.ok || !body.kit) {
-        setError(body.error ?? "No se pudo recomendar un kit. Prueba otra vez.");
+        setError(body.error ?? "Couldn't recommend a kit. Try again.");
         return;
       }
       router.push(recommendationHref(body.kit, body.options ?? {}, body.reasons ?? []));
@@ -71,7 +71,7 @@ export function DescribeProject() {
           placeholder={placeholder}
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
-          aria-label="Describe tu proyecto"
+          aria-label="Describe your project"
           maxLength={1000}
           rows={2}
           className="font-mono text-sm"
@@ -79,12 +79,12 @@ export function DescribeProject() {
         <InputGroupAddon align="block-end" className="justify-end">
           <InputGroupButton type="submit" variant="default" size="sm" disabled={pending || !description.trim()}>
             {pending ? <LoaderCircleIcon className="animate-spin" /> : <ArrowRightIcon />}
-            Recomendar kit
+            Recommend a kit
           </InputGroupButton>
         </InputGroupAddon>
       </InputGroup>
       {error && <p className="text-sm text-destructive">{error}</p>}
-      <ul className="flex flex-wrap items-center gap-2" aria-label="Ejemplos">
+      <ul className="flex flex-wrap items-center gap-2" aria-label="Examples">
         {EXAMPLES.map((example) => (
           <li key={example}>
             <Badge

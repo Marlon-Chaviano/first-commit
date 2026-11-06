@@ -43,7 +43,7 @@ export async function recommend(normalized: string): Promise<RecommendResult> {
       const fromClaude = await askClaude(normalized, kits);
       if (fromClaude) return strip(fromClaude);
     } catch (error) {
-      console.error("[recommend] Claude no disponible, uso el recomendador por palabras clave", error);
+      console.error("[recommend] Claude unavailable, falling back to the keyword recommender", error);
     }
   }
   const rec = recommendHeuristic(normalized, kits);
@@ -71,7 +71,7 @@ async function askClaude(description: string, kits: Kit[]): Promise<ResolvedReco
       reasons: answer.reasons,
     };
     try {
-      if (!kit) throw new Error(`"${answer.kit}" no es uno de los kits disponibles`);
+      if (!kit) throw new Error(`"${answer.kit}" isn't one of the available kits`);
       return resolveRecommendation(kit, rec, "claude");
     } catch (error) {
       // One retry, telling the model what was wrong.

@@ -1,18 +1,17 @@
-import { readdirSync, readFileSync } from "node:fs";
+import { readFileSync } from "node:fs";
 import { join } from "node:path";
 
 import { describe, expect, it } from "vitest";
 
-import { catalogSchema, expandKit } from "./libraries";
+import { catalogSchema } from "./libraries";
 import { recommendHeuristic, resolveRecommendation } from "./recommend";
-import { parseKit } from "./schema";
+import { loadRegistryKits } from "./node";
 
 // The real registry: the recommender is only as good as the catalog it reads.
 const registry = join(__dirname, "../../../registry");
 const catalog = catalogSchema.parse(JSON.parse(readFileSync(join(registry, "libraries.json"), "utf8")));
-const kits = readdirSync(join(registry, "kits")).map((name) =>
-  expandKit(parseKit(JSON.parse(readFileSync(join(registry, "kits", name, "kit.json"), "utf8"))), catalog),
-);
+// Kits as the registry serves them: `extends` resolved, catalog libraries expanded.
+const kits = await loadRegistryKits(registry);
 const recommend = (description: string) => {
   const rec = recommendHeuristic(description, kits);
   return resolveRecommendation(kits.find((k) => k.name === rec.kit)!, rec, "heuristic");
@@ -20,26 +19,26 @@ const recommend = (description: string) => {
 
 describe("recommendHeuristic", () => {
   it.each([
-    ["Una landing para lanzar mi app, con animaciones y analítica", "landing-next"],
-    ["App móvil de recetas para iOS y Android con login", "mobile-expo"],
-    ["SaaS de reservas para peluquerías con pagos y emails", "saas-next-supabase"],
-    ["API REST en Python para un inventario", "api-fastapi"],
+    ["A landing page to launch my app, with animations and analytics", "landing-next"],
+    ["Recipes mobile app for iOS and Android with login", "mobile-expo"],
+    ["Booking SaaS for hair salons with payments and emails", "saas-next-supabase"],
+    ["Python REST API for an inventory", "api-fastapi"],
     ["Un microservicio en Go", "api-go"],
-    ["App nativa de iOS con SwiftUI", "ios-swiftui"],
-    ["API con Hono en Cloudflare Workers", "api-hono"],
-    ["Extensión de Chrome que resume la página", "chrome-extension"],
+    ["Native iOS app with SwiftUI", "ios-swiftui"],
+    ["API with Hono on Cloudflare Workers", "api-hono"],
+    ["Chrome extension that summarizes the page", "chrome-extension"],
   ])("%s → %s", (description, kit) => {
     expect(recommend(description).kit).toBe(kit);
   });
 
   it("picks the libraries the description asks for", () => {
-    const r = recommend("Una landing para lanzar mi app, con animaciones y analítica");
+    const r = recommend("A landing page to launch my app, with animations and analytics");
     expect(r.options.animation).toContain("motion");
     expect(r.options.observability).toEqual(expect.arrayContaining(["vercel-analytics"]));
   });
 
   it("adds what a choice requires (Better Auth needs Drizzle)", () => {
-    const r = recommend("SaaS con login de usuarios y pagos");
+    const r = recommend("SaaS with user login and payments");
     expect(r.options.auth).toEqual(["better-auth"]);
     expect(r.options.database).toEqual(["drizzle-postgres"]);
     expect(r.options.payments).toEqual(["stripe"]);
@@ -53,7 +52,7 @@ describe("recommendHeuristic", () => {
 
   it("drops unknown options and choices from a model's answer", () => {
     const kit = kits.find((k) => k.name === "saas-next-supabase")!;
-    const r = resolveRecommendation(kit, { kit: kit.name, options: { payments: ["polar"], nope: ["x"], email: ["resend"] }, reasons: [] }, "claude");
+    const r = resolveRecommendation(kit, { kit: kit.name, options: { payments: ["fakepay"], nope: ["x"], email: ["resend"] }, reasons: [] }, "claude");
     expect(r.options.payments).toEqual(["stripe"]);
     expect(r.options.email).toEqual(["resend"]);
     expect(r.options).not.toHaveProperty("nope");

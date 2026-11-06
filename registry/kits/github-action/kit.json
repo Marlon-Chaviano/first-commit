@@ -1,0 +1,35 @@
+{
+  "$schema": "../../kit.schema.json",
+  "version": "1.0.0",
+  "author": "Marlon Chaviano",
+  "name": "github-action",
+  "title": "GitHub Action with TypeScript",
+  "category": "extension",
+  "language": "typescript",
+  "description": "A GitHub Action in TypeScript from the official template: typed inputs and outputs, tests with Jest and the bundle in dist/ ready to publish on the Marketplace.",
+  "tags": [
+    "github-actions",
+    "ci",
+    "typescript"
+  ],
+  "base": {
+    "command": "npx -y tiged actions/typescript-action {{name}}",
+    "install": "npm install"
+  },
+  "packageManagers": [
+    "npm"
+  ],
+  "skills": [
+    "github/awesome-copilot@github-actions-hardening"
+  ],
+  "libraries": {
+    "framework": "nodejs",
+    "workflow": [
+      "essentials"
+    ]
+  },
+  "verify": {
+    "command": "npm run package && npm test"
+  },
+  "instructions": "## How to work here\n\n- The logic lives in `src/main.ts`; inputs and outputs are declared in `action.yml` and read with `core.getInput()` / `core.setOutput()`.\n- Test locally with `npm run local-action` (it uses `.env` for the inputs) and with `npm test`.\n- GitHub runs `dist/index.js`: after changing the code, run `npm run bundle` and commit `dist/`.\n- Publish with a version tag (`v1`, `v1.0.0`) and a release."
+}

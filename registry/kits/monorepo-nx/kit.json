@@ -1,0 +1,44 @@
+{
+  "$schema": "../../kit.schema.json",
+  "version": "1.0.0",
+  "author": "Marlon Chaviano",
+  "name": "monorepo-nx",
+  "title": "Monorepo with Nx",
+  "category": "monorepo",
+  "language": "typescript",
+  "description": "An Nx monorepo with a React (Vite) app and libraries: generators, task caching, a dependency graph and module boundary rules.",
+  "tags": [
+    "nx",
+    "monorepo",
+    "react",
+    "vite",
+    "vitest"
+  ],
+  "base": {
+    "command": "npx -y create-nx-workspace@latest {{name}} --preset=react-monorepo --appName=web --bundler=vite --style=css --e2eTestRunner=none --unitTestRunner=vitest --nxCloud=skip --packageManager={{pm}} --skipGit --interactive=false"
+  },
+  "packageManagers": [
+    "npm",
+    "pnpm"
+  ],
+  "skills": [
+    "nrwl/nx-ai-agents-config@nx-workspace",
+    "nrwl/nx-ai-agents-config@nx-run-tasks",
+    "vercel-labs/agent-skills@vercel-react-best-practices"
+  ],
+  "libraries": {
+    "framework": [
+      "react"
+    ],
+    "design": [
+      "design-pack"
+    ],
+    "workflow": [
+      "essentials"
+    ]
+  },
+  "verify": {
+    "command": "npx nx run-many -t build test --outputStyle=static"
+  },
+  "instructions": "## How to work here\n\n- Create apps and libraries with the generators (`npx nx g @nx/react:library libs/<name>`), not by hand: that way they're registered in the graph.\n- Run tasks through Nx to use the cache: `npx nx build web`, `npx nx run-many -t test`, `npx nx affected -t test`.\n- Respect module boundaries (tags and `@nx/enforce-module-boundaries`).\n- Before finishing: `npx nx run-many -t build test`."
+}

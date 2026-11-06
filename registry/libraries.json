@@ -7,8 +7,8 @@
       "react"
     ],
     "url": "https://ui.shadcn.com",
-    "description": "Componentes accesibles que viven en tu código. Base de cientos de registros.",
-    "usage": "npx shadcn@latest add <componente>",
+    "description": "Accessible components that live in your code. The foundation of hundreds of registries.",
+    "usage": "npx shadcn@latest add <component>",
     "postInstall": [
       "{{pmx}} shadcn@latest init --defaults --yes"
     ],
@@ -33,13 +33,13 @@
       "react"
     ],
     "url": "https://heroui.com",
-    "description": "Componentes modernos sobre Tailwind CSS v4 y React Aria.",
-    "usage": "importa desde `@heroui/react` (https://heroui.com/docs/components)",
+    "description": "Modern components on Tailwind CSS v4 and React Aria.",
+    "usage": "import from `@heroui/react` (https://heroui.com/docs/components)",
     "dependencies": [
       "@heroui/react",
       "@heroui/styles"
     ],
-    "setup": "añade `@import \"@heroui/styles\";` justo después de `@import \"tailwindcss\";` en el CSS global.",
+    "setup": "add `@import \"@heroui/styles\";` right after `@import \"tailwindcss\";` in the global CSS.",
     "skills": [
       "heroui-inc/heroui@heroui-react"
     ]
@@ -52,13 +52,13 @@
       "react"
     ],
     "url": "https://mantine.dev",
-    "description": "Más de 100 componentes y hooks, con formularios y fechas.",
-    "usage": "importa desde `@mantine/core` y `@mantine/hooks`",
+    "description": "100+ components and hooks, including forms and dates.",
+    "usage": "import from `@mantine/core` and `@mantine/hooks`",
     "dependencies": [
       "@mantine/core",
       "@mantine/hooks"
     ],
-    "setup": "envuelve la app en `<MantineProvider>` e importa `@mantine/core/styles.css` en el layout raíz."
+    "setup": "wrap the app in `<MantineProvider>` and import `@mantine/core/styles.css` in the root layout."
   },
   {
     "id": "mui",
@@ -68,14 +68,14 @@
       "react"
     ],
     "url": "https://mui.com/material-ui/",
-    "description": "Material Design completo y muy maduro.",
-    "usage": "importa desde `@mui/material`",
+    "description": "Complete, very mature Material Design.",
+    "usage": "import from `@mui/material`",
     "dependencies": [
       "@mui/material",
       "@emotion/react",
       "@emotion/styled"
     ],
-    "setup": "define el tema con `ThemeProvider`; en Next.js App Router añade `@mui/material-nextjs` y `AppRouterCacheProvider`.",
+    "setup": "define the theme with `ThemeProvider`; with the Next.js App Router add `@mui/material-nextjs` and `AppRouterCacheProvider`.",
     "skills": [
       "mui/material-ui@material-ui-theming"
     ]
@@ -88,13 +88,13 @@
       "react"
     ],
     "url": "https://chakra-ui.com",
-    "description": "Componentes accesibles con un sistema de estilos por props.",
-    "usage": "importa desde `@chakra-ui/react`",
+    "description": "Accessible components with a style-props system.",
+    "usage": "import from `@chakra-ui/react`",
     "dependencies": [
       "@chakra-ui/react",
       "@emotion/react"
     ],
-    "setup": "envuelve la app en `<ChakraProvider value={defaultSystem}>`.",
+    "setup": "wrap the app in `<ChakraProvider value={defaultSystem}>`.",
     "skills": [
       "chakra-ui/chakra-ui@chakra-ui-builder"
     ]
@@ -111,12 +111,12 @@
       "vanilla"
     ],
     "url": "https://daisyui.com",
-    "description": "Clases de componentes para Tailwind CSS. Funciona con cualquier framework.",
-    "usage": "usa sus clases (`btn`, `card`, `modal`…) según https://daisyui.com/components/",
+    "description": "Component classes for Tailwind CSS. Works with any framework.",
+    "usage": "use its classes (`btn`, `card`, `modal`…) as in https://daisyui.com/components/",
     "devDependencies": [
       "daisyui"
     ],
-    "setup": "requiere Tailwind CSS v4: añade `@plugin \"daisyui\";` al CSS global.",
+    "setup": "requires Tailwind CSS v4: add `@plugin \"daisyui\";` to the global CSS.",
     "skills": [
       "saadeghi/daisyui@daisyui"
     ]
@@ -129,9 +129,9 @@
       "vue"
     ],
     "url": "https://www.shadcn-vue.com",
-    "description": "El port oficial de shadcn/ui para Vue.",
-    "usage": "npx shadcn-vue@latest add <componente>",
-    "setup": "inicialízala con `npx shadcn-vue@latest init` (requiere Tailwind CSS).",
+    "description": "The official shadcn/ui port for Vue.",
+    "usage": "npx shadcn-vue@latest add <component>",
+    "setup": "initialize it with `npx shadcn-vue@latest init` (requires Tailwind CSS).",
     "skills": [
       "unovue/shadcn-vue@shadcn-vue"
     ]
@@ -144,13 +144,13 @@
       "vue"
     ],
     "url": "https://primevue.org",
-    "description": "Más de 90 componentes para Vue con temas listos.",
-    "usage": "importa desde `primevue/<componente>`",
+    "description": "90+ Vue components with ready-made themes.",
+    "usage": "import from `primevue/<component>`",
     "dependencies": [
       "primevue",
       "@primeuix/themes"
     ],
-    "setup": "registra PrimeVue con un preset de `@primeuix/themes` en `main.ts`."
+    "setup": "register PrimeVue with a `@primeuix/themes` preset in `main.ts`."
   },
   {
     "id": "vuetify",
@@ -160,12 +160,12 @@
       "vue"
     ],
     "url": "https://vuetifyjs.com",
-    "description": "Material Design para Vue.",
-    "usage": "usa los componentes `v-*` de Vuetify",
+    "description": "Material Design for Vue.",
+    "usage": "use Vuetify's `v-*` components",
     "dependencies": [
       "vuetify"
     ],
-    "setup": "crea la instancia con `createVuetify()` y regístrala en la app."
+    "setup": "create the instance with `createVuetify()` and register it in the app."
   },
   {
     "id": "shadcn-svelte",
@@ -175,9 +175,9 @@
       "svelte"
     ],
     "url": "https://www.shadcn-svelte.com",
-    "description": "El port de shadcn/ui para Svelte.",
-    "usage": "npx shadcn-svelte@latest add <componente>",
-    "setup": "inicialízala con `npx shadcn-svelte@latest init` (requiere Tailwind CSS).",
+    "description": "The shadcn/ui port for Svelte.",
+    "usage": "npx shadcn-svelte@latest add <component>",
+    "setup": "initialize it with `npx shadcn-svelte@latest init` (requires Tailwind CSS).",
     "skills": [
       "huntabyte/shadcn-svelte@shadcn-svelte"
     ]
@@ -190,13 +190,13 @@
       "svelte"
     ],
     "url": "https://www.skeleton.dev",
-    "description": "Sistema de diseño para Svelte y Tailwind.",
-    "usage": "importa desde `@skeletonlabs/skeleton-svelte`",
+    "description": "Design system for Svelte and Tailwind.",
+    "usage": "import from `@skeletonlabs/skeleton-svelte`",
     "dependencies": [
       "@skeletonlabs/skeleton-svelte",
       "@skeletonlabs/skeleton"
     ],
-    "setup": "importa `@skeletonlabs/skeleton` y un tema en el CSS global (requiere Tailwind CSS v4)."
+    "setup": "import `@skeletonlabs/skeleton` and a theme in the global CSS (requires Tailwind CSS v4)."
   },
   {
     "id": "flowbite-svelte",
@@ -206,13 +206,13 @@
       "svelte"
     ],
     "url": "https://flowbite-svelte.com",
-    "description": "Componentes Flowbite para Svelte y Tailwind.",
-    "usage": "importa desde `flowbite-svelte`",
+    "description": "Flowbite components for Svelte and Tailwind.",
+    "usage": "import from `flowbite-svelte`",
     "dependencies": [
       "flowbite-svelte",
       "flowbite"
     ],
-    "setup": "requiere Tailwind CSS: añade el plugin de Flowbite al CSS global."
+    "setup": "requires Tailwind CSS: add the Flowbite plugin to the global CSS."
   },
   {
     "id": "bits-ui",
@@ -222,8 +222,8 @@
       "svelte"
     ],
     "url": "https://bits-ui.com",
-    "description": "Primitivas headless y accesibles para Svelte.",
-    "usage": "importa desde `bits-ui` y dale estilo con tus propias clases",
+    "description": "Headless, accessible primitives for Svelte.",
+    "usage": "import from `bits-ui` and style it with your own classes",
     "dependencies": [
       "bits-ui"
     ]
@@ -236,8 +236,8 @@
       "solid"
     ],
     "url": "https://kobalte.dev",
-    "description": "Primitivas accesibles sin estilos para SolidJS.",
-    "usage": "importa desde `@kobalte/core`",
+    "description": "Unstyled accessible primitives for SolidJS.",
+    "usage": "import from `@kobalte/core`",
     "dependencies": [
       "@kobalte/core"
     ]
@@ -250,14 +250,14 @@
       "react-native"
     ],
     "url": "https://reactnativereusables.com",
-    "description": "shadcn/ui para React Native, con NativeWind.",
-    "usage": "npx @react-native-reusables/cli@latest add <componente>",
+    "description": "shadcn/ui for React Native, with NativeWind.",
+    "usage": "npx @react-native-reusables/cli@latest add <component>",
     "requires": {
       "styling": [
         "nativewind"
       ]
     },
-    "setup": "verifica la configuración con `npx @react-native-reusables/cli@latest doctor`."
+    "setup": "check the setup with `npx @react-native-reusables/cli@latest doctor`."
   },
   {
     "id": "tamagui",
@@ -267,13 +267,13 @@
       "react-native"
     ],
     "url": "https://tamagui.dev",
-    "description": "UI universal optimizada por compilador para nativo y web.",
-    "usage": "importa desde `tamagui`",
+    "description": "Compiler-optimized universal UI for native and web.",
+    "usage": "import from `tamagui`",
     "dependencies": [
       "tamagui",
       "@tamagui/config"
     ],
-    "setup": "crea `tamagui.config.ts` con `@tamagui/config` y envuelve la app en `<TamaguiProvider>`.",
+    "setup": "create `tamagui.config.ts` with `@tamagui/config` and wrap the app in `<TamaguiProvider>`.",
     "skills": [
       "tamagui/tamagui@tamagui"
     ]
@@ -286,14 +286,14 @@
       "react-native"
     ],
     "url": "https://gluestack.io",
-    "description": "Componentes copiables para React Native con NativeWind.",
-    "usage": "npx gluestack-ui@latest add <componente>",
+    "description": "Copy-paste components for React Native with NativeWind.",
+    "usage": "npx gluestack-ui@latest add <component>",
     "requires": {
       "styling": [
         "nativewind"
       ]
     },
-    "setup": "inicialízala con `npx gluestack-ui@latest init`.",
+    "setup": "initialize it with `npx gluestack-ui@latest init`.",
     "skills": [
       "gluestack/agent-skills@gluestack-ui-v5"
     ]
@@ -306,13 +306,13 @@
       "react-native"
     ],
     "url": "https://reactnativepaper.com",
-    "description": "Material Design para React Native.",
-    "usage": "importa desde `react-native-paper`",
+    "description": "Material Design for React Native.",
+    "usage": "import from `react-native-paper`",
     "dependencies": [
       "react-native-paper",
       "react-native-safe-area-context"
     ],
-    "setup": "envuelve la app en `<PaperProvider>`."
+    "setup": "wrap the app in `<PaperProvider>`."
   },
   {
     "id": "kokonutui",
@@ -322,8 +322,8 @@
       "react"
     ],
     "url": "https://kokonutui.com",
-    "description": "Componentes vistosos sobre shadcn/ui, Tailwind y Motion.",
-    "usage": "npx shadcn@latest add @kokonutui/<componente>",
+    "description": "Eye-catching components on shadcn/ui, Tailwind and Motion.",
+    "usage": "npx shadcn@latest add @kokonutui/<component>",
     "requires": {
       "components": [
         "shadcn"
@@ -341,8 +341,8 @@
       "react"
     ],
     "url": "https://magicui.design",
-    "description": "Más de 150 componentes animados para landings.",
-    "usage": "npx shadcn@latest add @magicui/<componente>",
+    "description": "150+ animated components for landing pages.",
+    "usage": "npx shadcn@latest add @magicui/<component>",
     "requires": {
       "components": [
         "shadcn"
@@ -360,8 +360,8 @@
       "react"
     ],
     "url": "https://ui.aceternity.com",
-    "description": "Efectos y fondos llamativos con Tailwind y Motion.",
-    "usage": "npx shadcn@latest add @aceternity/<componente>",
+    "description": "Striking effects and backgrounds with Tailwind and Motion.",
+    "usage": "npx shadcn@latest add @aceternity/<component>",
     "requires": {
       "components": [
         "shadcn"
@@ -376,8 +376,8 @@
       "react"
     ],
     "url": "https://ui.bklit.com",
-    "description": "Gráficos componibles: líneas, áreas, barras, tartas, radar.",
-    "usage": "npx shadcn@latest add @bklit/<componente>",
+    "description": "Composable charts: line, area, bar, pie, radar.",
+    "usage": "npx shadcn@latest add @bklit/<component>",
     "requires": {
       "components": [
         "shadcn"
@@ -392,8 +392,8 @@
       "react"
     ],
     "url": "https://reactbits.dev",
-    "description": "Componentes animados e interactivos: textos, fondos, cursores.",
-    "usage": "npx shadcn@latest add @react-bits/<componente>",
+    "description": "Animated, interactive components: text, backgrounds, cursors.",
+    "usage": "npx shadcn@latest add @react-bits/<component>",
     "requires": {
       "components": [
         "shadcn"
@@ -408,8 +408,8 @@
       "react"
     ],
     "url": "https://animate-ui.com",
-    "description": "Una distribución de componentes totalmente animada.",
-    "usage": "npx shadcn@latest add @animate-ui/<componente>",
+    "description": "A fully animated component distribution.",
+    "usage": "npx shadcn@latest add @animate-ui/<component>",
     "requires": {
       "components": [
         "shadcn"
@@ -424,8 +424,8 @@
       "react"
     ],
     "url": "https://www.motion-primitives.com",
-    "description": "Primitivas de movimiento listas para copiar.",
-    "usage": "npx shadcn@latest add @motion-primitives/<componente>",
+    "description": "Copy-ready motion primitives.",
+    "usage": "npx shadcn@latest add @motion-primitives/<component>",
     "requires": {
       "components": [
         "shadcn"
@@ -440,8 +440,8 @@
       "react"
     ],
     "url": "https://www.cult-ui.com",
-    "description": "Componentes headless y componibles poco comunes.",
-    "usage": "npx shadcn@latest add @cult-ui/<componente>",
+    "description": "Uncommon headless, composable components.",
+    "usage": "npx shadcn@latest add @cult-ui/<component>",
     "requires": {
       "components": [
         "shadcn"
@@ -456,8 +456,8 @@
       "react"
     ],
     "url": "https://smoothui.dev",
-    "description": "Microinteracciones cuidadas con Motion.",
-    "usage": "npx shadcn@latest add @smoothui/<componente>",
+    "description": "Polished micro-interactions with Motion.",
+    "usage": "npx shadcn@latest add @smoothui/<component>",
     "requires": {
       "components": [
         "shadcn"
@@ -475,8 +475,8 @@
       "vanilla"
     ],
     "url": "https://motion.dev",
-    "description": "Animaciones declarativas, gestos y layout (antes Framer Motion).",
-    "usage": "En React: `import { motion } from \"motion/react\"`; fuera de React: `import { animate } from \"motion\"`.",
+    "description": "Declarative animations, gestures and layout (formerly Framer Motion).",
+    "usage": "In React: `import { motion } from \"motion/react\"`; outside React: `import { animate } from \"motion\"`.",
     "dependencies": [
       "motion"
     ]
@@ -489,8 +489,8 @@
       "vue"
     ],
     "url": "https://motion.dev/docs/vue",
-    "description": "Motion para Vue.",
-    "usage": "Usa `import { motion } from \"motion-v\"`.",
+    "description": "Motion for Vue.",
+    "usage": "Use `import { motion } from \"motion-v\"`.",
     "dependencies": [
       "motion-v"
     ]
@@ -507,8 +507,8 @@
       "vanilla"
     ],
     "url": "https://gsap.com",
-    "description": "Animaciones de alto rendimiento, timelines y ScrollTrigger.",
-    "usage": "Usa `import gsap from \"gsap\"`; en React, el hook `useGSAP` de `@gsap/react`.",
+    "description": "High-performance animations, timelines and ScrollTrigger.",
+    "usage": "Use `import gsap from \"gsap\"`; in React, the `useGSAP` hook from `@gsap/react`.",
     "dependencies": [
       "gsap"
     ],
@@ -529,8 +529,8 @@
       "vanilla"
     ],
     "url": "https://animejs.com",
-    "description": "Motor de animación ligero para CSS, SVG y DOM.",
-    "usage": "Usa la API v4: `import { animate } from \"animejs\"`.",
+    "description": "Lightweight animation engine for CSS, SVG and the DOM.",
+    "usage": "Use the v4 API: `import { animate } from \"animejs\"`.",
     "dependencies": [
       "animejs"
     ]
@@ -547,8 +547,8 @@
       "vanilla"
     ],
     "url": "https://auto-animate.formkit.com",
-    "description": "Transiciones automáticas al añadir, quitar o mover elementos.",
-    "usage": "Usa `autoAnimate` de `@formkit/auto-animate` (o su hook/directiva del framework).",
+    "description": "Automatic transitions when elements are added, removed or moved.",
+    "usage": "Use `autoAnimate` from `@formkit/auto-animate` (or its hook/directive for your framework).",
     "dependencies": [
       "@formkit/auto-animate"
     ]
@@ -561,8 +561,8 @@
       "react"
     ],
     "url": "https://www.react-spring.dev",
-    "description": "Animaciones basadas en física de muelles.",
-    "usage": "Usa `import { useSpring, animated } from \"@react-spring/web\"`.",
+    "description": "Spring-physics animations.",
+    "usage": "Use `import { useSpring, animated } from \"@react-spring/web\"`.",
     "dependencies": [
       "@react-spring/web"
     ]
@@ -575,8 +575,8 @@
       "react"
     ],
     "url": "https://lottiefiles.com",
-    "description": "Reproduce animaciones Lottie de diseño.",
-    "usage": "Usa `DotLottieReact` de `@lottiefiles/dotlottie-react`.",
+    "description": "Plays designer-made Lottie animations.",
+    "usage": "Use `DotLottieReact` from `@lottiefiles/dotlottie-react`.",
     "dependencies": [
       "@lottiefiles/dotlottie-react"
     ]
@@ -589,8 +589,8 @@
       "react"
     ],
     "url": "https://r3f.docs.pmnd.rs",
-    "description": "3D y WebGL declarativo con Three.js.",
-    "usage": "Usa `Canvas` de `@react-three/fiber` y los helpers de `@react-three/drei`.",
+    "description": "Declarative 3D and WebGL with Three.js.",
+    "usage": "Use `Canvas` from `@react-three/fiber` and the helpers from `@react-three/drei`.",
     "dependencies": [
       "three",
       "@react-three/fiber",
@@ -611,8 +611,8 @@
       "react-native"
     ],
     "url": "https://moti.fyi",
-    "description": "Animaciones declarativas para React Native sobre Reanimated.",
-    "usage": "Usa `import { MotiView } from \"moti\"` (Reanimated ya viene con Expo).",
+    "description": "Declarative React Native animations on Reanimated.",
+    "usage": "Use `import { MotiView } from \"moti\"` (Reanimated ships with Expo).",
     "dependencies": [
       "moti"
     ]
@@ -625,8 +625,8 @@
       "react-native"
     ],
     "url": "https://github.com/lottie-react-native/lottie-react-native",
-    "description": "Animaciones Lottie nativas.",
-    "usage": "Usa `import LottieView from \"lottie-react-native\"`.",
+    "description": "Native Lottie animations.",
+    "usage": "Use `import LottieView from \"lottie-react-native\"`.",
     "dependencies": [
       "lottie-react-native"
     ]
@@ -639,8 +639,8 @@
       "nextjs"
     ],
     "url": "https://sentry.io",
-    "description": "Errores, trazas y rendimiento en cliente, servidor y edge.",
-    "usage": "Los errores no controlados se reportan solos. Para errores que capturas tú usa `Sentry.captureException(error)` y añade contexto con `Sentry.setUser` / `Sentry.setTag`. No dejes `console.error` como única señal de un fallo en producción.",
+    "description": "Errors, traces and performance on client, server and edge.",
+    "usage": "Unhandled errors are reported automatically. For errors you catch, use `Sentry.captureException(error)` and add context with `Sentry.setUser` / `Sentry.setTag`. Never leave `console.error` as the only signal of a production failure.",
     "dependencies": [
       "@sentry/nextjs"
     ],
@@ -677,8 +677,8 @@
       }
     ],
     "setupTasks": [
-      "Sentry: crea un proyecto Next.js en sentry.io y pon su DSN en `NEXT_PUBLIC_SENTRY_DSN`.",
-      "Sentry: para ver stack traces legibles en producción, envuelve `next.config.ts` con `withSentryConfig` (org, project y `SENTRY_AUTH_TOKEN`), siguiendo el skill `sentry-nextjs-sdk`."
+      "Sentry: create a Next.js project at sentry.io and put its DSN in `NEXT_PUBLIC_SENTRY_DSN`.",
+      "Sentry: to get readable stack traces in production, wrap `next.config.ts` with `withSentryConfig` (org, project and `SENTRY_AUTH_TOKEN`), following the `sentry-nextjs-sdk` skill."
     ]
   },
   {
@@ -689,8 +689,8 @@
       "expo"
     ],
     "url": "https://sentry.io",
-    "description": "Crashes nativos y de JavaScript, con trazas de rendimiento.",
-    "usage": "Los errores no controlados se reportan solos. Para errores que capturas tú usa `Sentry.captureException(error)` y añade contexto con `Sentry.setUser` / `Sentry.setTag`. No dejes `console.error` como única señal de un fallo en producción.",
+    "description": "Native and JavaScript crashes, with performance traces.",
+    "usage": "Unhandled errors are reported automatically. For errors you catch, use `Sentry.captureException(error)` and add context with `Sentry.setUser` / `Sentry.setTag`. Never leave `console.error` as the only signal of a production failure.",
     "dependencies": [
       "@sentry/react-native"
     ],
@@ -712,8 +712,8 @@
       }
     ],
     "setupTasks": [
-      "Sentry: crea un proyecto React Native en sentry.io y pon su DSN en `EXPO_PUBLIC_SENTRY_DSN`.",
-      "Sentry: envuelve el componente exportado en `src/app/_layout.tsx` con `Sentry.wrap(...)`, añade el plugin `@sentry/react-native/expo` en `app.json` y usa `getSentryExpoConfig` en `metro.config.js` (skill `sentry-react-native-sdk`)."
+      "Sentry: create a React Native project at sentry.io and put its DSN in `EXPO_PUBLIC_SENTRY_DSN`.",
+      "Sentry: wrap the exported component in `src/app/_layout.tsx` with `Sentry.wrap(...)`, add the `@sentry/react-native/expo` plugin in `app.json` and use `getSentryExpoConfig` in `metro.config.js` (`sentry-react-native-sdk` skill)."
     ]
   },
   {
@@ -724,8 +724,8 @@
       "nodejs"
     ],
     "url": "https://sentry.io",
-    "description": "Errores y trazas para tu API en Node.",
-    "usage": "Los errores no controlados se reportan solos. Para errores que capturas tú usa `Sentry.captureException(error)` y añade contexto con `Sentry.setUser` / `Sentry.setTag`. No dejes `console.error` como única señal de un fallo en producción.",
+    "description": "Errors and traces for your Node API.",
+    "usage": "Unhandled errors are reported automatically. For errors you catch, use `Sentry.captureException(error)` and add context with `Sentry.setUser` / `Sentry.setTag`. Never leave `console.error` as the only signal of a production failure.",
     "dependencies": [
       "@sentry/node"
     ],
@@ -747,8 +747,8 @@
       }
     ],
     "setupTasks": [
-      "Sentry: crea un proyecto Node.js en sentry.io y pon su DSN en `SENTRY_DSN`.",
-      "Sentry: en producción arranca Node con `--import ./dist/instrument.js` para tener trazas automáticas (skill `sentry-node-sdk`)."
+      "Sentry: create a Node.js project at sentry.io and put its DSN in `SENTRY_DSN`.",
+      "Sentry: in production, start Node with `--import ./dist/instrument.js` to get automatic tracing (`sentry-node-sdk` skill)."
     ]
   },
   {
@@ -759,8 +759,8 @@
       "bun"
     ],
     "url": "https://sentry.io",
-    "description": "Errores y trazas para tu API en Bun.",
-    "usage": "Los errores no controlados se reportan solos. Para errores que capturas tú usa `Sentry.captureException(error)` y añade contexto con `Sentry.setUser` / `Sentry.setTag`. No dejes `console.error` como única señal de un fallo en producción.",
+    "description": "Errors and traces for your Bun API.",
+    "usage": "Unhandled errors are reported automatically. For errors you catch, use `Sentry.captureException(error)` and add context with `Sentry.setUser` / `Sentry.setTag`. Never leave `console.error` as the only signal of a production failure.",
     "dependencies": [
       "@sentry/bun"
     ],
@@ -782,7 +782,7 @@
       }
     ],
     "setupTasks": [
-      "Sentry: crea un proyecto Bun en sentry.io y pon su DSN en `SENTRY_DSN`."
+      "Sentry: create a Bun project at sentry.io and put its DSN in `SENTRY_DSN`."
     ]
   },
   {
@@ -793,8 +793,8 @@
       "cloudflare-workers"
     ],
     "url": "https://sentry.io",
-    "description": "Errores y trazas para Workers.",
-    "usage": "Los errores no controlados se reportan solos. Para errores que capturas tú usa `Sentry.captureException(error)` y añade contexto con `Sentry.setUser` / `Sentry.setTag`. No dejes `console.error` como única señal de un fallo en producción.",
+    "description": "Errors and traces for Workers.",
+    "usage": "Unhandled errors are reported automatically. For errors you catch, use `Sentry.captureException(error)` and add context with `Sentry.setUser` / `Sentry.setTag`. Never leave `console.error` as the only signal of a production failure.",
     "dependencies": [
       "@sentry/cloudflare"
     ],
@@ -802,7 +802,7 @@
       "getsentry/sentry-for-ai@sentry-cloudflare-sdk"
     ],
     "setupTasks": [
-      "Sentry: envuelve el `export default` del Worker con `Sentry.withSentry((env) => ({ dsn: env.SENTRY_DSN }), app)`, añade el flag `nodejs_als` (o `nodejs_compat`) en `wrangler` y guarda `SENTRY_DSN` como secret (skill `sentry-cloudflare-sdk`)."
+      "Sentry: wrap the Worker's `export default` with `Sentry.withSentry((env) => ({ dsn: env.SENTRY_DSN }), app)`, add the `nodejs_als` (or `nodejs_compat`) flag in `wrangler` and store `SENTRY_DSN` as a secret (`sentry-cloudflare-sdk` skill)."
     ]
   },
   {
@@ -813,8 +813,8 @@
       "nextjs"
     ],
     "url": "https://posthog.com",
-    "description": "Analítica de producto, embudos, grabación de sesiones y feature flags.",
-    "usage": "Registra eventos de producto con `capture(\"evento\", { ...props })`. Nombra los eventos en snake_case con verbo en pasado (`signup_completed`, `kit_installed`) e identifica al usuario con `identify(id)` tras el login. No envíes datos personales sensibles como propiedades. En el cliente: `import posthog from \"posthog-js\"`; en el servidor: `getPostHogServer()` de `@/lib/posthog-server` (llama a `await client.shutdown()` al terminar).",
+    "description": "Product analytics, funnels, session replay and feature flags.",
+    "usage": "Track product events with `capture(\"event\", { ...props })`. Name events in snake_case with a past-tense verb (`signup_completed`, `kit_installed`) and identify the user with `identify(id)` after login. Never send sensitive personal data as properties. On the client: `import posthog from \"posthog-js\"`; on the server: `getPostHogServer()` from `@/lib/posthog-server` (call `await client.shutdown()` when done).",
     "dependencies": [
       "posthog-js",
       "posthog-node"
@@ -838,8 +838,8 @@
       }
     ],
     "setupTasks": [
-      "PostHog: copia la clave del proyecto (Project API key) en `NEXT_PUBLIC_POSTHOG_KEY` y ajusta `NEXT_PUBLIC_POSTHOG_HOST` si usas la región EU.",
-      "PostHog: define con el usuario los 5–10 eventos clave del producto antes de instrumentar (skill `instrument-product-analytics`)."
+      "PostHog: copy the Project API key into `NEXT_PUBLIC_POSTHOG_KEY` and set `NEXT_PUBLIC_POSTHOG_HOST` if you use the EU region.",
+      "PostHog: agree with the user on the product's 5–10 key events before instrumenting (`instrument-product-analytics` skill)."
     ]
   },
   {
@@ -850,8 +850,8 @@
       "expo"
     ],
     "url": "https://posthog.com",
-    "description": "Analítica de producto y feature flags en la app.",
-    "usage": "Registra eventos de producto con `capture(\"evento\", { ...props })`. Nombra los eventos en snake_case con verbo en pasado (`signup_completed`, `kit_installed`) e identifica al usuario con `identify(id)` tras el login. No envíes datos personales sensibles como propiedades. Usa el hook `usePostHog()` dentro de componentes.",
+    "description": "Product analytics and feature flags in the app.",
+    "usage": "Track product events with `capture(\"event\", { ...props })`. Name events in snake_case with a past-tense verb (`signup_completed`, `kit_installed`) and identify the user with `identify(id)` after login. Never send sensitive personal data as properties. Use the `usePostHog()` hook inside components.",
     "dependencies": [
       "posthog-react-native",
       "expo-file-system",
@@ -873,8 +873,8 @@
       }
     ],
     "setupTasks": [
-      "PostHog: pon la clave del proyecto en `EXPO_PUBLIC_POSTHOG_KEY`.",
-      "PostHog: envuelve la app en `<PostHogProvider client={posthog}>` en `src/app/_layout.tsx` cuando `posthog` no sea null."
+      "PostHog: put the project key in `EXPO_PUBLIC_POSTHOG_KEY`.",
+      "PostHog: wrap the app in `<PostHogProvider client={posthog}>` in `src/app/_layout.tsx` when `posthog` isn't null."
     ]
   },
   {
@@ -887,8 +887,8 @@
       "cloudflare-workers"
     ],
     "url": "https://posthog.com",
-    "description": "Eventos y feature flags desde tu API.",
-    "usage": "Registra eventos de producto con `capture(\"evento\", { ...props })`. Nombra los eventos en snake_case con verbo en pasado (`signup_completed`, `kit_installed`) e identifica al usuario con `identify(id)` tras el login. No envíes datos personales sensibles como propiedades. Usa `getPostHog()` de `src/lib/posthog.ts` y llama a `await client.shutdown()` al terminar cada request en entornos serverless.",
+    "description": "Events and feature flags from your API.",
+    "usage": "Track product events with `capture(\"event\", { ...props })`. Name events in snake_case with a past-tense verb (`signup_completed`, `kit_installed`) and identify the user with `identify(id)` after login. Never send sensitive personal data as properties. Use `getPostHog()` from `src/lib/posthog.ts` and call `await client.shutdown()` at the end of each request in serverless environments.",
     "dependencies": [
       "posthog-node"
     ],
@@ -906,7 +906,7 @@
       }
     ],
     "setupTasks": [
-      "PostHog: pon la clave del proyecto en `POSTHOG_KEY`."
+      "PostHog: put the project key in `POSTHOG_KEY`."
     ]
   },
   {
@@ -917,8 +917,8 @@
       "nextjs"
     ],
     "url": "https://vercel.com/analytics",
-    "description": "Visitas y Core Web Vitals reales, sin cookies.",
-    "usage": "Las visitas y Web Vitals se registran solos al desplegar en Vercel. Para eventos personalizados usa `track(\"evento\")` de `@vercel/analytics`.",
+    "description": "Real visits and Core Web Vitals, no cookies.",
+    "usage": "Visits and Web Vitals are recorded automatically when you deploy on Vercel. For custom events use `track(\"event\")` from `@vercel/analytics`.",
     "dependencies": [
       "@vercel/analytics",
       "@vercel/speed-insights"
@@ -937,7 +937,7 @@
       }
     ],
     "setupTasks": [
-      "Vercel Analytics: actívalo en la pestaña Analytics del proyecto en Vercel (y Speed Insights) tras el primer despliegue."
+      "Vercel Analytics: enable it in the project's Analytics tab on Vercel (and Speed Insights) after the first deploy."
     ]
   },
   {
@@ -948,15 +948,16 @@
       "nextjs"
     ],
     "url": "https://www.better-auth.com",
-    "description": "Auth en tu propia base de datos: email, OAuth, 2FA, organizaciones.",
-    "usage": "Lee la sesión en el servidor con `auth.api.getSession({ headers: await headers() })` (de `@/lib/auth`) y en el cliente con `authClient.useSession()` (de `@/lib/auth-client`). Añade proveedores y plugins en `src/lib/auth.ts`.",
+    "description": "Auth in your own database: email, OAuth, 2FA, organizations.",
+    "usage": "Read the session on the server with `auth.api.getSession({ headers: await headers() })` (from `@/lib/auth`) and on the client with `authClient.useSession()` (from `@/lib/auth-client`). Add providers and plugins in `src/lib/auth.ts`.",
     "dependencies": [
       "better-auth",
       "@better-auth/drizzle-adapter"
     ],
     "requires": {
       "database": [
-        "drizzle-postgres"
+        "drizzle-postgres",
+        "drizzle-neon"
       ]
     },
     "skills": [
@@ -982,8 +983,8 @@
       }
     ],
     "setupTasks": [
-      "Better Auth: genera un secreto con `openssl rand -base64 32` y ponlo en `BETTER_AUTH_SECRET`.",
-      "Better Auth: crea sus tablas con `npx auth@latest generate --output src/db/auth-schema.ts`, expórtalas desde `src/db/schema.ts` y aplica la migración (`npm run db:generate && npm run db:migrate`)."
+      "Better Auth: generate a secret with `openssl rand -base64 32` and put it in `BETTER_AUTH_SECRET`.",
+      "Better Auth: create its tables with `npx auth@latest generate --output src/db/auth-schema.ts`, export them from `src/db/schema.ts` and apply the migration (`npm run db:generate && npm run db:migrate`)."
     ]
   },
   {
@@ -994,8 +995,8 @@
       "nextjs"
     ],
     "url": "https://clerk.com",
-    "description": "Auth gestionada con componentes de login listos.",
-    "usage": "Protege rutas en `src/proxy.ts` con `clerkMiddleware` y lee el usuario con `auth()` / `currentUser()` de `@clerk/nextjs/server`. Usa sus componentes (`<SignInButton>`, `<UserButton>`) en vez de construir formularios de login.",
+    "description": "Managed auth with ready-made login components.",
+    "usage": "Protect routes in `src/proxy.ts` with `clerkMiddleware` and read the user with `auth()` / `currentUser()` from `@clerk/nextjs/server`. Use its components (`<SignInButton>`, `<UserButton>`) instead of building login forms.",
     "dependencies": [
       "@clerk/nextjs"
     ],
@@ -1013,8 +1014,8 @@
       }
     ],
     "setupTasks": [
-      "Clerk: crea una aplicación en clerk.com y copia sus claves en `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` y `CLERK_SECRET_KEY`.",
-      "Clerk: envuelve el contenido de `<body>` en `src/app/layout.tsx` con `<ClerkProvider>` (de `@clerk/nextjs`)."
+      "Clerk: create an application at clerk.com and copy its keys into `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` and `CLERK_SECRET_KEY`.",
+      "Clerk: wrap the contents of `<body>` in `src/app/layout.tsx` with `<ClerkProvider>` (from `@clerk/nextjs`)."
     ]
   },
   {
@@ -1025,8 +1026,8 @@
       "nextjs"
     ],
     "url": "https://orm.drizzle.team",
-    "description": "ORM tipado y migraciones SQL sobre Postgres (Neon, Supabase, local).",
-    "usage": "El esquema vive en `src/db/schema.ts` y el cliente en `src/db/index.ts` (`import { db } from \"@/db\"`). Tras cambiar el esquema: `npm run db:generate` y `npm run db:migrate`. No edites migraciones ya aplicadas.",
+    "description": "Typed ORM and SQL migrations on Postgres (Neon, Supabase, local).",
+    "usage": "The schema lives in `src/db/schema.ts` and the client in `src/db/index.ts` (`import { db } from \"@/db\"`). After changing the schema: `npm run db:generate` and `npm run db:migrate`. Never edit migrations that were already applied.",
     "dependencies": [
       "drizzle-orm",
       "postgres"
@@ -1060,7 +1061,7 @@
       }
     ],
     "setupTasks": [
-      "Drizzle: pon la URL de tu Postgres en `DATABASE_URL` (Neon y Supabase tienen plan gratuito) y ejecuta `npm run db:migrate`."
+      "Drizzle: put your Postgres URL in `DATABASE_URL` (Neon and Supabase have free plans) and run `npm run db:migrate`."
     ]
   },
   {
@@ -1071,8 +1072,8 @@
       "nextjs"
     ],
     "url": "https://stripe.com",
-    "description": "Pagos, suscripciones y facturación.",
-    "usage": "El cliente está en `src/lib/stripe.ts` (solo servidor). Verifica siempre la firma de los webhooks con `STRIPE_WEBHOOK_SECRET` y trata los webhooks como fuente de verdad del estado de pagos y suscripciones.",
+    "description": "Payments, subscriptions and billing.",
+    "usage": "The client is in `src/lib/stripe.ts` (server only). Always verify webhook signatures with `STRIPE_WEBHOOK_SECRET` and treat webhooks as the source of truth for payment and subscription state.",
     "dependencies": [
       "stripe",
       "server-only"
@@ -1096,7 +1097,7 @@
       }
     ],
     "setupTasks": [
-      "Stripe: copia la clave secreta de test en `STRIPE_SECRET_KEY` y crea el webhook (o usa `stripe listen`) para `STRIPE_WEBHOOK_SECRET`."
+      "Stripe: copy the test secret key into `STRIPE_SECRET_KEY` and create the webhook (or use `stripe listen`) for `STRIPE_WEBHOOK_SECRET`."
     ]
   },
   {
@@ -1109,8 +1110,8 @@
       "bun"
     ],
     "url": "https://resend.com",
-    "description": "Email transaccional con una API simple.",
-    "usage": "Envía desde el servidor con `getResend().emails.send({ from, to, subject, html })` (de `src/lib/email.ts`). Nunca expongas `RESEND_API_KEY` al cliente.",
+    "description": "Transactional email with a simple API.",
+    "usage": "Send from the server with `getResend().emails.send({ from, to, subject, html })` (from `src/lib/email.ts`). Never expose `RESEND_API_KEY` to the client.",
     "dependencies": [
       "resend"
     ],
@@ -1127,7 +1128,7 @@
       }
     ],
     "setupTasks": [
-      "Resend: crea una API key en resend.com, ponla en `RESEND_API_KEY` y verifica tu dominio para enviar desde él."
+      "Resend: create an API key at resend.com, put it in `RESEND_API_KEY` and verify your domain to send from it."
     ]
   },
   {
@@ -1138,8 +1139,8 @@
       "nextjs"
     ],
     "url": "https://react.email",
-    "description": "Emails maquetados como componentes de React, enviados con Resend.",
-    "usage": "Las plantillas son componentes en `src/emails/`. Envíalas con `getResend().emails.send({ from, to, subject, react: <Plantilla /> })`. Usa los componentes de `@react-email/components`, no HTML a mano.",
+    "description": "Emails built as React components, sent with Resend.",
+    "usage": "Templates are components in `src/emails/`. Send them with `getResend().emails.send({ from, to, subject, react: <Template /> })`. Use `@react-email/components`, not hand-written HTML.",
     "dependencies": [
       "resend",
       "@react-email/components"
@@ -1162,7 +1163,7 @@
       }
     ],
     "setupTasks": [
-      "Resend: crea una API key en resend.com, ponla en `RESEND_API_KEY` y verifica tu dominio."
+      "Resend: create an API key at resend.com, put it in `RESEND_API_KEY` and verify your domain."
     ]
   },
   {
@@ -1173,8 +1174,8 @@
       "nextjs"
     ],
     "url": "https://next-intl.dev",
-    "description": "Traducciones, formato de fechas y números para el App Router.",
-    "usage": "Los textos viven en `messages/<idioma>.json`. En Server Components usa `getTranslations()` y en Client Components `useTranslations()`. No escribas textos visibles directamente en los componentes.",
+    "description": "Translations and date and number formatting for the App Router.",
+    "usage": "Copy lives in `messages/<locale>.json`. Use `getTranslations()` in Server Components and `useTranslations()` in Client Components. Never write user-visible text directly in components.",
     "dependencies": [
       "next-intl"
     ],
@@ -1189,7 +1190,7 @@
       }
     ],
     "setupTasks": [
-      "next-intl: envuelve la configuración de `next.config.ts` con `createNextIntlPlugin()` (de `next-intl/plugin`) y añade `<NextIntlClientProvider>` en `src/app/layout.tsx`."
+      "next-intl: wrap the `next.config.ts` config with `createNextIntlPlugin()` (from `next-intl/plugin`) and add `<NextIntlClientProvider>` in `src/app/layout.tsx`."
     ]
   },
   {
@@ -1200,8 +1201,8 @@
       "expo"
     ],
     "url": "https://www.i18next.com",
-    "description": "Traducciones con el idioma del dispositivo (expo-localization).",
-    "usage": "Las traducciones están en `src/i18n/index.ts`. En componentes usa `const { t } = useTranslation()`. No escribas textos visibles directamente en los componentes.",
+    "description": "Translations that follow the device language (expo-localization).",
+    "usage": "Translations are in `src/i18n/index.ts`. In components use `const { t } = useTranslation()`. Never write user-visible text directly in components.",
     "dependencies": [
       "i18next",
       "react-i18next",
@@ -1230,8 +1231,8 @@
       "nextjs"
     ],
     "url": "https://ai-sdk.dev",
-    "description": "Streaming, chat y herramientas con cualquier modelo (Claude por defecto).",
-    "usage": "Llama a modelos desde Route Handlers o Server Actions con `streamText` / `generateText` de `ai` y el proveedor `anthropic(\"claude-opus-5-5\")`. En el cliente usa `useChat` de `@ai-sdk/react`. Hay un ejemplo en `src/app/api/chat/route.ts`.",
+    "description": "Streaming, chat and tools with any model (Claude by default).",
+    "usage": "Call models from Route Handlers or Server Actions with `streamText` / `generateText` from `ai` and the `anthropic(\"claude-opus-5-5\")` provider. On the client use `useChat` from `@ai-sdk/react`. There's an example in `src/app/api/chat/route.ts`.",
     "dependencies": [
       "ai",
       "@ai-sdk/anthropic",
@@ -1250,7 +1251,7 @@
       }
     ],
     "setupTasks": [
-      "IA: crea una API key en console.anthropic.com y ponla en `ANTHROPIC_API_KEY`."
+      "AI: create an API key at console.anthropic.com and put it in `ANTHROPIC_API_KEY`."
     ]
   },
   {
@@ -1263,8 +1264,8 @@
       "bun"
     ],
     "url": "https://platform.claude.com/docs",
-    "description": "El SDK oficial de Anthropic para llamar a Claude.",
-    "usage": "Usa `askClaude()` de `src/lib/claude.ts` o el cliente `claude` para casos avanzados (streaming, herramientas). Comprueba siempre `stop_reason` antes de leer la respuesta. Consulta el skill `claude-api` antes de cambiar modelos o parámetros.",
+    "description": "Anthropic's official SDK for calling Claude.",
+    "usage": "Use `askClaude()` from `src/lib/claude.ts`, or the `claude` client for advanced cases (streaming, tools). Always check `stop_reason` before reading the response. Read the `claude-api` skill before changing models or parameters.",
     "dependencies": [
       "@anthropic-ai/sdk"
     ],
@@ -1281,7 +1282,7 @@
       }
     ],
     "setupTasks": [
-      "IA: crea una API key en console.anthropic.com y ponla en `ANTHROPIC_API_KEY`."
+      "AI: create an API key at console.anthropic.com and put it in `ANTHROPIC_API_KEY`."
     ]
   },
   {
@@ -1292,8 +1293,8 @@
       "nextjs"
     ],
     "url": "https://vitest.dev",
-    "description": "Tests unitarios y de componentes, rápidos y con la API de Jest.",
-    "usage": "Los tests van junto al código (`*.test.ts(x)`). Ejecútalos con `npm test`. Para componentes usa `@testing-library/react`. Antes de dar una tarea por terminada, los tests deben pasar.",
+    "description": "Fast unit and component tests with the Jest API.",
+    "usage": "Tests live next to the code (`*.test.ts(x)`). Run them with `npm test`. For components use `@testing-library/react`. Tests must pass before a task counts as done.",
     "devDependencies": [
       "vitest",
       "@vitejs/plugin-react",
@@ -1329,8 +1330,8 @@
       "nodejs"
     ],
     "url": "https://vitest.dev",
-    "description": "Tests unitarios rápidos para tu API.",
-    "usage": "Los tests van junto al código (`*.test.ts`). Prueba las rutas de Hono con `app.request(\"/ruta\")`. Ejecútalos con `npm test`.",
+    "description": "Fast unit tests for your API.",
+    "usage": "Tests live next to the code (`*.test.ts`). Test Hono routes with `app.request(\"/route\")`. Run them with `npm test`.",
     "devDependencies": [
       "vitest"
     ],
@@ -1357,8 +1358,8 @@
       "nextjs"
     ],
     "url": "https://playwright.dev",
-    "description": "Tests de punta a punta en navegadores reales.",
-    "usage": "Los tests de punta a punta van en `e2e/`. Ejecútalos con `npm run test:e2e` (arranca la app sola). Usa selectores por rol y texto (`getByRole`), no por clases CSS.",
+    "description": "End-to-end tests in real browsers.",
+    "usage": "End-to-end tests go in `e2e/`. Run them with `npm run test:e2e` (it starts the app for you). Use role and text selectors (`getByRole`), not CSS classes.",
     "devDependencies": [
       "@playwright/test"
     ],
@@ -1381,7 +1382,7 @@
       }
     ],
     "setupTasks": [
-      "Playwright: descarga el navegador una vez con `npx playwright install chromium`."
+      "Playwright: download the browser once with `npx playwright install chromium`."
     ]
   },
   {
@@ -1392,8 +1393,8 @@
       "expo"
     ],
     "url": "https://docs.expo.dev/develop/unit-testing/",
-    "description": "Tests unitarios y de componentes para Expo.",
-    "usage": "Los tests van en `__tests__/` o junto al código (`*.test.tsx`). Para componentes usa `@testing-library/react-native`. Ejecútalos con `npm test`.",
+    "description": "Unit and component tests for Expo.",
+    "usage": "Tests go in `__tests__/` or next to the code (`*.test.tsx`). For components use `@testing-library/react-native`. Run them with `npm test`.",
     "devDependencies": [
       "jest-expo",
       "jest",
@@ -1428,8 +1429,8 @@
       "expo"
     ],
     "url": "https://biomejs.dev",
-    "description": "Formato y lint en una sola herramienta muy rápida.",
-    "usage": "Formatea con `npm run format` y revisa con `npm run check`. Respeta su configuración en `biome.json` en vez de añadir Prettier o reglas de ESLint duplicadas.",
+    "description": "Formatting and linting in one very fast tool.",
+    "usage": "Format with `npm run format` and check with `npm run check`. Follow its configuration in `biome.json` instead of adding Prettier or duplicate ESLint rules.",
     "devDependencies": [
       "@biomejs/biome"
     ],
@@ -1461,8 +1462,8 @@
       "expo"
     ],
     "url": "https://typicode.github.io/husky/",
-    "description": "Formatea los archivos modificados en cada commit.",
-    "usage": "Cada commit pasa por `lint-staged` (`.husky/pre-commit`). No uses `--no-verify` para saltártelo: si falla, arregla lo que indica.",
+    "description": "Formats the changed files on every commit.",
+    "usage": "Every commit runs through `lint-staged` (`.husky/pre-commit`). Don't use `--no-verify` to skip it: if it fails, fix what it reports.",
     "devDependencies": [
       "husky",
       "lint-staged",
@@ -1499,8 +1500,8 @@
       "expo"
     ],
     "url": "https://docs.github.com/actions",
-    "description": "Instala, revisa, compila y ejecuta los tests en cada push y PR.",
-    "usage": "El workflow está en `.github/workflows/ci.yml` y ejecuta los scripts `lint`, `build` y `test` si existen. Si añades un paso de calidad (typecheck, e2e), añádelo como script y al workflow.",
+    "description": "Installs, checks, builds and runs the tests on every push and PR.",
+    "usage": "The workflow is in `.github/workflows/ci.yml` and runs the `lint`, `build` and `test` scripts if they exist. If you add a quality step (typecheck, e2e), add it as a script and to the workflow.",
     "writeFiles": [
       {
         "path": ".github/workflows/ci.yml",
@@ -1516,13 +1517,13 @@
       "nextjs"
     ],
     "url": "https://vercel.com",
-    "description": "Despliegue con previsualización por cada PR.",
-    "usage": "Despliega conectando el repositorio en vercel.com (cada push a main va a producción y cada PR tiene su URL) o con `npx vercel`. Configura las variables de `.env.example` en el proyecto de Vercel.",
+    "description": "Deployments with a preview for every PR.",
+    "usage": "Deploy by connecting the repository at vercel.com (every push to main goes to production and every PR gets its own URL) or with `npx vercel`. Set the variables from `.env.example` in the Vercel project.",
     "skills": [
       "vercel-labs/agent-skills@deploy-to-vercel"
     ],
     "setupTasks": [
-      "Vercel: importa el repositorio en vercel.com/new y copia allí las variables de `.env.example`."
+      "Vercel: import the repository at vercel.com/new and copy the variables from `.env.example` there."
     ]
   },
   {
@@ -1534,8 +1535,8 @@
       "nodejs"
     ],
     "url": "https://docs.docker.com",
-    "description": "Imagen lista para cualquier servidor o plataforma de contenedores.",
-    "usage": "Construye con `docker build -t app .` y arranca con `docker run -p 3000:3000 --env-file .env app`. Mantén `.dockerignore` al día para no copiar secretos ni `node_modules`.",
+    "description": "An image ready for any server or container platform.",
+    "usage": "Build with `docker build -t app .` and run with `docker run -p 3000:3000 --env-file .env app`. Keep `.dockerignore` up to date so secrets and `node_modules` aren't copied.",
     "writeFiles": [
       {
         "path": "Dockerfile",
@@ -1555,8 +1556,8 @@
       "expo"
     ],
     "url": "https://expo.dev/eas",
-    "description": "Builds en la nube, envío a las tiendas y actualizaciones OTA.",
-    "usage": "Compila con `npx eas-cli@latest build`, publica con `eas submit` y envía actualizaciones con `eas update`. Los perfiles están en `eas.json`.",
+    "description": "Cloud builds, store submissions and OTA updates.",
+    "usage": "Build with `npx eas-cli@latest build`, submit with `eas submit` and ship updates with `eas update`. Profiles are in `eas.json`.",
     "skills": [
       "expo/skills@eas-workflows",
       "expo/skills@eas-update"
@@ -1568,7 +1569,7 @@
       }
     ],
     "setupTasks": [
-      "EAS: inicia sesión con `npx eas-cli@latest login` y vincula el proyecto con `npx eas-cli@latest init`."
+      "EAS: sign in with `npx eas-cli@latest login` and link the project with `npx eas-cli@latest init`."
     ]
   },
   {
@@ -1579,8 +1580,8 @@
       "go"
     ],
     "url": "https://sentry.io",
-    "description": "Errores y trazas para tu API en Go.",
-    "usage": "Se inicializa en `sentry.go` y el middleware de `sentryhttp` captura los panics de cada petición. Para errores que manejas tú usa `sentry.CaptureException(err)`.",
+    "description": "Errors and traces for your Go API.",
+    "usage": "It's initialized in `sentry.go`, and the `sentryhttp` middleware captures panics on every request. For errors you handle, use `sentry.CaptureException(err)`.",
     "dependencies": [
       "github.com/getsentry/sentry-go",
       "github.com/getsentry/sentry-go/http"
@@ -1610,7 +1611,7 @@
       }
     ],
     "setupTasks": [
-      "Sentry: crea un proyecto Go en sentry.io y pon su DSN en `SENTRY_DSN`."
+      "Sentry: create a Go project at sentry.io and put its DSN in `SENTRY_DSN`."
     ]
   },
   {
@@ -1621,8 +1622,8 @@
       "python"
     ],
     "url": "https://sentry.io",
-    "description": "Errores y trazas para tu API en Python (integración de FastAPI incluida).",
-    "usage": "Se inicializa en `app/observability.py`; los errores no controlados se reportan solos. Para errores que manejas tú usa `sentry_sdk.capture_exception(error)`.",
+    "description": "Errors and traces for your Python API (FastAPI integration included).",
+    "usage": "It's initialized in `app/observability.py`; unhandled errors are reported automatically. For errors you handle, use `sentry_sdk.capture_exception(error)`.",
     "dependencies": [
       "sentry-sdk"
     ],
@@ -1644,7 +1645,7 @@
       }
     ],
     "setupTasks": [
-      "Sentry: crea un proyecto Python en sentry.io y pon su DSN en `SENTRY_DSN`."
+      "Sentry: create a Python project at sentry.io and put its DSN in `SENTRY_DSN`."
     ]
   },
   {
@@ -1655,8 +1656,8 @@
       "go"
     ],
     "url": "https://docs.github.com/actions",
-    "description": "Revisa, compila y ejecuta los tests en cada push y PR.",
-    "usage": "El workflow está en `.github/workflows/ci.yml` (`go vet`, `go build` y `go test`). Si añades un paso de calidad, añádelo allí.",
+    "description": "Checks, builds and runs the tests on every push and PR.",
+    "usage": "The workflow is in `.github/workflows/ci.yml` (`go vet`, `go build` and `go test`). If you add a quality step, add it there.",
     "writeFiles": [
       {
         "path": ".github/workflows/ci.yml",
@@ -1672,8 +1673,8 @@
       "python"
     ],
     "url": "https://docs.github.com/actions",
-    "description": "Instala las dependencias y ejecuta pytest en cada push y PR.",
-    "usage": "El workflow está en `.github/workflows/ci.yml` e instala desde `requirements.txt`: mantenlo al día. Si añades un paso de calidad (ruff, mypy), añádelo allí.",
+    "description": "Installs dependencies and runs pytest on every push and PR.",
+    "usage": "The workflow is in `.github/workflows/ci.yml` and installs from `requirements.txt`: keep it up to date. If you add a quality step (ruff, mypy), add it there.",
     "writeFiles": [
       {
         "path": ".github/workflows/ci.yml",
@@ -1682,15 +1683,568 @@
     ]
   },
   {
-    "id": "superpowers",
-    "name": "Superpowers",
+    "id": "tailwind-astro",
+    "name": "Tailwind CSS",
+    "kind": "styling",
+    "frameworks": [
+      "astro"
+    ],
+    "url": "https://tailwindcss.com",
+    "description": "Utility classes, set up with Astro's official integration.",
+    "usage": "Style with Tailwind classes directly in `.astro` components. The global stylesheet is `src/styles/global.css`: import it once in the layout (`import \"../styles/global.css\"`). Design tokens go in its `@theme` block; don't write loose CSS for what a utility already covers.",
+    "postInstall": [
+      "npx astro add tailwind --yes"
+    ],
+    "writeFiles": [
+      {
+        "path": "src/styles/global.css",
+        "mode": "prepend",
+        "content": "@import \"tailwindcss\";"
+      }
+    ]
+  },
+  {
+    "id": "tailwind-sveltekit",
+    "name": "Tailwind CSS",
+    "kind": "styling",
+    "frameworks": [
+      "sveltekit"
+    ],
+    "url": "https://tailwindcss.com",
+    "description": "Tailwind v4 added with Svelte's official CLI (sv add).",
+    "usage": "Style with Tailwind classes in `.svelte` components. Design tokens go in `@theme` inside `src/app.css`.",
+    "postInstall": [
+      "npx sv@latest add tailwindcss --install {{pm}}"
+    ]
+  },
+  {
+    "id": "tailwind-nuxt",
+    "name": "Tailwind CSS",
+    "kind": "styling",
+    "frameworks": [
+      "nuxt"
+    ],
+    "url": "https://tailwindcss.com",
+    "description": "Tailwind v4 with its Vite plugin in Nuxt.",
+    "usage": "Style with Tailwind classes in `.vue` components. Design tokens go in `@theme` inside `app/assets/css/main.css`.",
+    "devDependencies": [
+      "tailwindcss",
+      "@tailwindcss/vite"
+    ],
+    "writeFiles": [
+      {
+        "path": "app/assets/css/main.css",
+        "content": "@import \"tailwindcss\";\n"
+      },
+      {
+        "path": "nuxt.config.ts",
+        "mode": "prepend",
+        "content": "import tailwindcss from \"@tailwindcss/vite\";"
+      },
+      {
+        "path": "nuxt.config.ts",
+        "mode": "insert-before",
+        "anchor": "  devtools:",
+        "content": "  css: [\"~/assets/css/main.css\"],\n  vite: { plugins: [tailwindcss()] },\n"
+      }
+    ]
+  },
+  {
+    "id": "zustand",
+    "name": "Zustand",
+    "kind": "state",
+    "frameworks": [
+      "react",
+      "nextjs",
+      "react-native",
+      "expo"
+    ],
+    "url": "https://zustand.docs.pmnd.rs",
+    "description": "Minimal global state with hooks, no providers.",
+    "usage": "Each store lives in `src/stores/` and is created with `create()`. Read only what you need with a selector (`useStore((s) => s.x)`) to avoid extra re-renders. Use local React state for anything that isn't shared.",
+    "dependencies": [
+      "zustand"
+    ],
+    "writeFiles": [
+      {
+        "path": "src/stores/counter.ts",
+        "content": "import { create } from \"zustand\";\n\ninterface CounterState {\n  count: number;\n  increment: () => void;\n}\n\nexport const useCounter = create<CounterState>()((set) => ({\n  count: 0,\n  increment: () => set((s) => ({ count: s.count + 1 })),\n}));\n"
+      }
+    ]
+  },
+  {
+    "id": "jotai",
+    "name": "Jotai",
+    "kind": "state",
+    "frameworks": [
+      "react",
+      "nextjs"
+    ],
+    "url": "https://jotai.org",
+    "description": "Atomic state: each piece of state is an independent atom.",
+    "usage": "Define atoms in `src/atoms/` with `atom()` and use them with `useAtom`. Prefer small and derived atoms over one big object.",
+    "dependencies": [
+      "jotai"
+    ],
+    "writeFiles": [
+      {
+        "path": "src/atoms/theme.ts",
+        "content": "import { atom } from \"jotai\";\n\nexport const themeAtom = atom<\"light\" | \"dark\">(\"light\");\n"
+      }
+    ]
+  },
+  {
+    "id": "pinia",
+    "name": "Pinia",
+    "kind": "state",
+    "frameworks": [
+      "nuxt"
+    ],
+    "url": "https://pinia.vuejs.org",
+    "description": "Vue's official store, as a Nuxt module.",
+    "usage": "Stores go in `app/stores/` with `defineStore` (setup syntax) and are auto-imported. Don't keep in Pinia what belongs to a single component.",
+    "postInstall": [
+      "npx nuxi@latest module add pinia"
+    ],
+    "skills": [
+      "vuejs-ai/skills@vue-pinia-best-practices"
+    ]
+  },
+  {
+    "id": "tanstack-query",
+    "name": "TanStack Query",
+    "kind": "data",
+    "frameworks": [
+      "react",
+      "nextjs",
+      "react-native",
+      "expo"
+    ],
+    "url": "https://tanstack.com/query",
+    "description": "Caching, retries and loading states for your requests.",
+    "usage": "Fetch data with `useQuery` and change it with `useMutation`; never with `fetch` inside `useEffect`. The client is in `src/lib/query-client.ts`: wrap the app with `<QueryClientProvider client={queryClient}>`.",
+    "dependencies": [
+      "@tanstack/react-query"
+    ],
+    "writeFiles": [
+      {
+        "path": "src/lib/query-client.ts",
+        "content": "import { QueryClient } from \"@tanstack/react-query\";\n\nexport const queryClient = new QueryClient({\n  defaultOptions: { queries: { staleTime: 60_000 } },\n});\n"
+      }
+    ],
+    "setupTasks": [
+      "TanStack Query: wrap the app root with `<QueryClientProvider client={queryClient}>` (from `src/lib/query-client.ts`)."
+    ]
+  },
+  {
+    "id": "swr",
+    "name": "SWR",
+    "kind": "data",
+    "frameworks": [
+      "react",
+      "nextjs"
+    ],
+    "url": "https://swr.vercel.app",
+    "description": "Requests with caching and revalidation, by Vercel.",
+    "usage": "Fetch data with `useSWR(key, fetcher)` and use the `fetcher` from `src/lib/fetcher.ts`. Never `fetch` inside `useEffect`.",
+    "dependencies": [
+      "swr"
+    ],
+    "writeFiles": [
+      {
+        "path": "src/lib/fetcher.ts",
+        "content": "export async function fetcher<T>(url: string): Promise<T> {\n  const res = await fetch(url);\n  if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);\n  return res.json() as Promise<T>;\n}\n"
+      }
+    ]
+  },
+  {
+    "id": "tanstack-query-vue",
+    "name": "TanStack Query",
+    "kind": "data",
+    "frameworks": [
+      "nuxt"
+    ],
+    "url": "https://tanstack.com/query",
+    "description": "Caching and loading states for requests in Vue.",
+    "usage": "Use `useQuery` and `useMutation` from `@tanstack/vue-query` for data that changes on the client; for page data use Nuxt's `useFetch`.",
+    "dependencies": [
+      "@tanstack/vue-query"
+    ],
+    "writeFiles": [
+      {
+        "path": "app/plugins/vue-query.ts",
+        "content": "import { QueryClient, VueQueryPlugin } from \"@tanstack/vue-query\";\n\nexport default defineNuxtPlugin((nuxtApp) => {\n  nuxtApp.vueApp.use(VueQueryPlugin, { queryClient: new QueryClient() });\n});\n"
+      }
+    ]
+  },
+  {
+    "id": "tanstack-query-svelte",
+    "name": "TanStack Query",
+    "kind": "data",
+    "frameworks": [
+      "sveltekit"
+    ],
+    "url": "https://tanstack.com/query",
+    "description": "Caching and loading states for requests in Svelte.",
+    "usage": "Use `createQuery` from `@tanstack/svelte-query` for data that changes on the client; for page data use SvelteKit's `load` functions.",
+    "dependencies": [
+      "@tanstack/svelte-query"
+    ],
+    "setupTasks": [
+      "TanStack Query: wrap the root layout with `<QueryClientProvider client={new QueryClient()}>`."
+    ]
+  },
+  {
+    "id": "react-hook-form",
+    "name": "React Hook Form + Zod",
+    "kind": "forms",
+    "frameworks": [
+      "react",
+      "nextjs",
+      "react-native",
+      "expo"
+    ],
+    "url": "https://react-hook-form.com",
+    "description": "Fast forms with schema validation.",
+    "usage": "Every form uses `useForm` with `zodResolver(schema)`; the Zod schema is the single source of validation rules and types.",
+    "dependencies": [
+      "react-hook-form",
+      "zod",
+      "@hookform/resolvers"
+    ]
+  },
+  {
+    "id": "zod",
+    "name": "Zod",
+    "kind": "forms",
+    "frameworks": [
+      "react",
+      "nextjs",
+      "vue",
+      "nuxt",
+      "svelte",
+      "sveltekit",
+      "astro",
+      "nodejs",
+      "bun",
+      "expo",
+      "react-native"
+    ],
+    "url": "https://zod.dev",
+    "description": "Typed schemas to validate incoming data.",
+    "usage": "Validate every piece of outside data (forms, APIs, environment variables) with a Zod schema and infer the types with `z.infer`.",
+    "dependencies": [
+      "zod"
+    ]
+  },
+  {
+    "id": "sqlmodel",
+    "name": "SQLModel",
+    "kind": "database",
+    "frameworks": [
+      "python"
+    ],
+    "url": "https://sqlmodel.tiangolo.com",
+    "description": "Database and API models in one, from FastAPI's creator.",
+    "usage": "Models inherit from `SQLModel` (with `table=True` for tables). Use `get_session` from `app/db.py` as a FastAPI dependency. It uses SQLite by default; in production set `DATABASE_URL`.",
+    "dependencies": [
+      "sqlmodel"
+    ],
+    "env": {
+      "DATABASE_URL": "sqlite:///./app.db"
+    },
+    "writeFiles": [
+      {
+        "path": "app/db.py",
+        "content": "import os\nfrom collections.abc import Iterator\n\nfrom sqlmodel import Session, SQLModel, create_engine\n\nengine = create_engine(os.environ.get(\"DATABASE_URL\", \"sqlite:///./app.db\"))\n\n\ndef create_tables() -> None:\n    SQLModel.metadata.create_all(engine)\n\n\ndef get_session() -> Iterator[Session]:\n    with Session(engine) as session:\n        yield session\n"
+      }
+    ]
+  },
+  {
+    "id": "ruff",
+    "name": "Ruff",
+    "kind": "quality",
+    "frameworks": [
+      "python",
+      "django"
+    ],
+    "url": "https://docs.astral.sh/ruff",
+    "description": "Very fast linting and formatting for Python.",
+    "usage": "Format with `ruff format .` and check with `ruff check .` before finishing a task. Follow `ruff.toml`.",
+    "devDependencies": [
+      "ruff"
+    ],
+    "writeFiles": [
+      {
+        "path": "ruff.toml",
+        "content": "line-length = 100\n\n[lint]\nselect = [\"E\", \"F\", \"I\", \"UP\", \"B\"]\n"
+      }
+    ]
+  },
+  {
+    "id": "django-postgres",
+    "name": "Postgres (dj-database-url)",
+    "kind": "database",
+    "frameworks": [
+      "django"
+    ],
+    "url": "https://github.com/jazzband/dj-database-url",
+    "description": "Database from DATABASE_URL: SQLite locally, Postgres in production.",
+    "usage": "The database is configured only through `DATABASE_URL` (see `config/settings.py`). Without it, SQLite is used. After changing models: `makemigrations` and `migrate`.",
+    "dependencies": [
+      "dj-database-url",
+      "psycopg",
+      "psycopg-binary"
+    ],
+    "env": {
+      "DATABASE_URL": "postgres://postgres:postgres@localhost:5432/app"
+    },
+    "writeFiles": [
+      {
+        "path": "config/settings.py",
+        "mode": "append",
+        "content": "\n# Database from DATABASE_URL (Postgres in production); SQLite when it isn't set.\nimport dj_database_url  # noqa: E402\n\nDATABASES = {\"default\": dj_database_url.config(default=f\"sqlite:///{BASE_DIR / 'db.sqlite3'}\", conn_max_age=600)}\n"
+      }
+    ]
+  },
+  {
+    "id": "pytest-django",
+    "name": "pytest-django",
+    "kind": "testing",
+    "frameworks": [
+      "django"
+    ],
+    "url": "https://pytest-django.readthedocs.io",
+    "description": "Django tests with pytest and its fixtures.",
+    "usage": "Write tests in `tests/` or `test_*.py` with pytest; use the `client` and `db` fixtures from pytest-django. Run `pytest`.",
+    "devDependencies": [
+      "pytest",
+      "pytest-django"
+    ],
+    "writeFiles": [
+      {
+        "path": "pytest.ini",
+        "content": "[pytest]\nDJANGO_SETTINGS_MODULE = config.settings\npython_files = tests.py test_*.py\n"
+      },
+      {
+        "path": "tests/test_admin.py",
+        "content": "def test_admin_login_page(client) -> None:\n    response = client.get(\"/admin/login/\")\n    assert response.status_code == 200\n"
+      },
+      {
+        "path": "tests/__init__.py",
+        "content": ""
+      }
+    ]
+  },
+  {
+    "id": "github-actions-django",
+    "name": "GitHub Actions",
+    "kind": "ci",
+    "frameworks": [
+      "django"
+    ],
+    "url": "https://docs.github.com/actions",
+    "description": "Checks and runs the Django tests on every push and PR.",
+    "usage": "The workflow is in `.github/workflows/ci.yml` (`manage.py check` and `manage.py test`). Keep `requirements.txt` up to date.",
+    "writeFiles": [
+      {
+        "path": ".github/workflows/ci.yml",
+        "content": "name: CI\n\non:\n  push:\n    branches: [main]\n  pull_request:\n\njobs:\n  ci:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - uses: actions/setup-python@v5\n        with:\n          python-version: \"3.12\"\n      - run: pip install -r requirements.txt\n      - run: python manage.py check\n      - run: python manage.py test\n"
+      }
+    ]
+  },
+  {
+    "id": "pgx",
+    "name": "pgx (Postgres)",
+    "kind": "database",
+    "frameworks": [
+      "go"
+    ],
+    "url": "https://github.com/jackc/pgx",
+    "description": "The most widely used Postgres driver for Go, with connection pooling.",
+    "usage": "Open the pool once with `connectDB` (from `db.go`) at startup and pass it to the handlers. Use parameterized queries (`$1`), never concatenate SQL.",
+    "dependencies": [
+      "github.com/jackc/pgx/v5"
+    ],
+    "env": {
+      "DATABASE_URL": "postgres://postgres:postgres@localhost:5432/app"
+    },
+    "writeFiles": [
+      {
+        "path": "db.go",
+        "content": "package main\n\nimport (\n\t\"context\"\n\t\"os\"\n\n\t\"github.com/jackc/pgx/v5/pgxpool\"\n)\n\n// connectDB opens the connection pool from DATABASE_URL. Call it once at startup.\nfunc connectDB(ctx context.Context) (*pgxpool.Pool, error) {\n\treturn pgxpool.New(ctx, os.Getenv(\"DATABASE_URL\"))\n}\n"
+      }
+    ]
+  },
+  {
+    "id": "testify",
+    "name": "testify",
+    "kind": "testing",
+    "frameworks": [
+      "go"
+    ],
+    "url": "https://github.com/stretchr/testify",
+    "description": "Readable assertions for Go tests.",
+    "usage": "Use `assert` for checks that continue and `require` for those that must stop the test. Tests next to the code (`*_test.go`).",
+    "dependencies": [
+      "github.com/stretchr/testify"
+    ],
+    "writeFiles": [
+      {
+        "path": "json_test.go",
+        "content": "package main\n\nimport (\n\t\"net/http\"\n\t\"net/http/httptest\"\n\t\"testing\"\n\n\t\"github.com/stretchr/testify/assert\"\n)\n\nfunc TestWriteJSON(t *testing.T) {\n\trec := httptest.NewRecorder()\n\twriteJSON(rec, http.StatusCreated, map[string]string{\"ok\": \"yes\"})\n\tassert.Equal(t, http.StatusCreated, rec.Code)\n\tassert.JSONEq(t, `{\"ok\":\"yes\"}`, rec.Body.String())\n}\n"
+      }
+    ]
+  },
+  {
+    "id": "golangci-lint",
+    "name": "golangci-lint",
+    "kind": "quality",
+    "frameworks": [
+      "go"
+    ],
+    "url": "https://golangci-lint.run",
+    "description": "Many Go linters in one, with a single config.",
+    "usage": "Check with `golangci-lint run` before finishing a task; the config is in `.golangci.yml`.",
+    "writeFiles": [
+      {
+        "path": ".golangci.yml",
+        "content": "version: \"2\"\nlinters:\n  enable:\n    - errcheck\n    - govet\n    - staticcheck\n    - unused\n    - revive\n"
+      }
+    ],
+    "setupTasks": [
+      "golangci-lint: install it with `brew install golangci-lint` (or the binary from golangci-lint.run)."
+    ]
+  },
+  {
+    "id": "docker-go",
+    "name": "Docker",
+    "kind": "deploy",
+    "frameworks": [
+      "go"
+    ],
+    "url": "https://docs.docker.com",
+    "description": "A minimal image with the compiled binary.",
+    "usage": "Build with `docker build -t api .` and run with `docker run -p 8080:8080 api`. The final image only contains the binary.",
+    "writeFiles": [
+      {
+        "path": "Dockerfile",
+        "content": "FROM golang:1.26-alpine AS build\nWORKDIR /src\nCOPY go.mod go.sum ./\nRUN go mod download\nCOPY . .\nRUN CGO_ENABLED=0 go build -o /app .\n\nFROM gcr.io/distroless/static\nCOPY --from=build /app /app\nEXPOSE 8080\nENTRYPOINT [\"/app\"]\n"
+      },
+      {
+        "path": ".dockerignore",
+        "content": ".git\n.env\nbin\n"
+      }
+    ]
+  },
+  {
+    "id": "rails-auth",
+    "name": "Rails authentication",
+    "kind": "auth",
+    "frameworks": [
+      "rails"
+    ],
+    "url": "https://guides.rubyonrails.org/security.html",
+    "description": "Rails 8's authentication generator: sessions, login and password reset.",
+    "usage": "Authentication is generated by Rails (`app/controllers/concerns/authentication.rb`, `User` and `Session` models). Protect controllers with `before_action :require_authentication` (on by default) and open public pages with `allow_unauthenticated_access`.",
+    "postInstall": [
+      "bin/rails generate authentication",
+      "bin/rails generate controller Home index --skip-routes --no-test-framework",
+      "ruby -e 'f = \"config/routes.rb\"; s = File.read(f); File.write(f, s.sub(/^Rails\\.application\\.routes\\.draw do\\n/) { |m| m + \"  root \\\"home#index\\\"\\n\" }) unless s.match?(/^\\s*root /)'"
+    ]
+  },
+  {
+    "id": "rspec-rails",
+    "name": "RSpec",
+    "kind": "testing",
+    "frameworks": [
+      "rails"
+    ],
+    "url": "https://rspec.info",
+    "description": "Tests in RSpec instead of Minitest.",
+    "usage": "Write tests in `spec/` (`spec/models`, `spec/requests`) and run them with `bundle exec rspec`.",
+    "postInstall": [
+      "bundle add rspec-rails --group development,test",
+      "bin/rails generate rspec:install"
+    ]
+  },
+  {
+    "id": "pest",
+    "name": "Pest",
+    "kind": "testing",
+    "frameworks": [
+      "laravel"
+    ],
+    "url": "https://pestphp.com",
+    "description": "PHP tests with a more expressive syntax.",
+    "usage": "Write tests with `it()` and `expect()` in `tests/`. Run them with `php artisan test`.",
+    "postInstall": [
+      "composer require pestphp/pest pestphp/pest-plugin-laravel --dev --with-all-dependencies --no-interaction --quiet",
+      "./vendor/bin/pest --init"
+    ]
+  },
+  {
+    "id": "laravel-sanctum",
+    "name": "Sanctum (API)",
+    "kind": "auth",
+    "frameworks": [
+      "laravel"
+    ],
+    "url": "https://laravel.com/docs/sanctum",
+    "description": "API routes with tokens and SPA authentication.",
+    "usage": "API routes are in `routes/api.php`; protect them with the `auth:sanctum` middleware. Create tokens with `$user->createToken()`.",
+    "postInstall": [
+      "php artisan install:api --no-interaction"
+    ]
+  },
+  {
+    "id": "spring-data-jpa",
+    "name": "Spring Data JPA",
+    "kind": "database",
+    "frameworks": [
+      "spring"
+    ],
+    "url": "https://spring.io/projects/spring-data-jpa",
+    "description": "Repositories and entities with JPA; in-memory H2 for development.",
+    "usage": "Entities are annotated with `@Entity` and accessed through interfaces that extend `JpaRepository`. Locally it uses in-memory H2; in production configure `spring.datasource.url`.",
+    "writeFiles": [
+      {
+        "path": "pom.xml",
+        "mode": "insert-before",
+        "anchor": "\t</dependencies>",
+        "content": "\t\t<dependency>\n\t\t\t<groupId>org.springframework.boot</groupId>\n\t\t\t<artifactId>spring-boot-starter-data-jpa</artifactId>\n\t\t</dependency>\n\t\t<dependency>\n\t\t\t<groupId>com.h2database</groupId>\n\t\t\t<artifactId>h2</artifactId>\n\t\t\t<scope>runtime</scope>\n\t\t</dependency>\n"
+      }
+    ]
+  },
+  {
+    "id": "spring-security",
+    "name": "Spring Security",
+    "kind": "auth",
+    "frameworks": [
+      "spring"
+    ],
+    "url": "https://spring.io/projects/spring-security",
+    "description": "Authentication and authorization for your API.",
+    "usage": "Define the rules in a `@Configuration` class with a `SecurityFilterChain`. Everything requires authentication by default: explicitly open only the public routes.",
+    "writeFiles": [
+      {
+        "path": "pom.xml",
+        "mode": "insert-before",
+        "anchor": "\t</dependencies>",
+        "content": "\t\t<dependency>\n\t\t\t<groupId>org.springframework.boot</groupId>\n\t\t\t<artifactId>spring-boot-starter-security</artifactId>\n\t\t</dependency>\n"
+      }
+    ]
+  },
+  {
+    "id": "essentials",
+    "name": "Essential skills",
     "kind": "workflow",
     "frameworks": [
       "any"
     ],
     "url": "https://github.com/obra/superpowers",
-    "description": "Método de trabajo para agentes: lluvia de ideas, planes, TDD, depuración sistemática y verificación antes de dar algo por terminado.",
-    "usage": "Antes de programar algo no trivial, sigue el flujo de Superpowers: `brainstorming` para aclarar qué se quiere, `writing-plans` para un plan por pasos y `executing-plans` para seguirlo. Ante un fallo, `systematic-debugging` antes de tocar código. No digas que algo funciona sin comprobarlo (`verification-before-completion`).",
+    "description": "Plan before coding, debug methodically, verify before calling anything done, review the code, keep it secure and improve the architecture. Works in any project.",
+    "usage": "Before writing anything non-trivial, clarify what's wanted (`brainstorming`, or `grill-me` when the request is ambiguous), write a plan (`writing-plans`) and follow it (`executing-plans`). When something fails, use `systematic-debugging` before touching code. Never say something works without checking it (`verification-before-completion`). Ask for a review when a piece is done (`requesting-code-review`), weigh each comment before applying it (`receiving-code-review`) and close the work with `finishing-a-development-branch`. Anything that handles user input, auth, secrets or external data follows `security-and-hardening`. When code gets hard to change, propose improvements with `improve-codebase-architecture`. If you need a skill you don't have, look for it with `find-skills`.",
     "skills": [
       "obra/superpowers@using-superpowers",
       "obra/superpowers@brainstorming",
@@ -1699,22 +2253,387 @@
       "obra/superpowers@systematic-debugging",
       "obra/superpowers@test-driven-development",
       "obra/superpowers@verification-before-completion",
-      "obra/superpowers@requesting-code-review"
+      "obra/superpowers@requesting-code-review",
+      "obra/superpowers@receiving-code-review",
+      "obra/superpowers@finishing-a-development-branch",
+      "addyosmani/agent-skills@security-and-hardening",
+      "mattpocock/skills@grill-me",
+      "mattpocock/skills@improve-codebase-architecture",
+      "vercel-labs/skills@find-skills"
     ]
   },
   {
-    "id": "mattpocock-skills",
-    "name": "Skills de Matt Pocock",
-    "kind": "workflow",
+    "id": "drizzle-neon",
+    "name": "Drizzle + Neon",
+    "kind": "database",
     "frameworks": [
-      "any"
+      "nextjs"
     ],
-    "url": "https://github.com/mattpocock/skills",
-    "description": "grill-me (te pregunta hasta entender lo que quieres de verdad) e improve-codebase-architecture (propone cómo ordenar el código).",
-    "usage": "Si la petición es ambigua o grande, usa `grill-me` para hacer las preguntas necesarias antes de empezar. Cuando el código crezca o cueste cambiarlo, usa `improve-codebase-architecture` y propón la reorganización antes de aplicarla.",
+    "url": "https://neon.com/docs/guides/drizzle",
+    "description": "Neon's serverless Postgres over HTTP, ideal on Vercel; with Drizzle.",
+    "usage": "Schema in `src/db/schema.ts`, client in `src/db/index.ts` (`import { db } from \"@/db\"`), with Neon's HTTP driver: no pool to manage. After changing the schema: `npm run db:generate` and `npm run db:migrate`.",
+    "dependencies": [
+      "drizzle-orm",
+      "@neondatabase/serverless"
+    ],
+    "devDependencies": [
+      "drizzle-kit"
+    ],
     "skills": [
-      "mattpocock/skills@grill-me",
-      "mattpocock/skills@improve-codebase-architecture"
+      "neondatabase/agent-skills@neon-postgres"
+    ],
+    "env": {
+      "DATABASE_URL": ""
+    },
+    "writeFiles": [
+      {
+        "path": "drizzle.config.ts",
+        "content": "import { defineConfig } from \"drizzle-kit\";\n\nexport default defineConfig({\n  schema: \"./src/db/schema.ts\",\n  out: \"./drizzle\",\n  dialect: \"postgresql\",\n  dbCredentials: { url: process.env.DATABASE_URL! },\n});\n"
+      },
+      {
+        "path": "src/db/index.ts",
+        "content": "import { neon } from \"@neondatabase/serverless\";\nimport { drizzle } from \"drizzle-orm/neon-http\";\n\nimport * as schema from \"./schema\";\n\n// Placeholder URL so imports work without .env; real queries need DATABASE_URL.\nexport const db = drizzle(neon(process.env.DATABASE_URL ?? \"postgresql://user:pass@localhost/db\"), { schema });\n"
+      },
+      {
+        "path": "src/db/schema.ts",
+        "content": "import { pgTable, serial, text, timestamp } from \"drizzle-orm/pg-core\";\n\nexport const posts = pgTable(\"posts\", {\n  id: serial(\"id\").primaryKey(),\n  title: text(\"title\").notNull(),\n  createdAt: timestamp(\"created_at\").defaultNow().notNull(),\n});\n"
+      },
+      {
+        "path": "package.json",
+        "mode": "json-merge",
+        "content": "{\"scripts\": {\"db:generate\": \"drizzle-kit generate\", \"db:migrate\": \"drizzle-kit migrate\", \"db:studio\": \"drizzle-kit studio\"}}"
+      }
+    ],
+    "setupTasks": [
+      "Neon: create a free database at neon.com and put its URL in `DATABASE_URL`; then `npm run db:migrate`."
+    ]
+  },
+  {
+    "id": "drizzle-turso",
+    "name": "Drizzle + Turso",
+    "kind": "database",
+    "frameworks": [
+      "nextjs"
+    ],
+    "url": "https://docs.turso.tech",
+    "description": "Distributed SQLite (libSQL) with Drizzle: a local file in development, Turso in production.",
+    "usage": "Schema in `src/db/schema.ts`, client in `src/db/index.ts`. Without `DATABASE_URL` it uses a local SQLite file. After changing the schema: `npm run db:generate` and `npm run db:migrate`.",
+    "dependencies": [
+      "drizzle-orm",
+      "@libsql/client"
+    ],
+    "devDependencies": [
+      "drizzle-kit"
+    ],
+    "env": {
+      "DATABASE_URL": "file:local.db",
+      "DATABASE_AUTH_TOKEN": ""
+    },
+    "writeFiles": [
+      {
+        "path": "drizzle.config.ts",
+        "content": "import { defineConfig } from \"drizzle-kit\";\n\nexport default defineConfig({\n  schema: \"./src/db/schema.ts\",\n  out: \"./drizzle\",\n  dialect: \"turso\",\n  dbCredentials: { url: process.env.DATABASE_URL ?? \"file:local.db\", authToken: process.env.DATABASE_AUTH_TOKEN },\n});\n"
+      },
+      {
+        "path": "src/db/index.ts",
+        "content": "import { createClient } from \"@libsql/client\";\nimport { drizzle } from \"drizzle-orm/libsql\";\n\nimport * as schema from \"./schema\";\n\nconst client = createClient({ url: process.env.DATABASE_URL ?? \"file:local.db\", authToken: process.env.DATABASE_AUTH_TOKEN });\n\nexport const db = drizzle(client, { schema });\n"
+      },
+      {
+        "path": "src/db/schema.ts",
+        "content": "import { integer, sqliteTable, text } from \"drizzle-orm/sqlite-core\";\n\nexport const posts = sqliteTable(\"posts\", {\n  id: integer(\"id\").primaryKey({ autoIncrement: true }),\n  title: text(\"title\").notNull(),\n  createdAt: integer(\"created_at\", { mode: \"timestamp\" }).notNull(),\n});\n"
+      },
+      {
+        "path": "package.json",
+        "mode": "json-merge",
+        "content": "{\"scripts\": {\"db:generate\": \"drizzle-kit generate\", \"db:migrate\": \"drizzle-kit migrate\", \"db:studio\": \"drizzle-kit studio\"}}"
+      }
+    ],
+    "setupTasks": [
+      "Turso: locally you need nothing (it uses local.db). For production, create a database at turso.tech and set `DATABASE_URL` and `DATABASE_AUTH_TOKEN`."
+    ]
+  },
+  {
+    "id": "mongoose",
+    "name": "MongoDB (Mongoose)",
+    "kind": "database",
+    "frameworks": [
+      "nextjs"
+    ],
+    "url": "https://mongoosejs.com",
+    "description": "MongoDB with Mongoose models and validation.",
+    "usage": "Connect with `connectDB()` from `src/lib/mongodb.ts` (it reuses the connection across requests). Models go in `src/models/`, each with its schema.",
+    "dependencies": [
+      "mongoose"
+    ],
+    "env": {
+      "MONGODB_URI": ""
+    },
+    "skills": [
+      "mongodb/agent-skills@mongodb-schema-design"
+    ],
+    "writeFiles": [
+      {
+        "path": "src/lib/mongodb.ts",
+        "content": "import mongoose from \"mongoose\";\n\n// Reuse the connection across hot reloads and serverless invocations.\nconst cached = globalThis as unknown as { mongoose?: Promise<typeof mongoose> };\n\nexport function connectDB(): Promise<typeof mongoose> {\n  const uri = process.env.MONGODB_URI;\n  if (!uri) throw new Error(\"Falta MONGODB_URI\");\n  cached.mongoose ??= mongoose.connect(uri);\n  return cached.mongoose;\n}\n"
+      }
+    ],
+    "setupTasks": [
+      "MongoDB: create a free cluster on MongoDB Atlas and put its connection string in `MONGODB_URI`."
+    ]
+  },
+  {
+    "id": "lemonsqueezy",
+    "name": "Lemon Squeezy",
+    "kind": "payments",
+    "frameworks": [
+      "nextjs"
+    ],
+    "url": "https://www.lemonsqueezy.com",
+    "description": "Payments and subscriptions with taxes handled (merchant of record).",
+    "usage": "Call `setupLemonSqueezy()` (from `src/lib/lemonsqueezy.ts`) before using the SDK, server-side only. Verify webhook signatures with `LEMONSQUEEZY_WEBHOOK_SECRET` and treat webhooks as the source of truth.",
+    "dependencies": [
+      "@lemonsqueezy/lemonsqueezy.js",
+      "server-only"
+    ],
+    "env": {
+      "LEMONSQUEEZY_API_KEY": "",
+      "LEMONSQUEEZY_STORE_ID": "",
+      "LEMONSQUEEZY_WEBHOOK_SECRET": ""
+    },
+    "writeFiles": [
+      {
+        "path": "src/lib/lemonsqueezy.ts",
+        "content": "import \"server-only\";\n\nimport { lemonSqueezySetup } from \"@lemonsqueezy/lemonsqueezy.js\";\n\nexport function setupLemonSqueezy() {\n  lemonSqueezySetup({ apiKey: process.env.LEMONSQUEEZY_API_KEY, onError: (error) => console.error(\"[lemonsqueezy]\", error) });\n}\n"
+      }
+    ],
+    "setupTasks": [
+      "Lemon Squeezy: create an API key and a store in test mode and fill in the `LEMONSQUEEZY_*` variables."
+    ]
+  },
+  {
+    "id": "polar",
+    "name": "Polar",
+    "kind": "payments",
+    "frameworks": [
+      "nextjs"
+    ],
+    "url": "https://polar.sh",
+    "description": "Payments and subscriptions for developers, with taxes handled.",
+    "usage": "Use the client from `src/lib/polar.ts` on the server only; in development it points to the sandbox. Treat webhooks as the source of truth for payment state.",
+    "dependencies": [
+      "@polar-sh/sdk@^1",
+      "server-only"
+    ],
+    "env": {
+      "POLAR_ACCESS_TOKEN": "",
+      "POLAR_WEBHOOK_SECRET": ""
+    },
+    "writeFiles": [
+      {
+        "path": "src/lib/polar.ts",
+        "content": "import \"server-only\";\n\n// The SDK is versioned by API date: bump the path when you adopt a newer Polar API.\nimport { createPolar } from \"@polar-sh/sdk/2026-10\";\n\nexport const polar = createPolar({\n  accessToken: process.env.POLAR_ACCESS_TOKEN ?? \"\",\n  environment: process.env.NODE_ENV === \"production\" ? \"production\" : \"sandbox\",\n});\n"
+      }
+    ],
+    "setupTasks": [
+      "Polar: create an access token at sandbox.polar.sh and put it in `POLAR_ACCESS_TOKEN`."
+    ]
+  },
+  {
+    "id": "paddle",
+    "name": "Paddle",
+    "kind": "payments",
+    "frameworks": [
+      "nextjs"
+    ],
+    "url": "https://www.paddle.com",
+    "description": "Global payments and subscriptions with Paddle as the merchant of record.",
+    "usage": "Use the client from `src/lib/paddle.ts` on the server only (sandbox in development). Verify webhooks with `PADDLE_WEBHOOK_SECRET`.",
+    "dependencies": [
+      "@paddle/paddle-node-sdk",
+      "server-only"
+    ],
+    "env": {
+      "PADDLE_API_KEY": "",
+      "PADDLE_WEBHOOK_SECRET": ""
+    },
+    "writeFiles": [
+      {
+        "path": "src/lib/paddle.ts",
+        "content": "import \"server-only\";\n\nimport { Environment, Paddle } from \"@paddle/paddle-node-sdk\";\n\nexport const paddle = new Paddle(process.env.PADDLE_API_KEY ?? \"\", {\n  environment: process.env.NODE_ENV === \"production\" ? Environment.production : Environment.sandbox,\n});\n"
+      }
+    ],
+    "setupTasks": [
+      "Paddle: create a sandbox account, generate an API key and put it in `PADDLE_API_KEY`."
+    ]
+  },
+  {
+    "id": "mercadopago",
+    "name": "Mercado Pago",
+    "kind": "payments",
+    "frameworks": [
+      "nextjs"
+    ],
+    "url": "https://www.mercadopago.com",
+    "description": "Payments in Latin America: cards, bank transfers and local methods.",
+    "usage": "Use the config from `src/lib/mercadopago.ts` on the server only (`new Preference(mercadoPago)` to create a checkout). Confirm every payment through notifications (webhooks), not the redirect.",
+    "dependencies": [
+      "mercadopago",
+      "server-only"
+    ],
+    "env": {
+      "MERCADOPAGO_ACCESS_TOKEN": ""
+    },
+    "writeFiles": [
+      {
+        "path": "src/lib/mercadopago.ts",
+        "content": "import \"server-only\";\n\nimport { MercadoPagoConfig } from \"mercadopago\";\n\nexport const mercadoPago = new MercadoPagoConfig({ accessToken: process.env.MERCADOPAGO_ACCESS_TOKEN ?? \"\" });\n"
+      }
+    ],
+    "setupTasks": [
+      "Mercado Pago: create an application in the developer dashboard and put the test access token in `MERCADOPAGO_ACCESS_TOKEN`."
+    ]
+  },
+  {
+    "id": "netlify",
+    "name": "Netlify",
+    "kind": "deploy",
+    "frameworks": [
+      "nextjs"
+    ],
+    "url": "https://www.netlify.com",
+    "description": "Deployments with a preview for every PR; Next.js is detected automatically.",
+    "usage": "Connect the repository on Netlify (or `npx netlify deploy`). The config is in `netlify.toml`; the variables from `.env.example` go in the site dashboard.",
+    "writeFiles": [
+      {
+        "path": "netlify.toml",
+        "content": "[build]\n  command = \"{{pm}} run build\"\n  publish = \".next\"\n"
+      }
+    ],
+    "setupTasks": [
+      "Netlify: import the repository at app.netlify.com and copy the variables from `.env.example` there."
+    ]
+  },
+  {
+    "id": "render",
+    "name": "Render",
+    "kind": "deploy",
+    "frameworks": [
+      "nextjs",
+      "nodejs"
+    ],
+    "url": "https://render.com",
+    "description": "A web service deployed from your repo, with a free plan.",
+    "usage": "The service is defined in `render.yaml` (a blueprint). The variables from `.env.example` go in the Render dashboard.",
+    "writeFiles": [
+      {
+        "path": "render.yaml",
+        "content": "services:\n  - type: web\n    name: {{name}}\n    runtime: node\n    buildCommand: {{pm}} install && {{pm}} run build\n    startCommand: {{pm}} run start\n"
+      }
+    ],
+    "setupTasks": [
+      "Render: create a Blueprint from the repository at dashboard.render.com."
+    ]
+  },
+  {
+    "id": "railway",
+    "name": "Railway",
+    "kind": "deploy",
+    "frameworks": [
+      "nextjs",
+      "nodejs"
+    ],
+    "url": "https://railway.com",
+    "description": "Deploys from your repo, with one-click databases.",
+    "usage": "The config is in `railway.json`. Deploy with `npx @railway/cli up` or by connecting the repository.",
+    "writeFiles": [
+      {
+        "path": "railway.json",
+        "content": "{\n  \"$schema\": \"https://railway.com/railway.schema.json\",\n  \"build\": { \"builder\": \"RAILPACK\" },\n  \"deploy\": { \"startCommand\": \"{{pm}} run start\", \"restartPolicyType\": \"ON_FAILURE\" }\n}\n"
+      }
+    ],
+    "setupTasks": [
+      "Railway: create a project from the repository at railway.com and add the variables from `.env.example`."
+    ]
+  },
+  {
+    "id": "fly",
+    "name": "Fly.io",
+    "kind": "deploy",
+    "frameworks": [
+      "nextjs",
+      "nodejs"
+    ],
+    "url": "https://fly.io",
+    "description": "Containers close to your users, in many regions.",
+    "usage": "Deploy with `fly deploy` (it uses the `Dockerfile` and `fly.toml`). Secrets go through `fly secrets set`.",
+    "writeFiles": [
+      {
+        "path": "fly.toml",
+        "content": "app = \"{{name}}\"\nprimary_region = \"mad\"\n\n[http_service]\n  internal_port = 3000\n  force_https = true\n  auto_stop_machines = \"stop\"\n  auto_start_machines = true\n  min_machines_running = 0\n"
+      },
+      {
+        "path": "Dockerfile",
+        "content": "FROM node:22-alpine\nWORKDIR /app\nRUN corepack enable\nCOPY . .\nRUN {{pm}} install && {{pm}} run build\nENV NODE_ENV=production\nEXPOSE 3000\nCMD [\"{{pm}}\", \"run\", \"start\"]\n"
+      },
+      {
+        "path": ".dockerignore",
+        "content": "node_modules\n.next\ndist\n.git\n.env\n.env.local\n"
+      }
+    ],
+    "setupTasks": [
+      "Fly.io: install flyctl, run `fly launch --no-deploy` to create the app and then `fly deploy`."
+    ]
+  },
+  {
+    "id": "design-pack",
+    "name": "Design pack",
+    "kind": "design",
+    "frameworks": [
+      "react",
+      "vue",
+      "svelte",
+      "solid",
+      "vanilla",
+      "nextjs",
+      "astro",
+      "sveltekit",
+      "nuxt",
+      "rails",
+      "laravel",
+      "angular",
+      "django"
+    ],
+    "url": "https://github.com/pbakaus/impeccable",
+    "description": "A visual direction with character, polished details, accessibility and purposeful animation. The most-used design skills right now.",
+    "usage": "Before designing a screen, pick a clear visual direction with `frontend-design` (avoid the generic look). To polish and audit what's built, use `impeccable`. Review interface details with `web-design-guidelines` and make every screen usable with a keyboard and a screen reader, with enough contrast, following `accessibility` (WCAG 2.2). For palettes, typography and UI patterns, consult `ui-ux-pro-max`, and for animation and interaction, follow `emil-design-eng`.",
+    "skills": [
+      "anthropics/skills@frontend-design",
+      "pbakaus/impeccable@impeccable",
+      "vercel-labs/agent-skills@web-design-guidelines",
+      "nextlevelbuilder/ui-ux-pro-max-skill@ui-ux-pro-max",
+      "emilkowalski/skills@emil-design-eng",
+      "addyosmani/web-quality-skills@accessibility"
+    ]
+  },
+  {
+    "id": "design-pack-native",
+    "name": "Mobile design pack",
+    "kind": "design",
+    "frameworks": [
+      "react-native",
+      "expo",
+      "swiftui",
+      "android",
+      "flutter"
+    ],
+    "url": "https://github.com/emilkowalski/skill",
+    "description": "Polished native interfaces: visual direction, iOS and Android conventions, and fluid animation.",
+    "usage": "Pick palettes, typography and screen patterns for your stack (SwiftUI, React Native, Flutter) with `ui-ux-pro-max`, follow each platform's conventions with `mobile-native` and `apple-design`, and design animations with `emil-design-eng`.",
+    "skills": [
+      "nextlevelbuilder/ui-ux-pro-max-skill@ui-ux-pro-max",
+      "emilkowalski/skills@mobile-native",
+      "emilkowalski/skills@apple-design",
+      "emilkowalski/skills@emil-design-eng"
     ]
   }
 ]

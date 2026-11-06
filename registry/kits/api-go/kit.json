@@ -1,16 +1,16 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "api-go",
-  "version": "1.1.0",
-  "title": "API con Go y chi",
-  "description": "API HTTP en Go con el router chi: middlewares estándar, JSON y tests con httptest. Sin frameworks pesados.",
+  "version": "1.2.0",
+  "title": "API with Go and chi",
+  "description": "An HTTP API in Go with the chi router: standard middlewares, JSON and tests with httptest. No heavy frameworks.",
   "category": "api",
   "tags": [
     "go",
     "chi",
     "api"
   ],
-  "author": "kits",
+  "author": "Marlon Chaviano",
   "base": {
     "command": "mkdir {{name}} && cd {{name}} && go mod init {{name}}"
   },
@@ -39,6 +39,20 @@
         "ci": [
           "github-actions-go"
         ]
+      },
+      {
+        "database": [
+          "pgx"
+        ],
+        "testing": [
+          "testify"
+        ],
+        "quality": [
+          "golangci-lint"
+        ],
+        "deploy": [
+          "docker-go"
+        ]
       }
     ]
   },
@@ -48,10 +62,13 @@
     "observability": [],
     "ci": [],
     "workflow": [
-      "superpowers",
-      "mattpocock-skills"
-    ]
+      "essentials"
+    ],
+    "database": "none",
+    "testing": [],
+    "quality": [],
+    "deploy": "none"
   },
-  "instructions": "## Cómo trabajar aquí\n\n- Rutas en `router.go` (`newRouter`), agrupadas por recurso con `r.Route(\"/recurso\", ...)`. Handlers pequeños que devuelven JSON con `writeJSON`.\n- Usa solo la biblioteca estándar y chi; antes de añadir un módulo, comprueba si `net/http` o chi ya lo resuelven.\n- Devuelve los errores con contexto (`fmt.Errorf(\"...: %w\", err)`), nunca los ignores.\n- Antes de terminar una tarea: `go vet ./...` y `go test ./...`.",
+  "instructions": "## How to work here\n\n- Routes in `router.go` (`newRouter`), grouped by resource with `r.Route(\"/resource\", ...)`. Small handlers that return JSON with `writeJSON`.\n- Use only the standard library and chi; before adding a module, check whether `net/http` or chi already covers it.\n- Return errors with context (`fmt.Errorf(\"...: %w\", err)`), never ignore them.\n- Before finishing a task: `go vet ./...` and `go test ./...`.",
   "language": "go"
 }

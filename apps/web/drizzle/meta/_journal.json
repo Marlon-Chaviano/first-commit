@@ -71,6 +71,20 @@
       "when": 1793889892185,
       "tag": "0009_keen_mikhail_rasputin",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1793929526911,
+      "tag": "0010_sad_wiccan",
+      "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1793936975240,
+      "tag": "0011_slimy_scalphunter",
+      "breakpoints": true
     }
   ]
 }

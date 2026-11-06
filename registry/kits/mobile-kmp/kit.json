@@ -1,0 +1,44 @@
+{
+  "$schema": "../../kit.schema.json",
+  "version": "1.0.0",
+  "author": "Marlon Chaviano",
+  "name": "mobile-kmp",
+  "title": "App with Kotlin Multiplatform",
+  "category": "mobile",
+  "language": "kotlin",
+  "description": "JetBrains' official template: Kotlin Multiplatform with Compose Multiplatform to share logic and UI between Android and iOS.",
+  "tags": [
+    "kotlin",
+    "kotlin-multiplatform",
+    "compose-multiplatform",
+    "android",
+    "ios"
+  ],
+  "base": {
+    "command": "npx -y tiged Kotlin/KMP-App-Template {{name}}"
+  },
+  "packageManagers": [
+    "gradle"
+  ],
+  "skills": [
+    "android/skills@jetpack-compose-performance"
+  ],
+  "libraries": {
+    "framework": [
+      "android"
+    ],
+    "design": [
+      "design-pack-native"
+    ],
+    "workflow": [
+      "essentials"
+    ]
+  },
+  "verify": {
+    "command": "./gradlew --no-daemon :composeApp:assembleDebug"
+  },
+  "setupTasks": [
+    "KMP: open the project in Android Studio or IntelliJ with the Kotlin Multiplatform plugin; for iOS you need Xcode on macOS."
+  ],
+  "instructions": "## How to work here\n\n- Shared code lives in `composeApp/src/commonMain/` (logic and UI with Compose Multiplatform); platform-specific code in `androidMain/` and `iosMain/` through `expect`/`actual`.\n- Prefer multiplatform libraries (Ktor, Koin, kotlinx) over single-platform ones.\n- Before finishing: `./gradlew :composeApp:assembleDebug`."
+}

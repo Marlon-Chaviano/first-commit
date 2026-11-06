@@ -13,6 +13,36 @@ const nextConfig: NextConfig = {
   reactCompiler: true,
   // The shared kit schema ships as TypeScript source.
   transpilePackages: ["@kits/schema", "@kits/mcp"],
+  // The site moved from Spanish to English routes: old links keep working.
+  async redirects() {
+    const moved: [string, string][] = [
+      ["/cuenta/marcas/nueva", "/account/brands/new"],
+      ["/cuenta/marcas/:path*", "/account/brands/:path*"],
+      ["/cuenta/kits/:path*", "/account/kits/:path*"],
+      ["/cuenta", "/account"],
+      ["/docs/crear-kit", "/docs/create-kit"],
+      ["/docs/referencia", "/docs/reference"],
+      ["/docs/bibliotecas", "/docs/libraries"],
+      ["/docs/mantener", "/docs/maintain"],
+      ["/docs/agentes", "/docs/agents"],
+      ["/docs/marcas", "/docs/brands"],
+      ["/acerca", "/about"],
+      ["/contacto", "/contact"],
+      ["/contenido", "/content-policy"],
+      ["/privacidad", "/privacy"],
+      ["/terminos", "/terms"],
+      ["/entrar", "/login"],
+      ["/novedades/baja", "/changelog/unsubscribe"],
+      ["/novedades/confirmar", "/changelog/confirm"],
+      ["/novedades/:path*", "/changelog/:path*"],
+      ["/orgs/nueva", "/orgs/new"],
+      ["/precios", "/pricing"],
+      ["/publicar", "/publish"],
+      ["/comparar/:path*", "/compare/:path*"],
+      ["/stacks/lenguaje/:path*", "/stacks/language/:path*"],
+    ];
+    return moved.map(([source, destination]) => ({ source, destination, permanent: true }));
+  },
   turbopack: {
     rules: {
       "*.css": {

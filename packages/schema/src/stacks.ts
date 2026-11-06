@@ -1,7 +1,8 @@
 import { z } from "zod";
 
-import { defaultSelections, pruneSelections, validateSelections, type Selections } from "./resolve";
+import { defaultSelections, type Selections } from "./resolve";
 import type { Kit } from "./schema";
+import { selectionsFrom } from "./selections";
 
 /**
  * A stack is a kit plus a set of options with its own indexable page
@@ -19,7 +20,7 @@ export const stackSchema = z.object({
 export const stacksSchema = z.array(stackSchema).superRefine((stacks, ctx) => {
   const seen = new Set<string>();
   stacks.forEach((s, i) => {
-    if (seen.has(s.slug)) ctx.addIssue({ code: "custom", path: [i, "slug"], message: `Stack duplicado "${s.slug}"` });
+    if (seen.has(s.slug)) ctx.addIssue({ code: "custom", path: [i, "slug"], message: `Duplicate stack "${s.slug}"` });
     seen.add(s.slug);
   });
 });
@@ -27,18 +28,7 @@ export type Stack = z.infer<typeof stackSchema>;
 
 /** Full selections for a stack; throws if the combination isn't valid for the kit. */
 export function stackSelections(kit: Kit, options: Record<string, string[]>): Selections {
-  const defaults = defaultSelections(kit);
-  for (const id of Object.keys(options)) {
-    if (!kit.options.some((o) => o.id === id)) throw new Error(`"${kit.name}" no tiene la opción "${id}"`);
-  }
-  const sel = pruneSelections(kit, { ...defaults, options: { ...defaults.options, ...options } });
-  validateSelections(kit, sel);
-  for (const [id, values] of Object.entries(options)) {
-    if ([...values].sort().join() !== [...(sel.options[id] ?? [])].sort().join()) {
-      throw new Error(`La opción "${id}" no es compatible con el resto (${values.join(", ")})`);
-    }
-  }
-  return sel;
+  return selectionsFrom(kit, { options }, { requirements: "throw" }).selections;
 }
 
 /** Options that differ from the kit's defaults, e.g. { payments: ["stripe"] }. */

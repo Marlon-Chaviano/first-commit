@@ -1,0 +1,44 @@
+{
+  "$schema": "../../kit.schema.json",
+  "version": "1.0.0",
+  "author": "Marlon Chaviano",
+  "name": "monorepo-spring-react",
+  "title": "Spring Boot + React in one repo",
+  "category": "monorepo",
+  "language": "java",
+  "description": "A Spring Boot backend (Maven, Java 17) and a React + Vite frontend in the same repo: the classic shape of an enterprise product, ready to build.",
+  "tags": [
+    "java",
+    "spring-boot",
+    "maven",
+    "react",
+    "vite",
+    "fullstack"
+  ],
+  "base": {
+    "command": "mkdir {{name}} && cd {{name}} && curl -fsSL https://start.spring.io/starter.tgz -d type=maven-project -d language=java -d javaVersion=17 -d dependencies=web,validation,actuator -d groupId=com.example -d artifactId=backend -d name=backend -d baseDir=backend | tar -xzf - && npx -y create-vite@latest frontend --template react-ts --no-interactive",
+    "install": "cd frontend && npm install"
+  },
+  "packageManagers": [
+    "maven"
+  ],
+  "skills": [
+    "github/awesome-copilot@java-springboot",
+    "vercel-labs/agent-skills@vercel-react-best-practices"
+  ],
+  "libraries": {
+    "framework": [
+      "react"
+    ],
+    "design": [
+      "design-pack"
+    ],
+    "workflow": [
+      "essentials"
+    ]
+  },
+  "verify": {
+    "command": "cd backend && ./mvnw -q -B test && cd ../frontend && npm run build"
+  },
+  "instructions": "## How to work here\n\n- `backend/` is Spring Boot (start with `cd backend && ./mvnw spring-boot:run`) and `frontend/` is React + Vite (`cd frontend && npm run dev`).\n- REST controllers under `/api`, with validated DTOs (`@Valid`) and the logic in services.\n- Before finishing: `./mvnw test` in `backend/` and `npm run build` in `frontend/`.\n- Each app lives in its own folder with its own dependencies; don't mix code from one into another.\n- Whatever backend and frontend share (types, API contracts) is defined in one place and documented.\n"
+}

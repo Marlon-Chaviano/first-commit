@@ -63,7 +63,7 @@ async function getPopularStacks(): Promise<{ stack: Stack; installs: number }[]>
     }
     return stacks;
   } catch (error) {
-    console.error("[stacks] combinaciones populares no disponibles", error);
+    console.error("[stacks] popular combinations unavailable", error);
     return [];
   }
 }
@@ -99,7 +99,7 @@ export async function getStacks(): Promise<StackPage[]> {
       seen.add(key(kit.name, stack.options));
       pages.push({ stack, kit, selections, installs: await countInstalls(kit.name, stack.options), popular: false });
     } catch (error) {
-      console.error(`[stacks] "${stack.slug}" no es válido`, error);
+      console.error(`[stacks] "${stack.slug}" isn't valid`, error);
     }
   }
   for (const { stack, installs } of popular) {

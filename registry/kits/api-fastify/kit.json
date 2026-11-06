@@ -1,0 +1,60 @@
+{
+  "$schema": "../../kit.schema.json",
+  "version": "1.0.0",
+  "author": "Marlon Chaviano",
+  "name": "api-fastify",
+  "title": "API with Fastify",
+  "category": "api",
+  "language": "typescript",
+  "description": "A Fastify API in TypeScript generated with its official CLI: plugins, folder-based routes with autoload, schema validation and tests.",
+  "tags": [
+    "fastify",
+    "api",
+    "typescript",
+    "node"
+  ],
+  "base": {
+    "command": "npx -y fastify-cli@latest generate {{name}} --lang=ts",
+    "install": "{{pm}} install"
+  },
+  "packageManagers": [
+    "npm",
+    "pnpm"
+  ],
+  "devDependencies": [
+    "typescript@~5.9.0"
+  ],
+  "skills": [
+    "mcollina/skills@fastify-best-practices"
+  ],
+  "libraries": {
+    "framework": "nodejs",
+    "email": "none",
+    "ai": [],
+    "ci": [],
+    "deploy": "none",
+    "workflow": [
+      "essentials"
+    ]
+  },
+  "verify": {
+    "command": "{{pm}} run build:ts && {{pm}} test",
+    "matrix": [
+      {
+        "email": [
+          "resend"
+        ],
+        "ai": [
+          "claude-api"
+        ],
+        "ci": [
+          "github-actions"
+        ],
+        "deploy": [
+          "docker"
+        ]
+      }
+    ]
+  },
+  "instructions": "## How to work here\n\n- Routes go in `src/routes/` (the folder is the URL prefix) and shared functionality in `src/plugins/`; both are loaded automatically by `@fastify/autoload`.\n- Declare each route's schema (`body`, `querystring`, `response`): Fastify validates the input and serializes the output with it.\n- Before finishing: `npm run build:ts && npm test`."
+}

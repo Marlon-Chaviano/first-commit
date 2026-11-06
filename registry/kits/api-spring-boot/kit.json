@@ -1,12 +1,12 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "api-spring-boot",
-  "version": "1.0.0",
-  "author": "kits",
-  "title": "API con Spring Boot",
+  "version": "1.1.0",
+  "author": "Marlon Chaviano",
+  "title": "API with Spring Boot",
   "category": "api",
   "language": "java",
-  "description": "Spring Boot con Java 17, Maven, Web, Validation y Actuator: una API REST lista para producción desde el primer commit.",
+  "description": "Spring Boot with Java 17, Maven, Web, Validation and Actuator: a production-ready REST API from the first commit.",
   "tags": [
     "java",
     "spring",
@@ -23,16 +23,27 @@
     "github/awesome-copilot@java-springboot"
   ],
   "verify": {
-    "command": "./mvnw -q -B test"
+    "command": "./mvnw -q -B test",
+    "matrix": [
+      {
+        "database": [
+          "spring-data-jpa"
+        ],
+        "auth": [
+          "spring-security"
+        ]
+      }
+    ]
   },
   "libraries": {
     "framework": [
       "spring"
     ],
     "workflow": [
-      "superpowers",
-      "mattpocock-skills"
-    ]
+      "essentials"
+    ],
+    "database": "none",
+    "auth": "none"
   },
-  "instructions": "## Cómo trabajar aquí\n\n- Código en `src/main/java`, por capas: `controller` (HTTP), `service` (lógica) y `repository` (datos).\n- Valida la entrada con `@Valid` y Bean Validation; devuelve DTOs, nunca entidades.\n- Configuración en `src/main/resources/application.properties`; secretos por variables de entorno.\n- Arranca con `./mvnw spring-boot:run`. Antes de terminar: `./mvnw test`."
+  "instructions": "## How to work here\n\n- Code in `src/main/java`, in layers: `controller` (HTTP), `service` (logic) and `repository` (data).\n- Validate input with `@Valid` and Bean Validation; return DTOs, never entities.\n- Configuration in `src/main/resources/application.properties`; secrets through environment variables.\n- Start with `./mvnw spring-boot:run`. Before finishing: `./mvnw test`."
 }

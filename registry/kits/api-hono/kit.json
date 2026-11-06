@@ -1,9 +1,9 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "api-hono",
-  "version": "1.2.0",
-  "title": "API con Hono",
-  "description": "API REST tipada con Hono en Node, Bun o Cloudflare Workers. Validación con Zod y base de datos con Drizzle opcional.",
+  "version": "1.3.0",
+  "title": "API with Hono",
+  "description": "Typed REST API with Hono on Node, Bun or Cloudflare Workers. Validation with Zod and an optional Drizzle database.",
   "category": "api",
   "tags": [
     "hono",
@@ -12,7 +12,7 @@
     "zod",
     "drizzle"
   ],
-  "author": "kits",
+  "author": "Marlon Chaviano",
   "base": {
     "command": "npx create-hono@latest {{name}} --template {{opt.runtime}} --pm {{pm}} --install"
   },
@@ -47,6 +47,11 @@
         "deploy": [
           "docker"
         ]
+      },
+      {
+        "deploy": [
+          "fly"
+        ]
       }
     ]
   },
@@ -75,7 +80,7 @@
     },
     {
       "id": "validation",
-      "label": "Validación",
+      "label": "Validation",
       "default": "zod",
       "choices": [
         {
@@ -85,22 +90,22 @@
             "zod",
             "@hono/zod-validator"
           ],
-          "instructions": "## Validación\n\nValida params, query y body de cada ruta con `zValidator` de `@hono/zod-validator`. Nunca leas `c.req.json()` sin validar."
+          "instructions": "## Validation\n\nValidate params, query and body on every route with `zValidator` from `@hono/zod-validator`. Never read `c.req.json()` without validating it."
         },
         {
           "id": "none",
-          "label": "Ninguna"
+          "label": "None"
         }
       ]
     },
     {
       "id": "db",
-      "label": "Base de datos",
+      "label": "Database",
       "default": "none",
       "choices": [
         {
           "id": "none",
-          "label": "Ninguna"
+          "label": "None"
         },
         {
           "id": "drizzle-postgres",
@@ -116,12 +121,12 @@
             "DATABASE_URL": "postgres://postgres:postgres@localhost:5432/app"
           },
           "files": "files/drizzle",
-          "instructions": "## Base de datos\n\nEsquema en `src/db/schema.ts`, cliente en `src/db/index.ts`. Tras cambiar el esquema: `npx drizzle-kit generate` y `npx drizzle-kit migrate`. No edites migraciones ya aplicadas."
+          "instructions": "## Database\n\nSchema in `src/db/schema.ts`, client in `src/db/index.ts`. After changing the schema: `npx drizzle-kit generate` and `npx drizzle-kit migrate`. Never edit migrations that were already applied."
         }
       ]
     }
   ],
-  "instructions": "## Cómo trabajar aquí\n\n- Agrupa rutas por recurso con `new Hono()` y `app.route('/recurso', router)`.\n- Exporta el tipo de la app (`export type AppType = typeof app`) para usar el cliente RPC `hc` desde el frontend.",
+  "instructions": "## How to work here\n\n- Group routes by resource with `new Hono()` and `app.route('/resource', router)`.\n- Export the app's type (`export type AppType = typeof app`) to use the `hc` RPC client from the frontend.",
   "libraries": {
     "framework": {
       "option": "runtime"
@@ -134,8 +139,7 @@
     "ci": [],
     "deploy": "none",
     "workflow": [
-      "superpowers",
-      "mattpocock-skills"
+      "essentials"
     ]
   },
   "language": "typescript"

@@ -1,0 +1,54 @@
+{
+  "$schema": "../../kit.schema.json",
+  "version": "1.0.0",
+  "author": "Marlon Chaviano",
+  "name": "web-vue-vite",
+  "title": "Web app with Vue and Vite",
+  "category": "web",
+  "language": "typescript",
+  "description": "Vue's official template: Vue 3 with TypeScript, Vue Router, Pinia, tests with Vitest and ESLint, on Vite.",
+  "tags": [
+    "vue",
+    "vite",
+    "pinia",
+    "vue-router",
+    "typescript"
+  ],
+  "base": {
+    "command": "npx -y create-vue@latest {{name}} --ts --router --pinia --vitest --eslint",
+    "install": "{{pm}} install"
+  },
+  "packageManagers": [
+    "npm",
+    "pnpm",
+    "bun"
+  ],
+  "skills": [
+    "vuejs-ai/skills@vue-best-practices",
+    "vuejs-ai/skills@vue-pinia-best-practices",
+    "antfu/skills@vite"
+  ],
+  "libraries": {
+    "framework": [
+      "vue"
+    ],
+    "animation": [],
+    "design": [
+      "design-pack"
+    ],
+    "workflow": [
+      "essentials"
+    ]
+  },
+  "verify": {
+    "command": "{{pm}} run build && {{pm}} run test:unit -- --run",
+    "matrix": [
+      {
+        "animation": [
+          "motion-vue"
+        ]
+      }
+    ]
+  },
+  "instructions": "## How to work here\n\n- Components with `<script setup lang=\"ts\">` and the Composition API. Views go in `src/views/` and routes in `src/router/`.\n- Shared state in Pinia stores (`src/stores/`); local state stays in the component.\n- Before finishing: `npm run build && npm run test:unit -- --run`."
+}

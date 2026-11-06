@@ -1,0 +1,63 @@
+{
+  "$schema": "../../kit.schema.json",
+  "version": "1.0.0",
+  "author": "Marlon Chaviano",
+  "name": "mcp-server-python",
+  "title": "MCP server with Python",
+  "category": "extension",
+  "language": "python",
+  "description": "An MCP server in Python with the official SDK (v2, MCPServer): every tool is a typed function, ready to connect to any agent.",
+  "tags": [
+    "mcp",
+    "agents",
+    "python"
+  ],
+  "base": {
+    "command": "mkdir {{name}} && cd {{name}} && python3 -m venv .venv"
+  },
+  "packageManagers": [
+    "pip"
+  ],
+  "dependencies": [
+    "mcp"
+  ],
+  "skills": [
+    "anthropics/skills@mcp-builder"
+  ],
+  "writeFiles": [
+    {
+      "path": "server.py",
+      "content": "\"\"\"MCP server: every function decorated with @mcp.tool() is a tool for the agent.\"\"\"\n\nfrom mcp.server.mcpserver import MCPServer\n\nmcp = MCPServer(\"{{name}}\")\n\n\n@mcp.tool()\ndef greet(name: str) -> str:\n    \"\"\"Greet a person by name.\"\"\"\n    return f\"Hello, {name}!\"\n\n\nif __name__ == \"__main__\":\n    # stdio: stdout es el protocolo, no uses print().\n    mcp.run()\n"
+    },
+    {
+      "path": "requirements.txt",
+      "content": "mcp>=2\n"
+    },
+    {
+      "path": ".gitignore",
+      "content": ".venv\n__pycache__\n.env\n"
+    }
+  ],
+  "libraries": {
+    "framework": "python",
+    "quality": [],
+    "ci": [],
+    "workflow": [
+      "essentials"
+    ]
+  },
+  "verify": {
+    "command": ".venv/bin/python -c \"import server; assert server.greet('a')\" && (test ! -x .venv/bin/ruff || .venv/bin/ruff check .)",
+    "matrix": [
+      {
+        "quality": [
+          "ruff"
+        ],
+        "ci": [
+          "github-actions-python"
+        ]
+      }
+    ]
+  },
+  "instructions": "## How to work here\n\n- Each tool is a function with `@mcp.tool()` in `server.py`: the parameter types are the schema and the docstring is what the model reads.\n- **stdout is the protocol**: never use `print()`; log with `logging` (it goes to stderr).\n- Test with `npx @modelcontextprotocol/inspector .venv/bin/python server.py` (opens the inspector).\n- To use it in Claude Code: `claude mcp add {{name}} -- $(pwd)/.venv/bin/python $(pwd)/server.py`.\n- Before finishing: import the module (`.venv/bin/python -c \"import server\"`)."
+}

@@ -5,12 +5,12 @@ import { join, resolve } from "node:path";
 
 import {
   catalogSchema,
-  expandKit,
-  parseKit,
-  resolveExtends,
+  isOfficialKitName,
+  loadKitFrom,
   splitKitRef,
   type Catalog,
   type Kit,
+  type KitSource,
   type LoadedRawKit,
   type RegistryEntry,
 } from "@kits/schema";
@@ -25,7 +25,6 @@ export const REGISTRY = join(process.cwd(), "..", "..", "registry");
 /** Community kits change when someone publishes: invalidate with revalidateTag(REGISTRY_TAG). */
 export const REGISTRY_TAG = "registry";
 
-const OFFICIAL_NAME = /^[a-z0-9-]+$/;
 const COMMUNITY_SLUG = /^[a-z0-9-]+\/[a-z0-9-]+$/;
 
 export interface KitMeta {
@@ -86,7 +85,7 @@ export async function getCommunityEntries(): Promise<RegistryEntry[]> {
       owner: handle ?? undefined,
     }));
   } catch (error) {
-    console.error("[registry] kits de la comunidad no disponibles", error);
+    console.error("[registry] community kits unavailable", error);
     return [];
   }
 }
@@ -107,7 +106,7 @@ export async function getFeaturedEntries(limit = 3): Promise<RegistryEntry[]> {
     const all = await getCommunityEntries();
     return rows.flatMap((r) => all.filter((e) => e.name === r.slug));
   } catch (error) {
-    console.error("[registry] destacados no disponibles", error);
+    console.error("[registry] featured kits unavailable", error);
     return [];
   }
 }
@@ -129,16 +128,14 @@ export async function getKitPage(slug: string, version?: string): Promise<{ kit:
   cacheLife("hours");
   cacheTag(REGISTRY_TAG, `kit:${slug}`);
   try {
-    if (OFFICIAL_NAME.test(slug)) {
-      const top = await readRawKit(slug);
-      const kit = expandKit(parseKit(await resolveExtends(top, readRawKit, resolve)), await getCatalog());
+    if (isOfficialKitName(slug)) {
+      const kit = await loadKitFrom(await readRawKit(slug), kitSource);
       return { kit, meta: { slug, version: kit.version, official: true, visibility: "public" } };
     }
     if (!COMMUNITY_SLUG.test(slug) || !db) return null;
     const row = await findCommunityVersion(slug, version);
     if (!row) return null;
-    const merged = await resolveExtends({ raw: row.manifest, dir: "" }, readRawKit, resolve);
-    const kit = expandKit(parseKit(merged), await getCatalog());
+    const kit = await loadKitFrom({ raw: row.manifest, dir: "" }, kitSource);
     return {
       kit,
       meta: {
@@ -155,7 +152,7 @@ export async function getKitPage(slug: string, version?: string): Promise<{ kit:
       },
     };
   } catch (error) {
-    console.error(`[registry] kit "${slug}" no válido`, error);
+    console.error(`[registry] kit "${slug}" isn't valid`, error);
     return null;
   }
 }
@@ -200,6 +197,9 @@ export async function findCommunityVersion(slug: string, version?: string) {
   return row && row.status !== "hidden" ? row : null;
 }
 
+/** How the website reads kits: official ones from registry/, community ones from their published manifest. */
+export const kitSource: KitSource = { read: (ref) => readRawKit(ref), catalog: () => getCatalog(), resolvePath: resolve };
+
 /**
  * Loads one raw kit.json for `extends`: official kits from registry/, community
  * kits from their published manifest. Community parents have no local folder;
@@ -207,7 +207,7 @@ export async function findCommunityVersion(slug: string, version?: string) {
  */
 export async function readRawKit(ref: string): Promise<LoadedRawKit> {
   const { base, version } = splitKitRef(ref);
-  if (OFFICIAL_NAME.test(base)) {
+  if (isOfficialKitName(base)) {
     const dir = join(REGISTRY, "kits", base);
     return { raw: JSON.parse(await readFile(join(dir, "kit.json"), "utf8")), dir };
   }
@@ -216,7 +216,7 @@ export async function readRawKit(ref: string): Promise<LoadedRawKit> {
     // A public kit can't extend a private one: its parent would leak to everyone.
     if (row && row.visibility === "public") return { raw: row.manifest, dir: `published:${base}` };
   }
-  throw new Error(`"${ref}" no es un kit oficial ni un kit publicado`);
+  throw new Error(`"${ref}" is neither an official kit nor a published one`);
 }
 
 /** A private kit's files (packDir). Never cached: callers check membership first. */

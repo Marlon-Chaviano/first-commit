@@ -1,0 +1,51 @@
+{
+  "$schema": "../../kit.schema.json",
+  "version": "1.0.0",
+  "author": "Marlon Chaviano",
+  "name": "saas-sveltekit",
+  "title": "SaaS with SvelteKit",
+  "category": "saas",
+  "language": "typescript",
+  "description": "SvelteKit with the official add-ons: Better Auth with email and password, Drizzle with a SQLite/Turso database, Tailwind CSS and Vitest.",
+  "tags": [
+    "svelte",
+    "sveltekit",
+    "better-auth",
+    "drizzle",
+    "tailwind"
+  ],
+  "base": {
+    "command": "npx sv@latest create {{name}} --template minimal --types ts --add tailwindcss drizzle=\"database:sqlite+client:libsql\" better-auth=\"demo:password\" vitest=\"usages:unit\" --no-install",
+    "install": "{{pm}} install"
+  },
+  "skills": [
+    "sveltejs/ai-tools@svelte-code-writer",
+    "sveltejs/ai-tools@svelte-core-bestpractices",
+    "better-auth/skills@better-auth-best-practices"
+  ],
+  "libraries": {
+    "framework": [
+      "svelte",
+      "sveltekit"
+    ],
+    "components": "none",
+    "animation": [],
+    "design": [
+      "design-pack"
+    ],
+    "workflow": [
+      "essentials"
+    ]
+  },
+  "verify": {
+    "command": "cp -n .env.example .env 2>/dev/null; {{pm}} run build && {{pm}} run test:unit -- --run",
+    "matrix": [
+      {
+        "components": [
+          "shadcn-svelte"
+        ]
+      }
+    ]
+  },
+  "instructions": "## How to work here\n\n- Data is loaded in `+page.server.ts` (`load`) and mutations are *form actions*; the Better Auth session is in `event.locals` (see `src/hooks.server.ts`).\n- The Drizzle schema is in `src/lib/server/db/schema.ts`; apply changes with `npm run db:push`.\n- Before finishing: `npm run build`."
+}

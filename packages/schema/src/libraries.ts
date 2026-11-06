@@ -29,6 +29,9 @@ export const FRAMEWORKS = [
   "laravel",
   "spring",
   "elysia",
+  "angular",
+  "android",
+  "flutter",
   /** Works in any kit (e.g. workflow skills). */
   "any",
 ] as const;
@@ -92,6 +95,9 @@ export const FRAMEWORK_LABELS: Record<string, string> = {
   laravel: "Laravel",
   spring: "Spring",
   elysia: "Elysia",
+  angular: "Angular",
+  android: "Android",
+  flutter: "Flutter",
   any: "Cualquiera",
 };
 
@@ -142,7 +148,7 @@ export function expandKit(kit: Kit, catalog: Catalog): Kit {
   };
   const none: Choice = {
     id: "none",
-    label: "Ninguna",
+    label: "None",
     dependencies: [],
     devDependencies: [],
     skills: [],
@@ -159,7 +165,7 @@ export function expandKit(kit: Kit, catalog: Catalog): Kit {
     const value = declared[category.key];
     if (value === undefined) continue;
     if (kit.options.some((o) => o.id === category.optionId)) {
-      throw new Error(`La opción "${category.optionId}" del kit choca con la categoría de bibliotecas "${category.key}"`);
+      throw new Error(`The kit's "${category.optionId}" option clashes with the "${category.key}" library category`);
     }
     const libraries = available(category.kind).map(toChoice);
     if (category.type === "select") {
@@ -175,34 +181,34 @@ export function expandKit(kit: Kit, catalog: Catalog): Kit {
 export function libraryRule(lib: Library): string {
   switch (lib.kind) {
     case "components":
-      return `## Componentes de UI: ${lib.name}
+      return `## UI components: ${lib.name}
 
-Toda la interfaz se construye con **${lib.name}** (${lib.url}) y, si las hay, con las bibliotecas complementarias de abajo. Es la única fuente de componentes del proyecto.
+The whole interface is built with **${lib.name}** (${lib.url}) and, if there are any, the add-on libraries below. It's the project's only source of components.
 
-- Antes de escribir un componente, busca si ya existe en ${lib.name}. Añádelo con: \`${lib.usage}\`.
-- No instales otras bibliotecas de componentes ni recrees a mano un componente que ${lib.name} ya ofrece.
-- Personaliza con el sistema de temas de ${lib.name}, no con estilos sueltos.`;
+- Before writing a component, check whether ${lib.name} already has it. Add it with: \`${lib.usage}\`.
+- Don't install other component libraries or rebuild by hand a component ${lib.name} already provides.
+- Customize through ${lib.name}'s theming system, not with one-off styles.`;
     case "addon":
-      return `## Biblioteca complementaria: ${lib.name}
+      return `## Add-on library: ${lib.name}
 
-Para secciones vistosas o casos que la biblioteca base no cubre, usa **${lib.name}** (${lib.url}): \`${lib.usage}\`. Revisa su catálogo antes de construir algo similar desde cero.`;
+For eye-catching sections or cases the base library doesn't cover, use **${lib.name}** (${lib.url}): \`${lib.usage}\`. Check its catalog before building something similar from scratch.`;
     case "animation":
-      return `## Animaciones: ${lib.name}
+      return `## Animation: ${lib.name}
 
-Usa **${lib.name}** (${lib.url}) para animar. ${lib.usage} No añadas bibliotecas de animación distintas de las elegidas en este proyecto y respeta \`prefers-reduced-motion\`.`;
+Use **${lib.name}** (${lib.url}) for animation. ${lib.usage} Don't add animation libraries other than the ones chosen for this project, and respect \`prefers-reduced-motion\`.`;
     case "observability":
-      return `## Observabilidad: ${lib.name}
+      return `## Observability: ${lib.name}
 
-**${lib.name}** (${lib.url}) ya está configurado. ${lib.usage}`;
+**${lib.name}** (${lib.url}) is already set up. ${lib.usage}`;
     default: {
       const category = LIBRARY_CATEGORIES.find((c) => c.kind === lib.kind)!;
       const only =
         category.type === "select"
-          ? ` Es la única solución de ${category.label.toLowerCase()} del proyecto: no añadas otra.`
+          ? ` It's the project's only ${category.label.toLowerCase()} solution: don't add another.`
           : "";
       return `## ${category.label}: ${lib.name}
 
-**${lib.name}** (${lib.url}) ya está configurado. ${lib.usage}${only}`;
+**${lib.name}** (${lib.url}) is already set up. ${lib.usage}${only}`;
     }
   }
 }

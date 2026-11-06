@@ -29,12 +29,12 @@ export function DigestEmail({ brand, siteUrl, unsubscribeUrl, news, featured, ne
     ));
   return (
     <EmailLayout
-      preview={news[0]?.title ?? featured[0]?.title ?? newKits[0]?.title ?? `Novedades de ${brand}`}
+      preview={news[0]?.title ?? featured[0]?.title ?? newKits[0]?.title ?? `What's new at ${brand}`}
       brand={brand}
       footer={
         <>
           Recibes esto porque te suscribiste en <Link href={siteUrl}>{siteUrl.replace(/^https?:\/\//, "")}</Link>.{" "}
-          <Link href={unsubscribeUrl}>Darse de baja</Link>
+          <Link href={unsubscribeUrl}>Unsubscribe</Link>
         </>
       }
     >
@@ -48,13 +48,13 @@ export function DigestEmail({ brand, siteUrl, unsubscribeUrl, news, featured, ne
       ))}
       {featured.length > 0 && (
         <Section>
-          <Heading as="h2" style={{ fontSize: 18 }}>Destacados</Heading>
+          <Heading as="h2" style={{ fontSize: 18 }}>Featured</Heading>
           {kitList(featured)}
         </Section>
       )}
       {newKits.length > 0 && (
         <Section>
-          <Heading as="h2" style={{ fontSize: 18 }}>Kits nuevos de la comunidad</Heading>
+          <Heading as="h2" style={{ fontSize: 18 }}>New community kits</Heading>
           {kitList(newKits)}
         </Section>
       )}

@@ -46,7 +46,7 @@ describe("library options", () => {
     const sel = defaultSelections(kit);
     sel.options.components = ["none"];
     sel.options["component-addons"] = ["kokonutui"];
-    expect(() => validateSelections(kit, sel)).toThrow(/necesita --components shadcn/);
+    expect(() => validateSelections(kit, sel)).toThrow(/needs --components shadcn/);
   });
 
   it("prunes choices that stop being valid", () => {
@@ -143,7 +143,7 @@ describe("catalog categories", () => {
       options: [{ id: "auth", label: "Auth", default: "a", choices: [{ id: "a", label: "A" }] }],
       libraries: { framework: ["nextjs"], auth: "none" },
     });
-    expect(() => expandKit(kit, full)).toThrow(/choca/);
+    expect(() => expandKit(kit, full)).toThrow(/clashes/);
   });
 });
 

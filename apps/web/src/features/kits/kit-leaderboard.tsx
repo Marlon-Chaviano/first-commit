@@ -1,11 +1,12 @@
 "use client";
 
-import { LANGUAGES, type RegistryEntry } from "@kits/schema";
-import { BadgeCheckIcon, SearchIcon, XIcon } from "lucide-react";
+import { CATEGORY_LABELS, entryLanguage, languageLabel, type KitCategory, type LanguageId, type RegistryEntry } from "@kits/schema";
+import { ChevronDownIcon, SearchIcon, XIcon } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useDeferredValue, useEffect, useMemo, useRef, useState } from "react";
 
+import { OriginIcon, ORIGINS, type Origin } from "@/components/shared/origin-icon";
 import { Sparkline } from "@/components/shared/sparkline";
 import { TechIcon } from "@/components/shared/tech-icon";
 import { Badge } from "@/components/ui/badge";
@@ -16,19 +17,35 @@ import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/in
 import { Kbd } from "@/components/ui/kbd";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { CATEGORIES } from "@/lib/categories";
+import { facets, queryKits, searchIndex } from "@/lib/kit-query";
 import { formatCount } from "@/lib/format";
+import { logosFor } from "@/lib/logos";
 import type { Leaderboard } from "@/server/metrics/queries";
 
 type View = "all" | "trending";
-type Source = "all" | "official" | "community" | "verified";
+type Source = Origin;
 
 const SOURCES: [Source, string][] = [
-  ["all", "Todos los orígenes"],
-  ["official", "Oficiales"],
-  ["community", "Comunidad"],
-  ["verified", "Verificados"],
+  ["all", ORIGINS.all.label],
+  ["official", "Official"],
+  ["verified", "Verified"],
+  ["community", "Community"],
 ];
+
+/** Rows shown per page; the "+N more" row adds another page. */
+const PAGE_SIZE = 20;
+/** Typing pause before the list is filtered again. */
+const SEARCH_DEBOUNCE_MS = 150;
+
+/** `value`, updated only after it stops changing for `ms`. */
+function useDebounced<T>(value: T, ms: number): T {
+  const [debounced, setDebounced] = useState(value);
+  useEffect(() => {
+    const timer = setTimeout(() => setDebounced(value), ms);
+    return () => clearTimeout(timer);
+  }, [value, ms]);
+  return debounced;
+}
 
 export function KitLeaderboard({
   kits,
@@ -47,6 +64,14 @@ export function KitLeaderboard({
   const [source, setSource] = useState<Source>("all");
   const [category, setCategory] = useState<string>("all");
   const [language, setLanguage] = useState<string>("all");
+  // The input updates at once; filtering waits for a pause and runs at low priority.
+  const search = useDeferredValue(useDebounced(query, SEARCH_DEBOUNCE_MS));
+  // Lowercased text to search in, computed once per kit instead of on every keystroke.
+  const index = useMemo(() => searchIndex(kits), [kits]);
+  // Pages loaded for the current search and filters: changing any of them starts again at page 1.
+  const filterKey = [search, view, source, category, language].join("\u0000");
+  const [paging, setPaging] = useState({ key: filterKey, pages: 1 });
+  const pages = paging.key === filterKey ? paging.pages : 1;
 
   // "/" focuses search, like skills.sh.
   useEffect(() => {
@@ -61,10 +86,10 @@ export function KitLeaderboard({
   }, []);
 
   const counts = view === "all" ? stats.allTime : stats.trending;
-  const q = query.trim().toLowerCase();
-  const categories = [...new Set(kits.map((k) => k.category))];
-  // Only languages that have kits, in the catalog's order.
-  const languages = LANGUAGES.filter((l) => kits.some((k) => (k.language ?? "typescript") === l.id));
+  const q = search.trim();
+  const { categories, languages: allLanguages } = useMemo(() => facets(kits), [kits]);
+  // Only languages that have kits.
+  const languages = allLanguages.filter((l) => l.count > 0);
   const filtered = Boolean(q) || source !== "all" || category !== "all" || language !== "all";
   const clear = () => {
     setQuery("");
@@ -72,14 +97,8 @@ export function KitLeaderboard({
     setCategory("all");
     setLanguage("all");
   };
-  const rows = kits
-    .filter((k) => !q || [k.name, k.title, k.description, ...k.tags, ...(k.libraries ?? [])].some((t) => t.toLowerCase().includes(q)))
-    .filter((k) =>
-      source === "official" ? k.official : source === "community" ? !k.official : source === "verified" ? verified[k.name] : true,
-    )
-    .filter((k) => category === "all" || k.category === category)
-    .filter((k) => language === "all" || (k.language ?? "typescript") === language)
-    .sort((a, b) => (counts[b.name] ?? 0) - (counts[a.name] ?? 0) || a.name.localeCompare(b.name));
+  const rows = queryKits(kits, { q, origin: source, category: category as KitCategory | "all", language }, { counts, verified }, index);
+  const shown = rows.slice(0, pages * PAGE_SIZE);
 
   return (
     <div className="flex flex-col gap-4">
@@ -91,9 +110,9 @@ export function KitLeaderboard({
           ref={input}
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Buscar kits o bibliotecas (stripe, sentry, motion…)"
+          placeholder="Search kits or libraries (stripe, sentry, motion…)"
           className="font-mono text-sm"
-          aria-label="Buscar kits"
+          aria-label="Search kits"
         />
         <InputGroupAddon align="inline-end">
           <Kbd>/</Kbd>
@@ -104,31 +123,31 @@ export function KitLeaderboard({
         <Tabs value={view} onValueChange={(v) => setView(v as View)}>
           <TabsList variant="line" className="font-mono">
             <TabsTrigger value="all" className="text-xs">
-              Todos <span className="text-muted-foreground tabular-nums">· {formatCount(stats.total)} instalaciones</span>
+              All <span className="text-muted-foreground tabular-nums">· {formatCount(stats.total)} installs</span>
             </TabsTrigger>
-            <TabsTrigger value="trending" className="text-xs">Tendencia (24h)</TabsTrigger>
+            <TabsTrigger value="trending" className="text-xs">Trending (24h)</TabsTrigger>
           </TabsList>
         </Tabs>
         <div className="flex flex-wrap items-center gap-2">
           <FilterSelect
-            label="Origen"
+            label="Origin"
             value={source}
             onChange={(v) => setSource(v as Source)}
-            options={SOURCES.map(([value, label]) => ({ value, label }))}
+            options={SOURCES.map(([value, label]) => ({ value, label, icon: <OriginIcon origin={value} /> }))}
           />
           <FilterSelect
-            label="Categoría"
+            label="Category"
             value={category}
             onChange={setCategory}
-            options={[{ value: "all", label: "Todas las categorías" }, ...categories.map((c) => ({ value: c, label: CATEGORIES[c] ?? c }))]}
+            options={[{ value: "all", label: "All categories" }, ...categories.map((c) => ({ value: c, label: CATEGORY_LABELS[c] }))]}
           />
           {languages.length > 1 && (
             <FilterSelect
-              label="Lenguaje"
+              label="Language"
               value={language}
               onChange={setLanguage}
               options={[
-                { value: "all", label: "Todos los lenguajes" },
+                { value: "all", label: "All languages" },
                 ...languages.map((l) => ({ value: l.id, label: l.label, icon: <TechIcon id={l.id} label={l.label} className="size-3.5" /> })),
               ]}
             />
@@ -142,11 +161,13 @@ export function KitLeaderboard({
             {rows.length} {rows.length === 1 ? "kit" : "kits"}
           </span>
           {q && <FilterChip label={`“${query.trim()}”`} onRemove={() => setQuery("")} />}
-          {source !== "all" && <FilterChip label={SOURCES.find(([v]) => v === source)![1]} onRemove={() => setSource("all")} />}
-          {category !== "all" && <FilterChip label={CATEGORIES[category] ?? category} onRemove={() => setCategory("all")} />}
-          {language !== "all" && <FilterChip label={LANGUAGES.find((l) => l.id === language)?.label ?? language} onRemove={() => setLanguage("all")} />}
+          {source !== "all" && (
+            <FilterChip label={SOURCES.find(([v]) => v === source)![1]} icon={<OriginIcon origin={source} className="size-3" />} onRemove={() => setSource("all")} />
+          )}
+          {category !== "all" && <FilterChip label={CATEGORY_LABELS[category as KitCategory]} onRemove={() => setCategory("all")} />}
+          {language !== "all" && <FilterChip label={languageLabel(language as LanguageId)} onRemove={() => setLanguage("all")} />}
           <button type="button" onClick={clear} className="underline-offset-4 hover:text-foreground hover:underline">
-            Quitar filtros
+            Clear filters
           </button>
         </div>
       )}
@@ -157,26 +178,36 @@ export function KitLeaderboard({
             <TableRow className="hover:bg-transparent">
               <TableHead className="label-mono w-12 text-muted-foreground">#</TableHead>
               <TableHead className="label-mono text-muted-foreground">Kit</TableHead>
-              <TableHead className="label-mono hidden w-40 text-muted-foreground sm:table-cell">Actividad 8S</TableHead>
-              <TableHead className="label-mono w-24 text-right text-muted-foreground">Instalaciones</TableHead>
+              <TableHead className="label-mono hidden w-40 text-muted-foreground sm:table-cell">Activity 8W</TableHead>
+              <TableHead className="label-mono w-24 text-right text-muted-foreground">Installs</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {rows.map((kit, i) => (
+            {shown.map((kit, i) => (
               <TableRow key={kit.name} className="h-14 cursor-pointer" onClick={() => router.push(`/kits/${kit.name}`)}>
                 <TableCell className="font-mono text-muted-foreground">{i + 1}</TableCell>
                 <TableCell className="max-w-0">
                   <Link href={`/kits/${kit.name}`} className="flex min-w-0 items-center gap-2.5">
                     <TechIcon
-                      id={kit.language ?? "typescript"}
-                      label={LANGUAGES.find((l) => l.id === (kit.language ?? "typescript"))?.label ?? "TypeScript"}
+                      id={entryLanguage(kit)}
+                      label={languageLabel(entryLanguage(kit))}
                       className="text-muted-foreground"
                     />
                     <span className="flex shrink-0 items-center gap-1.5 font-semibold">
                       {kit.name}
-                      {verified[kit.name] && <BadgeCheckIcon aria-label="Verificado" className="size-3.5 text-muted-foreground" />}
+                      <span className="flex items-center gap-1 text-muted-foreground">
+                        <OriginIcon origin={kit.official ? "official" : "community"} label />
+                        {verified[kit.name] && <OriginIcon origin="verified" label />}
+                      </span>
                     </span>
                     <span className="truncate font-mono text-xs text-muted-foreground">{kit.title}</span>
+                    <span className="ml-auto hidden shrink-0 items-center gap-2 pr-2 text-muted-foreground md:flex" aria-hidden>
+                      {logosFor(kit.tags, 4).map(({ key, icon }) => (
+                        <svg key={key} viewBox="0 0 24 24" fill="currentColor" className="size-3.5">
+                          <path d={icon.path} />
+                        </svg>
+                      ))}
+                    </span>
                   </Link>
                 </TableCell>
                 <TableCell className="hidden sm:table-cell">
@@ -185,17 +216,36 @@ export function KitLeaderboard({
                 <TableCell className="text-right font-mono tabular-nums">{formatCount(counts[kit.name] ?? 0)}</TableCell>
               </TableRow>
             ))}
+            {rows.length > shown.length && (
+              // Like skills.sh: the list goes on with a "+N more" row in its own typography, not a separate button.
+              <TableRow className="hover:bg-transparent">
+                <TableCell colSpan={4} className="p-0">
+                  <button
+                    type="button"
+                    onClick={() => setPaging({ key: filterKey, pages: pages + 1 })}
+                    className="group flex h-12 w-full items-center gap-2 px-2 font-mono text-sm text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring"
+                  >
+                    <ChevronDownIcon className="size-4 transition-transform group-hover:translate-y-0.5 motion-reduce:transition-none" />
+                    +{Math.min(PAGE_SIZE, rows.length - shown.length)} more {rows.length - shown.length === 1 ? "kit" : "kits"}
+                    <span className="ml-auto text-xs tabular-nums">
+                      {shown.length} of {rows.length}
+                    </span>
+                  </button>
+                </TableCell>
+              </TableRow>
+            )}
           </TableBody>
         </Table>
-      ) : (
+      ) : null}
+      {!rows.length && (
         <Empty>
           <EmptyHeader>
-            <EmptyTitle>Sin resultados</EmptyTitle>
-            <EmptyDescription>{q ? `Ningún kit coincide con “${query}” con estos filtros.` : "Ningún kit coincide con estos filtros."}</EmptyDescription>
+            <EmptyTitle>No results</EmptyTitle>
+            <EmptyDescription>{q ? `No kit matches “${query}” with these filters.` : "No kit matches these filters."}</EmptyDescription>
           </EmptyHeader>
           {filtered && (
             <Button variant="outline" size="sm" onClick={clear}>
-              Quitar filtros
+              Clear filters
             </Button>
           )}
         </Empty>
@@ -237,11 +287,12 @@ function FilterSelect({ label, value, onChange, options }: { label: string; valu
   );
 }
 
-function FilterChip({ label, onRemove }: { label: string; onRemove: () => void }) {
+function FilterChip({ label, icon, onRemove }: { label: string; icon?: React.ReactNode; onRemove: () => void }) {
   return (
     <Badge variant="outline" className="gap-1 pr-1 font-mono">
+      {icon}
       {label}
-      <button type="button" onClick={onRemove} aria-label={`Quitar ${label}`} className="rounded-sm p-0.5 hover:bg-muted">
+      <button type="button" onClick={onRemove} aria-label={`Remove ${label}`} className="rounded-sm p-0.5 hover:bg-muted">
         <XIcon className="size-3" />
       </button>
     </Badge>

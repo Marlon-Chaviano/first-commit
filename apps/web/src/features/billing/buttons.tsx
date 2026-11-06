@@ -23,7 +23,7 @@ function StripeButton({ action, children, variant = "default" }: { action: () =>
         })
       }
     >
-      {pending ? "Abriendo Stripe…" : children}
+      {pending ? "Opening Stripe…" : children}
     </Button>
   );
 }
@@ -32,7 +32,7 @@ export const CheckoutButton = ({ target, children }: { target: BillingTarget; ch
   <StripeButton action={() => checkoutAction(target)}>{children}</StripeButton>
 );
 export const PortalButton = ({ target }: { target: BillingTarget }) => (
-  <StripeButton action={() => portalAction(target)} variant="outline">Gestionar suscripción</StripeButton>
+  <StripeButton action={() => portalAction(target)} variant="outline">Manage subscription</StripeButton>
 );
 export const OnboardingButton = ({ children }: { children: React.ReactNode }) => (
   <StripeButton action={() => onboardingAction()} variant="outline">{children}</StripeButton>
@@ -51,15 +51,15 @@ export function PriceForm({ slug, priceCents }: { slug: string; priceCents: numb
         e.preventDefault();
         start(async () => {
           const r = await setPriceAction(slug, value);
-          if (r.ok) toast.success(value ? "Precio guardado" : "El kit vuelve a ser gratis");
+          if (r.ok) toast.success(value ? "Price saved" : "The kit is free again");
           else toast.error(r.error);
         });
       }}
     >
-      <Input value={value} onChange={(e) => setValue(e.target.value)} inputMode="decimal" placeholder="gratis" aria-label="Precio en euros" className="w-28 font-mono" />
-      <span className="text-sm text-muted-foreground">€, pago único</span>
+      <Input value={value} onChange={(e) => setValue(e.target.value)} inputMode="decimal" placeholder="free" aria-label="Price in euros" className="w-28 font-mono" />
+      <span className="text-sm text-muted-foreground">€, one-time payment</span>
       <Button type="submit" size="sm" variant="outline" disabled={pending}>
-        Guardar
+        Save
       </Button>
     </form>
   );
@@ -75,12 +75,12 @@ export function RefundButton({ licenseId }: { licenseId: string }) {
       onClick={() =>
         start(async () => {
           const r = await refundAction(licenseId);
-          if (r.ok) toast.success("Reembolsado");
+          if (r.ok) toast.success("Refunded");
           else toast.error(r.error);
         })
       }
     >
-      Reembolsar
+      Refund
     </Button>
   );
 }

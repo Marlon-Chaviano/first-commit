@@ -5,25 +5,25 @@
  */
 export const PLANS = {
   free: {
-    label: "Gratis",
-    price: "0 €",
-    features: ["Kits públicos ilimitados", "Estadísticas de los últimos 30 días", "MCP, skill y CLI completos"],
+    label: "Free",
+    price: "€0",
+    features: ["Unlimited public kits", "Statistics for the last 30 days", "The full MCP, skill and CLI"],
     privateKits: false,
     historyDays: 30,
     csvExport: false,
   },
   pro: {
     label: "Pro",
-    price: "8 €/mes",
-    features: ["Todo lo de Gratis", "Historial de 12 meses", "Exportar estadísticas en CSV"],
+    price: "€8/month",
+    features: ["Everything in Free", "12-month history", "Export statistics as CSV"],
     privateKits: false,
     historyDays: 365,
     csvExport: true,
   },
   team: {
-    label: "Equipos",
-    price: "6 € por miembro/mes",
-    features: ["Registro privado para la organización", "Políticas de bibliotecas comprobadas en CI", "Adopción por equipo", "Historial de 12 meses"],
+    label: "Teams",
+    price: "€6 per member/month",
+    features: ["A private registry for the organization", "Library policies checked in CI", "Adoption per team", "12-month history"],
     privateKits: true,
     historyDays: 365,
     csvExport: true,

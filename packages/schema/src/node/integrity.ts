@@ -35,9 +35,9 @@ export type IntegrityMap = Record<string, Record<string, string>>;
 /** Throws when a downloaded official kit doesn't match the hash published for its version. */
 export function verifyIntegrity(dir: string, name: string, version: string, map: IntegrityMap): void {
   const expected = map[name]?.[version];
-  if (!expected) throw new Error(`No hay hash publicado para ${name}@${version}: no se puede comprobar que el kit no fue alterado.`);
+  if (!expected) throw new Error(`There's no published hash for ${name}@${version}: the kit can't be checked for tampering.`);
   const actual = hashKitDir(dir);
   if (actual !== expected) {
-    throw new Error(`El kit ${name}@${version} descargado no coincide con el publicado (integridad). No se ha ejecutado nada.`);
+    throw new Error(`The downloaded kit ${name}@${version} doesn't match the published one (integrity). Nothing was run.`);
   }
 }

@@ -72,6 +72,14 @@ describe("mergeKits", () => {
     expect(options.map((o) => o.id)).toEqual(["ui", "extras", "theme"]);
     expect(options[0]!.label).toBe("UI nueva");
   });
+
+  it("lets a child change only an option's default", () => {
+    const out = mergeKits(
+      { options: [{ id: "styling", label: "Estilos", default: "css", choices: [{ id: "css" }, { id: "tw" }] }] },
+      { options: [{ id: "styling", default: "tw" }] },
+    );
+    expect(out.options).toEqual([{ id: "styling", label: "Estilos", default: "tw", choices: [{ id: "css" }, { id: "tw" }] }]);
+  });
 });
 
 describe("resolveExtends", () => {
@@ -96,12 +104,12 @@ describe("resolveExtends", () => {
     const a: LoadedRawKit = { raw: { name: "a", version: "1.0.0", extends: "../b" }, dir: "/k/a" };
     const b: LoadedRawKit = { raw: { name: "b", version: "1.0.0", extends: "../a" }, dir: "/k/b" };
     const loader = async (ref: string) => (ref === "../b" ? b : a);
-    await expect(resolveExtends(a, loader, join)).rejects.toThrow(/ciclo/);
+    await expect(resolveExtends(a, loader, join)).rejects.toThrow(/cycle/);
   });
 
   it("limits the depth of the chain", async () => {
     const level = (n: number): LoadedRawKit => ({ raw: { name: `k${n}`, version: "1.0.0", extends: `k${n + 1}` }, dir: `/k/${n}` });
-    await expect(resolveExtends(level(0), async (ref) => level(Number(ref.slice(1))), join)).rejects.toThrow(/niveles/);
+    await expect(resolveExtends(level(0), async (ref) => level(Number(ref.slice(1))), join)).rejects.toThrow(/levels/);
   });
 });
 

@@ -1,12 +1,12 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "web-rails",
-  "version": "1.0.0",
-  "author": "kits",
-  "title": "App web con Ruby on Rails",
+  "version": "1.1.0",
+  "author": "Marlon Chaviano",
+  "title": "Web app with Ruby on Rails",
   "category": "web",
   "language": "ruby",
-  "description": "Rails 8 con Hotwire, SQLite y Propshaft: una app completa (vistas, base de datos, jobs) sin montar nada más.",
+  "description": "Rails 8 with Hotwire, SQLite and Propshaft: a complete app (views, database, jobs) without setting up anything else.",
   "tags": [
     "ruby",
     "rails",
@@ -24,16 +24,32 @@
     "affaan-m/ecc@rails-patterns"
   ],
   "verify": {
-    "command": "bin/rails db:prepare && bin/rails test && bin/rails zeitwerk:check"
+    "command": "bin/rails db:prepare && bin/rails test && bin/rails zeitwerk:check && (test ! -d spec || bundle exec rspec)",
+    "matrix": [
+      {
+        "auth": [
+          "rails-auth"
+        ]
+      },
+      {
+        "testing": [
+          "rspec-rails"
+        ]
+      }
+    ]
   },
   "libraries": {
     "framework": [
       "rails"
     ],
+    "design": [
+      "design-pack"
+    ],
     "workflow": [
-      "superpowers",
-      "mattpocock-skills"
-    ]
+      "essentials"
+    ],
+    "auth": "none",
+    "testing": []
   },
-  "instructions": "## Cómo trabajar aquí\n\n- Sigue las convenciones de Rails: genera con `bin/rails generate` (modelos, controladores, migraciones) en vez de crear archivos a mano.\n- Interactividad con Hotwire (Turbo y Stimulus) antes que con un framework de JavaScript.\n- Tras cambiar el esquema: `bin/rails db:migrate`. Antes de terminar: `bin/rails test`."
+  "instructions": "## How to work here\n\n- Follow Rails conventions: generate with `bin/rails generate` (models, controllers, migrations) instead of creating files by hand.\n- Interactivity with Hotwire (Turbo and Stimulus) before reaching for a JavaScript framework.\n- After changing the schema: `bin/rails db:migrate`. Before finishing: `bin/rails test`."
 }

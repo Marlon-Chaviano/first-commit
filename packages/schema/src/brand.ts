@@ -20,6 +20,13 @@ export const BRAND = {
   branch: "main",
 } as const;
 
+/** Who makes the product (footer credit and contact). */
+export const AUTHOR = {
+  name: "Marlon Chaviano",
+  github: "https://github.com/Marlon-Chaviano",
+  email: "chavianomarlon@gmail.com",
+} as const;
+
 export const REPO_URL = `https://github.com/${BRAND.repo}`;
 /** giget source for official kits. */
 export const REGISTRY_SOURCE = `gh:${BRAND.repo}/registry`;
@@ -37,4 +44,4 @@ export const KITS_SKILL = `${BRAND.repo}@${BRAND.name}`;
  * Whether KITS_SKILL is published on skills.sh. While false, kits don't
  * install it (the install would fail). Set to true in phase 8, after pushing the repo.
  */
-export const KITS_SKILL_PUBLISHED = false;
+export const KITS_SKILL_PUBLISHED = true;

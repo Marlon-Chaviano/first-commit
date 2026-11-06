@@ -1,0 +1,77 @@
+{
+  "$schema": "../../kit.schema.json",
+  "version": "1.0.0",
+  "author": "Marlon Chaviano",
+  "name": "web-react-router",
+  "title": "Web app with React Router",
+  "category": "web",
+  "language": "typescript",
+  "description": "React Router v7 in framework mode (what used to be Remix): routes with loaders and actions, SSR, Tailwind CSS and per-route generated types.",
+  "tags": [
+    "react",
+    "react-router",
+    "remix",
+    "ssr",
+    "tailwind"
+  ],
+  "base": {
+    "command": "npx -y create-react-router@latest {{name}} --yes --no-install --no-git-init --no-agent-skills --package-manager {{pm}}",
+    "install": "{{pm}} install"
+  },
+  "packageManagers": [
+    "npm",
+    "pnpm",
+    "bun"
+  ],
+  "skills": [
+    "remix-run/agent-skills@react-router-framework-mode",
+    "vercel-labs/agent-skills@vercel-react-best-practices"
+  ],
+  "libraries": {
+    "framework": [
+      "react",
+      "vanilla"
+    ],
+    "components": "none",
+    "animation": [],
+    "state": "none",
+    "data": "none",
+    "forms": [],
+    "quality": [],
+    "ci": [],
+    "design": [
+      "design-pack"
+    ],
+    "workflow": [
+      "essentials"
+    ]
+  },
+  "verify": {
+    "command": "{{pm}} run typecheck && {{pm}} run build",
+    "matrix": [
+      {
+        "state": [
+          "zustand"
+        ],
+        "data": [
+          "tanstack-query"
+        ],
+        "forms": [
+          "react-hook-form"
+        ]
+      },
+      {
+        "animation": [
+          "motion"
+        ],
+        "quality": [
+          "biome"
+        ],
+        "ci": [
+          "github-actions"
+        ]
+      }
+    ]
+  },
+  "instructions": "## How to work here\n\n- Routes are declared in `app/routes.ts` and each one lives in `app/routes/`. Data is loaded in `loader` and mutations go in `action`, not in client effects.\n- Use the generated types (`import type { Route } from \"./+types/<route>\"`); `npm run typecheck` regenerates them.\n- Before finishing: `npm run typecheck && npm run build`."
+}

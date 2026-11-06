@@ -11,7 +11,7 @@ export async function readLock(projectDir: string): Promise<KitsLock | null> {
   const path = join(projectDir, LOCK_FILE);
   if (!existsSync(path)) return null;
   const parsed = kitsLockSchema.safeParse(JSON.parse(await readFile(path, "utf8")));
-  if (!parsed.success) throw new Error(`${LOCK_FILE} no es válido: ${parsed.error.issues[0]?.message}`);
+  if (!parsed.success) throw new Error(`${LOCK_FILE} isn't valid: ${parsed.error.issues[0]?.message}`);
   return parsed.data;
 }
 

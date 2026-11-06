@@ -1,0 +1,46 @@
+{
+  "$schema": "../../kit.schema.json",
+  "version": "1.0.0",
+  "author": "Marlon Chaviano",
+  "name": "api-rails",
+  "title": "API with Rails",
+  "category": "api",
+  "language": "ruby",
+  "description": "Rails 8 in API mode: JSON only, no views, with Active Record, migrations, tests and optional RSpec.",
+  "tags": [
+    "ruby",
+    "rails",
+    "api",
+    "sqlite"
+  ],
+  "base": {
+    "command": "command -v rails >/dev/null || { echo 'Necesitas Rails: gem install rails' >&2; exit 1; }; rails new {{name}} --api --skip-git --skip-bundle --skip-kamal --skip-thruster",
+    "install": "bundle install --quiet"
+  },
+  "packageManagers": [
+    "bundler"
+  ],
+  "skills": [
+    "affaan-m/ecc@rails-patterns"
+  ],
+  "libraries": {
+    "framework": [
+      "rails"
+    ],
+    "testing": [],
+    "workflow": [
+      "essentials"
+    ]
+  },
+  "verify": {
+    "command": "bin/rails db:prepare && bin/rails test && bin/rails zeitwerk:check && (test ! -d spec || bundle exec rspec)",
+    "matrix": [
+      {
+        "testing": [
+          "rspec-rails"
+        ]
+      }
+    ]
+  },
+  "instructions": "## How to work here\n\n- It's an API: controllers inherit from `ActionController::API` and respond with JSON. Generate resources with `bin/rails g scaffold <Model> field:type`.\n- Database changes only through migrations (`bin/rails g migration`), never by editing `schema.rb`.\n- Before finishing: `bin/rails test`."
+}

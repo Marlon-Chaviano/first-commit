@@ -27,7 +27,7 @@ const siteUrl = () => env.BETTER_AUTH_URL ?? "http://localhost:3200";
 const ACTIVE = new Set(["active", "trialing", "past_due"]);
 
 function requireStripe(): Stripe {
-  if (!stripe || !db) throw new BillingError(503, "Los pagos no están activados en este servidor");
+  if (!stripe || !db) throw new BillingError(503, "Payments aren't enabled on this server");
   return stripe;
 }
 
@@ -62,7 +62,7 @@ export async function createSubscriptionCheckout(viewer: TokenUser, subject: Sub
   const metadata = { subjectType: subject.kind, subjectId: subject.id, plan };
   const customer = await existingCustomer(subject);
   const [account] = await db!.select({ email: user.email }).from(user).where(eq(user.id, viewer.id)).limit(1);
-  const back = subject.kind === "org" ? `/orgs/${(await db!.select({ slug: orgs.slug }).from(orgs).where(eq(orgs.id, subject.id)))[0]?.slug}` : "/cuenta";
+  const back = subject.kind === "org" ? `/orgs/${(await db!.select({ slug: orgs.slug }).from(orgs).where(eq(orgs.id, subject.id)))[0]?.slug}` : "/account";
   const session = await s.checkout.sessions.create({
     mode: "subscription",
     line_items: [{ price, quantity: Math.max(1, seats) }],
@@ -74,7 +74,7 @@ export async function createSubscriptionCheckout(viewer: TokenUser, subject: Sub
     success_url: `${siteUrl()}${back}?pago=ok`,
     cancel_url: `${siteUrl()}${back}`,
   });
-  if (!session.url) throw new BillingError(502, "Stripe no devolvió la URL de pago");
+  if (!session.url) throw new BillingError(502, "Stripe didn't return the checkout URL");
   return session.url;
 }
 
@@ -82,7 +82,7 @@ export async function createSubscriptionCheckout(viewer: TokenUser, subject: Sub
 export async function createPortal(subject: Subject, returnPath: string): Promise<string> {
   const s = requireStripe();
   const customer = await existingCustomer(subject);
-  if (!customer) throw new BillingError(404, "No hay ninguna suscripción que gestionar");
+  if (!customer) throw new BillingError(404, "There's no subscription to manage");
   return (await s.billingPortal.sessions.create({ customer, return_url: `${siteUrl()}${returnPath}` })).url;
 }
 
@@ -103,7 +103,7 @@ export async function syncSeats(orgId: string): Promise<void> {
     const item = live.items.data[0];
     if (item) await stripe.subscriptions.update(sub.id, { items: [{ id: item.id, quantity: members }], proration_behavior: "create_prorations" });
   } catch (error) {
-    console.error("[billing] no se pudieron actualizar los asientos", error);
+    console.error("[billing] couldn't update the seats", error);
   }
 }
 
@@ -120,8 +120,8 @@ export async function creatorOnboarding(viewer: TokenUser): Promise<string> {
   const link = await s.accountLinks.create({
     account: row!.stripeAccountId,
     type: "account_onboarding",
-    refresh_url: `${siteUrl()}/cuenta?cobros=reintentar`,
-    return_url: `${siteUrl()}/cuenta?cobros=ok`,
+    refresh_url: `${siteUrl()}/account?cobros=reintentar`,
+    return_url: `${siteUrl()}/account?cobros=ok`,
   });
   return link.url;
 }
@@ -135,15 +135,15 @@ export async function creatorStatus(userId: string) {
 export async function setKitPrice(viewer: TokenUser, slug: string, priceCents: number | null): Promise<void> {
   requireStripe();
   const [kit] = await db!.select().from(kits).where(eq(kits.slug, slug)).limit(1);
-  if (!kit || kit.ownerId !== viewer.id) throw new BillingError(404, "Kit no encontrado");
-  if (kit.visibility !== "public") throw new BillingError(400, "Solo los kits públicos se pueden vender");
+  if (!kit || kit.ownerId !== viewer.id) throw new BillingError(404, "Kit not found");
+  if (kit.visibility !== "public") throw new BillingError(400, "Only public kits can be sold");
   if (priceCents !== null) {
     // Versions published before archives existed are downloaded from GitHub: they can't be sold.
     const [latest] = await db!.select({ archived: sql<boolean>`${kitVersions.archive} is not null` }).from(kitVersions).where(and(eq(kitVersions.kitId, kit.id), eq(kitVersions.version, kit.latestVersion))).limit(1);
-    if (!latest?.archived) throw new BillingError(400, "Vuelve a publicar el kit (una versión nueva) antes de ponerle precio");
-    if (!Number.isInteger(priceCents) || priceCents < 100 || priceCents > 100_000) throw new BillingError(400, "El precio va de 1 € a 1.000 €");
+    if (!latest?.archived) throw new BillingError(400, "Publish the kit again (a new version) before setting a price");
+    if (!Number.isInteger(priceCents) || priceCents < 100 || priceCents > 100_000) throw new BillingError(400, "The price goes from €1 to €1,000");
     const account = await creatorStatus(viewer.id);
-    if (!account?.chargesEnabled) throw new BillingError(400, "Completa primero la cuenta de cobros (Stripe Connect)");
+    if (!account?.chargesEnabled) throw new BillingError(400, "Finish setting up payouts first (Stripe Connect)");
   }
   await db!.update(kits).set({ priceCents, updatedAt: new Date() }).where(eq(kits.id, kit.id));
   revalidateTag(REGISTRY_TAG, { expire: 0 });
@@ -172,9 +172,9 @@ export async function createKitCheckout(viewer: TokenUser, slug: string): Promis
     .leftJoin(creatorAccounts, eq(creatorAccounts.userId, kits.ownerId))
     .where(eq(kits.slug, slug))
     .limit(1);
-  if (!row?.kit.priceCents || row.kit.status !== "active") throw new BillingError(404, "Este kit no está a la venta");
-  if (!row.account?.chargesEnabled) throw new BillingError(503, "El creador aún no puede recibir pagos");
-  if (row.kit.ownerId === viewer.id || (await hasLicense(row.kit.id, viewer.id))) throw new BillingError(409, "Ya tienes este kit");
+  if (!row?.kit.priceCents || row.kit.status !== "active") throw new BillingError(404, "This kit isn't for sale");
+  if (!row.account?.chargesEnabled) throw new BillingError(503, "The creator can't receive payments yet");
+  if (row.kit.ownerId === viewer.id || (await hasLicense(row.kit.id, viewer.id))) throw new BillingError(409, "You already have this kit");
   const amount = row.kit.priceCents;
   const metadata = { kind: "kit", kitId: row.kit.id, userId: viewer.id };
   const session = await s.checkout.sessions.create({
@@ -185,7 +185,7 @@ export async function createKitCheckout(viewer: TokenUser, slug: string): Promis
     success_url: `${siteUrl()}/kits/${slug}?compra=ok`,
     cancel_url: `${siteUrl()}/kits/${slug}`,
   });
-  if (!session.url) throw new BillingError(502, "Stripe no devolvió la URL de pago");
+  if (!session.url) throw new BillingError(502, "Stripe didn't return the checkout URL");
   return session.url;
 }
 
@@ -193,7 +193,7 @@ export async function createKitCheckout(viewer: TokenUser, slug: string): Promis
 export async function refundLicense(licenseId: string): Promise<void> {
   const s = requireStripe();
   const [license] = await db!.select().from(licenses).where(eq(licenses.id, licenseId)).limit(1);
-  if (!license?.paymentIntentId) throw new BillingError(404, "Compra no encontrada");
+  if (!license?.paymentIntentId) throw new BillingError(404, "Purchase not found");
   await s.refunds.create({ payment_intent: license.paymentIntentId, reverse_transfer: true, refund_application_fee: true });
   await db!.update(licenses).set({ status: "refunded" }).where(eq(licenses.id, license.id));
 }
@@ -217,7 +217,7 @@ export async function listPurchases(limit = 100) {
  * does nothing. Returns false for an event already processed.
  */
 export async function handleStripeEvent(event: Stripe.Event): Promise<boolean> {
-  if (!db) throw new BillingError(503, "Sin base de datos");
+  if (!db) throw new BillingError(503, "No database");
   return db.transaction(async (tx) => {
     const claimed = await tx.insert(stripeEvents).values({ id: event.id, type: event.type }).onConflictDoNothing().returning({ id: stripeEvents.id });
     if (!claimed.length) return false;

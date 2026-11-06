@@ -1,3 +1,6 @@
+import { LinkIcon } from "lucide-react";
+import { isValidElement } from "react";
+
 import { Command } from "@/components/shared/command";
 import { CopyButton } from "@/components/shared/copy-button";
 import { Separator } from "@/components/ui/separator";
@@ -12,10 +15,28 @@ export function DocsHeader({ title, children }: { title: string; children: React
   );
 }
 
+/** Plain text of a heading, for its id when the page doesn't give one. */
+function textOf(node: React.ReactNode): string {
+  if (typeof node === "string" || typeof node === "number") return String(node);
+  if (Array.isArray(node)) return node.map(textOf).join("");
+  if (isValidElement<{ children?: React.ReactNode }>(node)) return textOf(node.props.children);
+  return "";
+}
+
+const slugify = (text: string) =>
+  text.toLowerCase().normalize("NFD").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+
+/** Section heading with a stable anchor: hovering shows the link, and the "On this page" rail lists it. */
 export function H2({ id, children }: { id?: string; children: React.ReactNode }) {
+  const anchor = id ?? slugify(textOf(children));
   return (
-    <div id={id} className="mt-12 mb-4 flex scroll-mt-20 flex-col gap-3">
-      <h2 className="label-mono">{children}</h2>
+    <div className="mt-12 mb-4 flex flex-col gap-3">
+      <h2 id={anchor} className="group label-mono scroll-mt-24">
+        <a href={`#${anchor}`} className="inline-flex items-center gap-2 outline-none focus-visible:underline">
+          {children}
+          <LinkIcon aria-hidden className="size-3 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100 group-focus-within:opacity-100" />
+        </a>
+      </h2>
       <Separator />
     </div>
   );
@@ -30,7 +51,7 @@ export function Code({ children }: { children: React.ReactNode }) {
 }
 
 export function Cmd({ children }: { children: string }) {
-  return <Command command={children} className="mt-3" />;
+  return <Command command={children} wrap className="mt-3" />;
 }
 
 export function CodeBlock({ code }: { code: string }) {

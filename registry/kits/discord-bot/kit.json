@@ -1,0 +1,96 @@
+{
+  "$schema": "../../kit.schema.json",
+  "version": "1.0.0",
+  "author": "Marlon Chaviano",
+  "name": "discord-bot",
+  "title": "Discord bot",
+  "category": "extension",
+  "language": "typescript",
+  "description": "A Discord bot with discord.js and TypeScript: slash commands with their registration, events and environment variables ready to go.",
+  "tags": [
+    "discord",
+    "bot",
+    "discord.js",
+    "typescript"
+  ],
+  "base": {
+    "command": "mkdir {{name}} && cd {{name}} && printf '%s\\n' '{\"name\": \"{{name}}\", \"version\": \"0.1.0\", \"private\": true, \"type\": \"module\"}' > package.json"
+  },
+  "packageManagers": [
+    "npm",
+    "pnpm",
+    "bun"
+  ],
+  "dependencies": [
+    "discord.js"
+  ],
+  "devDependencies": [
+    "typescript",
+    "@types/node",
+    "tsx"
+  ],
+  "env": {
+    "DISCORD_TOKEN": "",
+    "DISCORD_CLIENT_ID": ""
+  },
+  "writeFiles": [
+    {
+      "path": "package.json",
+      "content": "{\n  \"scripts\": {\n    \"build\": \"tsc\",\n    \"dev\": \"tsx watch --env-file=.env src/index.ts\",\n    \"start\": \"node --env-file=.env dist/index.js\",\n    \"deploy-commands\": \"tsx --env-file=.env src/deploy-commands.ts\"\n  }\n}",
+      "mode": "json-merge"
+    },
+    {
+      "path": "tsconfig.json",
+      "content": "{\n  \"compilerOptions\": {\n    \"target\": \"ES2022\",\n    \"module\": \"NodeNext\",\n    \"moduleResolution\": \"NodeNext\",\n    \"outDir\": \"dist\",\n    \"rootDir\": \"src\",\n    \"strict\": true,\n    \"esModuleInterop\": true,\n    \"skipLibCheck\": true,\n    \"declaration\": false,\n    \"types\": [\n      \"node\"\n    ]\n  },\n  \"include\": [\n    \"src\"\n  ],\n  \"exclude\": [\n    \"src/**/*.test.ts\"\n  ]\n}\n"
+    },
+    {
+      "path": "src/commands.ts",
+      "content": "import { type ChatInputCommandInteraction, SlashCommandBuilder } from \"discord.js\";\n\nexport interface Command {\n  data: SlashCommandBuilder;\n  execute: (interaction: ChatInputCommandInteraction) => Promise<void>;\n}\n\n/** Every slash command, one entry each. Run `npm run deploy-commands` after adding one. */\nexport const commands: Command[] = [\n  {\n    data: new SlashCommandBuilder().setName(\"ping\").setDescription(\"Comprueba que el bot responde\"),\n    async execute(interaction) {\n      await interaction.reply(`Pong (${interaction.client.ws.ping} ms)`);\n    },\n  },\n];\n"
+    },
+    {
+      "path": "src/index.ts",
+      "content": "import { Client, Events, GatewayIntentBits } from \"discord.js\";\n\nimport { commands } from \"./commands.js\";\n\nconst client = new Client({ intents: [GatewayIntentBits.Guilds] });\nconst byName = new Map(commands.map((c) => [c.data.name, c]));\n\nclient.once(Events.ClientReady, (c) => console.log(`Conectado como ${c.user.tag}`));\n\nclient.on(Events.InteractionCreate, async (interaction) => {\n  if (!interaction.isChatInputCommand()) return;\n  const command = byName.get(interaction.commandName);\n  if (!command) return;\n  try {\n    await command.execute(interaction);\n  } catch (error) {\n    console.error(error);\n    const reply = { content: \"Something went wrong running the command.\", ephemeral: true };\n    if (interaction.replied || interaction.deferred) await interaction.followUp(reply);\n    else await interaction.reply(reply);\n  }\n});\n\nclient.login(process.env.DISCORD_TOKEN);\n"
+    },
+    {
+      "path": "src/deploy-commands.ts",
+      "content": "import { REST, Routes } from \"discord.js\";\n\nimport { commands } from \"./commands.js\";\n\nconst token = process.env.DISCORD_TOKEN!;\nconst clientId = process.env.DISCORD_CLIENT_ID!;\n\n// Registers the slash commands globally (they can take a few minutes to show up).\nawait new REST().setToken(token).put(Routes.applicationCommands(clientId), { body: commands.map((c) => c.data.toJSON()) });\nconsole.log(`${commands.length} comandos registrados`);\n"
+    },
+    {
+      "path": ".gitignore",
+      "content": "node_modules\ndist\n.env\n"
+    }
+  ],
+  "libraries": {
+    "framework": "nodejs",
+    "testing": [],
+    "quality": [],
+    "ci": [],
+    "observability": [],
+    "workflow": [
+      "essentials"
+    ]
+  },
+  "verify": {
+    "command": "{{pm}} run build && npm run --if-present test",
+    "matrix": [
+      {
+        "testing": [
+          "vitest-node"
+        ],
+        "quality": [
+          "biome"
+        ],
+        "ci": [
+          "github-actions"
+        ],
+        "observability": [
+          "sentry-node"
+        ]
+      }
+    ]
+  },
+  "setupTasks": [
+    "Discord: create the application at discord.com/developers, copy the bot token into `DISCORD_TOKEN` and the Application ID into `DISCORD_CLIENT_ID`; then `npm run deploy-commands`."
+  ],
+  "instructions": "## How to work here\n\n- Each slash command is an entry in `src/commands.ts` (`data` with `SlashCommandBuilder` and `execute`). After adding or changing one: `npm run deploy-commands`.\n- Request only the *intents* you need in `src/index.ts`; privileged ones (messages, members) must be enabled in the portal.\n- Respond to every interaction within 3 seconds or use `deferReply()`.\n- Develop with `npm run dev`. Before finishing: `npm run build`."
+}

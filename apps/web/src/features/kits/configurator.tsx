@@ -2,39 +2,44 @@
 
 import {
   AGENTS,
-  BRAND,
   buildInitCommand,
   defaultSelections,
   LIBRARY_OPTION_IDS,
   pruneSelections,
   requirementsMet,
+  requirementText,
   resolve,
+  selectionsFrom,
   type Choice,
   type Kit,
   type Selections,
 } from "@kits/schema";
-import { PlusIcon, SearchIcon, SparklesIcon, XIcon } from "lucide-react";
-import Link from "next/link";
+import { BanIcon, PackageIcon, PaletteIcon, PlusIcon, SearchIcon, SparklesIcon, XIcon, type LucideIcon } from "lucide-react";
 import { toast } from "sonner";
 import { useEffect, useRef, useState } from "react";
 
 import { Command } from "@/components/shared/command";
-import { TechIcon } from "@/components/shared/tech-icon";
-import { CopyButton } from "@/components/shared/copy-button";
+import { newProjectPrompt } from "@/lib/agent-prompts";
+import { TechIcon, TechLogo } from "@/components/shared/tech-icon";
+import { PromptPreview } from "@/components/shared/prompt-preview";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Field, FieldDescription, FieldLabel } from "@/components/ui/field";
+import { Field, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import { Separator } from "@/components/ui/separator";
+import { Switch } from "@/components/ui/switch";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import type { SkillAudit } from "@/lib/audits";
 import { formatCount } from "@/lib/format";
+import { SKILL_BLURBS } from "@/lib/skill-blurbs";
 import type { SkillResult } from "@/app/api/v1/skills/route";
 
+import { BrandPicker } from "./brand-picker";
 import { PlanPreview } from "./plan-preview";
 import { AuditBadge } from "./audit-badge";
 
@@ -62,6 +67,7 @@ export function Configurator({
   const [brand, setBrand] = useState("");
   // When the install command scrolls out of view, a bar at the bottom keeps it one click away.
   const installRef = useRef<HTMLElement>(null);
+  const asideRef = useStickyColumn();
   const [installVisible, setInstallVisible] = useState(true);
   useEffect(() => {
     const el = installRef.current;
@@ -81,24 +87,22 @@ export function Configurator({
   // Changing one option can invalidate others (Vue drops React libraries, HeroUI drops shadcn add-ons).
   const update = (patch: Partial<Selections>) => setSel((s) => pruneSelections(kit, { ...s, ...patch }));
 
-  const workflow = kit.options.find((o) => o.id === LIBRARY_OPTION_IDS.workflow);
-  const stackOptions = kit.options.filter((o) => o !== workflow);
+  // Curated skill packs get their own cards; their skills aren't repeated in the list below.
+  const packs = kit.options.filter((o) => o.id === LIBRARY_OPTION_IDS.design || o.id === LIBRARY_OPTION_IDS.workflow);
+  const stackOptions = kit.options.filter((o) => !packs.includes(o));
+  const packSkills = new Set(packs.flatMap((o) => o.choices.flatMap((c) => c.skills)));
+  const toggleSkill = (ref: string, on: boolean) =>
+    update({ removeSkills: on ? sel.removeSkills.filter((s) => s !== ref) : [...sel.removeSkills, ref] });
   const projectName = /^[\w.-]+$/.test(name) ? name : kit.name;
   const counts = [
-    [resolved.dependencies.length + resolved.devDependencies.length, "dependencias"],
+    [resolved.dependencies.length + resolved.devDependencies.length, "dependencies"],
     [resolved.skills.length, "skills"],
     [Object.keys(resolved.mcp).length, "MCP"],
   ] as const;
 
   const renderOption = (option: Kit["options"][number]) => (
     <div key={option.id} className="grid gap-3 border-b py-5 last:border-b-0 sm:grid-cols-[180px_minmax(0,1fr)] sm:gap-6">
-      <div className="flex flex-col gap-1">
-        <p className="text-sm font-medium">
-          {option.label}
-          {option.type === "multi" && <span className="ml-1.5 font-normal text-muted-foreground">· varios</span>}
-        </p>
-        {option.description && <p className="text-xs text-pretty text-muted-foreground">{option.description}</p>}
-      </div>
+      <p className="pt-1.5 text-sm font-medium">{option.label}</p>
       <ToggleGroup
         variant="outline"
         size="sm"
@@ -108,24 +112,40 @@ export function Configurator({
         onValueChange={(value: string[]) => {
           // A single-choice option can't be emptied by clicking the active item.
           if (option.type === "select" && !value.length) return;
-          const added = value.filter((id) => !(sel.options[option.id] ?? []).includes(id));
-          const { options, pulled } = withRequirements(kit, { ...sel.options, [option.id]: value }, option.id, added);
-          if (pulled.length) toast.info(`Añadido también: ${pulled.join(", ")}`);
-          update({ options });
+          // Picking Better Auth selects Drizzle, picking Kokonut UI selects shadcn/ui (instead of a disabled button).
+          try {
+            const { selections, added } = selectionsFrom(kit, { base: sel, options: { [option.id]: value } }, { requirements: "autofill" });
+            if (added.length) toast.info(`Also added: ${added.map((a) => a.label).join(", ")}`);
+            update({ options: selections.options });
+          } catch (error) {
+            toast.error((error as Error).message);
+          }
         }}
-        className="flex-wrap content-start justify-start"
+        className="w-full flex-wrap content-start justify-start sm:justify-end"
       >
         {option.choices.map((choice) => {
           // Library requirements are added on click; only framework ones block the choice.
           const allowed = requirementsMet(choice, sel) || autoSatisfiable(choice);
+          // "None" is an icon: the empty choice reads at a glance, and it's the same in every language.
+          if (choice.id === "none") {
+            return (
+              <Tooltip key={choice.id}>
+                <TooltipTrigger render={<ToggleGroupItem value={choice.id} aria-label={`No ${lowerFirst(option.label)}`} className="size-7 p-0" />}>
+                  <BanIcon className="size-3.5" />
+                </TooltipTrigger>
+                <TooltipContent>No {lowerFirst(option.label)}</TooltipContent>
+              </Tooltip>
+            );
+          }
           return (
             <ToggleGroupItem
               key={choice.id}
               value={choice.id}
               disabled={!allowed}
               title={allowed ? choice.description : requirementText(kit, choice)}
-              className="font-mono text-xs"
+              className="gap-1.5 font-mono text-xs"
             >
+              <TechLogo id={choice.id} label="" className="size-3.5" />
               {choice.label}
             </ToggleGroupItem>
           );
@@ -140,7 +160,7 @@ export function Configurator({
         {reasons.length > 0 && (
           <Alert>
             <SparklesIcon />
-            <AlertTitle>Recomendado para tu proyecto</AlertTitle>
+            <AlertTitle>Recommended for your project</AlertTitle>
             <AlertDescription>
               <ul className="list-disc pl-4">
                 {reasons.map((r) => (
@@ -151,22 +171,16 @@ export function Configurator({
           </Alert>
         )}
 
-        <Panel title="Proyecto" description="Cómo se llama, para qué agentes y con qué gestor de paquetes.">
+        <Panel title="Project" description="Its name, which agents, and which package manager.">
           <div className="grid gap-4 py-5 sm:grid-cols-2">
             <Field>
-              <FieldLabel htmlFor="project-name">Nombre</FieldLabel>
+              <FieldLabel htmlFor="project-name">Name</FieldLabel>
               <Input id="project-name" value={name} onChange={(e) => setName(e.target.value)} placeholder={kit.name} className="font-mono" />
             </Field>
-            <Field>
-              <FieldLabel htmlFor="brand">Perfil de marca</FieldLabel>
-              <Input id="brand" value={brand} onChange={(e) => setBrand(e.target.value)} placeholder="cliente/web (opcional)" className="font-mono" />
-              <FieldDescription>
-                <Link href="/cuenta/marcas" className="underline underline-offset-4">Crear o detectar un perfil</Link>
-              </FieldDescription>
-            </Field>
+            <BrandPicker value={brand} onChange={setBrand} />
           </div>
           <div className="grid gap-3 border-t py-5 sm:grid-cols-[180px_minmax(0,1fr)] sm:gap-6">
-            <p className="text-sm font-medium">Agentes</p>
+            <p className="pt-1.5 text-sm font-medium">Agents</p>
             <ToggleGroup
               variant="outline"
               size="sm"
@@ -174,11 +188,11 @@ export function Configurator({
               multiple
               value={sel.agents}
               onValueChange={(agents: string[]) => agents.length && update({ agents })}
-              className="flex-wrap justify-start"
+              className="w-full flex-wrap justify-start sm:justify-end"
             >
               {AGENTS.map((a) => (
                 <ToggleGroupItem key={a.id} value={a.id} className="gap-1.5 font-mono text-xs">
-                  <TechIcon id={a.id} label={a.label} className="size-3.5" />
+                  <TechIcon id={a.id} label="" className="size-3.5" />
                   {a.label}
                 </ToggleGroupItem>
               ))}
@@ -186,17 +200,18 @@ export function Configurator({
           </div>
           {kit.packageManagers.length > 1 && (
             <div className="grid gap-3 border-t py-5 sm:grid-cols-[180px_minmax(0,1fr)] sm:gap-6">
-              <p className="text-sm font-medium">Gestor de paquetes</p>
+              <p className="pt-1.5 text-sm font-medium">Package manager</p>
               <ToggleGroup
                 variant="outline"
                 size="sm"
                 spacing={2}
                 value={[sel.pm]}
                 onValueChange={(value: string[]) => value[0] && update({ pm: value[0] as Selections["pm"] })}
-                className="justify-start"
+                className="w-full flex-wrap justify-start sm:justify-end"
               >
                 {kit.packageManagers.map((pm) => (
-                  <ToggleGroupItem key={pm} value={pm} className="font-mono text-xs">
+                  <ToggleGroupItem key={pm} value={pm} className="gap-1.5 font-mono text-xs">
+                    <TechIcon id={pm} label="" className="size-3.5" />
                     {pm}
                   </ToggleGroupItem>
                 ))}
@@ -206,20 +221,30 @@ export function Configurator({
         </Panel>
 
         {stackOptions.length > 0 && (
-          <Panel title="Stack" description="Elige las piezas; tu agente recibe la regla de usar solo estas.">
+          <Panel title="Stack" description="Pick the pieces; your agent gets the rule to use only these.">
             {stackOptions.map(renderOption)}
           </Panel>
         )}
 
-        <Panel title="Skills" description={`${resolved.skills.length} se instalarán para ${sel.agents.length === 1 ? "tu agente" : `${sel.agents.length} agentes`}.`}>
-          {workflow && renderOption(workflow)}
+        <Panel title="Skills" description={`${resolved.skills.length} will be installed for ${sel.agents.length === 1 ? "your agent" : `${sel.agents.length} agents`}.`}>
+          {/* First: adding a skill is the most common change here, and the list below can be long. */}
+          <div className="pt-5 pb-2">
+            <SkillSearch exclude={[...offered, ...sel.addSkills]} onAdd={(ref) => update({ addSkills: [...sel.addSkills, ref] })} />
+          </div>
           <div className="flex flex-col py-3">
-            {offered.map((ref) => (
+            {/* Column titles, so each row only needs the level ("Low", "Medium"…), not "… risk" again and again. */}
+            {offered.some((ref) => !packSkills.has(ref)) && (
+              <div className="flex items-center justify-between border-b pb-2 label-mono text-muted-foreground">
+                <span>Skill</span>
+                {offered.some((ref) => !packSkills.has(ref) && audits[ref]) && <span>Risk</span>}
+              </div>
+            )}
+            {offered.filter((ref) => !packSkills.has(ref)).map((ref) => (
               <Field key={ref} orientation="horizontal" className="border-b py-2.5 last:border-b-0">
                 <Checkbox
                   id={`skill-${ref}`}
                   checked={!sel.removeSkills.includes(ref)}
-                  onCheckedChange={(on) => update({ removeSkills: on ? sel.removeSkills.filter((s) => s !== ref) : [...sel.removeSkills, ref] })}
+                  onCheckedChange={(on) => toggleSkill(ref, on)}
                 />
                 <FieldLabel htmlFor={`skill-${ref}`} className="min-w-0 font-normal">
                   <SkillName refName={ref} />
@@ -229,66 +254,86 @@ export function Configurator({
             ))}
             {sel.addSkills.map((ref) => (
               <div key={ref} className="flex items-center gap-3 border-b py-2">
-                <Badge variant="secondary" className="font-mono">añadido</Badge>
+                <Badge variant="secondary" className="font-mono">added</Badge>
                 <SkillName refName={ref} />
-                <Button variant="ghost" size="icon-xs" className="ml-auto" aria-label={`Quitar ${ref}`} onClick={() => update({ addSkills: sel.addSkills.filter((s) => s !== ref) })}>
+                <Button variant="ghost" size="icon-xs" className="ml-auto" aria-label={`Remove ${ref}`} onClick={() => update({ addSkills: sel.addSkills.filter((s) => s !== ref) })}>
                   <XIcon />
                 </Button>
               </div>
             ))}
           </div>
-          <div className="pb-5">
-            <SkillSearch exclude={[...offered, ...sel.addSkills]} onAdd={(ref) => update({ addSkills: [...sel.addSkills, ref] })} />
-          </div>
+          {packs.length > 0 && (
+            <div className="flex flex-col gap-3 border-t py-5">
+              {packs.flatMap((option) =>
+                option.choices
+                  .filter((c) => c.id !== "none")
+                  .map((choice) => (
+                    <PackCard
+                      key={choice.id}
+                      choice={choice}
+                      // One pack per category: the category title reads better than the library name.
+                      title={option.choices.filter((c) => c.id !== "none").length === 1 ? option.label : choice.label}
+                      icon={option.id === LIBRARY_OPTION_IDS.design ? PaletteIcon : PackageIcon}
+                      on={(sel.options[option.id] ?? []).includes(choice.id)}
+                      onToggle={(on) => {
+                        const current = sel.options[option.id] ?? [];
+                        update({ options: { ...sel.options, [option.id]: on ? [...current, choice.id] : current.filter((id) => id !== choice.id) } });
+                      }}
+                      isRemoved={(ref) => sel.removeSkills.includes(ref)}
+                      onSkill={toggleSkill}
+                    />
+                  )),
+              )}
+            </div>
+          )}
         </Panel>
 
-        <Panel title="Qué se ejecutará" description="Los pasos exactos del CLI con estas opciones, en orden. Nada se ejecuta sin que lo confirmes.">
-          <div className="py-5">
-            <PlanPreview kit={kit} sel={effective} name={projectName} />
-          </div>
+        <Panel title="What will run" description="The CLI's exact steps with these options, in order. It shows them again and waits for your yes before running anything.">
+          <PlanPreview kit={kit} sel={effective} name={projectName} />
         </Panel>
       </div>
 
-      <aside className="flex min-w-0 flex-col gap-4 lg:sticky lg:top-20 lg:max-h-[calc(100dvh-6rem)] lg:self-start lg:overflow-y-auto">
+      {/* Sticky as a whole, never scrolling on its own (see useStickyColumn). */}
+      <aside ref={asideRef} className="flex min-w-0 flex-col gap-4 lg:sticky lg:top-20 lg:self-start">
         <section ref={installRef} className="flex flex-col gap-4 rounded-xl border bg-card p-4">
           <div className="flex flex-col gap-1">
-            <h2 className="font-semibold">Instalar</h2>
+            <h2 className="font-semibold">Install</h2>
             <p className="font-mono text-xs text-muted-foreground tabular-nums">
               {counts.filter(([n]) => n > 0).map(([n, label]) => `${n} ${label}`).join(" · ")}
             </p>
           </div>
           <Tabs defaultValue="command" className="gap-3">
             <TabsList variant="line" className="font-mono">
-              <TabsTrigger value="command" className="text-xs">Comando</TabsTrigger>
-              <TabsTrigger value="prompt" className="text-xs">Prompt para tu agente</TabsTrigger>
+              <TabsTrigger value="command" className="text-xs">Command</TabsTrigger>
+              <TabsTrigger value="prompt" className="text-xs">Prompt</TabsTrigger>
             </TabsList>
             <TabsContent value="command" className="flex flex-col gap-2">
               <Command command={command} wrap />
               <p className="text-xs text-muted-foreground">
-                Añade <code className="font-mono text-foreground">--dry-run</code> para ver el plan sin ejecutar nada.
+                Add <code className="font-mono text-foreground">--dry-run</code> to see the plan without running anything.
               </p>
             </TabsContent>
             <TabsContent value="prompt" className="flex flex-col gap-2">
-              <PromptBlock text={agentPrompt(kit, command)} />
-              <p className="text-xs text-muted-foreground">Pégalo en Claude Code, Cursor o Codex, en una carpeta vacía.</p>
+              <PromptPreview text={newProjectPrompt({ title: kit.title, command })} />
+              <p className="text-xs text-pretty text-muted-foreground">Paste it into your agent in an empty folder: it shows the plan and asks before installing.</p>
             </TabsContent>
           </Tabs>
         </section>
 
         <section className="flex flex-col gap-4 rounded-xl border p-4">
-          <h2 className="font-semibold">Qué incluye</h2>
+          <h2 className="font-semibold">What&apos;s included</h2>
           <dl className="flex flex-col gap-4">
             <Item
-              label="Reglas en AGENTS.md"
+              label="Rules in AGENTS.md"
               values={resolved.chosen
                 .filter((c) => (Object.values(LIBRARY_OPTION_IDS) as string[]).includes(c.optionId))
                 .flatMap((c) => c.choices.filter((choice) => choice.id !== "none").map((choice) => choice.label))}
             />
-            <Item label="Dependencias" values={[...resolved.dependencies, ...resolved.devDependencies]} />
-            <Item label="Servidores MCP" values={Object.keys(resolved.mcp)} />
-            <Item label="Variables de entorno" values={Object.keys(resolved.env)} />
-            <Item label="Archivos" values={[...new Set(resolved.writeFiles.map((f) => f.path))]} />
-            {resolved.setupTasks.length > 0 && <Item label="Primeros pasos" values={[`${resolved.setupTasks.length} tareas para el agente`]} />}
+            <Item label="Dependencies" values={[...resolved.dependencies, ...resolved.devDependencies]} />
+            <Item label="MCP servers" values={Object.keys(resolved.mcp)} />
+            <Item label="Environment variables" values={Object.keys(resolved.env)} />
+            <Item label="Files" values={[...new Set(resolved.writeFiles.map((f) => f.path))]} />
+            {resolved.setupTasks.length > 0 && <Item label="First steps" values={[`${resolved.setupTasks.length} tasks for the agent`]} />}
           </dl>
         </section>
 
@@ -308,6 +353,100 @@ export function Configurator({
   );
 }
 
+/** An icon-only toggle (agents, package managers): the name shows on hover and is read by screen readers. */
+/** Space between the sticky column and the header (5rem) or the window's bottom edge. */
+const STICKY_TOP = 80;
+const STICKY_BOTTOM = 16;
+
+/**
+ * A sticky column with no scrollbar of its own. When it fits in the window it stays at the top;
+ * when it's taller (the prompt tab, a long "What's included"), it scrolls with the page until its
+ * bottom edge reaches the window's and stays there, so every part of it can be reached. It measures
+ * itself again when its content or the window changes size.
+ */
+function useStickyColumn() {
+  const ref = useRef<HTMLElement>(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const place = () => {
+      el.style.top = `${Math.min(STICKY_TOP, window.innerHeight - el.offsetHeight - STICKY_BOTTOM)}px`;
+    };
+    place();
+    const observer = new ResizeObserver(place);
+    observer.observe(el);
+    window.addEventListener("resize", place);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", place);
+    };
+  }, []);
+  return ref;
+}
+
+/** "Database" → "database", but "UI components" keeps its acronym. */
+const lowerFirst = (text: string) => (/^[A-Z]{2}/.test(text) ? text : text.charAt(0).toLowerCase() + text.slice(1));
+
+/**
+ * A curated skill pack: what it is, an on/off switch, and each skill with what
+ * it does (each one can still be left out).
+ */
+function PackCard({
+  choice,
+  title,
+  icon: Icon,
+  on,
+  onToggle,
+  isRemoved,
+  onSkill,
+}: {
+  choice: Choice;
+  title: string;
+  icon: LucideIcon;
+  on: boolean;
+  onToggle: (on: boolean) => void;
+  isRemoved: (ref: string) => boolean;
+  onSkill: (ref: string, on: boolean) => void;
+}) {
+  const kept = choice.skills.filter((ref) => !isRemoved(ref)).length;
+  return (
+    <div data-on={on} className="flex flex-col rounded-lg border transition-colors data-[on=true]:border-foreground/30">
+      <label className="flex cursor-pointer items-start gap-3 p-4">
+        <span className="grid shrink-0 place-items-center self-center">
+          <Icon className="size-6" />
+        </span>
+        <span className="flex min-w-0 flex-1 flex-col gap-1">
+          <span className="flex flex-wrap items-center gap-2">
+            <span className="font-medium">{title}</span>
+            <Badge variant="outline" className="font-mono tabular-nums">
+              {on ? `${kept}/${choice.skills.length}` : choice.skills.length} skills
+            </Badge>
+          </span>
+          {choice.description && <span className="text-sm text-pretty text-muted-foreground">{choice.description}</span>}
+        </span>
+        <Switch checked={on} onCheckedChange={onToggle} aria-label={`Include ${title}`} />
+      </label>
+      {on && (
+        <ul className="grid grid-cols-[minmax(0,1fr)] gap-px overflow-hidden rounded-b-lg border-t bg-border sm:grid-cols-2">
+          {choice.skills.map((ref) => {
+            const name = ref.slice(ref.lastIndexOf("@") + 1);
+            const id = `pack-${choice.id}-${name}`;
+            return (
+              <li key={ref} className="flex items-start gap-2.5 bg-background px-4 py-3">
+                <Checkbox id={id} checked={!isRemoved(ref)} onCheckedChange={(v) => onSkill(ref, v)} className="mt-0.5" />
+                <label htmlFor={id} className="flex min-w-0 cursor-pointer flex-col gap-0.5">
+                  <span className="truncate font-mono text-sm">{name}</span>
+                  <span className="text-xs text-pretty text-muted-foreground">{SKILL_BLURBS[name] ?? ref.slice(0, ref.lastIndexOf("@"))}</span>
+                </label>
+              </li>
+            );
+          })}
+        </ul>
+      )}
+    </div>
+  );
+}
+
 /** A card of the configurator: title, one line of context, then rows. */
 function Panel({ title, description, children }: { title: string; description?: string; children: React.ReactNode }) {
   return (
@@ -321,39 +460,9 @@ function Panel({ title, description, children }: { title: string; description?: 
   );
 }
 
-/** "Requiere shadcn/ui" — names the choices a disabled choice is waiting for. */
+/** "Requires shadcn/ui" — names the choices a disabled choice is waiting for. */
 const LIBRARY_OPTIONS = new Set<string>(Object.values(LIBRARY_OPTION_IDS));
 const autoSatisfiable = (choice: Choice) => Object.keys(choice.requires ?? {}).every((id) => LIBRARY_OPTIONS.has(id));
-
-/**
- * Picking Better Auth selects Drizzle, picking Kokonut UI selects shadcn/ui:
- * library requirements are filled in (first allowed choice) instead of making
- * the user find out why a button is disabled. Returns the labels it added.
- */
-function withRequirements(kit: Kit, options: Selections["options"], optionId: string, added: string[]) {
-  const next = { ...options };
-  const pulled: string[] = [];
-  const option = kit.options.find((o) => o.id === optionId);
-  for (const id of added) {
-    const choice = option?.choices.find((c) => c.id === id);
-    for (const [reqId, allowedIds] of Object.entries(choice?.requires ?? {})) {
-      const target = kit.options.find((o) => o.id === reqId);
-      if (!target || !LIBRARY_OPTIONS.has(reqId) || (next[reqId] ?? []).some((v) => allowedIds.includes(v))) continue;
-      const pick = allowedIds[0]!;
-      next[reqId] = target.type === "select" ? [pick] : [...(next[reqId] ?? []).filter((v) => v !== "none"), pick];
-      pulled.push(target.choices.find((c) => c.id === pick)?.label ?? pick);
-    }
-  }
-  return { options: next, pulled };
-}
-
-function requirementText(kit: Kit, choice: Choice): string {
-  const needs = Object.entries(choice.requires ?? {}).map(([optionId, ids]) => {
-    const option = kit.options.find((o) => o.id === optionId);
-    return ids.map((id) => option?.choices.find((c) => c.id === id)?.label ?? id).join(" o ");
-  });
-  return `Requiere ${needs.join(" y ")}`;
-}
 
 export function SectionTitle({ children }: { children: React.ReactNode }) {
   return (
@@ -374,7 +483,7 @@ function SkillName({ refName }: { refName: string }) {
   );
 }
 
-/** A labelled group of values; long ones show the first few and "+N más". */
+/** A labelled group of values; long ones show the first few and "+N more". */
 function Item({ label, values, max = 6 }: { label: string; values: string[]; max?: number }) {
   const [open, setOpen] = useState(false);
   const shown = open ? values : values.slice(0, max);
@@ -391,7 +500,7 @@ function Item({ label, values, max = 6 }: { label: string; values: string[]; max
             ))}
             {values.length > max && (
               <button type="button" onClick={() => setOpen(!open)} className="font-mono text-xs text-muted-foreground hover:text-foreground">
-                {open ? "ver menos" : `+${values.length - max} más`}
+                {open ? "show less" : `+${values.length - max} more`}
               </button>
             )}
           </>
@@ -436,9 +545,9 @@ function SkillSearch({ exclude, onAdd }: { exclude: string[]; onAdd: (ref: strin
         <InputGroupInput
           value={q}
           onChange={(e) => setQ(e.target.value)}
-          placeholder="Añade cualquier skill de skills.sh…"
+          placeholder="Add any skill from skills.sh…"
           className="font-mono text-sm"
-          aria-label="Buscar skills"
+          aria-label="Search skills"
         />
       </InputGroup>
       {visible.map((r) => (
@@ -460,20 +569,3 @@ function SkillSearch({ exclude, onAdd }: { exclude: string[]; onAdd: (ref: strin
   );
 }
 
-/** What to paste into the agent instead of running the command yourself (like skills.sh's "Prompt"). */
-function agentPrompt(kit: Kit, command: string): string {
-  return `Crea un proyecto nuevo en esta carpeta con ${BRAND.name} (${kit.title}). Ejecuta:
-
-${command} --dry-run
-
-Enséñame el plan y, si te lo confirmo, ejecútalo sin --dry-run y con --yes. Cuando termine, lee el AGENTS.md del proyecto y sigue sus primeros pasos: completa las tareas de configuración que puedas hacer tú y dime cuáles tengo que hacer yo (claves, cuentas).`;
-}
-
-function PromptBlock({ text }: { text: string }) {
-  return (
-    <div className="relative flex items-start gap-2 rounded-lg bg-muted py-1.5 pr-1.5 pl-4 transition-colors hover:bg-muted/70">
-      <p className="flex-1 py-1.5 font-mono text-sm whitespace-pre-wrap [overflow-wrap:anywhere]">{text}</p>
-      <CopyButton text={text} label="Copiar prompt" stretch />
-    </div>
-  );
-}

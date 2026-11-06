@@ -17,7 +17,7 @@ export interface GithubClaims {
 export async function verifyGithubToken(token: string, keys: JWTVerifyGetKey = githubKeys): Promise<GithubClaims> {
   const { payload } = await jwtVerify(token, keys, { issuer: GITHUB_OIDC_ISSUER, audience: VERIFICATION_AUDIENCE });
   if (typeof payload.repository !== "string" || typeof payload.sha !== "string") {
-    throw new Error("El token no incluye repository o sha");
+    throw new Error("The token doesn't include repository or sha");
   }
   return {
     repository: payload.repository,

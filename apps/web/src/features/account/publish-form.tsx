@@ -31,53 +31,53 @@ export function PublishForm({ dev, orgs = [] }: { dev: boolean; orgs?: string[] 
       <FieldGroup>
         {orgs.length > 0 && (
           <Field>
-            <FieldLabel>Dónde</FieldLabel>
+            <FieldLabel>Where</FieldLabel>
             <ToggleGroup variant="outline" size="sm" spacing={1} value={[org]} onValueChange={(v: string[]) => setOrg(v[0] ?? "")} className="flex-wrap">
-              <ToggleGroupItem value="" className="font-mono text-xs">público (tu usuario)</ToggleGroupItem>
+              <ToggleGroupItem value="" className="font-mono text-xs">public (your user)</ToggleGroupItem>
               {orgs.map((o) => (
                 <ToggleGroupItem key={o} value={o} className="font-mono text-xs">{o} (privado)</ToggleGroupItem>
               ))}
             </ToggleGroup>
-            <FieldDescription>En una organización, el kit solo lo ven y lo instalan sus miembros, y el repositorio puede ser privado.</FieldDescription>
+            <FieldDescription>In an organization, only its members see and install the kit, and the repository can be private.</FieldDescription>
           </Field>
         )}
         <Field>
-          <FieldLabel htmlFor="repo">Repositorio de GitHub</FieldLabel>
-          <Input id="repo" value={repo} onChange={(e) => setRepo(e.target.value)} placeholder="tu-usuario/tu-repo" disabled={Boolean(local)} />
-          <FieldDescription>Público, y con permiso de escritura para tu cuenta.</FieldDescription>
+          <FieldLabel htmlFor="repo">GitHub repository</FieldLabel>
+          <Input id="repo" value={repo} onChange={(e) => setRepo(e.target.value)} placeholder="your-user/your-repo" disabled={Boolean(local)} />
+          <FieldDescription>Public, with write access for your account.</FieldDescription>
         </Field>
         <Field>
-          <FieldLabel htmlFor="path">Carpeta del kit.json</FieldLabel>
-          <Input id="path" value={path} onChange={(e) => setPath(e.target.value)} placeholder="kit (vacío = raíz)" disabled={Boolean(local)} />
+          <FieldLabel htmlFor="path">kit.json folder</FieldLabel>
+          <Input id="path" value={path} onChange={(e) => setPath(e.target.value)} placeholder="kit (empty = root)" disabled={Boolean(local)} />
         </Field>
         <Field>
           <FieldLabel htmlFor="ref">Rama, etiqueta o commit</FieldLabel>
           <Input id="ref" value={ref} onChange={(e) => setRef(e.target.value)} disabled={Boolean(local)} />
-          <FieldDescription>Se fija al commit exacto: la versión publicada no cambia aunque el repo siga avanzando.</FieldDescription>
+          <FieldDescription>It&apos;s pinned to the exact commit: the published version doesn&apos;t change as the repo moves on.</FieldDescription>
         </Field>
         {dev && (
           <Field>
-            <FieldLabel htmlFor="local">Carpeta local (solo en desarrollo)</FieldLabel>
-            <Input id="local" value={local} onChange={(e) => setLocal(e.target.value)} placeholder="/ruta/absoluta/al/kit" />
+            <FieldLabel htmlFor="local">Local folder (development only)</FieldLabel>
+            <Input id="local" value={local} onChange={(e) => setLocal(e.target.value)} placeholder="/absolute/path/to/kit" />
           </Field>
         )}
       </FieldGroup>
       <Button type="submit" disabled={pending || (!repo && !local)}>
-        {pending ? "Validando y publicando…" : "Publicar"}
+        {pending ? "Validating and publishing…" : "Publish"}
       </Button>
       {result?.ok === true && (
         <Alert>
-          <AlertTitle>Publicado: {result.data.slug}@{result.data.version}</AlertTitle>
+          <AlertTitle>Published: {result.data.slug}@{result.data.version}</AlertTitle>
           <AlertDescription>
             <Link href={`/kits/${result.data.slug}`} className="underline underline-offset-4">
-              Ver la página del kit
+              View the kit page
             </Link>
           </AlertDescription>
         </Alert>
       )}
       {result?.ok === false && (
         <Alert variant="destructive">
-          <AlertTitle>No se publicó</AlertTitle>
+          <AlertTitle>Not published</AlertTitle>
           <AlertDescription>{result.error}</AlertDescription>
         </Alert>
       )}

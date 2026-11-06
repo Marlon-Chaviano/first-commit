@@ -22,20 +22,20 @@ export function BillingPanel({ subject, plan, canManage, seats = 1 }: { subject:
                 <li key={f}>— {f}</li>
               ))}
             </ul>
-            {PLANS[plan] === p && <p className="label-mono">Plan actual</p>}
+            {PLANS[plan] === p && <p className="label-mono">Current plan</p>}
           </div>
         ))}
       </div>
       {!billingEnabled ? (
-        <p className="text-sm text-muted-foreground">Los pagos todavía no están activados en este servidor.</p>
+        <p className="text-sm text-muted-foreground">Payments aren&apos;t enabled on this server yet.</p>
       ) : !canManage ? (
-        <p className="text-sm text-muted-foreground">Solo {subject.kind === "org" ? "un owner" : "el titular"} puede cambiar el plan.</p>
+        <p className="text-sm text-muted-foreground">Only {subject.kind === "org" ? "an owner" : "the account holder"} can change the plan.</p>
       ) : paid ? (
         <PortalButton target={subject} />
       ) : (
         <div className="flex items-center gap-3">
-          <CheckoutButton target={subject}>Pasar a {target.label}</CheckoutButton>
-          {subject.kind === "org" && <span className="text-sm text-muted-foreground">{seats} {seats === 1 ? "miembro" : "miembros"}: se ajusta al añadir o quitar gente.</span>}
+          <CheckoutButton target={subject}>Upgrade to {target.label}</CheckoutButton>
+          {subject.kind === "org" && <span className="text-sm text-muted-foreground">{seats} {seats === 1 ? "member" : "members"}: adjusts as people are added or removed.</span>}
         </div>
       )}
     </div>

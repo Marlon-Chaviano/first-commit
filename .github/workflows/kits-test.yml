@@ -58,7 +58,53 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm --filter create-first-commit build
+      # Each kit declares its package managers: install only the toolchains it needs.
+      - id: kit
+        run: |
+          pms=$(jq -r '(.packageManagers // ["npm","pnpm","bun"]) | join(" ")' registry/kits/${{ matrix.kit }}/kit.json)
+          echo "pms= $pms " >> "$GITHUB_OUTPUT"
+          first=$(echo $pms | cut -d' ' -f1)
+          # JavaScript kits are tested with pnpm when they support it; the rest with their own manager.
+          if echo " $pms " | grep -q ' pnpm '; then echo "pm=pnpm" >> "$GITHUB_OUTPUT"; else echo "pm=$first" >> "$GITHUB_OUTPUT"; fi
+      - if: contains(steps.kit.outputs.pms, ' bun ')
+        uses: oven-sh/setup-bun@v2
+      - if: contains(steps.kit.outputs.pms, ' maven ') || contains(steps.kit.outputs.pms, ' gradle ')
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - if: contains(steps.kit.outputs.pms, ' gradle ') && runner.os == 'Linux'
+        uses: android-actions/setup-android@v3
+      - if: contains(steps.kit.outputs.pms, ' flutter ')
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+      - if: contains(steps.kit.outputs.pms, ' go ')
+        uses: actions/setup-go@v5
+        with:
+          go-version: stable
+      - if: contains(steps.kit.outputs.pms, ' pip ') || contains(steps.kit.outputs.pms, ' uv ')
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - if: contains(steps.kit.outputs.pms, ' uv ')
+        uses: astral-sh/setup-uv@v6
+      - if: contains(steps.kit.outputs.pms, ' bundler ')
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.4"
+      - if: contains(steps.kit.outputs.pms, ' bundler ')
+        run: gem install rails
+      - if: contains(steps.kit.outputs.pms, ' composer ')
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.4"
+          tools: composer
+      - if: contains(steps.kit.outputs.pms, ' swift ')
+        run: brew install xcodegen
       - name: create-first-commit test
+        # iOS kits need Xcode: they only run on macOS.
+        if: ${{ !(contains(steps.kit.outputs.pms, ' swift ') && runner.os == 'Linux') }}
         env:
           KITS_REGISTRY: ${{ github.workspace }}/registry
           KITS_TELEMETRY: "0"
@@ -66,7 +112,7 @@ jobs:
         run: |
           UPLOAD=""
           if [ "${{ github.event_name }}" != "pull_request" ] && [ -n "$KITS_API_URL" ]; then UPLOAD="--upload"; fi
-          node packages/cli/dist/index.js test registry/kits/${{ matrix.kit }} --pm pnpm --report report.json $UPLOAD
+          node packages/cli/dist/index.js test registry/kits/${{ matrix.kit }} --pm ${{ steps.kit.outputs.pm }} --report report.json $UPLOAD
       - if: always()
         uses: actions/upload-artifact@v4
         with:

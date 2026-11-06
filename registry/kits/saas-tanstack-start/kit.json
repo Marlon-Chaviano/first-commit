@@ -1,0 +1,47 @@
+{
+  "$schema": "../../kit.schema.json",
+  "version": "1.0.0",
+  "author": "Marlon Chaviano",
+  "name": "saas-tanstack-start",
+  "title": "SaaS with TanStack Start",
+  "category": "saas",
+  "language": "typescript",
+  "description": "TanStack Start with the official add-ons: Better Auth, Drizzle, shadcn/ui, TanStack Query and TanStack Form, with typed routes and server functions.",
+  "tags": [
+    "tanstack-start",
+    "react",
+    "better-auth",
+    "drizzle",
+    "shadcn"
+  ],
+  "base": {
+    "command": "npx -y @tanstack/cli@latest create {{name}} --framework React --package-manager {{pm}} --add-ons shadcn,better-auth,drizzle,tanstack-query,form --no-install --no-git --no-examples --toolchain biome --no-intent --yes",
+    "install": "{{pm}} install"
+  },
+  "packageManagers": [
+    "npm",
+    "pnpm",
+    "bun"
+  ],
+  "skills": [
+    "vercel-labs/agent-skills@vercel-react-best-practices",
+    "better-auth/skills@better-auth-best-practices"
+  ],
+  "libraries": {
+    "framework": [
+      "react",
+      "vanilla"
+    ],
+    "animation": [],
+    "design": [
+      "design-pack"
+    ],
+    "workflow": [
+      "essentials"
+    ]
+  },
+  "verify": {
+    "command": "{{pm}} run build"
+  },
+  "instructions": "## How to work here\n\n- Routes are files in `src/routes/`. Anything that touches the database or secrets goes in `createServerFn` and checks the Better Auth session on the server.\n- Server data with TanStack Query and forms with TanStack Form; components from `src/components/ui/` (shadcn/ui).\n- Before finishing: `npm run build`."
+}

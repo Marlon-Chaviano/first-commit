@@ -14,23 +14,23 @@ import { getVerification, verificationTag } from "@/server/verifications/queries
  * signature, so a report can only verify kits of the repository that ran it.
  */
 export async function POST(request: NextRequest) {
-  if (!db) return Response.json({ error: "Verificaciones no disponibles (sin base de datos)" }, { status: 503 });
+  if (!db) return Response.json({ error: "Verifications unavailable (no database)" }, { status: 503 });
 
   const token = request.headers.get("authorization")?.replace(/^Bearer\s+/i, "");
-  if (!token) return Response.json({ error: "Falta el token OIDC de GitHub" }, { status: 401 });
+  if (!token) return Response.json({ error: "GitHub's OIDC token is missing" }, { status: 401 });
   let claims;
   try {
     claims = await verifyGithubToken(token);
   } catch {
-    return Response.json({ error: "Token OIDC no válido" }, { status: 401 });
+    return Response.json({ error: "Invalid OIDC token" }, { status: 401 });
   }
 
   const parsed = verificationReportSchema.safeParse(await request.json().catch(() => null));
-  if (!parsed.success) return Response.json({ error: "Informe no válido" }, { status: 400 });
+  if (!parsed.success) return Response.json({ error: "Invalid report" }, { status: 400 });
   const report = parsed.data;
   const kit = splitKitRef(report.kit).base;
   if (!canVerify(kit, claims.repository)) {
-    return Response.json({ error: `${claims.repository} no puede verificar ${kit}` }, { status: 403 });
+    return Response.json({ error: `${claims.repository} can't verify ${kit}` }, { status: 403 });
   }
 
   await db.insert(kitVerifications).values({
@@ -51,6 +51,6 @@ export async function POST(request: NextRequest) {
 export async function GET(request: NextRequest) {
   const kit = request.nextUrl.searchParams.get("kit");
   const version = request.nextUrl.searchParams.get("version");
-  if (!kit || !version) return Response.json({ error: "Faltan kit y version" }, { status: 400 });
+  if (!kit || !version) return Response.json({ error: "kit and version are required" }, { status: 400 });
   return Response.json(await getVerification(splitKitRef(kit).base, version));
 }

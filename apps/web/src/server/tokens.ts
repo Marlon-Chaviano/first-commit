@@ -30,11 +30,21 @@ export async function revokeApiToken(userId: string, id: string): Promise<void> 
   await db!.delete(apiTokens).where(and(eq(apiTokens.id, id), eq(apiTokens.userId, userId)));
 }
 
+/** `create-first-commit logout`: the token revokes itself, so a leaked credentials file stops working too. */
+export async function revokeTokenByValue(token: string): Promise<boolean> {
+  if (!db || !token.startsWith(PREFIX)) return false;
+  const rows = await db.delete(apiTokens).where(eq(apiTokens.tokenHash, hash(token))).returning({ id: apiTokens.id });
+  return rows.length > 0;
+}
+
 export interface TokenUser {
   id: string;
   handle: string | null;
   role: string | null;
   name: string;
+  /** Only from a browser session (getViewer), never from a CLI token. */
+  email?: string;
+  image?: string | null;
 }
 
 /** The user behind a "kits_…" token, or null. Updates last use. */

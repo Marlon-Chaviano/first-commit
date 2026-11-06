@@ -6,9 +6,7 @@ import {
   initArgs,
   MCP_TARGETS,
   PACKAGE_MANAGER_IDS,
-  pruneSelections,
-  requirementsMet,
-  validateSelections,
+  selectionsFrom,
   type Catalog,
   type Kit,
   type RegistryEntry,
@@ -65,31 +63,8 @@ const fail = (error: unknown) => ({ ...text(`Error: ${error instanceof Error ? e
 
 /** Defaults of the kit + what the agent asked for, checked like the CLI does. */
 export function selectionsFor(kit: Kit, input: { options?: Record<string, string[]>; agents?: string[]; pm?: Selections["pm"] }): Selections {
-  const defaults = defaultSelections(kit);
-  for (const id of Object.keys(input.options ?? {})) {
-    if (!kit.options.some((o) => o.id === id)) throw new Error(`"${kit.name}" no tiene la opción "${id}". Opciones: ${kit.options.map((o) => o.id).join(", ")}`);
-  }
-  const merged: Selections = {
-    ...defaults,
-    options: { ...defaults.options, ...input.options },
-    agents: input.agents?.length ? input.agents : defaults.agents,
-    pm: input.pm ?? defaults.pm,
-  };
-  // pruneSelections would silently drop a choice whose requirements are missing: tell the agent instead.
-  for (const [id, values] of Object.entries(input.options ?? {})) {
-    const option = kit.options.find((o) => o.id === id)!;
-    for (const value of values) {
-      const choice = option.choices.find((c) => c.id === value);
-      if (!choice) throw new Error(`"${value}" no es una opción de ${id}. Valores: ${option.choices.map((c) => c.id).join(", ")}`);
-      if (!requirementsMet(choice, merged)) {
-        const needs = Object.entries(choice.requires ?? {}).map(([k, v]) => `${k}=${v.join("|")}`).join(", ");
-        throw new Error(`"${value}" necesita ${needs}: añádelo a options.`);
-      }
-    }
-  }
-  const sel = pruneSelections(kit, merged);
-  validateSelections(kit, sel);
-  return sel;
+  // Strict: the agent hears about a missing requirement instead of it being dropped silently.
+  return selectionsFrom(kit, input, { requirements: "throw" }).selections;
 }
 
 /** One line per step, without colors: what the agent shows the user before running init. */
@@ -167,7 +142,7 @@ export function createKitsServer({ source, version, local, cwd = "." }: KitsServ
             return words.every((w) => hay.includes(w));
           })
           .map((e) => ({ kit: e.name, title: e.title, description: e.description, category: e.category, official: e.official ?? !e.name.includes("/"), libraries: e.libraries ?? [] }));
-        return text(results.length ? results : "No hay kits que coincidan. Prueba con otra palabra o con recommend_kit.");
+        return text(results.length ? results : "No kits match. Try another word or recommend_kit.");
       } catch (error) {
         return fail(error);
       }
@@ -253,7 +228,7 @@ export function createKitsServer({ source, version, local, cwd = "." }: KitsServ
           const kit = await source.kit(ref);
           const sel = selectionsFor(kit, input);
           const output = await local.init([...initArgs(ref, kit, sel, name), ...(brand ? ["--brand", brand] : []), "--yes"], cwd);
-          return text(`${output}\n\nProyecto creado en ./${name}. Lee ${name}/AGENTS.md: tiene las reglas y los primeros pasos.`);
+          return text(`${output}\n\nProject created in ./${name}. Read ${name}/AGENTS.md: it has the rules and the first steps.`);
         } catch (error) {
           return fail(error);
         }

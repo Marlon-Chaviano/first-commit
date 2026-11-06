@@ -10,7 +10,7 @@ export function Command({ command, wrap = false, className }: { command: string;
         <span className="text-muted-foreground select-none">$ </span>
         {command}
       </code>
-      <CopyButton text={command} label="Copiar comando" stretch />
+      <CopyButton text={command} label="Copy command" stretch />
     </div>
   );
 }

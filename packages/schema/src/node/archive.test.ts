@@ -26,6 +26,6 @@ describe("kit archives", () => {
 
   it.each(["../evil.sh", "/etc/passwd", "a/../../evil"])("rejects %s", (path) => {
     const archive = gzipSync(JSON.stringify({ v: 1, files: { [path]: Buffer.from("x").toString("base64") } }));
-    expect(() => unpackArchive(archive, mkdtempSync(join(tmpdir(), "unpack-")))).toThrow(/no permitida/);
+    expect(() => unpackArchive(archive, mkdtempSync(join(tmpdir(), "unpack-")))).toThrow(/not allowed/);
   });
 });

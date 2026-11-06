@@ -1,9 +1,9 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "ios-swiftui",
-  "version": "1.1.0",
-  "title": "App de iOS con SwiftUI",
-  "description": "App nativa de iOS con SwiftUI y Swift Testing. El proyecto de Xcode se genera desde project.yml con XcodeGen, así tu agente edita YAML en vez del .xcodeproj.",
+  "version": "1.2.0",
+  "title": "iOS app with SwiftUI",
+  "description": "A native iOS app with SwiftUI and Swift Testing. The Xcode project is generated from project.yml with XcodeGen, so your agent edits YAML instead of the .xcodeproj.",
   "category": "mobile",
   "tags": [
     "ios",
@@ -12,7 +12,7 @@
     "xcode",
     "xcodegen"
   ],
-  "author": "kits",
+  "author": "Marlon Chaviano",
   "base": {
     "command": "command -v xcodegen >/dev/null || { echo 'Necesitas XcodeGen: brew install xcodegen' >&2; exit 1; }; mkdir {{name}}"
   },
@@ -38,15 +38,17 @@
   },
   "options": [],
   "setupTasks": [
-    "Xcode: abre el proyecto con `xed .` y elige tu equipo en Signing & Capabilities para probar en un iPhone real."
+    "Xcode: open the project with `xed .` and choose your team under Signing & Capabilities to test on a real iPhone."
   ],
-  "instructions": "## Cómo trabajar aquí\n\n- El proyecto de Xcode se genera: **nunca edites `*.xcodeproj`**. Cambia `project.yml` (targets, ajustes, paquetes de Swift en `packages:`) y ejecuta `xcodegen generate`.\n- Vistas en `Sources/`, una por archivo, con su `#Preview`. Estado con `@State`/`@Observable`, sin bibliotecas de terceros salvo que se pidan.\n- Tests con Swift Testing (`import Testing`, `@Test`, `#expect`) en `Tests/`; el módulo de la app se llama `Main` (`@testable import Main`).\n- Antes de terminar una tarea: `xcodegen generate && xcodebuild test -scheme <nombre> -destination 'platform=iOS Simulator,name=<iPhone>'` (lista los simuladores con `xcrun simctl list devices`).",
+  "instructions": "## How to work here\n\n- The Xcode project is generated: **never edit `*.xcodeproj`**. Change `project.yml` (targets, settings, Swift packages under `packages:`) and run `xcodegen generate`.\n- Views in `Sources/`, one per file, each with its `#Preview`. State with `@State`/`@Observable`, no third-party libraries unless asked for.\n- Tests with Swift Testing (`import Testing`, `@Test`, `#expect`) in `Tests/`; the app module is called `Main` (`@testable import Main`).\n- Before finishing a task: `xcodegen generate && xcodebuild test -scheme <name> -destination 'platform=iOS Simulator,name=<iPhone>'` (list simulators with `xcrun simctl list devices`).",
   "language": "swift",
   "libraries": {
     "framework": "swiftui",
+    "design": [
+      "design-pack-native"
+    ],
     "workflow": [
-      "superpowers",
-      "mattpocock-skills"
+      "essentials"
     ]
   }
 }

@@ -65,6 +65,12 @@ export async function getAdminData() {
   return { reports, kits: allKits };
 }
 
+/** Sign-in providers linked to the account: "github", "google" or "credential" (dev login). */
+export async function linkedProviders(userId: string): Promise<string[]> {
+  if (!db) return [];
+  return (await db.select({ providerId: account.providerId }).from(account).where(eq(account.userId, userId))).map((r) => r.providerId);
+}
+
 /** Has the user linked GitHub? Publishing needs its token to check repo permissions. */
 export async function hasGithubAccount(userId: string): Promise<boolean> {
   if (!db) return false;

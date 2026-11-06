@@ -42,11 +42,11 @@ export function TokensPanel({ tokens, loginCommand }: { tokens: TokenRow[]; logi
         }}
       >
         <Field className="flex-1">
-          <FieldLabel htmlFor="token-name">Nuevo token</FieldLabel>
-          <Input id="token-name" value={name} onChange={(e) => setName(e.target.value)} placeholder="Mi portátil, GitHub Actions…" maxLength={60} />
+          <FieldLabel htmlFor="token-name">New token</FieldLabel>
+          <Input id="token-name" value={name} onChange={(e) => setName(e.target.value)} placeholder="My laptop, GitHub Actions…" maxLength={60} />
         </Field>
         <Button type="submit" disabled={pending}>
-          Crear
+          Create
         </Button>
       </form>
       {error && (
@@ -57,7 +57,7 @@ export function TokensPanel({ tokens, loginCommand }: { tokens: TokenRow[]; logi
       {created && (
         <Alert>
           <AlertDescription className="flex flex-col gap-2">
-            <span>Cópialo ahora: no se volverá a mostrar. Luego ejecuta:</span>
+            <span>Copy it now: it won&apos;t be shown again. Then run:</span>
             <Command command={`${loginCommand} --token ${created}`} wrap />
           </AlertDescription>
         </Alert>
@@ -66,9 +66,9 @@ export function TokensPanel({ tokens, loginCommand }: { tokens: TokenRow[]; logi
         <Table>
           <TableHeader>
             <TableRow className="hover:bg-transparent">
-              <TableHead className="label-mono text-muted-foreground">Nombre</TableHead>
+              <TableHead className="label-mono text-muted-foreground">Name</TableHead>
               <TableHead className="label-mono text-muted-foreground">Token</TableHead>
-              <TableHead className="label-mono text-muted-foreground">Último uso</TableHead>
+              <TableHead className="label-mono text-muted-foreground">Last used</TableHead>
               <TableHead />
             </TableRow>
           </TableHeader>
@@ -80,7 +80,7 @@ export function TokensPanel({ tokens, loginCommand }: { tokens: TokenRow[]; logi
                 <TableCell className="font-mono text-xs text-muted-foreground">{t.lastUsedAt?.slice(0, 10) ?? "nunca"}</TableCell>
                 <TableCell className="text-right">
                   <Button variant="ghost" size="sm" disabled={pending} onClick={() => start(async () => void (await revokeTokenAction(t.id)))}>
-                    Revocar
+                    Revoke
                   </Button>
                 </TableCell>
               </TableRow>

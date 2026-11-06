@@ -1,5 +1,6 @@
 import { cliCommand } from "@kits/schema";
 import type { Metadata } from "next";
+import { ArrowLeftIcon, BadgeCheckIcon } from "lucide-react";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { Suspense } from "react";
@@ -10,7 +11,7 @@ import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { BillingPanel } from "@/features/billing/billing-panel";
-import { AddMemberForm, PolicyForm, RemoveMemberButton } from "@/features/orgs/org-forms";
+import { AddMemberForm, DeleteOrgButton, PolicyForm, RemoveMemberButton } from "@/features/orgs/org-forms";
 import { formatCount } from "@/lib/format";
 import { getKitStats } from "@/server/metrics/queries";
 import { getOrg, listMembers, listOrgKits, roleIn } from "@/server/orgs";
@@ -18,7 +19,7 @@ import { PLANS, planOf } from "@/server/plans";
 import { getViewer } from "@/server/session";
 import { billingEnabled } from "@/server/stripe";
 
-export const metadata: Metadata = { title: "Organización", robots: { index: false } };
+export const metadata: Metadata = { title: "Organization", robots: { index: false } };
 
 export default function OrgPage({ params }: PageProps<"/orgs/[slug]">) {
   return (
@@ -32,7 +33,7 @@ export default function OrgPage({ params }: PageProps<"/orgs/[slug]">) {
 
 async function Org({ slug: slugPromise }: { slug: Promise<string> }) {
   const viewer = await getViewer();
-  if (!viewer) redirect("/entrar");
+  if (!viewer) redirect("/login?next=/account/orgs");
   const org = await getOrg(await slugPromise);
   // Non-members get the same 404 as a missing org.
   const role = org ? await roleIn(org.id, viewer.id) : null;
@@ -44,11 +45,21 @@ async function Org({ slug: slugPromise }: { slug: Promise<string> }) {
 
   return (
     <>
+      <Link href="/account/orgs" className="-mb-6 flex w-fit items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground">
+        <ArrowLeftIcon className="size-3.5" />
+        Your organizations
+      </Link>
       <header className="flex flex-col gap-1">
-        <p className="label-mono text-muted-foreground">Organización · {role}</p>
+        <p className="label-mono text-muted-foreground">Organization · {role}</p>
         <h1 className="font-mono text-3xl font-semibold">{org.slug}</h1>
         <p className="text-muted-foreground">
           {org.name}
+          {org.verifiedDomain && (
+            <span className="ml-2 inline-flex items-center gap-1 text-sm">
+              <BadgeCheckIcon className="size-3.5 text-foreground" />
+              {org.verifiedDomain}
+            </span>
+          )}
           {billingEnabled && (
             <>
               {" "}· plan <Badge variant="outline">{plan.label}</Badge>
@@ -58,16 +69,16 @@ async function Org({ slug: slugPromise }: { slug: Promise<string> }) {
       </header>
 
       <section className="flex flex-col gap-4">
-        <h2 className="label-mono">Kits privados</h2>
+        <h2 className="label-mono">Private kits</h2>
         <Separator />
         {kits.length ? (
           <Table>
             <TableHeader>
               <TableRow className="hover:bg-transparent">
                 <TableHead className="label-mono text-muted-foreground">Kit</TableHead>
-                <TableHead className="label-mono text-right text-muted-foreground">Instalaciones</TableHead>
-                <TableHead className="label-mono text-right text-muted-foreground">Personas</TableHead>
-                <TableHead className="label-mono text-right text-muted-foreground">Actualizaciones</TableHead>
+                <TableHead className="label-mono text-right text-muted-foreground">Installs</TableHead>
+                <TableHead className="label-mono text-right text-muted-foreground">People</TableHead>
+                <TableHead className="label-mono text-right text-muted-foreground">Updates</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -85,17 +96,17 @@ async function Org({ slug: slugPromise }: { slug: Promise<string> }) {
             </TableBody>
           </Table>
         ) : (
-          <p className="text-sm text-muted-foreground">Aún no hay kits. Publica uno desde la carpeta del kit:</p>
+          <p className="text-sm text-muted-foreground">No kits yet. Publish one from the kit&apos;s folder:</p>
         )}
         <Command command={cliCommand(`publish --org ${org.slug}`)} />
         <p className="text-sm text-muted-foreground">
-          Los miembros lo instalan tras <code className="font-mono">{cliCommand("login")}</code> con{" "}
-          <code className="font-mono">{cliCommand(`${org.slug}/<kit>`)}</code>. Nadie de fuera puede verlo ni descargarlo.
+          Members install it after <code className="font-mono">{cliCommand("login")}</code> with{" "}
+          <code className="font-mono">{cliCommand(`${org.slug}/<kit>`)}</code>. Nobody outside can see or download it.
         </p>
       </section>
 
       <section className="flex flex-col gap-4">
-        <h2 className="label-mono">Miembros ({members.length})</h2>
+        <h2 className="label-mono">Members ({members.length})</h2>
         <Separator />
         <Table>
           <TableBody>
@@ -118,10 +129,10 @@ async function Org({ slug: slugPromise }: { slug: Promise<string> }) {
       </section>
 
       <section className="flex flex-col gap-4">
-        <h2 className="label-mono">Política de bibliotecas</h2>
+        <h2 className="label-mono">Library policy</h2>
         <Separator />
         <PolicyForm org={org.slug} required={org.policy.required} forbidden={org.policy.forbidden} editable={admin} />
-        <p className="text-sm text-muted-foreground">En CI, con un token de un miembro:</p>
+        <p className="text-sm text-muted-foreground">In CI, with a member&apos;s token:</p>
         <Command command={`KITS_TOKEN=\${{ secrets.KITS_TOKEN }} ${cliCommand("doctor")}`} />
       </section>
 
@@ -130,6 +141,13 @@ async function Org({ slug: slugPromise }: { slug: Promise<string> }) {
           <h2 className="label-mono">Plan</h2>
           <Separator />
           <BillingPanel subject={{ kind: "org", slug: org.slug }} plan={planOf(org.plan)} canManage={role === "owner"} seats={members.length} />
+        </section>
+      )}
+
+      {role === "owner" && (
+        <section className="flex flex-col gap-4">
+          <h2 className="label-mono">Danger zone</h2>
+          <DeleteOrgButton org={org.slug} />
         </section>
       )}
     </>

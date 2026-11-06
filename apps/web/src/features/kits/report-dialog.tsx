@@ -46,7 +46,7 @@ export function ReportDialog({ kit }: { kit: string }) {
         headers: { "content-type": "application/json" },
         body: JSON.stringify(parsed.data),
       });
-      if (!res.ok) throw new Error(((await res.json().catch(() => null)) as { error?: string } | null)?.error ?? "No se pudo enviar");
+      if (!res.ok) throw new Error(((await res.json().catch(() => null)) as { error?: string } | null)?.error ?? "Couldn't send it");
       setStatus({ kind: "sent" });
     } catch (error) {
       setStatus({ kind: "error", message: (error as Error).message });
@@ -55,27 +55,27 @@ export function ReportDialog({ kit }: { kit: string }) {
 
   return (
     <Dialog onOpenChange={(open) => open || (status.kind === "sent" && setStatus({ kind: "idle" }))}>
-      <DialogTrigger render={<Button variant="ghost" size="sm" className="-ml-2 text-muted-foreground" />}>
+      <DialogTrigger render={<Button variant="destructive" size="sm" className="w-full" />}>
         <FlagIcon data-icon="inline-start" />
-        Denunciar este kit
+        Report this kit
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Denunciar {kit}</DialogTitle>
-          <DialogDescription>Lo revisamos a mano. Si el kit es peligroso, se retira del catálogo.</DialogDescription>
+          <DialogDescription>We review it by hand. If the kit is dangerous, it&apos;s removed from the catalog.</DialogDescription>
         </DialogHeader>
         {status.kind === "sent" ? (
           <>
-            <p className="text-sm">Gracias, hemos recibido la denuncia.</p>
+            <p className="text-sm">Thanks, we got your report.</p>
             <DialogFooter>
-              <DialogClose render={<Button variant="outline" />}>Cerrar</DialogClose>
+              <DialogClose render={<Button variant="outline" />}>Close</DialogClose>
             </DialogFooter>
           </>
         ) : (
           <form onSubmit={submit} className="flex flex-col gap-6">
             <FieldGroup>
               <FieldSet>
-                <FieldLegend variant="label">Motivo</FieldLegend>
+                <FieldLegend variant="label">Reason</FieldLegend>
                 <RadioGroup value={reason} onValueChange={(v) => setReason(v as ReportInput["reason"])}>
                   {Object.entries(REPORT_REASONS).map(([value, label]) => (
                     <Field key={value} orientation="horizontal">
@@ -88,7 +88,7 @@ export function ReportDialog({ kit }: { kit: string }) {
                 </RadioGroup>
               </FieldSet>
               <Field data-invalid={Boolean(errors.details) || undefined}>
-                <FieldLabel htmlFor="report-details">Qué has visto</FieldLabel>
+                <FieldLabel htmlFor="report-details">What did you see</FieldLabel>
                 <Textarea
                   id="report-details"
                   value={details}
@@ -99,7 +99,7 @@ export function ReportDialog({ kit }: { kit: string }) {
                 {errors.details && <FieldError>{errors.details}</FieldError>}
               </Field>
               <Field data-invalid={Boolean(errors.contact) || undefined}>
-                <FieldLabel htmlFor="report-contact">Email de contacto (opcional)</FieldLabel>
+                <FieldLabel htmlFor="report-contact">Contact email (optional)</FieldLabel>
                 <Input
                   id="report-contact"
                   type="email"
@@ -112,9 +112,9 @@ export function ReportDialog({ kit }: { kit: string }) {
             </FieldGroup>
             {status.kind === "error" && <p className="text-sm text-destructive">{status.message}</p>}
             <DialogFooter>
-              <DialogClose render={<Button variant="outline" type="button" />}>Cancelar</DialogClose>
+              <DialogClose render={<Button variant="outline" type="button" />}>Cancel</DialogClose>
               <Button type="submit" disabled={status.kind === "sending"}>
-                {status.kind === "sending" ? "Enviando…" : "Enviar denuncia"}
+                {status.kind === "sending" ? "Sending…" : "Send report"}
               </Button>
             </DialogFooter>
           </form>

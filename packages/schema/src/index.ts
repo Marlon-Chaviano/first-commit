@@ -1,7 +1,13 @@
+import type { LanguageId } from "./languages";
+import type { KitCategory } from "./schema";
+
 export * from "./brand";
 export * from "./extends";
+export * from "./load";
 export * from "./schema";
 export * from "./resolve";
+export * from "./package-managers";
+export * from "./selections";
 export * from "./categories";
 export * from "./libraries";
 export * from "./agents";
@@ -23,13 +29,13 @@ export interface RegistryEntry {
   extends?: string;
   title: string;
   description: string;
-  category: string;
+  category: KitCategory;
   tags: string[];
   author: string;
   skills: number;
   options: string[];
   /** Main language (LANGUAGES id). */
-  language?: string;
+  language?: LanguageId;
   /** Catalog libraries the kit offers (names), so the ranking can be searched by library. */
   libraries?: string[];
   /** Official registry kit (vs. a published community kit). */

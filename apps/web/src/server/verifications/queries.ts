@@ -43,7 +43,7 @@ export async function getVerification(kit: string, version: string): Promise<Ver
     }));
     return { verified: platforms.length > 0 && platforms.every((p) => p.ok), platforms };
   } catch (error) {
-    console.error("[verifications] no disponible", error);
+    console.error("[verifications] unavailable", error);
     return { verified: false, platforms: [] };
   }
 }

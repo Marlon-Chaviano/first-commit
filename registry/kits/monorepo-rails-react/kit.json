@@ -1,0 +1,47 @@
+{
+  "$schema": "../../kit.schema.json",
+  "version": "1.0.0",
+  "author": "Marlon Chaviano",
+  "name": "monorepo-rails-react",
+  "title": "Rails API + React in one repo",
+  "category": "monorepo",
+  "language": "ruby",
+  "description": "A Rails 8 API and a React + Vite frontend in the same repo: Rails productivity on the backend and a modern SPA in front.",
+  "tags": [
+    "ruby",
+    "rails",
+    "api",
+    "react",
+    "vite",
+    "fullstack"
+  ],
+  "base": {
+    "command": "command -v rails >/dev/null || { echo 'Necesitas Rails: gem install rails' >&2; exit 1; }; mkdir {{name}} && cd {{name}} && rails new backend --api --skip-git --skip-kamal --skip-thruster --quiet && npx -y create-vite@latest frontend --template react-ts --no-interactive",
+    "install": "cd frontend && npm install"
+  },
+  "packageManagers": [
+    "bundler"
+  ],
+  "skills": [
+    "affaan-m/ecc@rails-patterns",
+    "vercel-labs/agent-skills@vercel-react-best-practices"
+  ],
+  "libraries": {
+    "framework": [
+      "react"
+    ],
+    "design": [
+      "design-pack"
+    ],
+    "workflow": [
+      "essentials"
+    ]
+  },
+  "verify": {
+    "command": "cd backend && bin/rails db:prepare && bin/rails test && cd ../frontend && npm run build"
+  },
+  "setupTasks": [
+    "CORS: uncomment `rack-cors` in `backend/Gemfile` and `config/initializers/cors.rb` with the frontend's origin when the web app calls the API from another domain."
+  ],
+  "instructions": "## How to work here\n\n- `backend/` is Rails in API mode (start with `cd backend && bin/rails server`) and `frontend/` is React + Vite (`cd frontend && npm run dev`).\n- Generate API resources with `bin/rails g scaffold <Model> field:type`; they respond with JSON.\n- Before finishing: `bin/rails test` in `backend/` and `npm run build` in `frontend/`.\n- Each app lives in its own folder with its own dependencies; don't mix code from one into another.\n- Whatever backend and frontend share (types, API contracts) is defined in one place and documented.\n"
+}

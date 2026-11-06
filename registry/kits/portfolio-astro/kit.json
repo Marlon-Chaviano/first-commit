@@ -1,0 +1,38 @@
+{
+  "$schema": "../../kit.schema.json",
+  "version": "1.0.0",
+  "author": "Marlon Chaviano",
+  "name": "portfolio-astro",
+  "title": "Portfolio with Astro",
+  "category": "landing",
+  "language": "typescript",
+  "description": "Astro's official portfolio: a personal page, projects in Markdown and a work section, fast and easy to customize.",
+  "tags": [
+    "astro",
+    "portfolio",
+    "personal"
+  ],
+  "base": {
+    "command": "npx create-astro@latest {{name}} --template portfolio --no-install --no-git --skip-houston --yes",
+    "install": "{{pm}} install"
+  },
+  "skills": [
+    "astrolicious/agent-skills@astro"
+  ],
+  "libraries": {
+    "framework": [
+      "astro",
+      "vanilla"
+    ],
+    "design": [
+      "design-pack"
+    ],
+    "workflow": [
+      "essentials"
+    ]
+  },
+  "verify": {
+    "command": "{{pm}} run build"
+  },
+  "instructions": "## How to work here\n\n- Each project is a `.md` file in `src/content/work/`; the home page and other pages are in `src/pages/`.\n- Keep the design consistent by reusing the components in `src/components/`.\n- Before finishing: `npm run build`."
+}

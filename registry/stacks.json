@@ -1,16 +1,203 @@
 [
-  { "slug": "nextjs-supabase-stripe", "kit": "saas-next-supabase", "options": { "payments": ["stripe"] }, "title": "Next.js + Supabase + Stripe", "description": "SaaS con auth y Postgres de Supabase, pagos con Stripe y sus MCP conectados a tu agente." },
-  { "slug": "nextjs-better-auth-drizzle-stripe", "kit": "saas-next-supabase", "options": { "auth": ["better-auth"], "database": ["drizzle-postgres"], "payments": ["stripe"], "email": ["resend"] }, "title": "Next.js + Better Auth + Drizzle + Stripe", "description": "SaaS con autenticación en tu propia base de datos, ORM tipado, pagos y emails transaccionales." },
-  { "slug": "nextjs-clerk-ai-sdk", "kit": "saas-next-supabase", "options": { "auth": ["clerk"], "payments": ["none"], "ai": ["vercel-ai-sdk"] }, "title": "Next.js + Clerk + Vercel AI SDK", "description": "App con IA: login gestionado con Clerk y streaming de Claude con el AI SDK." },
-  { "slug": "nextjs-saas-testing-ci", "kit": "saas-next-supabase", "options": { "testing": ["vitest", "playwright"], "ci": ["github-actions"], "quality": ["biome"] }, "title": "SaaS con Next.js, tests y CI", "description": "Vitest, Playwright, Biome y GitHub Actions configurados desde el primer commit." },
-  { "slug": "nextjs-landing-motion", "kit": "landing-next", "options": { "animation": ["motion"], "component-addons": ["magicui"] }, "title": "Landing con Next.js, Motion y Magic UI", "description": "Landing con shadcn/ui, componentes animados de Magic UI y Motion, lista para Vercel." },
-  { "slug": "nextjs-landing-gsap-posthog", "kit": "landing-next", "options": { "animation": ["gsap"], "observability": ["posthog-nextjs", "vercel-analytics"] }, "title": "Landing con GSAP y PostHog", "description": "Animaciones con GSAP y analítica de producto con PostHog y Vercel Analytics." },
-  { "slug": "expo-nativewind-supabase", "kit": "mobile-expo", "options": { "styling": ["nativewind"], "backend": ["supabase"] }, "title": "Expo + NativeWind + Supabase", "description": "App de iOS y Android con Tailwind en React Native y backend de Supabase con su MCP." },
-  { "slug": "expo-i18n-eas", "kit": "mobile-expo", "options": { "i18n": ["i18next-expo"], "testing": ["jest-expo"], "deploy": ["eas"] }, "title": "Expo con idiomas, tests y EAS", "description": "App de Expo traducida con i18next, tests con Jest y builds en la nube con EAS." },
-  { "slug": "hono-drizzle-postgres", "kit": "api-hono", "options": { "db": ["drizzle-postgres"] }, "title": "Hono + Drizzle + Postgres", "description": "API REST tipada con Hono, validación con Zod y Postgres con Drizzle." },
-  { "slug": "hono-cloudflare-workers", "kit": "api-hono", "options": { "runtime": ["cloudflare-workers"] }, "title": "Hono en Cloudflare Workers", "description": "API en el edge con Hono y Zod, desplegable en Cloudflare Workers." },
-  { "slug": "fastapi-sentry", "kit": "api-fastapi", "options": { "observability": ["sentry-python"], "ci": ["github-actions-python"] }, "title": "FastAPI + Sentry + GitHub Actions", "description": "API en Python con FastAPI, errores en Sentry y pytest en CI." },
-  { "slug": "go-chi-sentry", "kit": "api-go", "options": { "observability": ["sentry-go"], "ci": ["github-actions-go"] }, "title": "Go + chi + Sentry", "description": "API HTTP en Go con chi, Sentry y CI con go vet y go test." },
-  { "slug": "chrome-extension-react", "kit": "chrome-extension", "options": { "framework": ["react"] }, "title": "Extensión de Chrome con React", "description": "Extensión Manifest V3 con WXT y React, con hot reload." },
-  { "slug": "browser-extension-vue-primevue", "kit": "chrome-extension", "options": { "framework": ["vue"], "components": ["primevue"] }, "title": "Extensión con Vue y PrimeVue", "description": "Extensión para Chrome, Firefox y Edge con Vue y componentes de PrimeVue." }
+  {
+    "slug": "nextjs-supabase-stripe",
+    "kit": "saas-next-supabase",
+    "options": {
+      "payments": [
+        "stripe"
+      ]
+    },
+    "title": "Next.js + Supabase + Stripe",
+    "description": "SaaS with Supabase auth and Postgres, Stripe payments and their MCP servers connected to your agent."
+  },
+  {
+    "slug": "nextjs-better-auth-drizzle-stripe",
+    "kit": "saas-next-supabase",
+    "options": {
+      "auth": [
+        "better-auth"
+      ],
+      "database": [
+        "drizzle-postgres"
+      ],
+      "payments": [
+        "stripe"
+      ],
+      "email": [
+        "resend"
+      ]
+    },
+    "title": "Next.js + Better Auth + Drizzle + Stripe",
+    "description": "SaaS with authentication in your own database, a typed ORM, payments and transactional email."
+  },
+  {
+    "slug": "nextjs-clerk-ai-sdk",
+    "kit": "saas-next-supabase",
+    "options": {
+      "auth": [
+        "clerk"
+      ],
+      "payments": [
+        "none"
+      ],
+      "ai": [
+        "vercel-ai-sdk"
+      ]
+    },
+    "title": "Next.js + Clerk + Vercel AI SDK",
+    "description": "AI app: managed login with Clerk and Claude streaming with the AI SDK."
+  },
+  {
+    "slug": "nextjs-saas-testing-ci",
+    "kit": "saas-next-supabase",
+    "options": {
+      "testing": [
+        "vitest",
+        "playwright"
+      ],
+      "ci": [
+        "github-actions"
+      ],
+      "quality": [
+        "biome"
+      ]
+    },
+    "title": "Next.js SaaS with tests and CI",
+    "description": "Vitest, Playwright, Biome and GitHub Actions set up from the first commit."
+  },
+  {
+    "slug": "nextjs-landing-motion",
+    "kit": "landing-next",
+    "options": {
+      "animation": [
+        "motion"
+      ],
+      "component-addons": [
+        "magicui"
+      ]
+    },
+    "title": "Landing page with Next.js, Motion and Magic UI",
+    "description": "Landing page with shadcn/ui, Magic UI's animated components and Motion, ready for Vercel."
+  },
+  {
+    "slug": "nextjs-landing-gsap-posthog",
+    "kit": "landing-next",
+    "options": {
+      "animation": [
+        "gsap"
+      ],
+      "observability": [
+        "posthog-nextjs",
+        "vercel-analytics"
+      ]
+    },
+    "title": "Landing page with GSAP and PostHog",
+    "description": "GSAP animations and product analytics with PostHog and Vercel Analytics."
+  },
+  {
+    "slug": "expo-nativewind-supabase",
+    "kit": "mobile-expo",
+    "options": {
+      "styling": [
+        "nativewind"
+      ],
+      "backend": [
+        "supabase"
+      ]
+    },
+    "title": "Expo + NativeWind + Supabase",
+    "description": "iOS and Android app with Tailwind in React Native and a Supabase backend with its MCP."
+  },
+  {
+    "slug": "expo-i18n-eas",
+    "kit": "mobile-expo",
+    "options": {
+      "i18n": [
+        "i18next-expo"
+      ],
+      "testing": [
+        "jest-expo"
+      ],
+      "deploy": [
+        "eas"
+      ]
+    },
+    "title": "Expo with languages, tests and EAS",
+    "description": "An Expo app translated with i18next, tests with Jest and cloud builds with EAS."
+  },
+  {
+    "slug": "hono-drizzle-postgres",
+    "kit": "api-hono",
+    "options": {
+      "db": [
+        "drizzle-postgres"
+      ]
+    },
+    "title": "Hono + Drizzle + Postgres",
+    "description": "Typed REST API with Hono, Zod validation and Postgres with Drizzle."
+  },
+  {
+    "slug": "hono-cloudflare-workers",
+    "kit": "api-hono",
+    "options": {
+      "runtime": [
+        "cloudflare-workers"
+      ]
+    },
+    "title": "Hono on Cloudflare Workers",
+    "description": "Edge API with Hono and Zod, deployable on Cloudflare Workers."
+  },
+  {
+    "slug": "fastapi-sentry",
+    "kit": "api-fastapi",
+    "options": {
+      "observability": [
+        "sentry-python"
+      ],
+      "ci": [
+        "github-actions-python"
+      ]
+    },
+    "title": "FastAPI + Sentry + GitHub Actions",
+    "description": "Python API with FastAPI, errors in Sentry and pytest in CI."
+  },
+  {
+    "slug": "go-chi-sentry",
+    "kit": "api-go",
+    "options": {
+      "observability": [
+        "sentry-go"
+      ],
+      "ci": [
+        "github-actions-go"
+      ]
+    },
+    "title": "Go + chi + Sentry",
+    "description": "HTTP API in Go with chi, Sentry and CI with go vet and go test."
+  },
+  {
+    "slug": "chrome-extension-react",
+    "kit": "chrome-extension",
+    "options": {
+      "framework": [
+        "react"
+      ]
+    },
+    "title": "Chrome extension with React",
+    "description": "Manifest V3 extension with WXT and React, with hot reload."
+  },
+  {
+    "slug": "browser-extension-vue-primevue",
+    "kit": "chrome-extension",
+    "options": {
+      "framework": [
+        "vue"
+      ],
+      "components": [
+        "primevue"
+      ]
+    },
+    "title": "Extension with Vue and PrimeVue",
+    "description": "An extension for Chrome, Firefox and Edge with Vue and PrimeVue components."
+  }
 ]

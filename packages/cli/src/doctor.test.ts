@@ -43,9 +43,9 @@ describe("doctor", () => {
     });
     const findings = await diagnose(dir, lock, false);
     const by = (check: string) => findings.filter((f) => f.check === check).map((f) => f.message);
-    expect(by("entorno")).toEqual(["Variables vacías: SECRET."]);
-    expect(by("skills")).toEqual(["El skill frontend-design no está instalado para cursor."]);
-    expect(by("archivos")).toEqual(["Archivos del kit que ya no existen: src/gone.ts."]);
+    expect(by("env")).toEqual(["Empty variables: SECRET."]);
+    expect(by("skills")).toEqual(["The frontend-design skill isn't installed for cursor."]);
+    expect(by("files")).toEqual(["Kit files that no longer exist: src/gone.ts."]);
     expect(findings.find((f) => f.check === "skills")!.level).toBe("error");
   });
 

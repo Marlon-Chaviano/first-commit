@@ -1,7 +1,8 @@
 import { z } from "zod";
 
-import { defaultSelections, pruneSelections, validateSelections, type Selections } from "./resolve";
+import type { Selections } from "./resolve";
 import type { Kit } from "./schema";
+import { selectionsFrom } from "./selections";
 
 /** What the recommender returns: a kit, the options to change and why. */
 export const recommendationSchema = z.object({
@@ -26,11 +27,12 @@ const normalize = (text: string) =>
 
 /** Words that point to a kit category, in Spanish and English. */
 const CATEGORY_HINTS: Record<string, RegExp> = {
-  mobile: /\b(movil|mobile|ios|android|app nativa|react native|expo|celular|telefono)\b/,
-  landing: /\b(landing|pagina de aterrizaje|web corporativa|portfolio|portafolio|marketing|lanzamiento|sitio web|website|una web|pagina web)\b/,
-  saas: /\b(saas|suscripcion|subscription|dashboard|panel|usuarios|clientes|reservas|booking|plataforma|marketplace|tienda|pagos)\b/,
-  api: /\b(api|backend|rest|microservicio|servicio|endpoint|webhook)\b/,
-  extension: /\b(extension|chrome|navegador|browser|firefox|addon)\b/,
+  mobile: /\b(movil|mobile|ios|android|app nativa|react native|expo|celular|telefono|phone|smartphone|mobile app)\b/,
+  landing: /\b(landing|pagina de aterrizaje|web corporativa|portfolio|portafolio|marketing|lanzamiento|sitio web|website|una web|pagina web|landing page|homepage|home page|marketing site|launch|product site)\b/,
+  saas: /\b(saas|suscripcion|subscription|dashboard|panel|usuarios|clientes|reservas|booking|plataforma|marketplace|tienda|pagos|users|customers|bookings|appointments|platform|store|shop|payments|billing|accounts)\b/,
+  api: /\b(api|backend|rest|microservicio|servicio|endpoint|webhook|server|service|microservice)\b/,
+  extension: /\b(extension|chrome|navegador|browser|firefox|addon|plugin|bot|mcp|extension|plugin|add-on)\b/,
+  monorepo: /\b(monorepo|monorrepo|turborepo|varias apps|web y movil|movil y web|several apps|web and mobile|mobile and web)\b/,
 };
 
 /** Words that point to a catalog library or a kit choice (by choice id). */
@@ -39,49 +41,81 @@ const CHOICE_HINTS: Record<string, RegExp> = {
   "api-fastapi": /\b(python|fastapi|django|flask)\b/,
   "api-go": /\b(go|golang)\b/,
   // Native iOS only when asked for; "iOS and Android" means a cross-platform app.
-  "ios-swiftui": /\b(swift|swiftui|xcode|solo ios|solo para ios|iphone nativa)\b/,
-  "mobile-expo": /\b(android|expo|react native|multiplataforma|ios y android|android y ios)\b/,
+  "ios-swiftui": /\b(swift|swiftui|xcode|solo ios|solo para ios|iphone nativa|ios only|native iphone)\b/,
+  "mobile-expo": /\b(android|expo|react native|multiplataforma|ios y android|android y ios|cross-platform|ios and android|android and ios)\b/,
+  // Kits for a specific tool or framework: only when it's named.
+  "monorepo-turbo": /\b(monorepo|monorrepo|turborepo|web y movil|movil y web|web and mobile|mobile and web)\b/,
+  "mcp-server-ts": /\b(mcp|servidor mcp|mcp server)\b/,
+  "mcp-server-python": /\b(mcp en python|servidor mcp en python)\b/,
+  "discord-bot": /\bdiscord\b/,
+  "slack-app": /\bslack\b/,
+  "vscode-extension": /\b(vs ?code|visual studio code|cursor extension|extension de cursor)\b/,
+  "figma-plugin": /\bfigma\b/,
+  "raycast-extension": /\braycast\b/,
+  "obsidian-plugin": /\bobsidian\b/,
+  "github-action": /\b(github action|accion de github)\b/,
+  "docs-starlight": /\b(documentacion|docs|starlight|documentation|docs site)\b/,
+  "docs-fumadocs": /\bfumadocs\b/,
+  "docs-vitepress": /\bvitepress\b/,
+  "blog-astro": /\b(blog|articulos|posts|blog|articles|posts)\b/,
+  "portfolio-astro": /\b(portfolio|portafolio|personal|portfolio|personal site)\b/,
+  "waitlist-next": /\b(lista de espera|waitlist|validar una idea|pre ?lanzamiento|waitlist|wait list|validate an idea|pre-?launch|coming soon)\b/,
+  "landing-astro": /\b(landing en astro|astro)\b/,
+  "saas-ai-next": /\b(app de ia|chat con ia|chatbot|asistente de ia|ai app|ai app|ai chat|chat app|chatbot|ai assistant)\b/,
+  "saas-t3": /\b(t3|trpc)\b/,
+  "web-angular": /\bangular\b/,
+  "web-react-router": /\b(react router|remix)\b/,
+  "web-tanstack-start": /\btanstack\b/,
+  "api-nestjs": /\bnest(js)?\b/,
+  "api-fastify": /\bfastify\b/,
+  "api-rails": /\b(api en rails|rails api)\b/,
+  "mobile-ionic-react": /\b(ionic|capacitor|pwa)\b/,
+  "mobile-lynx": /\blynx\b/,
+  "mobile-ignite": /\bignite\b/,
   bun: /\bbun\b/,
   "cloudflare-workers": /\b(cloudflare|workers|edge)\b/,
   vue: /\bvue\b/,
   svelte: /\bsvelte\b/,
   solid: /\bsolid\b/,
   // Categories
-  "better-auth": /\b(login|auth|autenticacion|registro|usuarios|cuentas|sign ?in|iniciar sesion)\b/,
-  "drizzle-postgres": /\b(base de datos|database|postgres|sql|drizzle)\b/,
-  stripe: /\b(pagos|pago|cobrar|suscripcion|stripe|payments|checkout|facturacion)\b/,
-  resend: /\b(email|correo|emails|newsletter|notificaciones por correo)\b/,
-  "next-intl": /\b(idiomas|multidioma|traduccion|i18n|internacional)\b/,
-  "i18next-expo": /\b(idiomas|multidioma|traduccion|i18n|internacional)\b/,
-  "vercel-ai-sdk": /\b(ia|ai|chat|chatbot|llm|asistente|claude|gpt|inteligencia artificial)\b/,
-  motion: /\b(animacion|animaciones|animado|animated|motion|transiciones)\b/,
-  "posthog-nextjs": /\b(analitica|analytics|metricas de producto|embudos|funnels)\b/,
-  "vercel-analytics": /\b(analitica|analytics|visitas)\b/,
-  "sentry-nextjs": /\b(errores|sentry|monitoreo|monitorizacion|observabilidad)\b/,
-  "sentry-node": /\b(errores|sentry|monitoreo|monitorizacion|observabilidad)\b/,
-  "sentry-go": /\b(errores|sentry|monitoreo|monitorizacion|observabilidad)\b/,
-  "sentry-python": /\b(errores|sentry|monitoreo|monitorizacion|observabilidad)\b/,
-  vitest: /\b(tests|testing|pruebas|unit)\b/,
-  "vitest-node": /\b(tests|testing|pruebas|unit)\b/,
-  "jest-expo": /\b(tests|testing|pruebas|unit)\b/,
-  playwright: /\b(e2e|end to end|playwright)\b/,
-  "github-actions": /\b(ci|integracion continua|github actions)\b/,
-  docker: /\b(docker|contenedor|container|self.?host)\b/,
-  supabase: /\b(supabase|backend|login|usuarios|base de datos|auth)\b/,
+  "better-auth": /\b(login|auth|autenticacion|registro|usuarios|cuentas|sign ?in|iniciar sesion|accounts|sign ?up|log ?in|users|authentication)\b/,
+  "drizzle-postgres": /\b(base de datos|database|postgres|sql|drizzle|db)\b/,
+  stripe: /\b(pagos|pago|cobrar|suscripcion|stripe|payments|checkout|facturacion|payments|billing|subscriptions|charge|checkout|pay)\b/,
+  resend: /\b(email|correo|emails|newsletter|notificaciones por correo|emails?|newsletter|mail)\b/,
+  "next-intl": /\b(idiomas|multidioma|traduccion|i18n|internacional|translations?|multilingual|languages|international)\b/,
+  "i18next-expo": /\b(idiomas|multidioma|traduccion|i18n|internacional|translations?|multilingual|languages|international)\b/,
+  "vercel-ai-sdk": /\b(ia|ai|chat|chatbot|llm|asistente|claude|gpt|inteligencia artificial|ai|assistant|artificial intelligence)\b/,
+  motion: /\b(animacion|animaciones|animado|animated|motion|transiciones|animations?|animated|transitions)\b/,
+  "posthog-nextjs": /\b(analitica|analytics|metricas de producto|embudos|funnels|product analytics|funnels)\b/,
+  "vercel-analytics": /\b(analitica|analytics|visitas|analytics|visits|page views)\b/,
+  "sentry-nextjs": /\b(errores|sentry|monitoreo|monitorizacion|observabilidad|errors|error tracking|monitoring)\b/,
+  "sentry-node": /\b(errores|sentry|monitoreo|monitorizacion|observabilidad|errors|error tracking|monitoring)\b/,
+  "sentry-go": /\b(errores|sentry|monitoreo|monitorizacion|observabilidad|errors|error tracking|monitoring)\b/,
+  "sentry-python": /\b(errores|sentry|monitoreo|monitorizacion|observabilidad|errors|error tracking|monitoring)\b/,
+  vitest: /\b(tests|testing|pruebas|unit|unit tests)\b/,
+  "vitest-node": /\b(tests|testing|pruebas|unit|unit tests)\b/,
+  "jest-expo": /\b(tests|testing|pruebas|unit|unit tests)\b/,
+  playwright: /\b(e2e|end to end|playwright|end-to-end)\b/,
+  "github-actions": /\b(ci|integracion continua|github actions|continuous integration)\b/,
+  docker: /\b(docker|contenedor|container|self.?host|self-host(ed)?)\b/,
+  supabase: /\b(supabase|backend|login|usuarios|base de datos|auth|backend|login|users|database|auth)\b/,
   nativewind: /\b(tailwind|nativewind)\b/,
-  seo: /\b(seo|google|open graph|posicionamiento)\b/,
+  seo: /\b(seo|google|open graph|posicionamiento|search engines|ranking)\b/,
 };
 
 /**
- * On a tie, the general-purpose kit wins; kits for another language or platform
- * (Python, Go, native iOS) only when the description asks for them.
+ * On a tie, the general-purpose kit of each type wins; the rest (another language,
+ * framework or tool) only when the description asks for them.
  */
-const NICHE = new Set(["api-fastapi", "api-go", "ios-swiftui"]);
+const FLAGSHIP = new Set(["landing-next", "saas-next-supabase", "mobile-expo", "api-hono", "chrome-extension", "spa-vite-react", "monorepo-turbo"]);
+
+/** Tags many kits share: they say nothing about which kit fits better. */
+const GENERIC_TAGS = new Set(["landing", "saas", "api", "extension", "mobile", "monorepo", "plugin", "bot", "typescript", "tailwind", "node", "seo", "design", "personal", "agents", "auth"]);
 
 function scoreKit(kit: Kit, text: string): number {
   let score = 0;
   if (CATEGORY_HINTS[kit.category]?.test(text)) score += 3;
-  const words = [kit.name, ...kit.tags].map(normalize);
+  const words = [kit.name, ...kit.tags.filter((t) => !GENERIC_TAGS.has(t))].map(normalize);
   for (const word of words) if (word.length > 2 && new RegExp(`\\b${word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`).test(text)) score += 2;
   if (CHOICE_HINTS[kit.name]?.test(text)) score += 6;
   return score;
@@ -92,13 +126,13 @@ function scoreKit(kit: Kit, text: string): number {
  * fallback when Claude isn't configured or fails.
  */
 export function recommendHeuristic(description: string, kits: Kit[]): Recommendation {
-  if (!kits.length) throw new Error("No hay kits para recomendar");
+  if (!kits.length) throw new Error("There are no kits to recommend");
   const text = normalize(description);
   const ranked = kits
     .map((kit) => ({ kit, score: scoreKit(kit, text) }))
-    .sort((a, b) => b.score - a.score || Number(NICHE.has(a.kit.name)) - Number(NICHE.has(b.kit.name)));
+    .sort((a, b) => b.score - a.score || Number(FLAGSHIP.has(b.kit.name)) - Number(FLAGSHIP.has(a.kit.name)));
   const { kit } = ranked[0]!;
-  const reasons = [ranked[0]!.score > 0 ? `${kit.title}: es el kit que mejor encaja con la descripción.` : `${kit.title}: no hay pistas claras, así que es un punto de partida general.`];
+  const reasons = [ranked[0]!.score > 0 ? `${kit.title}: the kit that best fits the description.` : `${kit.title}: no clear hints, so it's a general starting point.`];
 
   const options: Record<string, string[]> = {};
   for (const option of kit.options) {
@@ -118,31 +152,6 @@ export function recommendHeuristic(description: string, kits: Kit[]): Recommenda
  * result is checked with validateSelections. Throws if it still isn't valid.
  */
 export function resolveRecommendation(kit: Kit, rec: Recommendation, source: ResolvedRecommendation["source"]): ResolvedRecommendation {
-  const defaults = defaultSelections(kit);
-  const options: Record<string, string[]> = { ...defaults.options };
-  for (const [id, values] of Object.entries(rec.options)) {
-    const option = kit.options.find((o) => o.id === id);
-    if (!option) continue;
-    const valid = values.filter((v) => option.choices.some((c) => c.id === v));
-    if (!valid.length) continue;
-    options[id] = option.type === "select" ? valid.slice(0, 1) : [...new Set(valid)];
-  }
-  // Add what the chosen choices require, when the requirement is a single choice.
-  for (let pass = 0; pass < 3; pass++) {
-    for (const option of kit.options) {
-      for (const id of options[option.id] ?? []) {
-        const choice = option.choices.find((c) => c.id === id);
-        for (const [reqOption, allowed] of Object.entries(choice?.requires ?? {})) {
-          const current = options[reqOption] ?? [];
-          if (!current.some((v) => allowed.includes(v)) && allowed.length) {
-            const target = kit.options.find((o) => o.id === reqOption);
-            options[reqOption] = target?.type === "multi" ? [...current.filter((v) => v !== "none"), allowed[0]!] : [allowed[0]!];
-          }
-        }
-      }
-    }
-  }
-  const selections = pruneSelections(kit, { ...defaults, options });
-  validateSelections(kit, selections);
+  const { selections } = selectionsFrom(kit, { options: rec.options }, { requirements: "autofill", unknown: "ignore" });
   return { ...rec, kit: kit.name, options: selections.options, selections, source };
 }

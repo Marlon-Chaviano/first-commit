@@ -1,0 +1,51 @@
+{
+  "$schema": "../../kit.schema.json",
+  "version": "1.0.0",
+  "author": "Marlon Chaviano",
+  "name": "saas-rails",
+  "title": "SaaS with Rails",
+  "category": "saas",
+  "language": "ruby",
+  "description": "Rails 8 for a SaaS: authentication with the official generator, Tailwind CSS, Hotwire and the Solid stack (cache, queues and websockets without Redis).",
+  "tags": [
+    "ruby",
+    "rails",
+    "hotwire",
+    "tailwind",
+    "saas"
+  ],
+  "base": {
+    "command": "command -v rails >/dev/null || { echo 'Necesitas Rails: gem install rails' >&2; exit 1; }; rails new {{name}} --css tailwind --skip-git --skip-bundle --skip-kamal --skip-thruster",
+    "install": "bundle install --quiet"
+  },
+  "packageManagers": [
+    "bundler"
+  ],
+  "skills": [
+    "affaan-m/ecc@rails-patterns"
+  ],
+  "libraries": {
+    "framework": [
+      "rails"
+    ],
+    "auth": "rails-auth",
+    "testing": [],
+    "design": [
+      "design-pack"
+    ],
+    "workflow": [
+      "essentials"
+    ]
+  },
+  "verify": {
+    "command": "bin/rails db:prepare && bin/rails test && bin/rails zeitwerk:check && (test ! -d spec || bundle exec rspec)",
+    "matrix": [
+      {
+        "testing": [
+          "rspec-rails"
+        ]
+      }
+    ]
+  },
+  "instructions": "## How to work here\n\n- The session is handled by the `Authentication` concern (`app/controllers/concerns/`); protect every controller and use `allow_unauthenticated_access` only where needed.\n- UI with Hotwire (Turbo + Stimulus) and Tailwind: before adding JavaScript, see whether Turbo Frames or Streams solve it.\n- Before finishing: `bin/rails test`."
+}

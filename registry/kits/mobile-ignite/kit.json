@@ -1,0 +1,43 @@
+{
+  "$schema": "../../kit.schema.json",
+  "version": "1.0.0",
+  "author": "Marlon Chaviano",
+  "name": "mobile-ignite",
+  "title": "Mobile app with Ignite",
+  "category": "mobile",
+  "language": "typescript",
+  "description": "Ignite by Infinite Red: the most battle-tested React Native boilerplate, with Expo, navigation, theming, i18n, MMKV and a structure that scales.",
+  "tags": [
+    "react-native",
+    "expo",
+    "ignite",
+    "mobile"
+  ],
+  "base": {
+    "command": "npx -y ignite-cli@latest new {{name}} --yes --workflow=cng --remove-demo --install-deps=false --git=false --packager=npm",
+    "install": "npm install"
+  },
+  "packageManagers": [
+    "npm"
+  ],
+  "skills": [
+    "expo/skills@expo-overview",
+    "vercel-labs/agent-skills@vercel-react-native-skills"
+  ],
+  "libraries": {
+    "framework": [
+      "react-native",
+      "expo"
+    ],
+    "design": [
+      "design-pack-native"
+    ],
+    "workflow": [
+      "essentials"
+    ]
+  },
+  "verify": {
+    "command": "npx tsc --noEmit -p ."
+  },
+  "instructions": "## How to work here\n\n- Follow Ignite's structure: screens in `app/screens/`, components in `app/components/`, theme in `app/theme/` and copy in `app/i18n/` (no loose text in components).\n- Generate pieces with `npx ignite-cli generate screen <Name>` / `component <Name>` to keep the conventions.\n- Before finishing: `npx tsc --noEmit`."
+}

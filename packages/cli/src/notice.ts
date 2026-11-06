@@ -30,7 +30,7 @@ export async function updateNotice(projectDir: string): Promise<void> {
 
     const latest = await latestVersion(lock.kit);
     if (latest && latest !== lock.version) {
-      console.log(`\n${pc.yellow("●")} Hay una versión nueva de ${pc.bold(lock.kit)}: ${lock.version} → ${pc.bold(latest)}. Actualiza con ${pc.cyan(cliCommand("update"))}\n`);
+      console.log(`\n${pc.yellow("●")} A new version of ${pc.bold(lock.kit)} is out: ${lock.version} → ${pc.bold(latest)}. Update with ${pc.cyan(cliCommand("update"))}\n`);
     }
   } catch {
     // A notice must never break the command.

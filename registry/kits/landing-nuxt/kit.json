@@ -1,0 +1,48 @@
+{
+  "$schema": "../../kit.schema.json",
+  "version": "1.0.0",
+  "author": "Marlon Chaviano",
+  "name": "landing-nuxt",
+  "title": "Landing page with Nuxt UI",
+  "category": "landing",
+  "language": "typescript",
+  "description": "Nuxt UI's official landing template: sections, pricing, testimonials and FAQ already designed, content in Markdown with Nuxt Content, and dark mode.",
+  "tags": [
+    "nuxt",
+    "vue",
+    "nuxt-ui",
+    "landing",
+    "tailwind"
+  ],
+  "base": {
+    "command": "npx -y tiged nuxt-ui-templates/landing {{name}} && cd {{name}} && npm pkg delete packageManager",
+    "install": "{{pm}} install"
+  },
+  "packageManagers": [
+    "pnpm",
+    "npm",
+    "bun"
+  ],
+  "skills": [
+    "onmax/nuxt-skills@nuxt",
+    "onmax/nuxt-skills@nuxt-ui",
+    "onmax/nuxt-skills@nuxt-content",
+    "vuejs-ai/skills@vue-best-practices"
+  ],
+  "libraries": {
+    "framework": [
+      "vue",
+      "nuxt"
+    ],
+    "design": [
+      "design-pack"
+    ],
+    "workflow": [
+      "essentials"
+    ]
+  },
+  "verify": {
+    "command": "{{pm}} run build"
+  },
+  "instructions": "## How to work here\n\n- Each page's content lives in `content/` (YAML/Markdown) and Nuxt Content renders it; change the copy there, not in the components.\n- Use Nuxt UI components (`UPageHero`, `UPageSection`, `UPricingPlans`…) before building your own; the theme is set in `app/app.config.ts`.\n- Before finishing: `npm run build`."
+}

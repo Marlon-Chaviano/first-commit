@@ -90,7 +90,7 @@ function runSelf(args: string[], cwd: string): Promise<string> {
       const clean = output.replace(/\u001b\[[0-9;]*m/g, "").trim();
       const tail = clean.split("\n").slice(-60).join("\n");
       if (code === 0) done(tail);
-      else reject(new Error(`${BRAND.cli} ${args[0]} terminó con código ${code}:\n${tail}`));
+      else reject(new Error(`${BRAND.cli} ${args[0]} exited with code ${code}:\n${tail}`));
     });
   });
 }

@@ -3,8 +3,10 @@ import { dirname, join, resolve } from "node:path";
 
 import * as p from "@clack/prompts";
 import {
+  BRAND_ASSETS,
   brandAgentsSection,
   brandCss,
+  brandLogo,
   brandMarkdown,
   brandProfileSchema,
   brandTokens,
@@ -13,6 +15,8 @@ import {
   completeProfile,
   detectFromCss,
   upsertBlock,
+  type BrandAssetFiles,
+  type BrandAssetKind,
   type BrandProfile,
 } from "@kits/schema";
 import pc from "picocolors";
@@ -43,36 +47,126 @@ export async function loadBrand(ref: string): Promise<BrandProfile> {
   let raw: unknown;
   if (local) {
     const path = resolve(ref);
-    if (!existsSync(path)) throw new Error(`No existe el perfil de marca ${path}`);
+    if (!existsSync(path)) throw new Error(`Brand profile ${path} doesn't exist`);
     raw = JSON.parse(readFileSync(path, "utf8"));
   } else {
-    if (!/^[a-z0-9-]+\/[a-z0-9-]+$/.test(ref)) throw new Error(`Perfil de marca no válido: "${ref}" (usa dueño/nombre o ./brand.json)`);
+    if (!/^[a-z0-9-]+\/[a-z0-9-]+$/.test(ref)) throw new Error(`Invalid brand profile: "${ref}" (use owner/name or ./brand.json)`);
     const token = await getToken();
     const res = await fetch(`${process.env.KITS_API_URL ?? BRAND.siteUrl}/api/v1/brands/${ref}`, {
       headers: token ? { authorization: `Bearer ${token}` } : {},
       signal: AbortSignal.timeout(10_000),
     });
     if (res.status === 404 || res.status === 401) {
-      throw new Error(`No se encontró el perfil de marca ${ref}${token ? "" : `: los perfiles son privados, inicia sesión con \`${cliCommand("login")}\``}`);
+      throw new Error(`Brand profile ${ref} not found${token ? "" : `: profiles are private, log in with \`${cliCommand("login")}\``}`);
     }
-    if (!res.ok) throw new Error(`El registro respondió ${res.status} al pedir ${ref}`);
+    if (!res.ok) throw new Error(`The registry responded ${res.status} when asked for ${ref}`);
     raw = await res.json();
   }
   const parsed = brandProfileSchema.safeParse(raw);
-  if (!parsed.success) throw new Error(`El perfil de marca ${ref} no es válido: ${parsed.error.issues[0]?.message}`);
+  if (!parsed.success) throw new Error(`Brand profile ${ref} isn't valid: ${parsed.error.issues[0]?.message}`);
   return parsed.data;
 }
 
 /** What applying the brand writes, for the plan. */
 export function describeBrand(profile: BrandProfile): string {
-  return `Aplicar la marca ${profile.title}: docs/brand/ (BRAND.md, tokens.json${Object.keys(profile.docs).length ? `, ${Object.keys(profile.docs).length} documento(s)` : ""}), variables CSS y reglas en AGENTS.md`;
+  const images = Object.values(profile.assets).filter(Boolean).length + (profile.assets.logo || !profile.logo ? 0 : 1);
+  return `Apply the ${profile.title} brand: docs/brand/ (BRAND.md, tokens.json${Object.keys(profile.docs).length ? `, ${Object.keys(profile.docs).length} document(s)` : ""})${images ? `, ${images} image(s) (logo, favicon…)` : ""}, CSS variables and rules in AGENTS.md`;
+}
+
+const IMAGE_TYPES: Record<string, string> = {
+  "image/png": "png",
+  "image/jpeg": "jpg",
+  "image/webp": "webp",
+  "image/gif": "gif",
+  "image/svg+xml": "svg",
+  "image/x-icon": "ico",
+  "image/vnd.microsoft.icon": "ico",
+};
+const MAX_IMAGE_BYTES = 2_000_000;
+
+/** The image's bytes and extension, from a data: URL or a download. Throws if it isn't a usable image. */
+export async function readBrandImage(source: string): Promise<{ bytes: Buffer; ext: string }> {
+  let bytes: Buffer;
+  let type: string;
+  if (source.startsWith("data:")) {
+    const match = /^data:([^;,]+);base64,(.*)$/.exec(source);
+    if (!match) throw new Error("invalid data URL");
+    type = match[1]!;
+    bytes = Buffer.from(match[2]!, "base64");
+  } else {
+    const res = await fetch(source, { signal: AbortSignal.timeout(10_000), headers: { "user-agent": `${BRAND.cli}` } });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    if (Number(res.headers.get("content-length") ?? 0) > MAX_IMAGE_BYTES) throw new Error("too large");
+    bytes = Buffer.from(await res.arrayBuffer());
+    type = (res.headers.get("content-type") ?? "").split(";")[0]!.trim();
+    // Some servers send favicons as application/octet-stream: trust the file name then.
+    if (!IMAGE_TYPES[type]) {
+      const ext = new URL(source).pathname.split(".").at(-1)?.toLowerCase();
+      type = Object.entries(IMAGE_TYPES).find(([, e]) => e === ext || (ext === "jpeg" && e === "jpg"))?.[0] ?? type;
+    }
+  }
+  const ext = IMAGE_TYPES[type];
+  if (!ext) throw new Error(`not an image (${type || "unknown type"})`);
+  if (bytes.length > MAX_IMAGE_BYTES) throw new Error("too large");
+  // An SVG served from the project's own origin runs its scripts: never write one that has any.
+  if (ext === "svg" && /<script|\son\w+\s*=|javascript:|<foreignObject/i.test(bytes.toString("utf8"))) throw new Error("SVG with scripts");
+  return { bytes, ext };
+}
+
+/** Where a framework serves files from its root: public/ (Next, Vite, Astro, Nuxt, Laravel, Rails), static/ (SvelteKit). */
+const PUBLIC_DIRS = ["public", "static"];
+/** Default favicons a project starts with, by extension: the brand's favicon replaces the one with the same format. */
+const FAVICONS: Record<string, string[]> = {
+  ico: ["src/app/favicon.ico", "app/favicon.ico", "public/favicon.ico", "static/favicon.ico"],
+  svg: ["public/favicon.svg", "static/favicon.svg", "src/app/icon.svg", "app/icon.svg"],
+  png: ["static/favicon.png", "public/favicon.png", "src/app/icon.png", "app/icon.png"],
+};
+
+/**
+ * Downloads the profile's logo, favicon and images into the project (public/brand/, or
+ * docs/brand/assets/ without a public folder) and replaces the default favicon. An image that
+ * can't be fetched is skipped with a warning: it never fails the install.
+ */
+export async function downloadBrandAssets(profile: BrandProfile, dir: string): Promise<{ files: BrandAssetFiles; written: string[]; skipped: string[] }> {
+  const publicDir = PUBLIC_DIRS.find((d) => existsSync(join(dir, d)));
+  const folder = publicDir ? `${publicDir}/brand` : "docs/brand/assets";
+  const files: BrandAssetFiles = {};
+  const written: string[] = [];
+  const skipped: string[] = [];
+  const save = (path: string, bytes: Buffer) => {
+    mkdirSync(dirname(join(dir, path)), { recursive: true });
+    writeFileSync(join(dir, path), bytes);
+    written.push(path);
+  };
+  await Promise.all(
+    (Object.keys(BRAND_ASSETS) as BrandAssetKind[]).map(async (kind) => {
+      const source = kind === "logo" ? brandLogo(profile) : profile.assets[kind];
+      if (!source) return;
+      try {
+        const { bytes, ext } = await readBrandImage(source);
+        const path = `${folder}/${BRAND_ASSETS[kind].file}.${ext}`;
+        save(path, bytes);
+        files[kind] = path;
+        if (kind === "icon") {
+          const replaced = FAVICONS[ext]?.filter((f) => existsSync(join(dir, f))) ?? [];
+          for (const f of replaced) save(f, bytes);
+          // Next.js app router: app/icon.svg or .png is picked up next to the default favicon.ico.
+          const appDir = ["src/app", "app"].find((d) => existsSync(join(dir, d, "layout.tsx")) || existsSync(join(dir, d, "layout.jsx")));
+          if (appDir && (ext === "svg" || ext === "png") && !replaced.length) save(`${appDir}/icon.${ext}`, bytes);
+        }
+      } catch (error) {
+        skipped.push(`${BRAND_ASSETS[kind].label}: ${(error as Error).message}`);
+      }
+    }),
+  );
+  return { files, written: written.sort(), skipped };
 }
 
 /**
  * Writes the brand into a project. Idempotent: managed blocks are replaced,
  * everything else in the user's files is kept. Returns the files it wrote.
  */
-export function applyBrand(profile: BrandProfile, dir: string): string[] {
+export function applyBrand(profile: BrandProfile, dir: string, assets: BrandAssetFiles = {}): string[] {
   const written: string[] = [];
   const write = (path: string, content: string) => {
     const full = join(dir, path);
@@ -80,7 +174,7 @@ export function applyBrand(profile: BrandProfile, dir: string): string[] {
     writeFileSync(full, content);
     written.push(path);
   };
-  write("docs/brand/BRAND.md", brandMarkdown(profile));
+  write("docs/brand/BRAND.md", brandMarkdown(profile, assets));
   write("docs/brand/tokens.json", brandTokens(profile));
   for (const [file, content] of Object.entries(profile.docs)) write(`docs/brand/${file}`, content.endsWith("\n") ? content : `${content}\n`);
 
@@ -89,7 +183,7 @@ export function applyBrand(profile: BrandProfile, dir: string): string[] {
   const entry = CSS_ENTRIES.find((f) => existsSync(join(dir, f)));
   if (entry) {
     const existing = readFileSync(join(dir, entry), "utf8");
-    const block = `${CSS_START} (${profile.title}). Generado por ${BRAND.cli} brand: cámbialo en el perfil */\n${css}${CSS_END}`;
+    const block = `${CSS_START} (${profile.title}). Generated by ${BRAND.cli} brand: change it in the profile */\n${css}${CSS_END}`;
     const start = existing.indexOf(CSS_START);
     const end = existing.indexOf(CSS_END);
     // At the end of the file, so it wins over the theme defined above it.
@@ -100,7 +194,7 @@ export function applyBrand(profile: BrandProfile, dir: string): string[] {
   }
 
   const agents = join(dir, "AGENTS.md");
-  const section = entry ? brandAgentsSection(profile) : `${brandAgentsSection(profile)}\n- Las variables CSS están en \`docs/brand/brand.css\`: impórtalas en la hoja de estilos global (o usa \`docs/brand/tokens.json\` si no es un proyecto web).`;
+  const section = entry ? brandAgentsSection(profile, assets) : `${brandAgentsSection(profile, assets)}\n- The CSS variables are in \`docs/brand/brand.css\`: import them in the global stylesheet (or use \`docs/brand/tokens.json\` if it isn't a web project).`;
   write("AGENTS.md", upsertBlock("kits-brand", section, "AGENTS.md")(existsSync(agents) ? readFileSync(agents, "utf8") : undefined));
   return written;
 }
@@ -116,7 +210,7 @@ export async function detectBrand(args: ParsedArgs): Promise<void> {
     .filter((f) => existsSync(join(dir, f)))
     .map((f) => readFileSync(join(dir, f), "utf8"))
     .join("\n");
-  if (!css) throw new Error(`No hay hojas de estilo conocidas en ${dir} (p. ej. src/app/globals.css). Indica la carpeta del proyecto.`);
+  if (!css) throw new Error(`No known stylesheets in ${dir} (e.g. src/app/globals.css). Pass the project folder.`);
   const pkg = existsSync(join(dir, "package.json")) ? (JSON.parse(readFileSync(join(dir, "package.json"), "utf8")) as { name?: string }) : {};
   const detection = detectFromCss(css);
   const base = (pkg.name ?? dir.split("/").pop() ?? "marca").replace(/^@[^/]+\//, "");
@@ -124,8 +218,8 @@ export async function detectBrand(args: ParsedArgs): Promise<void> {
   const profile = completeProfile(detection, name, args.flags.get("title")?.[0] ?? base);
   const out = resolve(args.flags.get("out")?.[0] ?? "brand.json");
   writeFileSync(out, `${JSON.stringify(profile, null, 2)}\n`);
-  p.note(detection.found.length ? detection.found.join("\n") : "Solo valores por defecto: no se encontraron variables de color", "Detectado");
-  p.outro(`${pc.green("Escrito")} ${out}\nRevísalo y úsalo con --brand ${out}, o súbelo en ${BRAND.siteUrl}/cuenta/marcas`);
+  p.note(detection.found.length ? detection.found.join("\n") : "Defaults only: no color variables were found", "Detected");
+  p.outro(`${pc.green("Written")} ${out}\nReview it and use it with --brand ${out}, or upload it at ${BRAND.siteUrl}/account/brands`);
 }
 
 /** `brand <ref>` — applies (or refreshes) a brand profile in the current project. */
@@ -134,18 +228,20 @@ export async function brand(args: ParsedArgs): Promise<void> {
   const dir = resolve(args.flags.get("dir")?.[0] ?? ".");
   const lock = await readLock(dir);
   const ref = args.positionals[0] ?? lock?.brand?.ref;
-  if (!ref) throw new Error(`Indica el perfil: ${cliCommand("brand <dueño/nombre | ./brand.json>")}`);
-  p.intro(pc.bgCyan(pc.black(" brand ")));
+  if (!ref) throw new Error(`Pass the profile: ${cliCommand("brand <owner/name | ./brand.json>")}`);
+  p.intro(pc.bgWhite(pc.black(" brand ")));
   const spinner = p.spinner();
-  spinner.start(`Cargando ${ref}`);
+  spinner.start(`Loading ${ref}`);
   const profile = await loadBrand(ref);
   spinner.stop(profile.title);
   if (args.switches.has("dry-run")) {
-    p.outro(`${describeBrand(profile)}\nDry run: no se ha cambiado nada.`);
+    p.outro(`${describeBrand(profile)}\nDry run: nothing was changed.`);
     return;
   }
-  const files = applyBrand(profile, dir);
+  const images = await downloadBrandAssets(profile, dir);
+  const files = [...images.written, ...applyBrand(profile, dir, images.files)];
   if (lock) await writeLock(dir, { ...lock, brand: { ref, title: profile.title }, updatedAt: new Date().toISOString() });
-  p.note(files.join("\n"), "Archivos");
-  p.outro(`${pc.green("Marca aplicada.")} Revisa los cambios con git diff.`);
+  p.note(files.join("\n"), "Files");
+  if (images.skipped.length) p.log.warn(`Images skipped:\n${images.skipped.join("\n")}`);
+  p.outro(`${pc.green("Brand applied.")} Review the changes with git diff.`);
 }

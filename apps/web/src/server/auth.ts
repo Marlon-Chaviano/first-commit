@@ -4,7 +4,7 @@ import { drizzleAdapter } from "@better-auth/drizzle-adapter";
 import { BRAND } from "@kits/schema";
 import { betterAuth } from "better-auth";
 import { nextCookies } from "better-auth/next-js";
-import { eq } from "drizzle-orm";
+import { and, eq, isNull } from "drizzle-orm";
 
 import { db } from "./db";
 import * as schema from "./db/schema";
@@ -78,7 +78,9 @@ export const auth = db
                 headers: { authorization: `Bearer ${account.accessToken}`, "user-agent": BRAND.name },
               });
               if (!res.ok) return;
-              const { login } = (await res.json()) as { login?: string };
+              const { login, avatar_url: avatar } = (await res.json()) as { login?: string; avatar_url?: string };
+              // Linked after signing in with email or Google without a picture: take the GitHub one.
+              if (avatar) await db!.update(schema.user).set({ image: avatar }).where(and(eq(schema.user.id, account.userId), isNull(schema.user.image)));
               if (!login) return;
               const handle = login.toLowerCase();
               const owner = await db!.select({ id: schema.user.id }).from(schema.user).where(eq(schema.user.handle, handle)).limit(1);

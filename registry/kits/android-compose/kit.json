@@ -1,0 +1,46 @@
+{
+  "$schema": "../../kit.schema.json",
+  "version": "1.0.0",
+  "author": "Marlon Chaviano",
+  "name": "android-compose",
+  "title": "Android app with Jetpack Compose",
+  "category": "mobile",
+  "language": "kotlin",
+  "description": "Google's official architecture template: Kotlin, Jetpack Compose, Hilt, Room, navigation and tests, following the recommended Android architecture.",
+  "tags": [
+    "android",
+    "kotlin",
+    "jetpack-compose",
+    "hilt",
+    "room"
+  ],
+  "base": {
+    "command": "command -v git >/dev/null || exit 1; git clone --depth 1 -b base https://github.com/android/architecture-templates.git {{name}} && cd {{name}} && rm -rf .git && bash customizer.sh com.example.app Item App"
+  },
+  "packageManagers": [
+    "gradle"
+  ],
+  "skills": [
+    "android/skills@jetpack-compose-performance",
+    "android/skills@navigation-3",
+    "android/skills@adaptive"
+  ],
+  "libraries": {
+    "framework": [
+      "android"
+    ],
+    "design": [
+      "design-pack-native"
+    ],
+    "workflow": [
+      "essentials"
+    ]
+  },
+  "verify": {
+    "command": "./gradlew --no-daemon assembleDebug testDebugUnitTest"
+  },
+  "setupTasks": [
+    "Android: open the project in Android Studio (needs the Android SDK and JDK 17+). Change the `com.example.app` package before publishing."
+  ],
+  "instructions": "## How to work here\n\n- Follow the template's architecture: UI in Compose with one ViewModel per screen, data in repositories and Room in the data layer, all injected with Hilt.\n- UI state is immutable and flows from the ViewModel to the screen (`StateFlow` + `collectAsStateWithLifecycle`).\n- Dependency versions go in `gradle/libs.versions.toml`.\n- Before finishing: `./gradlew assembleDebug testDebugUnitTest`."
+}

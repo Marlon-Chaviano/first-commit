@@ -1,0 +1,48 @@
+{
+  "$schema": "../../kit.schema.json",
+  "version": "1.0.0",
+  "author": "Marlon Chaviano",
+  "name": "waitlist-next",
+  "extends": "landing-next",
+  "title": "Waitlist with Next.js",
+  "category": "landing",
+  "language": "typescript",
+  "description": "The Next.js landing page with a working waitlist: a form with a Server Action, validation and contact sign-up in Resend. To validate an idea before building it.",
+  "tags": [
+    "waitlist",
+    "resend",
+    "server-actions"
+  ],
+  "base": {
+    "command": "npx create-next-app@latest {{name}} --ts --tailwind --eslint --app --src-dir --import-alias \"@/*\" --use-{{pm}} --disable-git --no-agent-feedback --yes && rm {{name}}/src/app/page.tsx"
+  },
+  "dependencies": [
+    "resend",
+    "zod"
+  ],
+  "skills": [
+    "resend/resend-skills@resend"
+  ],
+  "env": {
+    "RESEND_API_KEY": "",
+    "RESEND_AUDIENCE_ID": ""
+  },
+  "writeFiles": [
+    {
+      "path": "src/app/actions/waitlist.ts",
+      "content": "\"use server\";\n\nimport { Resend } from \"resend\";\nimport { z } from \"zod\";\n\nexport type WaitlistState = { ok: boolean; message: string } | null;\n\nconst emailSchema = z.email(\"Enter a valid email\");\n\n/** Adds the email to the Resend audience. Created per call so builds work without keys. */\nexport async function joinWaitlist(_prev: WaitlistState, form: FormData): Promise<WaitlistState> {\n  const parsed = emailSchema.safeParse(form.get(\"email\"));\n  if (!parsed.success) return { ok: false, message: parsed.error.issues[0]!.message };\n  const audienceId = process.env.RESEND_AUDIENCE_ID;\n  if (!process.env.RESEND_API_KEY || !audienceId) return { ok: false, message: \"The waitlist isn't set up yet.\" };\n\n  const { error } = await new Resend(process.env.RESEND_API_KEY).contacts.create({ email: parsed.data, audienceId });\n  if (error) return { ok: false, message: \"Couldn't save it. Please try again.\" };\n  return { ok: true, message: \"You're in! We'll let you know when we launch.\" };\n}\n"
+    },
+    {
+      "path": "src/components/waitlist-form.tsx",
+      "content": "\"use client\";\n\nimport { useActionState } from \"react\";\n\nimport { joinWaitlist, type WaitlistState } from \"@/app/actions/waitlist\";\n\nexport function WaitlistForm() {\n  const [state, action, pending] = useActionState<WaitlistState, FormData>(joinWaitlist, null);\n  return (\n    <form action={action} className=\"mx-auto flex w-full max-w-md flex-col gap-3 sm:flex-row\">\n      <label htmlFor=\"email\" className=\"sr-only\">Email</label>\n      <input id=\"email\" name=\"email\" type=\"email\" required autoComplete=\"email\" placeholder=\"tu@email.com\" className=\"h-11 flex-1 rounded-full border px-4\" />\n      <button type=\"submit\" disabled={pending} className=\"h-11 rounded-full bg-neutral-950 px-6 text-white disabled:opacity-60\">\n        {pending ? \"Joining…\" : \"Join\"}\n      </button>\n      <p aria-live=\"polite\" className={`text-sm sm:basis-full ${state?.ok ? \"text-green-700\" : \"text-red-700\"}`}>{state?.message}</p>\n    </form>\n  );\n}\n"
+    },
+    {
+      "path": "src/app/page.tsx",
+      "content": "import { WaitlistForm } from \"@/components/waitlist-form\";\n\n// Placeholder copy: replace it with your idea's.\nexport default function Home() {\n  return (\n    <main className=\"flex min-h-dvh flex-col items-center justify-center gap-8 px-6 text-center\">\n      <div className=\"flex max-w-2xl flex-col gap-4\">\n        <p className=\"text-sm font-medium text-neutral-500\">Coming soon</p>\n        <h1 className=\"text-5xl font-semibold tracking-tight text-balance\">Your product's promise in one sentence</h1>\n        <p className=\"text-lg text-pretty text-neutral-600\">Sign up and be among the first to try it.</p>\n      </div>\n      <WaitlistForm />\n    </main>\n  );\n}\n"
+    }
+  ],
+  "setupTasks": [
+    "Resend: create an audience at resend.com/audiences and put its id in `RESEND_AUDIENCE_ID` (and the API key in `RESEND_API_KEY`)."
+  ],
+  "instructions": "## Waitlist\n\n- The form (`src/components/waitlist-form.tsx`) calls the `joinWaitlist` Server Action (`src/app/actions/waitlist.ts`), which validates the email with Zod and adds it to the Resend audience.\n- The Resend key is only used on the server; never pass it to a client component."
+}

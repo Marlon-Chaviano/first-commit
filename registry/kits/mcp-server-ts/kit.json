@@ -1,0 +1,86 @@
+{
+  "$schema": "../../kit.schema.json",
+  "version": "1.0.0",
+  "author": "Marlon Chaviano",
+  "name": "mcp-server-ts",
+  "title": "MCP server with TypeScript",
+  "category": "extension",
+  "language": "typescript",
+  "description": "An MCP server ready to connect to Claude, Cursor or any agent: tools typed with Zod, stdio transport and the official inspector to try it out.",
+  "tags": [
+    "mcp",
+    "agents",
+    "typescript",
+    "zod"
+  ],
+  "base": {
+    "command": "mkdir {{name}} && cd {{name}} && printf '%s\\n' '{\"name\": \"{{name}}\", \"version\": \"0.1.0\", \"private\": true, \"type\": \"module\", \"bin\": \"dist/index.js\"}' > package.json"
+  },
+  "packageManagers": [
+    "npm",
+    "pnpm",
+    "bun"
+  ],
+  "dependencies": [
+    "@modelcontextprotocol/server",
+    "zod"
+  ],
+  "devDependencies": [
+    "typescript",
+    "@types/node",
+    "tsx"
+  ],
+  "skills": [
+    "anthropics/skills@mcp-builder"
+  ],
+  "writeFiles": [
+    {
+      "path": "package.json",
+      "content": "{\n  \"scripts\": {\n    \"build\": \"tsc\",\n    \"dev\": \"tsx watch src/index.ts\",\n    \"start\": \"node dist/index.js\",\n    \"inspect\": \"npx @modelcontextprotocol/inspector node dist/index.js\"\n  }\n}",
+      "mode": "json-merge"
+    },
+    {
+      "path": "tsconfig.json",
+      "content": "{\n  \"compilerOptions\": {\n    \"target\": \"ES2022\",\n    \"module\": \"NodeNext\",\n    \"moduleResolution\": \"NodeNext\",\n    \"outDir\": \"dist\",\n    \"rootDir\": \"src\",\n    \"strict\": true,\n    \"esModuleInterop\": true,\n    \"skipLibCheck\": true,\n    \"declaration\": false,\n    \"types\": [\n      \"node\"\n    ]\n  },\n  \"include\": [\n    \"src\"\n  ],\n  \"exclude\": [\n    \"src/**/*.test.ts\"\n  ]\n}\n"
+    },
+    {
+      "path": "src/index.ts",
+      "content": "#!/usr/bin/env node\nimport { McpServer } from \"@modelcontextprotocol/server\";\nimport { serveStdio } from \"@modelcontextprotocol/server/stdio\";\n\nimport { registerTools } from \"./tools.js\";\n\n// stdout is the protocol: log to stderr, never console.log.\nserveStdio(\n  () => {\n    const server = new McpServer({ name: \"{{name}}\", version: \"0.1.0\" });\n    registerTools(server);\n    return server;\n  },\n  { onerror: (error) => process.stderr.write(`[{{name}}] ${error.message}\\n`) },\n);\n"
+    },
+    {
+      "path": "src/tools.ts",
+      "content": "import type { McpServer } from \"@modelcontextprotocol/server\";\nimport { z } from \"zod\";\n\n/** One function per tool: a clear name, a description the model reads, and a Zod schema. */\nexport function registerTools(server: McpServer) {\n  server.registerTool(\n    \"greet\",\n    {\n      title: \"Greet\",\n      description: \"Greets a person by name.\",\n      inputSchema: z.object({ name: z.string().describe(\"Who to greet\") }),\n      annotations: { readOnlyHint: true, openWorldHint: false },\n    },\n    async ({ name }) => ({ content: [{ type: \"text\", text: `Hello, ${name}!` }] }),\n  );\n}\n"
+    },
+    {
+      "path": ".gitignore",
+      "content": "node_modules\ndist\n.env\n"
+    }
+  ],
+  "libraries": {
+    "framework": "nodejs",
+    "testing": [],
+    "quality": [],
+    "ci": [],
+    "observability": [],
+    "workflow": [
+      "essentials"
+    ]
+  },
+  "verify": {
+    "command": "{{pm}} run build && npm run --if-present test",
+    "matrix": [
+      {
+        "testing": [
+          "vitest-node"
+        ],
+        "quality": [
+          "biome"
+        ],
+        "ci": [
+          "github-actions"
+        ]
+      }
+    ]
+  },
+  "instructions": "## How to work here\n\n- Each tool is registered in `src/tools.ts` with `server.registerTool(name, { description, inputSchema }, handler)`. The description is what the model reads: say what it does and when to use it.\n- Validate input with Zod and return useful errors as text (`isError: true`), not exceptions.\n- **stdout is the protocol**: never use `console.log`; write to stderr to debug.\n- Test with `npm run build && npm run inspect` (opens the MCP inspector).\n- To use it in Claude Code: `claude mcp add {{name}} -- node $(pwd)/dist/index.js`.\n- Before finishing: `npm run build`."
+}

@@ -30,7 +30,7 @@ export async function GET(request: NextRequest, { params }: RouteContext<"/api/v
   const locked = Boolean(row.priceCents) && row.ownerId !== user?.id && !isAdmin(user) && !(await hasLicense(row.kitId, user?.id));
   if (request.nextUrl.searchParams.get("archive") === "1") {
     if (locked) {
-      return Response.json({ error: `${slug} es de pago: cómpralo en ${BRAND.siteUrl}/kits/${slug}`, buyUrl: `${BRAND.siteUrl}/kits/${slug}` }, { status: 402 });
+      return Response.json({ error: `${slug} is a paid kit: buy it at ${BRAND.siteUrl}/kits/${slug}`, buyUrl: `${BRAND.siteUrl}/kits/${slug}` }, { status: 402 });
     }
     const archive = await getArchive(row.kitId, row.version);
     if (!archive) return notFound(slug);
@@ -57,5 +57,5 @@ export async function GET(request: NextRequest, { params }: RouteContext<"/api/v
 }
 
 function notFound(slug: string) {
-  return Response.json({ error: `${slug} no está publicado` }, { status: 404 });
+  return Response.json({ error: `${slug} isn't published` }, { status: 404 });
 }

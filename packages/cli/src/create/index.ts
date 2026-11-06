@@ -4,16 +4,16 @@ import { basename, join, relative, resolve } from "node:path";
 
 import * as p from "@clack/prompts";
 import {
+  CATEGORY_LABELS,
+  KIT_CATEGORIES,
+  loadKitFrom,
   BRAND,
   buildPlan,
   LIBRARY_CATEGORIES,
   cliCommand,
   defaultSelections,
-  expandKit,
   PACKAGE_MANAGERS,
-  parseKit,
   REGISTRY_RAW_BASE,
-  validateSelections,
   type Kit,
 } from "@kits/schema";
 import pc from "picocolors";
@@ -21,10 +21,10 @@ import pc from "picocolors";
 import { listFlag, type ParsedArgs } from "../args";
 import { describe } from "../exec";
 import { nodePaths } from "../paths";
-import { loadCatalog } from "../registry";
+import { loadCatalog, loadRawKit } from "../registry";
 import { detectProject, type Detection } from "./detect";
 
-const CATEGORIES: Kit["category"][] = ["mobile", "web", "landing", "saas", "api", "extension", "other"];
+const CATEGORIES: Kit["category"][] = [...KIT_CATEGORIES];
 
 /** `create-first-commit create [dir]` — turns an existing project into a kit. */
 export async function create(args: ParsedArgs, guard: <T>(v: T) => Exclude<T, symbol>): Promise<void> {
@@ -34,42 +34,42 @@ export async function create(args: ParsedArgs, guard: <T>(v: T) => Exclude<T, sy
   const out = resolve(args.flags.get("out")?.[0] ?? join(dir, "kit"));
   const interactive = Boolean(process.stdin.isTTY) && !args.switches.has("yes");
 
-  p.intro(pc.bgCyan(pc.black(` ${BRAND.name} create `)));
+  p.intro(pc.bgWhite(pc.black(` ${BRAND.name} create `)));
   const spinner = p.spinner();
-  spinner.start(`Analizando ${relative(process.cwd(), dir) || "."}`);
+  spinner.start(`Analyzing ${relative(process.cwd(), dir) || "."}`);
   let d: Detection;
   try {
     d = await detectProject(dir, await loadCatalog(), args.flags.get("base")?.[0]);
   } catch (error) {
-    spinner.error("No se pudo analizar el proyecto");
+    spinner.error("Couldn't analyze the project");
     throw error;
   }
-  spinner.stop(`${d.framework.label} · ${d.skills.length} skills · ${Object.keys(d.mcp).length} MCP · ${d.dependencies.length + d.devDependencies.length} dependencias propias`);
+  spinner.stop(`${d.framework.label} · ${d.skills.length} skills · ${Object.keys(d.mcp).length} MCP · ${d.dependencies.length + d.devDependencies.length} own dependencies`);
 
   const libs = [d.libraries.components, ...d.libraries.addons, ...d.libraries.animation, ...d.libraries.observability, ...d.libraries.others].filter(Boolean);
-  if (libs.length) p.log.info(`Bibliotecas del catálogo detectadas: ${libs.map((l) => l!.name).join(", ")}`);
+  if (libs.length) p.log.info(`Catalog libraries detected: ${libs.map((l) => l!.name).join(", ")}`);
   if (d.unknownSkills.length) {
-    p.log.warn(`Skills sin origen conocido (no están en skills-lock.json), no se incluyen: ${d.unknownSkills.join(", ")}`);
+    p.log.warn(`Skills with no known source (not in skills-lock.json), left out: ${d.unknownSkills.join(", ")}`);
   }
 
   const ask = async (flag: string | undefined, prompt: () => Promise<string | symbol>, fallback: string): Promise<string> =>
     flag !== undefined ? flag : interactive ? (guard(await prompt()) as string) : fallback;
 
   const name = slug(
-    await ask(args.flags.get("name")?.[0], () => p.text({ message: "Nombre del kit", initialValue: slug(d.packageName) }), slug(d.packageName)),
+    await ask(args.flags.get("name")?.[0], () => p.text({ message: "Kit name", initialValue: slug(d.packageName) }), slug(d.packageName)),
   );
-  const title = await ask(args.flags.get("title")?.[0], () => p.text({ message: "Título", initialValue: name }), name);
+  const title = await ask(args.flags.get("title")?.[0], () => p.text({ message: "Title", initialValue: name }), name);
   const description = await ask(
     args.flags.get("description")?.[0],
-    () => p.text({ message: "Descripción (qué consigue alguien al usarlo)", placeholder: `Plantilla de ${d.framework.label}` }),
-    `Plantilla de ${d.framework.label}`,
+    () => p.text({ message: "Description (what someone gets by using it)", placeholder: `${d.framework.label} template` }),
+    `${d.framework.label} template`,
   );
   const category = (await ask(
     args.flags.get("category")?.[0],
-    () => p.select<string>({ message: "Categoría", options: CATEGORIES.map((c) => ({ value: c, label: c })), initialValue: d.framework.category }),
+    () => p.select<string>({ message: "Category", options: CATEGORIES.map((c) => ({ value: c, label: CATEGORY_LABELS[c] })), initialValue: d.framework.category }),
     d.framework.category,
   )) as Kit["category"];
-  if (!CATEGORIES.includes(category)) throw new Error(`--category debe ser una de: ${CATEGORIES.join(", ")}`);
+  if (!CATEGORIES.includes(category)) throw new Error(`--category must be one of: ${CATEGORIES.join(", ")}`);
 
   const pick = async (message: string, items: string[], preselect: boolean) =>
     !interactive || !items.length
@@ -78,15 +78,15 @@ export async function create(args: ParsedArgs, guard: <T>(v: T) => Exclude<T, sy
         : []
       : guard(await p.multiselect<string>({ message, options: items.map((v) => ({ value: v, label: v })), initialValues: preselect ? items : [], required: false }));
 
-  const dependencies = await pick("Dependencias propias del kit", d.dependencies, true);
-  const devDependencies = await pick("Dependencias de desarrollo", d.devDependencies, true);
+  const dependencies = await pick("The kit's own dependencies", d.dependencies, true);
+  const devDependencies = await pick("Dev dependencies", d.devDependencies, true);
   const skills = await pick("Skills", d.skills, true);
-  const mcpNames = await pick("Servidores MCP", Object.keys(d.mcp), true);
+  const mcpNames = await pick("MCP servers", Object.keys(d.mcp), true);
 
   let instructions = d.instructions;
   if (instructions && interactive) {
-    p.note(instructions.split("\n").slice(0, 8).join("\n") + (instructions.split("\n").length > 8 ? "\n…" : ""), "Instrucciones de AGENTS.md");
-    if (!guard(await p.confirm({ message: "¿Incluir estas instrucciones en el kit?" }))) instructions = undefined;
+    p.note(instructions.split("\n").slice(0, 8).join("\n") + (instructions.split("\n").length > 8 ? "\n…" : ""), "AGENTS.md instructions");
+    if (!guard(await p.confirm({ message: "Include these instructions in the kit?" }))) instructions = undefined;
   }
 
   // Files are opt-in: a kit should ship config and helpers, not the creator's whole app.
@@ -99,7 +99,7 @@ export async function create(args: ParsedArgs, guard: <T>(v: T) => Exclude<T, sy
   } else if (interactive && d.fileGroups.length) {
     const chosen = guard(
       await p.multiselect<string>({
-        message: "Archivos propios que se copiarán al proyecto (configuración, utilidades…)",
+        message: "Your own files to copy into the project (config, utilities…)",
         options: d.fileGroups.map((g) => ({ value: g.path, label: g.path, hint: g.files.length > 1 ? `${g.files.length} archivos` : undefined })),
         initialValues: [] as string[],
         required: false,
@@ -111,14 +111,13 @@ export async function create(args: ParsedArgs, guard: <T>(v: T) => Exclude<T, sy
   const kitJson = buildKitJson(d, { name, title, description, category, dependencies, devDependencies, skills, mcpNames, instructions, hasFiles: files.length > 0 });
 
   // Validate exactly as the CLI and the website will read it.
-  const kit = expandKit(parseKit(kitJson), await loadCatalog());
-  validateSelections(kit, defaultSelections(kit));
+  const kit = await loadKitFrom({ raw: kitJson as Record<string, unknown>, dir: out }, { read: (ref) => loadRawKit(ref, out), catalog: loadCatalog, resolvePath: resolve }, { admit: true });
 
-  const steps = buildPlan({ kit, kitDir: out, sel: defaultSelections(kit), parentDir: process.cwd(), name: "mi-proyecto", git: true, paths: nodePaths });
-  p.note(steps.map((s, i) => `${pc.dim(`${i + 1}.`)} ${describe(s, resolve("mi-proyecto"))}`).join("\n"), "Así se instalará");
+  const steps = buildPlan({ kit, kitDir: out, sel: defaultSelections(kit), parentDir: process.cwd(), name: "my-project", git: true, paths: nodePaths });
+  p.note(steps.map((s, i) => `${pc.dim(`${i + 1}.`)} ${describe(s, resolve("my-project"))}`).join("\n"), "How it will install");
 
   if (existsSync(join(out, "kit.json")) && interactive) {
-    if (!guard(await p.confirm({ message: `${relative(process.cwd(), out)}/kit.json ya existe. ¿Sobrescribirlo?`, initialValue: false }))) {
+    if (!guard(await p.confirm({ message: `${relative(process.cwd(), out)}/kit.json already exists. Overwrite it?`, initialValue: false }))) {
       p.cancel("Cancelado.");
       return;
     }
@@ -132,10 +131,10 @@ export async function create(args: ParsedArgs, guard: <T>(v: T) => Exclude<T, sy
   }
 
   const rel = relative(process.cwd(), out) || ".";
-  const next = [`${cliCommand(`./${rel} mi-proyecto --dry-run`)}   # pruébalo`];
-  if (d.githubRepo) next.push(`${cliCommand(`${d.githubRepo}/${relative(dir, out)}`)}   # tras hacer push`);
-  p.note(next.join("\n"), "Siguiente paso");
-  p.outro(`${pc.green("Kit creado")} en ${rel}/kit.json${files.length ? ` con ${files.length} archivos` : ""}.`);
+  const next = [`${cliCommand(`./${rel} my-project --dry-run`)}   # try it`];
+  if (d.githubRepo) next.push(`${cliCommand(`${d.githubRepo}/${relative(dir, out)}`)}   # after pushing`);
+  p.note(next.join("\n"), "Next steps");
+  p.outro(`${pc.green("Kit created")} in ${rel}/kit.json${files.length ? ` with ${files.length} files` : ""}.`);
 }
 
 interface Answers {
@@ -178,7 +177,7 @@ export function buildKitJson(d: Detection, a: Answers): Record<string, unknown> 
     description: a.description,
     category: a.category,
     tags: f.frameworks,
-    author: d.githubRepo?.split("/")[0] ?? "anónimo",
+    author: d.githubRepo?.split("/")[0] ?? "anonymous",
     base: f.base,
     ...(f.addCommand ? { addCommand: f.addCommand } : {}),
     // The creator's package manager becomes the default.
@@ -199,22 +198,22 @@ export function buildKitJson(d: Detection, a: Answers): Record<string, unknown> 
 async function createBlank(args: ParsedArgs): Promise<void> {
   const name = slug(args.positionals[0] ?? "mi-kit");
   const out = resolve(args.flags.get("out")?.[0] ?? name);
-  if (existsSync(join(out, "kit.json"))) throw new Error(`${join(out, "kit.json")} ya existe`);
+  if (existsSync(join(out, "kit.json"))) throw new Error(`${join(out, "kit.json")} already exists`);
   const kit = {
     $schema: `${REGISTRY_RAW_BASE}/kit.schema.json`,
     name,
     version: "0.1.0",
     title: name,
-    description: "Qué consigue alguien al usar este kit.",
+    description: "What someone gets by using this kit.",
     category: "web",
     author: "tu-usuario",
     base: { command: "npx create-next-app@latest {{name}} --yes --use-{{pm}}" },
     skills: [],
-    instructions: "## Cómo trabajar aquí\n\n- Reglas para el agente.",
+    instructions: "## How to work here\n\n- Rules for the agent.",
   };
   await mkdir(out, { recursive: true });
   await writeFile(join(out, "kit.json"), JSON.stringify(kit, null, 2) + "\n");
-  console.log(`Creado ${relative(process.cwd(), join(out, "kit.json"))}. Pruébalo con: ${cliCommand(`./${basename(out)} demo --dry-run`)}`);
+  console.log(`Created ${relative(process.cwd(), join(out, "kit.json"))}. Try it with: ${cliCommand(`./${basename(out)} demo --dry-run`)}`);
 }
 
 function slug(value: string): string {

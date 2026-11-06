@@ -1,0 +1,63 @@
+{
+  "$schema": "../../kit.schema.json",
+  "version": "1.0.0",
+  "author": "Marlon Chaviano",
+  "name": "raycast-extension",
+  "title": "Raycast extension",
+  "category": "extension",
+  "language": "typescript",
+  "description": "A Raycast extension with React and TypeScript: a command with a searchable list, using the official components and utilities.",
+  "tags": [
+    "raycast",
+    "macos",
+    "react",
+    "typescript"
+  ],
+  "base": {
+    "command": "mkdir {{name}} && cd {{name}} && printf '%s\\n' '{\"name\": \"{{name}}\", \"version\": \"0.1.0\", \"private\": true, \"title\": \"{{name}}\", \"description\": \"\", \"icon\": \"extension-icon.png\", \"author\": \"tu-usuario\", \"license\": \"MIT\", \"categories\": [\"Productivity\"], \"commands\": [{\"name\": \"index\", \"title\": \"Search\", \"description\": \"Search the list\", \"mode\": \"view\"}]}' > package.json"
+  },
+  "packageManagers": [
+    "npm"
+  ],
+  "dependencies": [
+    "@raycast/api",
+    "@raycast/utils"
+  ],
+  "devDependencies": [
+    "typescript",
+    "@types/node",
+    "@types/react"
+  ],
+  "writeFiles": [
+    {
+      "path": "package.json",
+      "content": "{\n  \"scripts\": {\n    \"dev\": \"ray develop\",\n    \"build\": \"ray build -e dist\",\n    \"lint\": \"ray lint\",\n    \"check\": \"tsc --noEmit\"\n  }\n}",
+      "mode": "json-merge"
+    },
+    {
+      "path": "tsconfig.json",
+      "content": "{\n  \"compilerOptions\": {\n    \"lib\": [\n      \"ES2023\"\n    ],\n    \"module\": \"commonjs\",\n    \"target\": \"ES2022\",\n    \"strict\": true,\n    \"isolatedModules\": true,\n    \"esModuleInterop\": true,\n    \"skipLibCheck\": true,\n    \"forceConsistentCasingInFileNames\": true,\n    \"jsx\": \"react-jsx\",\n    \"resolveJsonModule\": true,\n    \"noEmit\": true,\n    \"types\": [\n      \"node\"\n    ]\n  },\n  \"include\": [\n    \"src\"\n  ]\n}\n"
+    },
+    {
+      "path": "src/index.tsx",
+      "content": "import { Action, ActionPanel, List } from \"@raycast/api\";\n\nconst ITEMS = [\n  { id: \"docs\", title: \"Raycast documentation\", url: \"https://developers.raycast.com\" },\n  { id: \"store\", title: \"Raycast Store\", url: \"https://www.raycast.com/store\" },\n];\n\n/** The \"Search\" command: a searchable list (Raycast filters it as you type). */\nexport default function Command() {\n  return (\n    <List searchBarPlaceholder=\"Search…\">\n      {ITEMS.map((item) => (\n        <List.Item\n          key={item.id}\n          title={item.title}\n          actions={\n            <ActionPanel>\n              <Action.OpenInBrowser url={item.url} />\n              <Action.CopyToClipboard content={item.url} />\n            </ActionPanel>\n          }\n        />\n      ))}\n    </List>\n  );\n}\n"
+    },
+    {
+      "path": ".gitignore",
+      "content": "node_modules\ndist\n"
+    }
+  ],
+  "libraries": {
+    "framework": "react",
+    "workflow": [
+      "essentials"
+    ]
+  },
+  "verify": {
+    "command": "npm run check"
+  },
+  "setupTasks": [
+    "Raycast: add a 512×512 icon at `assets/extension-icon.png` and put your Raycast username in `author` before `npm run dev`."
+  ],
+  "instructions": "## How to work here\n\n- Each Raycast command is a file in `src/` declared in `commands` in `package.json` (`name` = file name).\n- Use `@raycast/api` components (`List`, `Detail`, `Form`, `ActionPanel`) and `@raycast/utils` hooks (`useFetch`, `useCachedPromise`); there's no DOM or CSS.\n- Develop with `npm run dev` (opens the command in Raycast with reloading).\n- Before finishing: `npm run check` and `npm run lint`."
+}

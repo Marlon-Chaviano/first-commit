@@ -20,7 +20,7 @@ export async function saveReport(report: ReportInput, ip: string): Promise<boole
     contact: report.contact || null,
     ipHash,
   });
-  await notify(report).catch((error) => console.error("[reports] email no enviado", error));
+  await notify(report).catch((error) => console.error("[reports] email not sent", error));
   return true;
 }
 

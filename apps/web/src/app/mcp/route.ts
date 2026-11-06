@@ -10,7 +10,7 @@ const source: KitsSource = {
   catalog: getCatalog,
   kit: async (ref) => {
     const kit = await getKit(ref);
-    if (!kit) throw new Error(`No existe el kit "${ref}"`);
+    if (!kit) throw new Error(`The "${ref}" kit doesn't exist`);
     return kit;
   },
   recommend: async (description) => {

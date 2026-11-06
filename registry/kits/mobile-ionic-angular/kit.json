@@ -1,0 +1,44 @@
+{
+  "$schema": "../../kit.schema.json",
+  "version": "1.0.0",
+  "author": "Marlon Chaviano",
+  "name": "mobile-ionic-angular",
+  "title": "Mobile app with Ionic and Angular",
+  "category": "mobile",
+  "language": "typescript",
+  "description": "Ionic with standalone Angular and Capacitor: apps for iOS, Android and the web from one codebase, with mobile components and native APIs.",
+  "tags": [
+    "ionic",
+    "capacitor",
+    "angular",
+    "mobile"
+  ],
+  "base": {
+    "command": "npx -y @ionic/cli@latest start {{name}} tabs --type=angular-standalone --capacitor --no-deps --no-git --no-interactive",
+    "install": "npm install"
+  },
+  "packageManagers": [
+    "npm"
+  ],
+  "skills": [
+    "angular/angular@angular-developer"
+  ],
+  "libraries": {
+    "framework": [
+      "angular"
+    ],
+    "design": [
+      "design-pack-native"
+    ],
+    "workflow": [
+      "essentials"
+    ]
+  },
+  "verify": {
+    "command": "npm run build"
+  },
+  "setupTasks": [
+    "Capacitor: to test on a device, add the platform (`npx cap add ios` or `npx cap add android`) and then `npx cap sync`."
+  ],
+  "instructions": "## How to work here\n\n- Standalone Angular components with Ionic's (`IonContent`, `IonList`…) imported one by one from `@ionic/angular/standalone`.\n- Native APIs are used through Capacitor plugins.\n- After changing web code: `npm run build && npx cap sync`. Before finishing: `npm run build`."
+}

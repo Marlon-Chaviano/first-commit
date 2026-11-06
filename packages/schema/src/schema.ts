@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import { LANGUAGE_IDS } from "./languages";
+import { PACKAGE_MANAGER_IDS } from "./package-managers";
 
 import { LIBRARY_CATEGORIES } from "./categories";
 
@@ -9,8 +10,23 @@ const categoryDefaults = Object.fromEntries(
   LIBRARY_CATEGORIES.map((c) => [c.key, c.type === "select" ? z.string().optional() : z.array(z.string()).optional()]),
 ) as { [C in (typeof LIBRARY_CATEGORIES)[number] as C["key"]]: C["type"] extends "select" ? z.ZodOptional<z.ZodString> : z.ZodOptional<z.ZodArray<z.ZodString>> };
 
-/** JavaScript managers plus the ones used by kits in other languages. */
-export const PACKAGE_MANAGER_IDS = ["npm", "pnpm", "bun", "deno", "uv", "pip", "go", "swift", "bundler", "composer", "maven", "cargo"] as const;
+export { PACKAGE_MANAGER_IDS } from "./package-managers";
+
+/** Kit types. A monorepo holds several apps and shared packages in one repo. */
+export const KIT_CATEGORIES = ["mobile", "web", "landing", "saas", "api", "extension", "monorepo", "other"] as const;
+export type KitCategory = (typeof KIT_CATEGORIES)[number];
+
+/** How each kit type is shown (website and CLI). */
+export const CATEGORY_LABELS: Record<KitCategory, string> = {
+  mobile: "Mobile",
+  landing: "Landing",
+  saas: "SaaS",
+  web: "Web",
+  api: "API",
+  extension: "Extensions",
+  monorepo: "Monorepo",
+  other: "Other",
+};
 
 export const SEMVER = /^\d+\.\d+\.\d+(?:-[\w.]+)?$/;
 
@@ -41,7 +57,7 @@ export const mcpServerSchema = z.union([
  *                missing — existing values win, arrays get the new items appended
  */
 export const writeFileSchema = z.object({
-  path: z.string().regex(/^(?!\/)(?!(?:.*\/)?\.\.(?:\/|$))[\w./@()[\]-]+$/, "Relative path inside the project"),
+  path: z.string().regex(/^(?!\/)(?!(?:.*\/)?\.\.(?:\/|$))[\w./@()+[\]-]+$/, "Relative path inside the project"),
   content: z.string(),
   mode: z.enum(["create", "append", "prepend", "insert-before", "json-merge"]).default("create"),
   anchor: z.string().optional(),
@@ -104,7 +120,7 @@ export const kitSchema = z
     extends: z.string().optional(),
     title: z.string(),
     description: z.string(),
-    category: z.enum(["mobile", "web", "landing", "saas", "api", "extension", "other"]),
+    category: z.enum(KIT_CATEGORIES),
     tags: z.array(z.string()).default([]),
     author: z.string(),
     /** Command that scaffolds the project. Must create the {{name}} directory. */
@@ -113,6 +129,11 @@ export const kitSchema = z
       /** Command that installs the base project's dependencies, if the scaffolder skipped it. */
       install: z.string().optional(),
     }),
+    /**
+     * Commands run last, after every choice's setup (a monorepo installs once all
+     * its apps exist). Unlike postInstall, a failure here fails the install.
+     */
+    finalize: z.array(z.string()).default([]),
     /** Override how dependencies are added, e.g. "npx expo install {{packages}}". */
     addCommand: z
       .object({

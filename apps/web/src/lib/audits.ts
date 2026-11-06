@@ -8,11 +8,11 @@ export interface SkillAudit {
 }
 
 export const RISK_LABEL: Record<Risk, string> = {
-  safe: "Seguro",
-  low: "Riesgo bajo",
-  medium: "Riesgo medio",
-  high: "Riesgo alto",
-  critical: "Riesgo crítico",
+  safe: "Safe",
+  low: "Low risk",
+  medium: "Medium risk",
+  high: "High risk",
+  critical: "Critical risk",
 };
 
 export function worstRisk(risks: string[]): Risk {

@@ -1,5 +1,6 @@
 import { BRAND, KITS_SKILL, KITS_SKILL_PUBLISHED } from "./brand";
-import type { Choice, Kit, McpServer, PACKAGE_MANAGER_IDS, WriteFile } from "./schema";
+import type { PackageManager } from "./package-managers";
+import type { Choice, Kit, McpServer, WriteFile } from "./schema";
 
 export const AGENTS = [
   { id: "claude-code", label: "Claude Code" },
@@ -14,8 +15,7 @@ export const AGENTS = [
 export type AgentId = (typeof AGENTS)[number]["id"];
 export const DEFAULT_AGENTS: AgentId[] = ["claude-code"];
 
-export { PACKAGE_MANAGER_IDS as PACKAGE_MANAGERS } from "./schema";
-export type PackageManager = (typeof PACKAGE_MANAGER_IDS)[number];
+export { PACKAGE_MANAGER_IDS as PACKAGE_MANAGERS } from "./package-managers";
 
 export interface Selections {
   /** option id → selected choice ids */
@@ -131,8 +131,8 @@ export function validateSelections(kit: Kit, sel: Selections): void {
         throw new Error(`Unknown value "${v}" for --${id}. Choose one of: ${option.choices.map((c) => c.id).join(", ")}`);
       }
       if (!requirementsMet(choice, sel)) {
-        const needs = Object.entries(choice.requires ?? {}).map(([o, ids]) => `--${o} ${ids.join("|")}`).join(" y ");
-        throw new Error(`"${v}" (--${id}) necesita ${needs}`);
+        const needs = Object.entries(choice.requires ?? {}).map(([o, ids]) => `--${o} ${ids.join("|")}`).join(" and ");
+        throw new Error(`"${v}" (--${id}) needs ${needs}`);
       }
     }
   }

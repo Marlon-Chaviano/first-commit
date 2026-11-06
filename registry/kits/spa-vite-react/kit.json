@@ -1,12 +1,12 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "spa-vite-react",
-  "version": "1.0.0",
-  "author": "kits",
-  "title": "SPA con Vite y React",
+  "version": "1.1.0",
+  "author": "Marlon Chaviano",
+  "title": "SPA with Vite and React",
   "category": "web",
   "language": "typescript",
-  "description": "React + TypeScript con Vite y Tailwind CSS: arranque instantáneo y build rápido, sin servidor. Para paneles, herramientas internas y frontends de una API.",
+  "description": "React + TypeScript with Vite and Tailwind CSS: instant startup and fast builds, no server. For dashboards, internal tools and API frontends.",
   "tags": [
     "react",
     "vite",
@@ -20,11 +20,34 @@
   },
   "skills": [
     "antfu/skills@vite",
-    "vercel-labs/agent-skills@vercel-react-best-practices",
-    "anthropics/skills@frontend-design"
+    "vercel-labs/agent-skills@vercel-react-best-practices"
   ],
   "verify": {
-    "command": "{{pm}} run build"
+    "command": "{{pm}} run build",
+    "matrix": [
+      {
+        "state": [
+          "zustand"
+        ],
+        "data": [
+          "tanstack-query"
+        ],
+        "forms": [
+          "react-hook-form"
+        ]
+      },
+      {
+        "state": [
+          "jotai"
+        ],
+        "data": [
+          "swr"
+        ],
+        "forms": [
+          "zod"
+        ]
+      }
+    ]
   },
   "libraries": {
     "framework": [
@@ -33,12 +56,17 @@
     ],
     "components": "none",
     "animation": [],
+    "design": [
+      "design-pack"
+    ],
     "workflow": [
-      "superpowers",
-      "mattpocock-skills"
-    ]
+      "essentials"
+    ],
+    "state": "none",
+    "data": "none",
+    "forms": []
   },
-  "instructions": "## Cómo trabajar aquí\n\n- Componentes en `src/components/`, uno por archivo; importa con el alias `@/` (`@/components/...`).\n- Estilos con clases de Tailwind CSS v4 (`src/index.css` importa Tailwind).\n- Es una SPA: los datos vienen de una API; las variables públicas llevan el prefijo `VITE_`.\n- Antes de terminar: `npm run build` (incluye la comprobación de tipos).",
+  "instructions": "## How to work here\n\n- Components in `src/components/`, one per file; import with the `@/` alias (`@/components/...`).\n- Style with Tailwind CSS v4 classes (`src/index.css` imports Tailwind).\n- It's an SPA: data comes from an API; public variables are prefixed with `VITE_`.\n- Before finishing: `npm run build` (includes type checking).",
   "devDependencies": [
     "tailwindcss",
     "@tailwindcss/vite"

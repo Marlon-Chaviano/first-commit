@@ -10,14 +10,14 @@ import { getRequestUser, isAdmin } from "@/server/session";
 export async function GET(request: Request, { params }: RouteContext<"/api/v1/stats/[...slug]">) {
   const slug = (await params).slug.join("/");
   const viewer = await getRequestUser(request);
-  if (!viewer) return new Response("Inicia sesión", { status: 401 });
+  if (!viewer) return new Response("Log in first", { status: 401 });
   const kit = await findCommunityVersion(slug);
   if (!kit) return new Response("No encontrado", { status: 404 });
   const orgAdmin = kit.orgId ? ["owner", "admin"].includes((await roleIn(kit.orgId, viewer.id)) ?? "") : false;
   if (kit.ownerId !== viewer.id && !orgAdmin && !isAdmin(viewer)) return new Response("No encontrado", { status: 404 });
 
   const plan = effectivePlan(kit.orgId ? (await getOrgById(kit.orgId))?.plan : await userPlan(kit.ownerId ?? viewer.id), billingEnabled);
-  if (!planAllows(plan, "csvExport")) return new Response("Exportar CSV necesita el plan Pro", { status: 402 });
+  if (!planAllows(plan, "csvExport")) return new Response("CSV export needs the Pro plan", { status: 402 });
   const { daily } = await getKitHistory(slug, PLANS[plan].historyDays);
   const csv = ["day,installs", ...daily.map((d) => `${d.day},${d.installs}`)].join("\n");
   return new Response(csv, {

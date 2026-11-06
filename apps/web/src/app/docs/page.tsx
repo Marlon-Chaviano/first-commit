@@ -2,140 +2,93 @@ import { BRAND, cliCommand } from "@kits/schema";
 import type { Metadata } from "next";
 import Link from "next/link";
 
-import { Cmd, Code, CodeBlock, DocsHeader, H2, P } from "@/features/docs/docs-ui";
+import { OriginIcon } from "@/components/shared/origin-icon";
+import { Cmd, Code, DocsHeader, H2, P } from "@/features/docs/docs-ui";
+import { DOCS_SECTIONS } from "@/lib/site-nav";
 
 export const metadata: Metadata = {
-  title: "Crear un kit",
-  description: "Convierte tu proyecto en un kit con un comando, haz variantes con extends y compártelo.",
+  title: "Documentation",
+  description: `What ${BRAND.name} is, how a kit works and how to start a project ready for your agent in one command.`,
 };
 
-const VERIFY_WORKFLOW = `# .github/workflows/kit.yml
-name: Verify kit
-on: { push: { branches: [main] } }
-permissions: { contents: read, id-token: write }
-jobs:
-  verify:
-    strategy: { matrix: { os: [ubuntu-latest, macos-latest] } }
-    runs-on: \${{ matrix.os }}
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ${BRAND.repo}/actions/verify@main
-        with: { kit: ./kit }`;
+const STEPS = [
+  ["Pick a kit", "Search the ranking, or describe your project and we'll recommend one."],
+  ["Configure it", "Choose the stack (UI, database, payments, deployment…), the agents and the package manager."],
+  ["Copy the command", "The CLI creates the project, installs everything and gives your agent the stack's rules."],
+] as const;
 
-const EXTENDS_EXAMPLE = `{
-  "name": "landing-dark",
-  "version": "0.1.0",
-  "extends": "landing-next",
-  "title": "Landing oscura",
-  "libraries": { "addons": ["magicui"] },
-  "instructions": "## Estilo\\n\\nTodo en modo oscuro."
-}`;
-
-export default function CreateKitDocs() {
+export default function DocsOverview() {
   return (
     <>
-      <DocsHeader title="Crear un kit">
-        Un kit es una carpeta con un <Code>kit.json</Code> y, si quieres, archivos que se copian al proyecto. Lo más rápido
-        es generarlo desde un proyecto que ya te gusta.
+      <DocsHeader title="Introduction">
+        {BRAND.name} creates projects ready to build with your agent: the base project, the dependencies, the skills, the
+        MCP servers and the rules in <Code>AGENTS.md</Code>, in a single command.
       </DocsHeader>
 
-      <H2 id="desde-tu-proyecto">1. Desde tu proyecto</H2>
-      <P>Dentro de un proyecto Next.js, Expo, Hono, WXT o Vite:</P>
-      <Cmd>{cliCommand("create")}</Cmd>
-      <P>Detecta y te deja revisar antes de escribir nada:</P>
+      <H2 id="get-started">Get started</H2>
+      <P>Nothing to install, in an empty folder. Pick a kit and answer its questions:</P>
+      <Cmd>{cliCommand().trim()}</Cmd>
+      <P>Or straight away with a kit and its options (copy them from each kit&apos;s page):</P>
+      <Cmd>{cliCommand("saas-next-supabase my-app --payments stripe")}</Cmd>
+
+      <H2 id="how-it-works">How it works</H2>
+      <ol className="mt-3 grid gap-3 sm:grid-cols-3">
+        {STEPS.map(([title, text], i) => (
+          <li key={title} className="flex flex-col gap-2 rounded-lg border p-4">
+            <span className="font-mono text-xs text-muted-foreground tabular-nums">0{i + 1}</span>
+            <span className="font-medium">{title}</span>
+            <span className="text-sm text-pretty text-muted-foreground">{text}</span>
+          </li>
+        ))}
+      </ol>
+
+      <H2 id="what-is-a-kit">What a kit is</H2>
+      <P>
+        A folder with a <Code>kit.json</Code> that describes how to create the project and what to add to it. When you install it, the CLI
+        shows the plan and then:
+      </P>
       <ul className="mt-3 flex list-disc flex-col gap-1.5 pl-5 text-muted-foreground">
-        <li>El framework, y con él el comando oficial que crea el proyecto base.</li>
+        <li>Runs the framework&apos;s official command (create-next-app, create-expo-app, rails new…).</li>
+        <li>Installs the libraries you chose and writes their config files.</li>
         <li>
-          Las bibliotecas del <Link href="/docs/bibliotecas" className="text-foreground underline underline-offset-4">catálogo</Link>{" "}
-          que usas (shadcn, Kokonut UI, Motion, Sentry…), que pasan a ser opciones con su regla en <Code>AGENTS.md</Code>.
+          Installs the skills for your agents: the <strong className="text-foreground">{BRAND.name} pack</strong> (plan, debug,
+          verify), the design pack when there&apos;s an interface, and the framework&apos;s official skills.
         </li>
-        <li>Tus dependencias propias, sin las que ya trae la plantilla base.</li>
+        <li>Configures the MCP servers and writes the stack&apos;s rules in <Code>AGENTS.md</Code>.</li>
         <li>
-          Tus skills (de <Code>skills-lock.json</Code>), servidores MCP (<Code>.mcp.json</Code>) y variables (
-          <Code>.env.example</Code>; nunca lee <Code>.env</Code>).
+          Saves <Code>kits.lock</Code> so you can later bring in improvements with <Code>update</Code> or add pieces with <Code>add</Code>.
         </li>
-        <li>Tus instrucciones de <Code>AGENTS.md</Code>, sin lo que generan kits o el scaffolder.</li>
-        <li>Los archivos propios que elijas copiar (configuración, utilidades). Por defecto, ninguno.</li>
-      </ul>
-      <P>
-        El kit queda en <Code>./kit</Code>. Sin preguntas: <Code>{cliCommand("create -y --name mi-kit --include src/lib")}</Code>.
-        Si el framework no se reconoce, indica el comando base con <Code>--base &quot;…&quot;</Code>.
-      </P>
-
-      <H2 id="a-mano">2. A mano</H2>
-      <Cmd>{cliCommand("create --blank mi-kit")}</Cmd>
-      <P>
-        Crea un <Code>kit.json</Code> mínimo con el esquema enlazado, para tener autocompletado en el editor. Todos los
-        campos están en la <Link href="/docs/referencia" className="text-foreground underline underline-offset-4">referencia</Link>.
-      </P>
-
-      <H2 id="extends">3. Variantes con extends</H2>
-      <P>
-        Un kit puede partir de otro y declarar solo lo que cambia. Las listas (dependencias, skills, tareas) se suman, los
-        objetos (<Code>env</Code>, <Code>mcp</Code>, <Code>libraries</Code>) se combinan, las instrucciones se añaden al final
-        y una opción con el mismo <Code>id</Code> sustituye a la del padre.
-      </P>
-      <CodeBlock code={EXTENDS_EXAMPLE} />
-      <P>
-        El padre puede ser un kit oficial, un repo (<Code>usuario/repo/kit</Code>) o una ruta local, con versión opcional (
-        <Code>landing-next@1.0.0</Code>). Se admiten hasta 3 niveles.
-      </P>
-
-      <H2 id="probar">4. Pruébalo</H2>
-      <Cmd>{cliCommand("./kit mi-proyecto --dry-run")}</Cmd>
-      <P>
-        Muestra cada comando y archivo sin ejecutar nada. Quita <Code>--dry-run</Code> para crear el proyecto de verdad y
-        compílalo antes de compartirlo.
-      </P>
-
-      <H2 id="compartir">5. Publícalo y versiónalo</H2>
-      <P>
-        Sube el kit a un repo público de GitHub, haz push y publícalo desde la terminal (con un token de{" "}
-        <Link href="/cuenta" className="text-foreground underline underline-offset-4">tu cuenta</Link>) o desde{" "}
-        <Link href="/publicar" className="text-foreground underline underline-offset-4">la web</Link>:
-      </P>
-      <Cmd>{cliCommand("login")}</Cmd>
-      <Cmd>{cliCommand("publish ./kit")}</Cmd>
-      <P>
-        Queda en el catálogo como <Code>tu-usuario/nombre-del-kit</Code>, fijado al commit publicado y con su hash de
-        integridad. Sin publicar, también se puede instalar directamente desde GitHub:
-      </P>
-      <Cmd>{cliCommand("tu-usuario/tu-repo/kit")}</Cmd>
-      <P>
-        Cada cambio sube <Code>version</Code> (semver) en el <Code>kit.json</Code> y crea una etiqueta de git con ese número.
-        Así se puede instalar una versión concreta: <Code>{cliCommand("tu-usuario/tu-repo/kit@v1.2.0")}</Code>. Para
-        aparecer en el catálogo oficial, abre un PR que añada tu kit a <Code>registry/kits/</Code>.
-      </P>
-
-      <H2 id="verificar">6. Verifícalo</H2>
-      <P>
-        <Code>{cliCommand("test ./kit")}</Code> instala el kit con varias combinaciones de opciones en carpetas temporales,
-        ejecuta su comprobación (<Code>verify.command</Code>, por defecto <Code>build</Code>) y escribe un informe. Para la
-        insignia <strong className="text-foreground">Verificado</strong>, ejecútalo en GitHub Actions: el informe se firma con
-        el token OIDC del repositorio, así que nadie puede falsificarlo.
-      </P>
-      <CodeBlock code={VERIFY_WORKFLOW} />
-      <P>
-        Para elegir qué combinaciones probar, define <Code>verify.matrix</Code> en el <Code>kit.json</Code> (ver la{" "}
-        <Link href="/docs/referencia" className="text-foreground underline underline-offset-4">referencia</Link>). Los kits de
-        la comunidad sin verificar muestran un aviso antes de ejecutarse y, con <Code>-y</Code>, exigen{" "}
-        <Code>--allow-commands</Code>.
-      </P>
-
-      <H2 id="buenas-practicas">Buenas prácticas</H2>
-      <ul className="mt-3 flex list-disc flex-col gap-1.5 pl-5 text-muted-foreground">
-        <li>Escribe instrucciones como reglas concretas (&quot;añade dependencias con npx expo install&quot;), no como descripciones.</li>
-        <li>Usa bibliotecas del catálogo en vez de dependencias sueltas: traen su skill, su configuración y su regla.</li>
-        <li>Lo que no se puede automatizar (crear una cuenta, pegar una clave) va en <Code>setupTasks</Code>, no en las instrucciones.</li>
-        <li>Prefiere skills oficiales de la organización de cada herramienta.</li>
-        <li>No copies tu aplicación entera: un kit es un punto de partida, no un clon.</li>
       </ul>
 
-      <H2 id="seguridad">Seguridad</H2>
-      <P>
-        Un kit ejecuta comandos en la máquina de quien lo instala. El CLI siempre muestra el plan completo y, salvo con{" "}
-        <Code>-y</Code>, pide confirmación. Revisa los kits de terceros igual que revisarías un script.
-      </P>
+      <H2 id="origin">Where kits come from</H2>
+      <dl className="mt-3 flex flex-col divide-y">
+        {(
+          [
+            ["official", "Official", `Maintained in the ${BRAND.name} repository. Every version is tagged and its contents are pinned by hash.`],
+            ["verified", "Verified", "Its current version passed the test: it was installed and built with all its combinations in GitHub Actions."],
+            ["community", "Community", "Published by anyone from their repository. Review the plan before installing them."],
+          ] as const
+        ).map(([origin, title, text]) => (
+          <div key={origin} className="flex gap-3 py-3">
+            <OriginIcon origin={origin} className="mt-0.5 size-4" />
+            <div className="flex flex-col gap-0.5">
+              <dt className="font-medium">{title}</dt>
+              <dd className="text-sm text-muted-foreground">{text}</dd>
+            </div>
+          </div>
+        ))}
+      </dl>
+
+      <H2 id="next-steps">Next steps</H2>
+      <div className="mt-3 grid gap-3 sm:grid-cols-2">
+        {DOCS_SECTIONS.flatMap((s) => s.pages)
+          .filter((p) => p.href !== "/docs")
+          .map((page) => (
+            <Link key={page.href} href={page.href} className="rounded-lg border px-4 py-3 text-sm transition-colors hover:bg-muted/50">
+              {page.label} <span className="text-muted-foreground">→</span>
+            </Link>
+          ))}
+      </div>
     </>
   );
 }

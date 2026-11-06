@@ -1,6 +1,8 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, test } from "vitest";
 
-import { applyWrite, mergeJson } from "./plan";
+import { applyWrite, buildPlan, mergeJson } from "./plan";
+import { defaultSelections } from "./resolve";
+import { parseKit } from "./schema";
 
 describe("applyWrite", () => {
   it("create: writes a new file and never overwrites", () => {
@@ -26,8 +28,8 @@ describe("applyWrite", () => {
   it("insert-before: inserts before the anchor and fails without it", () => {
     const merge = applyWrite({ path: "layout.tsx", content: "<Analytics />", mode: "insert-before", anchor: "</body>" });
     expect(merge("<body>{children}</body>")).toBe("<body>{children}<Analytics />\n</body>");
-    expect(() => merge("<main />")).toThrow(/No se encontró/);
-    expect(() => merge(undefined)).toThrow(/No existe/);
+    expect(() => merge("<main />")).toThrow(/Couldn't find/);
+    expect(() => merge(undefined)).toThrow(/doesn't exist/);
   });
 });
 
@@ -45,10 +47,30 @@ describe("json-merge", () => {
   });
 
   it("refuses JSON with comments", () => {
-    expect(() => merge('{ // comment\n }')).toThrow(/JSON válido/);
+    expect(() => merge('{ // comment\n }')).toThrow(/valid JSON/);
   });
 
   it("mergeJson unions arrays by value", () => {
     expect(mergeJson([{ a: 1 }], [{ a: 1 }, { a: 2 }])).toEqual([{ a: 1 }, { a: 2 }]);
   });
+});
+
+test("finalize runs after every choice's setup, and isn't optional", () => {
+  const kit = parseKit({
+    name: "mono",
+    version: "1.0.0",
+    title: "Mono",
+    description: "",
+    category: "monorepo",
+    author: "a",
+    base: { command: "mkdir {{name}}" },
+    postInstall: ["echo kit"],
+    finalize: ["{{pm}} install"],
+    options: [{ id: "web", label: "Web", default: "next", choices: [{ id: "next", label: "Next", postInstall: ["echo web"] }] }],
+  });
+  const steps = buildPlan({ kit, kitDir: "/k", sel: defaultSelections(kit), parentDir: "/tmp", name: "app", git: false });
+  const runs = steps.filter((s) => s.kind === "run").map((s) => (s as { command: string; optional?: boolean }));
+  // Skills are installed afterwards.
+  expect(runs.slice(0, 4).map((s) => s.command)).toEqual(["mkdir app", "echo kit", "echo web", "npm install"]);
+  expect(runs[3]?.optional).toBeFalsy();
 });

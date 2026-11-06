@@ -1,12 +1,12 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "web-astro",
-  "version": "1.0.0",
-  "author": "kits",
-  "title": "Web de contenido con Astro",
+  "version": "1.1.0",
+  "author": "Marlon Chaviano",
+  "title": "Content site with Astro",
   "category": "web",
   "language": "typescript",
-  "description": "Sitio rápido con Astro: páginas estáticas por defecto, islas interactivas solo donde hacen falta. Para blogs, docs y webs de producto.",
+  "description": "A fast site with Astro: static pages by default, interactive islands only where needed. For blogs, docs and product sites.",
   "tags": [
     "astro",
     "content",
@@ -18,12 +18,20 @@
     "install": "{{pm}} install"
   },
   "skills": [
-    "astrolicious/agent-skills@astro",
-    "anthropics/skills@frontend-design",
-    "vercel-labs/agent-skills@web-design-guidelines"
+    "astrolicious/agent-skills@astro"
   ],
   "verify": {
-    "command": "{{pm}} run build"
+    "command": "{{pm}} run build",
+    "matrix": [
+      {
+        "styling-lib": [
+          "tailwind-astro"
+        ],
+        "forms": [
+          "zod"
+        ]
+      }
+    ]
   },
   "libraries": {
     "framework": [
@@ -31,10 +39,14 @@
       "vanilla"
     ],
     "animation": [],
+    "design": [
+      "design-pack"
+    ],
     "workflow": [
-      "superpowers",
-      "mattpocock-skills"
-    ]
+      "essentials"
+    ],
+    "styling": "none",
+    "forms": []
   },
-  "instructions": "## Cómo trabajar aquí\n\n- Páginas en `src/pages/` (cada archivo es una ruta) y componentes `.astro` en `src/components/`.\n- Por defecto todo es HTML estático: añade JavaScript en el cliente solo con una isla (`client:visible`, `client:idle`) cuando haga falta interacción.\n- Contenido en Markdown con content collections (`src/content/`).\n- Antes de terminar: `npm run build`."
+  "instructions": "## How to work here\n\n- Pages in `src/pages/` (each file is a route) and `.astro` components in `src/components/`.\n- Everything is static HTML by default: add client-side JavaScript only through an island (`client:visible`, `client:idle`) when interaction is needed.\n- Markdown content with content collections (`src/content/`).\n- Before finishing: `npm run build`."
 }

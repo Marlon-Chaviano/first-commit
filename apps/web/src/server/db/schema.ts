@@ -187,6 +187,23 @@ export const orgs = pgTable("orgs", {
   plan: text("plan").notNull().default("free"),
   /** Libraries every project must use / must not use; `create-first-commit doctor` enforces them. */
   policy: jsonb("policy").$type<{ required: string[]; forbidden: string[] }>().notNull().default({ required: [], forbidden: [] }),
+  /** Company domain proven with a one-time code sent to a work email when the org was created. Null for orgs created before. */
+  verifiedDomain: text("verified_domain"),
+  verifiedEmail: text("verified_email"),
+  verifiedAt: timestamp("verified_at", { withTimezone: true }),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+});
+
+/** Pending one-time codes for "create an organization": one row per user, replaced on every new code. */
+export const orgEmailVerifications = pgTable("org_email_verifications", {
+  userId: text("user_id")
+    .primaryKey()
+    .references(() => user.id, { onDelete: "cascade" }),
+  email: text("email").notNull(),
+  /** SHA-256 of the 6-digit code. */
+  codeHash: text("code_hash").notNull(),
+  attempts: integer("attempts").notNull().default(0),
+  expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
 });
 
@@ -281,4 +298,24 @@ export const brandProfiles = pgTable("brand_profiles", {
   profile: jsonb("profile").$type<Record<string, unknown>>().notNull(),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+});
+
+/**
+ * Browser login for the CLI (`create-first-commit login`): the terminal shows a code, the person
+ * approves it on the website, and the CLI picks up a fresh token by polling with its secret.
+ * Rows live for 10 minutes and are deleted once used.
+ */
+export const cliLoginRequests = pgTable("cli_login_requests", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  /** What the person compares between terminal and browser, e.g. "BCDF-2345". */
+  userCode: text("user_code").notNull().unique(),
+  /** SHA-256 of the secret only the CLI knows: approving needs the code, collecting the token needs this. */
+  secretHash: text("secret_hash").notNull(),
+  /** pending | approved | denied */
+  status: text("status").notNull().default("pending"),
+  userId: text("user_id").references(() => user.id, { onDelete: "cascade" }),
+  /** "macbook (darwin)", shown on the approval page and used to name the token. */
+  device: text("device").notNull(),
+  expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
 });

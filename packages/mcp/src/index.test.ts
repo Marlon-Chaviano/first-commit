@@ -1,7 +1,8 @@
-import { readdirSync, readFileSync } from "node:fs";
+import { readFileSync } from "node:fs";
 import { join } from "node:path";
 
-import { catalogSchema, expandKit, parseKit, recommendHeuristic, resolveRecommendation, type Kit, type RegistryEntry } from "@kits/schema";
+import { catalogSchema, recommendHeuristic, resolveRecommendation, type Kit, type RegistryEntry } from "@kits/schema";
+import { loadRegistryKits } from "@kits/schema/node";
 import { InMemoryTransport } from "@modelcontextprotocol/server";
 import { describe, expect, it } from "vitest";
 
@@ -9,9 +10,8 @@ import { createKitsServer, describeSteps, selectionsFor, type KitsSource, type L
 
 const registry = join(__dirname, "../../../registry");
 const catalog = catalogSchema.parse(JSON.parse(readFileSync(join(registry, "libraries.json"), "utf8")));
-const kits: Kit[] = readdirSync(join(registry, "kits")).map((name) =>
-  expandKit(parseKit(JSON.parse(readFileSync(join(registry, "kits", name, "kit.json"), "utf8"))), catalog),
-);
+// Kits as the registry serves them: `extends` resolved, catalog libraries expanded.
+const kits: Kit[] = await loadRegistryKits(registry);
 const entries = JSON.parse(readFileSync(join(registry, "index.json"), "utf8")) as RegistryEntry[];
 
 const source: KitsSource = {
@@ -72,7 +72,7 @@ describe("kits MCP server", () => {
 
   it("recommends with a ready-to-run command", async () => {
     const { call } = await connect();
-    const rec = JSON.parse((await call("recommend_kit", { description: "landing con animaciones" })).text);
+    const rec = JSON.parse((await call("recommend_kit", { description: "landing page with animations" })).text);
     expect(rec.kit).toBe("landing-next");
     expect(rec.command).toMatch(/create-first-commit@latest landing-next/);
   });

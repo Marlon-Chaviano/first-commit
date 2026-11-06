@@ -31,6 +31,7 @@
         "saas",
         "api",
         "extension",
+        "monorepo",
         "other"
       ]
     },
@@ -57,6 +58,13 @@
       "required": [
         "command"
       ]
+    },
+    "finalize": {
+      "default": [],
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
     },
     "addCommand": {
       "type": "object",
@@ -90,7 +98,9 @@
           "bundler",
           "composer",
           "maven",
-          "cargo"
+          "cargo",
+          "gradle",
+          "flutter"
         ]
       }
     },
@@ -323,7 +333,7 @@
                     "properties": {
                       "path": {
                         "type": "string",
-                        "pattern": "^(?!\\/)(?!(?:.*\\/)?\\.\\.(?:\\/|$))[\\w./@()[\\]-]+$"
+                        "pattern": "^(?!\\/)(?!(?:.*\\/)?\\.\\.(?:\\/|$))[\\w./@()+[\\]-]+$"
                       },
                       "content": {
                         "type": "string"
@@ -415,6 +425,21 @@
             "type": "string"
           }
         },
+        "styling": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string"
+        },
+        "data": {
+          "type": "string"
+        },
+        "forms": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
         "auth": {
           "type": "string"
         },
@@ -462,6 +487,12 @@
         },
         "deploy": {
           "type": "string"
+        },
+        "design": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         },
         "workflow": {
           "type": "array",
@@ -596,7 +627,7 @@
         "properties": {
           "path": {
             "type": "string",
-            "pattern": "^(?!\\/)(?!(?:.*\\/)?\\.\\.(?:\\/|$))[\\w./@()[\\]-]+$"
+            "pattern": "^(?!\\/)(?!(?:.*\\/)?\\.\\.(?:\\/|$))[\\w./@()+[\\]-]+$"
           },
           "content": {
             "type": "string"

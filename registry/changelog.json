@@ -1,49 +1,69 @@
 [
   {
     "date": "2026-11-05",
-    "title": "Perfiles de marca, más lenguajes y skills de trabajo",
+    "title": "English everywhere, 70 official kits and a monorepo type",
     "items": [
-      "Perfiles de marca: colores, fuentes, reglas y documentación de un cliente, aplicados a cualquier kit con --brand.",
-      "9 kits nuevos: Astro, SvelteKit, Nuxt, Vite + React, Elysia, Django, Rails, Laravel y Spring Boot.",
-      "Superpowers y las skills de Matt Pocock (grill-me, improve-codebase-architecture) en todos los kits.",
-      "Páginas por lenguaje, iconos de agentes y lenguajes, y la barra con el comando siempre a mano en cada kit."
+      "first-commit is now fully in English: website, CLI, kits, libraries, emails and docs. Old Spanish URLs redirect to the new ones.",
+      "70 official kits, 10 per type, including the new Monorepo type (Turborepo, Nx, Bun, uv, Go workspaces and full-stack pairs).",
+      "A design pack (frontend-design, impeccable, web-design-guidelines…) in every kit with an interface.",
+      "New docs: introduction, CLI, API and FAQ."
     ]
   },
   {
     "date": "2026-11-05",
-    "title": "Equipos, kits privados y kits de pago",
+    "title": "first-commit pack, framework skills and more options",
     "items": [
-      "Organizaciones con registro privado: solo sus miembros ven e instalan sus kits.",
-      "Políticas de bibliotecas obligatorias y prohibidas, comprobadas por `kitsh doctor` en CI.",
-      "Los creadores pueden vender kits (pago único) y cobrar en su cuenta de Stripe.",
-      "Newsletter semanal, novedades con RSS y páginas de precios, términos y privacidad."
+      "first-commit pack: a selection of general-purpose skills (plan, debug, verify, review, improve the architecture and find skills) in every kit.",
+      "Official framework skills: Next.js, Vue/Nuxt (and Pinia) and Svelte bring their authors' best practices.",
+      "Next.js: Neon, Turso and MongoDB databases; Lemon Squeezy, Polar, Paddle and Mercado Pago payments; deployment on Netlify, Render, Railway and Fly.io.",
+      "27 new libraries for Astro, SvelteKit, Nuxt, React, Python, Django, Go, Rails, Laravel and Spring."
+    ]
+  },
+  {
+    "date": "2026-11-05",
+    "title": "Brand profiles, more languages and workflow skills",
+    "items": [
+      "Brand profiles: a client's colors, fonts, rules and documentation, applied to any kit with --brand.",
+      "9 new kits: Astro, SvelteKit, Nuxt, Vite + React, Elysia, Django, Rails, Laravel and Spring Boot.",
+      "Superpowers and Matt Pocock's skills (grill-me, improve-codebase-architecture) in every kit.",
+      "Per-language pages, agent and language icons, and a bar that keeps the command at hand on every kit."
+    ]
+  },
+  {
+    "date": "2026-11-05",
+    "title": "Teams, private kits and paid kits",
+    "items": [
+      "Organizations with a private registry: only their members see and install their kits.",
+      "Required and forbidden library policies, checked by `doctor` in CI.",
+      "Creators can sell kits (one-time payment) and get paid into their Stripe account.",
+      "Weekly newsletter, a changelog with RSS, and pricing, terms and privacy pages."
     ]
   },
   {
     "date": "2026-11-04",
-    "title": "Stacks, comparativas e insignia para tu README",
+    "title": "Stacks, comparisons and a badge for your README",
     "items": [
-      "Páginas de stacks: combinaciones probadas (Next.js + Supabase + Stripe, Expo + NativeWind…) instalables en un comando.",
-      "Comparativas entre bibliotecas de la misma categoría con datos de uso reales.",
-      "Insignia SVG con las instalaciones de tu kit, lista para pegar en el README."
+      "Stack pages: tested combinations (Next.js + Supabase + Stripe, Expo + NativeWind…) installable in one command.",
+      "Comparisons between libraries of the same category with real usage data.",
+      "An SVG badge with your kit's installs, ready to paste into your README."
     ]
   },
   {
     "date": "2026-11-04",
-    "title": "Tu agente crea el proyecto",
+    "title": "Your agent creates the project",
     "items": [
-      "Servidor MCP: `kitsh mcp` en local (busca, recomienda, planea y crea proyectos) y un endpoint remoto de solo lectura.",
-      "\"Describe tu proyecto\" en la home recomienda un kit con sus opciones.",
-      "Pestaña Prompt en cada kit para pegarla en Claude Code, Cursor o Codex."
+      "MCP server: `mcp` locally (search, recommend, plan and create projects) and a read-only remote endpoint.",
+      "\"Describe your project\" on the home page recommends a kit with its options.",
+      "A prompt tab on every kit to paste into Claude Code, Cursor or Codex."
     ]
   },
   {
     "date": "2026-11-04",
-    "title": "Catálogo completo y kits para Python, Go y iOS",
+    "title": "Full catalog and kits for Python, Go and iOS",
     "items": [
-      "Nuevas categorías: auth, base de datos, pagos, email, idiomas, IA, tests, calidad, CI y despliegue.",
-      "Kits api-fastapi, api-go e ios-swiftui.",
-      "Busca kits por biblioteca en el ranking."
+      "New categories: auth, database, payments, email, languages, AI, tests, quality, CI and deployment.",
+      "api-fastapi, api-go and ios-swiftui kits.",
+      "Search kits by library in the ranking."
     ]
   }
 ]

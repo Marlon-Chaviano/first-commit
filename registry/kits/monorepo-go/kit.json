@@ -1,0 +1,83 @@
+{
+  "$schema": "../../kit.schema.json",
+  "version": "1.0.0",
+  "author": "Marlon Chaviano",
+  "name": "monorepo-go",
+  "title": "Go monorepo with go.work",
+  "category": "monorepo",
+  "language": "go",
+  "description": "A Go workspace (go.work): an HTTP API, a worker and a shared package, each in its own module and using only the standard library.",
+  "tags": [
+    "go",
+    "golang",
+    "workspace",
+    "monorepo"
+  ],
+  "base": {
+    "command": "mkdir {{name}}"
+  },
+  "packageManagers": [
+    "go"
+  ],
+  "skills": [
+    "samber/cc-skills-golang@golang-code-style",
+    "samber/cc-skills-golang@golang-error-handling",
+    "samber/cc-skills-golang@golang-testing"
+  ],
+  "writeFiles": [
+    {
+      "path": "go.work",
+      "content": "go 1.24\n\nuse (\n\t./apps/api\n\t./apps/worker\n\t./packages/shared\n)\n"
+    },
+    {
+      "path": "packages/shared/go.mod",
+      "content": "module {{name}}/packages/shared\n\ngo 1.24\n"
+    },
+    {
+      "path": "packages/shared/greet.go",
+      "content": "// Package shared holds code every app uses. Keep it free of HTTP or app concerns.\npackage shared\n\nimport \"fmt\"\n\n// Greet returns a greeting for name.\nfunc Greet(name string) string {\n\treturn fmt.Sprintf(\"Hello, %s!\", name)\n}\n"
+    },
+    {
+      "path": "packages/shared/greet_test.go",
+      "content": "package shared\n\nimport \"testing\"\n\nfunc TestGreet(t *testing.T) {\n\tif got := Greet(\"Ana\"); got != \"Hello, Ana!\" {\n\t\tt.Fatalf(\"Greet() = %q\", got)\n\t}\n}\n"
+    },
+    {
+      "path": "apps/api/go.mod",
+      "content": "module {{name}}/apps/api\n\ngo 1.24\n\nrequire {{name}}/packages/shared v0.0.0\n"
+    },
+    {
+      "path": "apps/api/main.go",
+      "content": "package main\n\nimport (\n\t\"log\"\n\t\"net/http\"\n\t\"os\"\n)\n\nfunc main() {\n\taddr := \":\" + envOr(\"PORT\", \"8080\")\n\tlog.Printf(\"API en %s\", addr)\n\tlog.Fatal(http.ListenAndServe(addr, newRouter()))\n}\n\nfunc envOr(key, fallback string) string {\n\tif v := os.Getenv(key); v != \"\" {\n\t\treturn v\n\t}\n\treturn fallback\n}\n"
+    },
+    {
+      "path": "apps/api/router.go",
+      "content": "package main\n\nimport (\n\t\"encoding/json\"\n\t\"net/http\"\n\n\t\"{{name}}/packages/shared\"\n)\n\nfunc newRouter() http.Handler {\n\tmux := http.NewServeMux()\n\tmux.HandleFunc(\"GET /health\", func(w http.ResponseWriter, r *http.Request) {\n\t\twriteJSON(w, map[string]bool{\"ok\": true})\n\t})\n\tmux.HandleFunc(\"GET /greet/{name}\", func(w http.ResponseWriter, r *http.Request) {\n\t\twriteJSON(w, map[string]string{\"message\": shared.Greet(r.PathValue(\"name\"))})\n\t})\n\treturn mux\n}\n\nfunc writeJSON(w http.ResponseWriter, v any) {\n\tw.Header().Set(\"Content-Type\", \"application/json\")\n\t_ = json.NewEncoder(w).Encode(v)\n}\n"
+    },
+    {
+      "path": "apps/api/router_test.go",
+      "content": "package main\n\nimport (\n\t\"net/http\"\n\t\"net/http/httptest\"\n\t\"testing\"\n)\n\nfunc TestGreet(t *testing.T) {\n\trec := httptest.NewRecorder()\n\tnewRouter().ServeHTTP(rec, httptest.NewRequest(http.MethodGet, \"/greet/Ana\", nil))\n\tif rec.Code != http.StatusOK {\n\t\tt.Fatalf(\"status = %d\", rec.Code)\n\t}\n}\n"
+    },
+    {
+      "path": "apps/worker/go.mod",
+      "content": "module {{name}}/apps/worker\n\ngo 1.24\n\nrequire {{name}}/packages/shared v0.0.0\n"
+    },
+    {
+      "path": "apps/worker/main.go",
+      "content": "// The worker runs background jobs on a schedule. Replace the ticker with your queue.\npackage main\n\nimport (\n\t\"context\"\n\t\"log\"\n\t\"os/signal\"\n\t\"syscall\"\n\t\"time\"\n\n\t\"{{name}}/packages/shared\"\n)\n\nfunc main() {\n\tctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)\n\tdefer stop()\n\tticker := time.NewTicker(time.Minute)\n\tdefer ticker.Stop()\n\tfor {\n\t\tselect {\n\t\tcase <-ctx.Done():\n\t\t\treturn\n\t\tcase <-ticker.C:\n\t\t\tlog.Println(shared.Greet(\"worker\"))\n\t\t}\n\t}\n}\n"
+    },
+    {
+      "path": ".gitignore",
+      "content": "bin\n.env\n"
+    }
+  ],
+  "libraries": {
+    "framework": "go",
+    "workflow": [
+      "essentials"
+    ]
+  },
+  "verify": {
+    "command": "for m in apps/api apps/worker packages/shared; do (cd $m && go vet ./... && go build ./... && go test ./...) || exit 1; done"
+  },
+  "instructions": "## How to work here\n\n- Each app (`apps/api`, `apps/worker`) and package (`packages/shared`) is a Go module; `go.work` ties them together so they can use each other without being published.\n- Add a new module with `go work use ./path`. External dependencies go inside the module that uses them (`cd apps/api && go get …`).\n- Before finishing, in each module: `go vet ./... && go test ./...`.\n- Each app lives in its own folder with its own dependencies; don't mix code from one into another.\n- Whatever backend and frontend share (types, API contracts) is defined in one place and documented.\n"
+}

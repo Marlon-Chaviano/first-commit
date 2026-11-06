@@ -1,0 +1,67 @@
+{
+  "$schema": "../../kit.schema.json",
+  "version": "1.0.0",
+  "author": "Marlon Chaviano",
+  "name": "saas-t3",
+  "title": "SaaS with the T3 stack",
+  "category": "saas",
+  "language": "typescript",
+  "description": "create-t3-app: Next.js with tRPC for an end-to-end typed API, Drizzle, Better Auth and Tailwind CSS. The go-to stack for TypeScript SaaS.",
+  "tags": [
+    "t3",
+    "nextjs",
+    "trpc",
+    "drizzle",
+    "better-auth",
+    "tailwind"
+  ],
+  "base": {
+    "command": "npx -y create-t3-app@latest {{name}} --CI --tailwind --trpc --drizzle --betterAuth --appRouter --dbProvider postgres --noGit --noInstall",
+    "install": "{{pm}} install"
+  },
+  "packageManagers": [
+    "npm",
+    "pnpm",
+    "bun"
+  ],
+  "skills": [
+    "vercel-labs/openreview@next-best-practices",
+    "vercel-labs/agent-skills@vercel-react-best-practices",
+    "trpc/trpc@trpc-router",
+    "better-auth/skills@better-auth-best-practices"
+  ],
+  "libraries": {
+    "framework": [
+      "react",
+      "nextjs"
+    ],
+    "payments": "none",
+    "email": "none",
+    "observability": [],
+    "ci": [],
+    "deploy": "vercel",
+    "design": [
+      "design-pack"
+    ],
+    "workflow": [
+      "essentials"
+    ]
+  },
+  "verify": {
+    "command": "SKIP_ENV_VALIDATION=1 {{pm}} run build",
+    "matrix": [
+      {
+        "payments": [
+          "stripe"
+        ],
+        "email": [
+          "resend"
+        ],
+        "ci": [
+          "github-actions"
+        ]
+      }
+    ]
+  },
+  "instructions": "## How to work here\n\n- The API is tRPC routers in `src/server/api/routers/`, registered in `src/server/api/root.ts`. Use `protectedProcedure` for anything that needs a session.\n- Environment variables are validated in `src/env.js`: add every new variable there.\n- The database schema is in `src/server/db/schema.ts`; apply changes with `npm run db:push` (or `db:generate` + `db:migrate`).\n- Before finishing: `npm run build`."
+}

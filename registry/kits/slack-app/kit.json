@@ -1,0 +1,44 @@
+{
+  "$schema": "../../kit.schema.json",
+  "version": "1.0.0",
+  "author": "Marlon Chaviano",
+  "name": "slack-app",
+  "title": "Slack app with Bolt",
+  "category": "extension",
+  "language": "typescript",
+  "description": "A Slack app with Bolt for TypeScript from the official template: commands, shortcuts, events and Block Kit messages, connected through Socket Mode.",
+  "tags": [
+    "slack",
+    "bolt",
+    "bot",
+    "typescript"
+  ],
+  "base": {
+    "command": "npx -y tiged slack-samples/bolt-ts-starter-template {{name}}",
+    "install": "npm install"
+  },
+  "packageManagers": [
+    "npm"
+  ],
+  "skills": [
+    "slackapi/slack-skills-plugin@slack-api",
+    "slackapi/slack-skills-plugin@block-kit"
+  ],
+  "env": {
+    "SLACK_BOT_TOKEN": "",
+    "SLACK_APP_TOKEN": ""
+  },
+  "libraries": {
+    "framework": "nodejs",
+    "workflow": [
+      "essentials"
+    ]
+  },
+  "verify": {
+    "command": "npm run build"
+  },
+  "setupTasks": [
+    "Slack: create the app at api.slack.com/apps from `manifest.json`, enable Socket Mode and copy the tokens into `SLACK_BOT_TOKEN` and `SLACK_APP_TOKEN`."
+  ],
+  "instructions": "## How to work here\n\n- Handlers are in `listeners/` (one per type: commands, events, actions, views) and registered in `listeners/index.ts`.\n- Always respond with `ack()` within 3 seconds and do the work afterwards.\n- Rich messages are built with Block Kit.\n- Start with `npm run build && npm start` (Socket Mode, no public URL).\n- Before finishing: `npm test`."
+}

@@ -15,11 +15,11 @@ For agents: run \`${cliCommand("<kit> <folder> --dry-run")}\` first and show the
 
 ## Docs
 
-- [Use kits from your agent](${BRAND.siteUrl}/docs/agentes): MCP server, skill and prompt
-- [Create a kit](${BRAND.siteUrl}/docs): \`${cliCommand("create")}\` turns a project into a kit
-- [kit.json reference](${BRAND.siteUrl}/docs/referencia)
-- [Library catalog](${BRAND.siteUrl}/docs/bibliotecas)
-- [Keep a project up to date](${BRAND.siteUrl}/docs/mantener): update, add, doctor
+- [Use kits from your agent](${BRAND.siteUrl}/docs/agents): MCP server, skill and prompt
+- [Create a kit](${BRAND.siteUrl}/docs/create-kit): \`${cliCommand("create")}\` turns a project into a kit
+- [kit.json reference](${BRAND.siteUrl}/docs/reference)
+- [Library catalog](${BRAND.siteUrl}/docs/libraries)
+- [Keep a project up to date](${BRAND.siteUrl}/docs/maintain): update, add, doctor
 
 ## Official kits
 

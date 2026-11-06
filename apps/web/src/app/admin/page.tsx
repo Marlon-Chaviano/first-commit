@@ -16,7 +16,7 @@ import { REPORT_REASONS } from "@/lib/reports";
 import { getAdminData } from "@/server/accounts";
 import { getViewer, isAdmin } from "@/server/session";
 
-export const metadata: Metadata = { title: "Administración", robots: { index: false } };
+export const metadata: Metadata = { title: "Admin", robots: { index: false } };
 
 export default function AdminPage() {
   return (
@@ -36,21 +36,21 @@ async function Admin() {
   return (
     <>
       <header className="flex flex-col gap-1">
-        <p className="label-mono text-muted-foreground">Administración</p>
-        <h1 className="text-3xl font-semibold tracking-tight">Moderación</h1>
+        <p className="label-mono text-muted-foreground">Admin</p>
+        <h1 className="text-3xl font-semibold tracking-tight">Moderation</h1>
       </header>
 
       <section className="flex flex-col gap-4">
-        <h2 className="label-mono">Denuncias abiertas ({open.length})</h2>
+        <h2 className="label-mono">Open reports ({open.length})</h2>
         <Separator />
         {reports.length ? (
           <Table>
             <TableHeader>
               <TableRow className="hover:bg-transparent">
                 <TableHead className="label-mono text-muted-foreground">Kit</TableHead>
-                <TableHead className="label-mono text-muted-foreground">Motivo</TableHead>
-                <TableHead className="label-mono text-muted-foreground">Detalle</TableHead>
-                <TableHead className="label-mono text-muted-foreground">Estado</TableHead>
+                <TableHead className="label-mono text-muted-foreground">Reason</TableHead>
+                <TableHead className="label-mono text-muted-foreground">Details</TableHead>
+                <TableHead className="label-mono text-muted-foreground">Status</TableHead>
                 <TableHead />
               </TableRow>
             </TableHeader>
@@ -73,11 +73,11 @@ async function Admin() {
                   <TableCell className="text-right">
                     {r.status === "open" ? (
                       <>
-                        <ReportStatusButton id={r.id} to="resolved">Resuelta</ReportStatusButton>
-                        <ReportStatusButton id={r.id} to="dismissed">Descartar</ReportStatusButton>
+                        <ReportStatusButton id={r.id} to="resolved">Resolved</ReportStatusButton>
+                        <ReportStatusButton id={r.id} to="dismissed">Dismiss</ReportStatusButton>
                       </>
                     ) : (
-                      <ReportStatusButton id={r.id} to="open">Reabrir</ReportStatusButton>
+                      <ReportStatusButton id={r.id} to="open">Reopen</ReportStatusButton>
                     )}
                   </TableCell>
                 </TableRow>
@@ -90,7 +90,7 @@ async function Admin() {
       </section>
 
       <section className="flex flex-col gap-4">
-        <h2 className="label-mono">Kits de la comunidad ({kits.length})</h2>
+        <h2 className="label-mono">Community kits ({kits.length})</h2>
         <Separator />
         <Table>
           <TableBody>
@@ -110,9 +110,9 @@ async function Admin() {
                 <TableCell className="text-right">
                   {kit.status === "active" && <FeaturedButton slug={kit.slug} featured={Boolean(kit.featuredAt)} />}
                   {kit.status === "hidden" ? (
-                    <KitStatusButton slug={kit.slug} to="active">Mostrar</KitStatusButton>
+                    <KitStatusButton slug={kit.slug} to="active">Show</KitStatusButton>
                   ) : (
-                    <KitStatusButton slug={kit.slug} to="hidden">Ocultar</KitStatusButton>
+                    <KitStatusButton slug={kit.slug} to="hidden">Hide</KitStatusButton>
                   )}
                 </TableCell>
               </TableRow>
@@ -121,7 +121,7 @@ async function Admin() {
         </Table>
       </section>
       <section className="flex flex-col gap-4">
-        <h2 className="label-mono">Compras de kits de pago ({purchases.length})</h2>
+        <h2 className="label-mono">Paid kit purchases ({purchases.length})</h2>
         <Separator />
         {purchases.length ? (
           <Table>
@@ -130,7 +130,7 @@ async function Admin() {
                 <TableRow key={license.id}>
                   <TableCell className="font-mono">{kit}</TableCell>
                   <TableCell className="font-mono text-xs text-muted-foreground">
-                    {buyer} · {(license.amountCents / 100).toFixed(2)} € (comisión {(license.feeCents / 100).toFixed(2)} €) · {license.createdAt.toISOString().slice(0, 10)}
+                    {buyer} · {(license.amountCents / 100).toFixed(2)} € (fee {(license.feeCents / 100).toFixed(2)} €) · {license.createdAt.toISOString().slice(0, 10)}
                   </TableCell>
                   <TableCell>
                     <Badge variant="outline">{license.status}</Badge>
@@ -141,7 +141,7 @@ async function Admin() {
             </TableBody>
           </Table>
         ) : (
-          <p className="text-sm text-muted-foreground">Aún no hay compras.</p>
+          <p className="text-sm text-muted-foreground">No purchases yet.</p>
         )}
       </section>
     </>

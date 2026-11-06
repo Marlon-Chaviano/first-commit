@@ -1,0 +1,42 @@
+{
+  "$schema": "../../kit.schema.json",
+  "version": "1.0.0",
+  "author": "Marlon Chaviano",
+  "name": "blog-astro",
+  "title": "Blog with Astro",
+  "category": "landing",
+  "language": "typescript",
+  "description": "Astro's official blog: posts in Markdown and MDX with typed content collections, RSS, sitemap and SEO, ready to publish.",
+  "tags": [
+    "astro",
+    "blog",
+    "mdx",
+    "rss"
+  ],
+  "base": {
+    "command": "npx create-astro@latest {{name}} --template blog --no-install --no-git --skip-houston --yes",
+    "install": "{{pm}} install"
+  },
+  "skills": [
+    "astrolicious/agent-skills@astro"
+  ],
+  "libraries": {
+    "framework": [
+      "astro",
+      "vanilla"
+    ],
+    "design": [
+      "design-pack"
+    ],
+    "workflow": [
+      "essentials"
+    ]
+  },
+  "verify": {
+    "command": "{{pm}} run build"
+  },
+  "setupTasks": [
+    "Astro: change `site` in `astro.config.mjs` and the data in `src/consts.ts` (the blog's title and description)."
+  ],
+  "instructions": "## How to work here\n\n- Each post is a `.md`/`.mdx` file in `src/content/blog/`; its fields (title, date, image) are validated by the schema in `src/content.config.ts`.\n- A post's images live next to it and are used with `<Image />` from `astro:assets`.\n- Before finishing: `npm run build`."
+}

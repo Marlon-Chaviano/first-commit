@@ -4,47 +4,13 @@ import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
 
+import { ConfirmDelete } from "@/components/shared/confirm-delete";
 import { Button } from "@/components/ui/button";
 import { Field, FieldDescription, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
-import { addMemberAction, createOrgAction, removeMemberAction, setPolicyAction } from "./actions";
-
-export function CreateOrgForm() {
-  const router = useRouter();
-  const [slug, setSlug] = useState("");
-  const [name, setName] = useState("");
-  const [pending, start] = useTransition();
-  return (
-    <form
-      className="flex flex-col gap-6"
-      onSubmit={(e) => {
-        e.preventDefault();
-        start(async () => {
-          const r = await createOrgAction(slug, name);
-          if (r.ok) router.push(`/orgs/${r.data}`);
-          else toast.error(r.error);
-        });
-      }}
-    >
-      <FieldGroup>
-        <Field>
-          <FieldLabel htmlFor="org-slug">Identificador</FieldLabel>
-          <Input id="org-slug" value={slug} onChange={(e) => setSlug(e.target.value.toLowerCase())} placeholder="acme" className="font-mono" />
-          <FieldDescription>Es el espacio de nombres de sus kits: acme/backend. Usa el de tu organización de GitHub.</FieldDescription>
-        </Field>
-        <Field>
-          <FieldLabel htmlFor="org-name">Nombre</FieldLabel>
-          <Input id="org-name" value={name} onChange={(e) => setName(e.target.value)} placeholder="Acme Inc." />
-        </Field>
-      </FieldGroup>
-      <Button type="submit" disabled={pending || !slug}>
-        Crear organización
-      </Button>
-    </form>
-  );
-}
+import { addMemberAction, deleteOrgAction, removeMemberAction, setPolicyAction } from "./actions";
 
 export function AddMemberForm({ org, canAddOwners }: { org: string; canAddOwners: boolean }) {
   const [handle, setHandle] = useState("");
@@ -59,19 +25,19 @@ export function AddMemberForm({ org, canAddOwners }: { org: string; canAddOwners
           const r = await addMemberAction(org, handle, role);
           if (r.ok) {
             setHandle("");
-            toast.success("Miembro añadido");
+            toast.success("Member added");
           } else toast.error(r.error);
         });
       }}
     >
-      <Input value={handle} onChange={(e) => setHandle(e.target.value)} placeholder="usuario de GitHub" aria-label="Usuario de GitHub" className="font-mono sm:max-w-56" />
-      <ToggleGroup variant="outline" size="sm" spacing={1} value={[role]} onValueChange={(v: string[]) => v[0] && setRole(v[0] as typeof role)} aria-label="Rol">
-        <ToggleGroupItem value="member" className="font-mono text-xs">miembro</ToggleGroupItem>
+      <Input value={handle} onChange={(e) => setHandle(e.target.value)} placeholder="GitHub username" aria-label="GitHub username" className="font-mono sm:max-w-56" />
+      <ToggleGroup variant="outline" size="sm" spacing={1} value={[role]} onValueChange={(v: string[]) => v[0] && setRole(v[0] as typeof role)} aria-label="Role">
+        <ToggleGroupItem value="member" className="font-mono text-xs">member</ToggleGroupItem>
         <ToggleGroupItem value="admin" className="font-mono text-xs">admin</ToggleGroupItem>
         {canAddOwners && <ToggleGroupItem value="owner" className="font-mono text-xs">owner</ToggleGroupItem>}
       </ToggleGroup>
       <Button type="submit" size="sm" disabled={pending || !handle.trim()}>
-        Añadir
+        Add
       </Button>
     </form>
   );
@@ -89,11 +55,11 @@ export function RemoveMemberButton({ org, userId, self }: { org: string; userId:
         start(async () => {
           const r = await removeMemberAction(org, userId);
           if (!r.ok) toast.error(r.error);
-          else if (self) router.push("/cuenta");
+          else if (self) router.push("/account");
         })
       }
     >
-      {self ? "Salir" : "Quitar"}
+      {self ? "Leave" : "Remove"}
     </Button>
   );
 }
@@ -109,27 +75,60 @@ export function PolicyForm({ org, required, forbidden, editable }: { org: string
         e.preventDefault();
         start(async () => {
           const r = await setPolicyAction(org, req, forb);
-          if (r.ok) toast.success("Política guardada");
+          if (r.ok) toast.success("Policy saved");
           else toast.error(r.error);
         });
       }}
     >
       <FieldGroup>
         <Field>
-          <FieldLabel htmlFor="policy-required">Obligatorias</FieldLabel>
+          <FieldLabel htmlFor="policy-required">Required</FieldLabel>
           <Input id="policy-required" value={req} onChange={(e) => setReq(e.target.value)} placeholder="sentry-nextjs, biome" className="font-mono" disabled={!editable} />
         </Field>
         <Field>
-          <FieldLabel htmlFor="policy-forbidden">Prohibidas</FieldLabel>
+          <FieldLabel htmlFor="policy-forbidden">Forbidden</FieldLabel>
           <Input id="policy-forbidden" value={forb} onChange={(e) => setForb(e.target.value)} placeholder="mui, chakra" className="font-mono" disabled={!editable} />
-          <FieldDescription>Ids del catálogo (/docs/bibliotecas). `doctor` falla si un proyecto de la organización no las cumple.</FieldDescription>
+          <FieldDescription>Catalog ids (/docs/libraries). `doctor` fails when one of the organization&apos;s projects breaks them.</FieldDescription>
         </Field>
       </FieldGroup>
       {editable && (
         <Button type="submit" variant="outline" disabled={pending} className="self-start">
-          Guardar política
+          Save policy
         </Button>
       )}
     </form>
+  );
+}
+
+/** Owners only: deletes the org with its private kits and brand profiles. */
+export function DeleteOrgButton({ org }: { org: string }) {
+  const router = useRouter();
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="flex flex-col gap-4 rounded-xl border border-destructive/40 p-5 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex flex-col gap-1">
+        <h3 className="font-medium">Delete this organization</h3>
+        <p className="text-sm text-pretty text-muted-foreground">Removes its private kits, brand profiles and memberships for everyone. This can&apos;t be undone.</p>
+      </div>
+      <Button variant="destructive" className="shrink-0" onClick={() => setOpen(true)}>
+        Delete organization
+      </Button>
+      <ConfirmDelete
+        open={open}
+        onOpenChange={setOpen}
+        title={`Delete ${org}?`}
+        description="Members lose access to its kits right away, and projects created from them can no longer update."
+        confirmText={org}
+        button="Delete organization"
+        action={async (typed) => {
+          const r = await deleteOrgAction(org, typed);
+          return r.ok ? { ok: true } : r;
+        }}
+        onDone={() => {
+          toast.success("Organization deleted");
+          router.push("/account/orgs");
+        }}
+      />
+    </div>
   );
 }

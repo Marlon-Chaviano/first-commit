@@ -3,14 +3,14 @@ import { join } from "node:path";
 
 import { describe, expect, it } from "vitest";
 
-import { catalogSchema, expandKit } from "./libraries";
 import { defaultSelections } from "./resolve";
-import { parseKit } from "./schema";
+import { loadRegistryKits } from "./node";
 import { changedOptions, stackSelections, stackSlug, stacksSchema } from "./stacks";
 
 const registry = join(__dirname, "../../../registry");
-const catalog = catalogSchema.parse(JSON.parse(readFileSync(join(registry, "libraries.json"), "utf8")));
-const kit = (name: string) => expandKit(parseKit(JSON.parse(readFileSync(join(registry, "kits", name, "kit.json"), "utf8"))), catalog);
+// As the registry serves them (with `extends` resolved).
+const byName = new Map((await loadRegistryKits(registry)).map((k) => [k.name, k]));
+const kit = (name: string) => byName.get(name)!;
 
 describe("stacks", () => {
   it("every curated stack is a valid combination of an official kit", () => {
@@ -23,7 +23,7 @@ describe("stacks", () => {
 
   it("rejects options the kit doesn't have or that requirements would drop", () => {
     const saas = kit("saas-next-supabase");
-    expect(() => stackSelections(saas, { nope: ["x"] })).toThrow(/no tiene/);
+    expect(() => stackSelections(saas, { nope: ["x"] })).toThrow(/has no/);
     expect(() => stackSelections(saas, { auth: ["better-auth"] })).toThrow();
   });
 

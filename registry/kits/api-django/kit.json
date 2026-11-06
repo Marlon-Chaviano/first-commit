@@ -1,12 +1,12 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "api-django",
-  "version": "1.0.0",
-  "author": "kits",
-  "title": "Backend con Django",
+  "version": "1.1.0",
+  "author": "Marlon Chaviano",
+  "title": "Backend with Django",
   "category": "api",
   "language": "python",
-  "description": "Django con su admin, ORM y migraciones, en un entorno virtual propio. Para backends con base de datos y panel de administración desde el primer día.",
+  "description": "Django with its admin, ORM and migrations, in its own virtual environment. For backends with a database and an admin panel from day one.",
   "tags": [
     "python",
     "django",
@@ -29,16 +29,35 @@
     "getsentry/skills@django-perf-review"
   ],
   "verify": {
-    "command": ".venv/bin/python manage.py check && .venv/bin/python manage.py test"
+    "command": ".venv/bin/python manage.py check && .venv/bin/python manage.py test && (test ! -f pytest.ini || .venv/bin/python -m pytest -q)",
+    "matrix": [
+      {
+        "database": [
+          "django-postgres"
+        ],
+        "testing": [
+          "pytest-django"
+        ],
+        "quality": [
+          "ruff"
+        ],
+        "ci": [
+          "github-actions-django"
+        ]
+      }
+    ]
   },
   "libraries": {
     "framework": [
       "django"
     ],
     "workflow": [
-      "superpowers",
-      "mattpocock-skills"
-    ]
+      "essentials"
+    ],
+    "database": "none",
+    "testing": [],
+    "quality": [],
+    "ci": []
   },
-  "instructions": "## Cómo trabajar aquí\n\n- Activa el entorno con `source .venv/bin/activate`. Arranca con `python manage.py runserver`.\n- Cada dominio es una app (`python manage.py startapp pedidos`) registrada en `INSTALLED_APPS`.\n- Tras cambiar modelos: `python manage.py makemigrations` y `migrate`. No edites migraciones ya aplicadas.\n- Tras instalar un paquete, actualiza `requirements.txt`. Antes de terminar: `python manage.py check` y `python manage.py test`."
+  "instructions": "## How to work here\n\n- Activate the environment with `source .venv/bin/activate`. Start with `python manage.py runserver`.\n- Each domain is an app (`python manage.py startapp orders`) registered in `INSTALLED_APPS`.\n- After changing models: `python manage.py makemigrations` and `migrate`. Never edit migrations that were already applied.\n- After installing a package, update `requirements.txt`. Before finishing: `python manage.py check` and `python manage.py test`."
 }

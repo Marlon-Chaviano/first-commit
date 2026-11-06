@@ -14,7 +14,7 @@ const git = (...args: string[]) => execFileSync("git", args, { encoding: "utf8",
 try {
   git("rev-parse", "HEAD");
 } catch {
-  console.error("El repo todavía no tiene commits: no hay nada que etiquetar.");
+  console.error("The repo has no commits yet: nothing to tag.");
   process.exit(1);
 }
 
@@ -28,4 +28,4 @@ for (const name of readdirSync(root).sort()) {
   console.log(`✓ ${tag}`);
   created++;
 }
-console.log(created ? `${created} etiquetas nuevas. Súbelas con: git push --tags` : "Todas las versiones ya están etiquetadas.");
+console.log(created ? `${created} new tags. Push them with: git push --tags` : "Every version is already tagged.");

@@ -1,0 +1,80 @@
+{
+  "$schema": "../../kit.schema.json",
+  "version": "1.0.0",
+  "author": "Marlon Chaviano",
+  "name": "saas-ai-next",
+  "title": "AI app with Next.js",
+  "category": "saas",
+  "language": "typescript",
+  "description": "An AI app ready to launch: streaming chat with the AI SDK and Claude, accounts with Better Auth, a Drizzle + Neon database and shadcn/ui.",
+  "tags": [
+    "ai",
+    "nextjs",
+    "ai-sdk",
+    "claude",
+    "better-auth",
+    "streaming"
+  ],
+  "base": {
+    "command": "npx create-next-app@latest {{name}} --ts --tailwind --eslint --app --src-dir --import-alias \"@/*\" --use-{{pm}} --disable-git --no-agent-feedback --yes"
+  },
+  "skills": [
+    "vercel-labs/openreview@next-best-practices",
+    "vercel-labs/agent-skills@vercel-react-best-practices"
+  ],
+  "libraries": {
+    "framework": [
+      "react",
+      "nextjs"
+    ],
+    "components": "shadcn",
+    "addons": [],
+    "animation": [],
+    "auth": "better-auth",
+    "database": "drizzle-neon",
+    "payments": "none",
+    "email": "none",
+    "i18n": "none",
+    "ai": [
+      "vercel-ai-sdk"
+    ],
+    "observability": [],
+    "testing": [],
+    "quality": [],
+    "ci": [],
+    "deploy": "vercel",
+    "design": [
+      "design-pack"
+    ],
+    "workflow": [
+      "essentials"
+    ],
+    "state": "none",
+    "data": "none",
+    "forms": []
+  },
+  "writeFiles": [
+    {
+      "path": "src/app/chat/page.tsx",
+      "content": "\"use client\";\n\nimport { useState } from \"react\";\n\n/** A minimal streaming chat against /api/chat (text stream). Swap it for `useChat` when you need history and tools. */\nexport default function ChatPage() {\n  const [prompt, setPrompt] = useState(\"\");\n  const [answer, setAnswer] = useState(\"\");\n  const [pending, setPending] = useState(false);\n\n  async function send(event: React.FormEvent) {\n    event.preventDefault();\n    if (!prompt.trim()) return;\n    setPending(true);\n    setAnswer(\"\");\n    const res = await fetch(\"/api/chat\", { method: \"POST\", body: JSON.stringify({ prompt }) });\n    const reader = res.body!.getReader();\n    const decoder = new TextDecoder();\n    for (;;) {\n      const { done, value } = await reader.read();\n      if (done) break;\n      setAnswer((a) => a + decoder.decode(value, { stream: true }));\n    }\n    setPending(false);\n  }\n\n  return (\n    <main className=\"mx-auto flex min-h-dvh max-w-2xl flex-col gap-6 px-6 py-16\">\n      <h1 className=\"text-3xl font-semibold tracking-tight\">Chat</h1>\n      <div aria-live=\"polite\" className=\"min-h-40 whitespace-pre-wrap rounded-xl border p-4\">{answer || \"The answer will appear here.\"}</div>\n      <form onSubmit={send} className=\"flex gap-2\">\n        <input value={prompt} onChange={(e) => setPrompt(e.target.value)} placeholder=\"Ask something…\" aria-label=\"Message\" className=\"h-11 flex-1 rounded-lg border px-3\" />\n        <button type=\"submit\" disabled={pending} className=\"h-11 rounded-lg bg-neutral-950 px-5 text-white disabled:opacity-60\">{pending ? \"…\" : \"Send\"}</button>\n      </form>\n    </main>\n  );\n}\n"
+    }
+  ],
+  "verify": {
+    "command": "{{pm}} run build",
+    "matrix": [
+      {
+        "ai": [
+          "vercel-ai-sdk",
+          "claude-api"
+        ],
+        "payments": [
+          "stripe"
+        ],
+        "observability": [
+          "posthog-nextjs"
+        ]
+      }
+    ]
+  },
+  "instructions": "## How to work here\n\n- Every permission check happens on the server (Server Components, Server Actions, Route Handlers), never only on the client.\n- Secrets (`*_SECRET`, `*_API_KEY`) are only read on the server; public variables are prefixed with `NEXT_PUBLIC_`.\n- Payment webhooks are the source of truth for the user's plan.\n- Before finishing: `npm run build`.\n\n## AI\n\n- Model calls always happen on the server (`src/app/api/chat/route.ts`); the `ANTHROPIC_API_KEY` never reaches the client.\n- Rate-limit each user before calling the model (that's what costs money) and store conversations in the database if you need them later."
+}

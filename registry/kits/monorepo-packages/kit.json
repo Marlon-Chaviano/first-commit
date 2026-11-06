@@ -1,0 +1,88 @@
+{
+  "$schema": "../../kit.schema.json",
+  "version": "1.0.0",
+  "author": "Marlon Chaviano",
+  "name": "monorepo-packages",
+  "title": "npm libraries monorepo",
+  "category": "monorepo",
+  "language": "typescript",
+  "description": "To publish several npm libraries from one repo: pnpm workspaces, builds with tsup (ESM + types), tests with Vitest, and versions and changelogs with Changesets.",
+  "tags": [
+    "npm",
+    "library",
+    "pnpm",
+    "tsup",
+    "changesets",
+    "vitest"
+  ],
+  "base": {
+    "command": "mkdir {{name}}"
+  },
+  "packageManagers": [
+    "pnpm"
+  ],
+  "finalize": [
+    "pnpm install"
+  ],
+  "writeFiles": [
+    {
+      "path": "package.json",
+      "content": "{\n  \"name\": \"{{name}}\",\n  \"private\": true,\n  \"scripts\": {\n    \"build\": \"pnpm -r build\",\n    \"test\": \"pnpm -r test\",\n    \"typecheck\": \"pnpm -r typecheck\",\n    \"changeset\": \"changeset\",\n    \"release\": \"pnpm build && changeset publish\"\n  },\n  \"devDependencies\": {\n    \"@changesets/cli\": \"latest\",\n    \"tsup\": \"latest\",\n    \"typescript\": \"~5.9.0\",\n    \"vitest\": \"latest\"\n  }\n}\n"
+    },
+    {
+      "path": "pnpm-workspace.yaml",
+      "content": "packages:\n  - packages/*\n"
+    },
+    {
+      "path": ".changeset/config.json",
+      "content": "{\n  \"$schema\": \"https://unpkg.com/@changesets/config/schema.json\",\n  \"changelog\": \"@changesets/cli/changelog\",\n  \"commit\": false,\n  \"access\": \"public\",\n  \"baseBranch\": \"main\",\n  \"updateInternalDependencies\": \"patch\"\n}\n"
+    },
+    {
+      "path": "packages/core/package.json",
+      "content": "{\n  \"name\": \"@{{name}}/core\",\n  \"version\": \"0.0.0\",\n  \"type\": \"module\",\n  \"exports\": {\n    \".\": {\n      \"types\": \"./dist/index.d.ts\",\n      \"import\": \"./dist/index.js\"\n    }\n  },\n  \"main\": \"./dist/index.js\",\n  \"types\": \"./dist/index.d.ts\",\n  \"files\": [\n    \"dist\"\n  ],\n  \"scripts\": {\n    \"build\": \"tsup src/index.ts --format esm --dts --clean\",\n    \"test\": \"vitest run\",\n    \"typecheck\": \"tsc --noEmit\"\n  }\n}\n"
+    },
+    {
+      "path": "packages/core/tsconfig.json",
+      "content": "{\n  \"compilerOptions\": {\n    \"target\": \"ES2022\",\n    \"module\": \"ESNext\",\n    \"moduleResolution\": \"bundler\",\n    \"strict\": true,\n    \"skipLibCheck\": true,\n    \"noEmit\": true,\n    \"types\": []\n  },\n  \"include\": [\n    \"src\"\n  ]\n}\n"
+    },
+    {
+      "path": "packages/core/src/index.ts",
+      "content": "/** Public API of @{{name}}/core: everything exported here is part of the contract. */\nexport function greet(name: string): string {\n  return `Hello, ${name}!`;\n}\n"
+    },
+    {
+      "path": "packages/core/src/index.test.ts",
+      "content": "import { expect, it } from \"vitest\";\n\nimport { greet } from \"./index\";\n\nit(\"greets\", () => {\n  expect(greet(\"Ana\")).toBe(\"Hello, Ana!\");\n});\n"
+    },
+    {
+      "path": "packages/utils/package.json",
+      "content": "{\n  \"name\": \"@{{name}}/utils\",\n  \"version\": \"0.0.0\",\n  \"type\": \"module\",\n  \"exports\": {\n    \".\": {\n      \"types\": \"./dist/index.d.ts\",\n      \"import\": \"./dist/index.js\"\n    }\n  },\n  \"main\": \"./dist/index.js\",\n  \"types\": \"./dist/index.d.ts\",\n  \"files\": [\n    \"dist\"\n  ],\n  \"scripts\": {\n    \"build\": \"tsup src/index.ts --format esm --dts --clean\",\n    \"test\": \"vitest run\",\n    \"typecheck\": \"tsc --noEmit\"\n  },\n  \"dependencies\": {\n    \"@{{name}}/core\": \"workspace:*\"\n  }\n}\n"
+    },
+    {
+      "path": "packages/utils/tsconfig.json",
+      "content": "{\n  \"compilerOptions\": {\n    \"target\": \"ES2022\",\n    \"module\": \"ESNext\",\n    \"moduleResolution\": \"bundler\",\n    \"strict\": true,\n    \"skipLibCheck\": true,\n    \"noEmit\": true,\n    \"types\": []\n  },\n  \"include\": [\n    \"src\"\n  ]\n}\n"
+    },
+    {
+      "path": "packages/utils/src/index.ts",
+      "content": "import { greet } from \"@{{name}}/core\";\n\nexport function greetAll(names: string[]): string[] {\n  return names.map(greet);\n}\n"
+    },
+    {
+      "path": "packages/utils/src/index.test.ts",
+      "content": "import { expect, it } from \"vitest\";\n\nimport { greetAll } from \"./index\";\n\nit(\"greets everyone\", () => {\n  expect(greetAll([\"Ana\", \"Luis\"])).toEqual([\"Hello, Ana!\", \"Hello, Luis!\"]);\n});\n"
+    },
+    {
+      "path": ".gitignore",
+      "content": "node_modules\ndist\n"
+    }
+  ],
+  "libraries": {
+    "framework": "nodejs",
+    "ci": [],
+    "workflow": [
+      "essentials"
+    ]
+  },
+  "verify": {
+    "command": "pnpm build && pnpm test && pnpm typecheck"
+  },
+  "instructions": "## How to work here\n\n- Each library is a folder in `packages/` with its own `package.json`; whatever `src/index.ts` exports is its public API.\n- One library uses another with `\"workspace:*\"`; pnpm turns it into the real version when publishing.\n- Every change that should be published gets a changeset: `pnpm changeset` (pick packages and version bump). Publish with `pnpm release`.\n- Before finishing: `pnpm build && pnpm test && pnpm typecheck`.\n"
+}

@@ -1,0 +1,68 @@
+{
+  "$schema": "../../kit.schema.json",
+  "version": "1.0.0",
+  "author": "Marlon Chaviano",
+  "name": "docs-vitepress",
+  "title": "Docs with VitePress",
+  "category": "landing",
+  "language": "typescript",
+  "description": "Documentation with VitePress, the one Vue and Vite use: Markdown with superpowers, local search and a ready-made home page, in a blazing-fast static site.",
+  "tags": [
+    "docs",
+    "vitepress",
+    "vue",
+    "markdown"
+  ],
+  "base": {
+    "command": "mkdir {{name}} && cd {{name}} && printf '%s\\n' '{\"name\": \"{{name}}\", \"version\": \"0.1.0\", \"private\": true, \"type\": \"module\"}' > package.json"
+  },
+  "packageManagers": [
+    "npm",
+    "pnpm",
+    "bun"
+  ],
+  "devDependencies": [
+    "vitepress"
+  ],
+  "skills": [
+    "antfu/skills@vitepress"
+  ],
+  "writeFiles": [
+    {
+      "path": "package.json",
+      "content": "{\n  \"scripts\": {\n    \"dev\": \"vitepress dev docs\",\n    \"build\": \"vitepress build docs\",\n    \"preview\": \"vitepress preview docs\"\n  }\n}",
+      "mode": "json-merge"
+    },
+    {
+      "path": "docs/.vitepress/config.mts",
+      "content": "import { defineConfig } from \"vitepress\";\n\nexport default defineConfig({\n  lang: \"es\",\n  title: \"{{name}}\",\n  description: \"The {{name}} documentation.\",\n  cleanUrls: true,\n  themeConfig: {\n    nav: [{ text: \"Guide\", link: \"/guide/getting-started\" }],\n    sidebar: [\n      {\n        text: \"Guide\",\n        items: [{ text: \"Getting started\", link: \"/guide/getting-started\" }],\n      },\n    ],\n    search: { provider: \"local\" },\n  },\n});\n"
+    },
+    {
+      "path": "docs/index.md",
+      "content": "---\nlayout: home\n\nhero:\n  name: \"{{name}}\"\n  tagline: What your project does, in one sentence.\n  actions:\n    - theme: brand\n      text: Get started\n      link: /guide/getting-started\n\nfeatures:\n  - title: Fast\n    details: A static site that loads instantly.\n  - title: Markdown first\n    details: Write in Markdown, with Vue components when you need them.\n---\n"
+    },
+    {
+      "path": "docs/guide/getting-started.md",
+      "content": "# Getting started\n\nHow to install and use the project in three steps.\n\n## Installation\n\n```sh\nnpm install {{name}}\n```\n"
+    },
+    {
+      "path": ".gitignore",
+      "content": "node_modules\ndocs/.vitepress/dist\ndocs/.vitepress/cache\n"
+    }
+  ],
+  "libraries": {
+    "framework": [
+      "vue"
+    ],
+    "design": [
+      "design-pack"
+    ],
+    "workflow": [
+      "essentials"
+    ]
+  },
+  "verify": {
+    "command": "{{pm}} run build"
+  },
+  "instructions": "## How to work here\n\n- Pages are `.md` files in `docs/`; the file path is the URL. Navigation and sidebar in `docs/.vitepress/config.mts`.\n- For anything interactive, use a Vue component inside the Markdown, not loose HTML.\n- Before finishing: `npm run build` (it fails on broken links)."
+}

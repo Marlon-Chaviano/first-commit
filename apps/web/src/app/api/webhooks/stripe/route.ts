@@ -13,7 +13,7 @@ export async function POST(request: Request) {
   try {
     event = stripe.webhooks.constructEvent(body, request.headers.get("stripe-signature") ?? "", env.STRIPE_WEBHOOK_SECRET);
   } catch {
-    return new Response("Firma no válida", { status: 400 });
+    return new Response("Invalid signature", { status: 400 });
   }
   try {
     const applied = await handleStripeEvent(event);

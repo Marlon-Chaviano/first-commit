@@ -1,14 +1,16 @@
-import { allKitSkills, BRAND, kitLanguage, LANGUAGES, defaultSelections, pruneSelections, validateSelections, type Selections } from "@kits/schema";
+import { allKitSkills, AUTHOR, BRAND, CATEGORY_LABELS, kitLanguage, LANGUAGES, defaultSelections, selectionsFrom, type Selections } from "@kits/schema";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { BadgeCheckIcon, LockIcon } from "lucide-react";
+import { LockIcon } from "lucide-react";
 import { notFound } from "next/navigation";
 import { Suspense, type ComponentProps } from "react";
 
 import { CopyButton } from "@/components/shared/copy-button";
-import { TechIcon } from "@/components/shared/tech-icon";
+import { TechIcon, TechLogo } from "@/components/shared/tech-icon";
 import { Sparkline } from "@/components/shared/sparkline";
 import { Badge } from "@/components/ui/badge";
+import { ScrollToTop } from "@/components/shared/scroll-to-top";
+import { UserAvatar } from "@/components/shared/user-avatar";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   Breadcrumb,
@@ -23,7 +25,7 @@ import { ReportDialog } from "@/features/kits/report-dialog";
 import { BuyKitButton } from "@/features/billing/buttons";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { readRecommendation } from "@/features/recommend/href";
-import { CATEGORIES } from "@/lib/categories";
+import { OriginIcon } from "@/components/shared/origin-icon";
 import { formatCount } from "@/lib/format";
 import { getKitStats } from "@/server/metrics/queries";
 import { canReadKit } from "@/server/orgs";
@@ -62,14 +64,11 @@ async function RecommendedConfigurator({
 }: { searchParams: PageProps<"/kits/[...slug]">["searchParams"] } & Omit<ComponentProps<typeof Configurator>, "initial" | "reasons">) {
   const { options, reasons } = readRecommendation(await searchParams);
   if (!Object.keys(options).length) return <Configurator {...props} />;
-  const defaults = defaultSelections(props.kit);
-  const known = Object.fromEntries(Object.entries(options).filter(([id]) => props.kit.options.some((o) => o.id === id)));
-  let initial: Selections = defaults;
+  let initial: Selections;
   try {
-    initial = pruneSelections(props.kit, { ...defaults, options: { ...defaults.options, ...known } });
-    validateSelections(props.kit, initial);
+    initial = selectionsFrom(props.kit, { options }, { requirements: "prune", unknown: "ignore" }).selections;
   } catch {
-    initial = defaults; // A hand-edited URL that isn't a valid combination: show the defaults.
+    initial = defaultSelections(props.kit); // A hand-edited URL that isn't a valid combination: show the defaults.
   }
   return <Configurator {...props} initial={initial} reasons={reasons} />;
 }
@@ -77,6 +76,7 @@ async function RecommendedConfigurator({
 function KitSkeleton() {
   return (
     <div className="mx-auto flex max-w-5xl flex-col gap-6 px-4 pt-8 sm:px-6 sm:pt-12">
+      <ScrollToTop />
       <Skeleton className="h-4 w-40" />
       <Skeleton className="h-10 w-72" />
       <Skeleton className="h-6 w-full max-w-2xl" />
@@ -102,42 +102,54 @@ async function KitContent({ slug, searchParams }: { slug: Promise<string>; searc
   // Details for the sticky column next to the install command.
   const details = (
     <section className="flex flex-col gap-4 rounded-xl border p-4 text-sm">
-      <h2 className="font-semibold">Detalles</h2>
+      <h2 className="font-semibold">Details</h2>
       <dl className="flex flex-col gap-3">
-        <Row label="Autor">
+        <Row label="Author">
           {meta.owner ? (
-            <Link href={`/u/${meta.owner.handle}`} className="font-mono hover:underline">{meta.owner.handle}</Link>
+            <Link href={`/u/${meta.owner.handle}`} className="flex items-center gap-2 font-mono hover:underline">
+              <UserAvatar name={meta.owner.name || meta.owner.handle} image={meta.owner.image} size="sm" />
+              {meta.owner.handle}
+            </Link>
+          ) : kit.author === AUTHOR.name ? (
+            // Official kits: their author's GitHub picture.
+            <a href={AUTHOR.github} className="flex items-center gap-2 font-mono hover:underline">
+              <UserAvatar name={kit.author} image={`${AUTHOR.github}.png?size=64`} size="sm" />
+              {kit.author}
+            </a>
           ) : (
-            <span className="font-mono">{kit.author}</span>
+            <span className="flex items-center gap-2 font-mono">
+              <UserAvatar name={kit.author} size="sm" />
+              {kit.author}
+            </span>
           )}
         </Row>
         {meta.repo && !meta.official && (
-          <Row label="Origen">
+          <Row label="Source">
             <a href={`https://github.com/${meta.repo}`} className="font-mono break-all hover:underline">
               {meta.repo}
               {meta.path ? `/${meta.path}` : ""}
             </a>
           </Row>
         )}
-        <Row label="Verificación">
+        <Row label="Verification">
           {verification.verified ? (
-            <span className="flex items-center gap-1.5"><BadgeCheckIcon className="size-4" /> Verificado</span>
+            <span className="flex items-center gap-1.5"><OriginIcon origin="verified" className="size-4" /> Verified</span>
           ) : (
-            <span className="text-muted-foreground">{verification.platforms.length ? "Falló la última prueba" : `Sin verificar · ${BRAND.cli} test en CI`}</span>
+            <span className="text-muted-foreground">{verification.platforms.length ? "The last test failed" : `Unverified · ${BRAND.cli} test in CI`}</span>
           )}
         </Row>
         {verification.platforms.length > 0 && (
-          <Row label="Plataformas">
+          <Row label="Platforms">
             <span className="font-mono text-xs text-muted-foreground">
               {verification.platforms.map((p) => `${p.ok ? "✓" : "✗"} ${PLATFORMS[p.platform] ?? p.platform}`).join(" · ")}
             </span>
           </Row>
         )}
-        <Row label="Insignia">
+        <Row label="Badge">
           <span className="flex items-center gap-2">
             {/* eslint-disable-next-line @next/next/no-img-element -- an SVG badge, same as in a README */}
-            <img src={`/badge/${meta.slug}.svg`} alt={`${BRAND.name}: instalaciones de ${meta.slug}`} height={20} className="h-5 w-fit" />
-            <CopyButton text={`[![${BRAND.name}](${BRAND.siteUrl}/badge/${meta.slug}.svg)](${BRAND.siteUrl}/kits/${meta.slug})`} label="Copiar Markdown de la insignia" />
+            <img src={`/badge/${meta.slug}.svg`} alt={`${BRAND.name}: installs of ${meta.slug}`} height={20} className="h-5 w-fit" />
+            <CopyButton text={`[![${BRAND.name}](${BRAND.siteUrl}/badge/${meta.slug}.svg)](${BRAND.siteUrl}/kits/${meta.slug})`} label="Copy badge Markdown" />
           </span>
         </Row>
       </dl>
@@ -160,17 +172,18 @@ async function KitContent({ slug, searchParams }: { slug: Promise<string>; searc
       </Breadcrumb>
 
       <header className="mt-8 flex flex-col gap-5 sm:flex-row sm:items-start">
-        <div className="grid size-16 shrink-0 place-items-center rounded-2xl border bg-muted/40">
-          <TechIcon id={kitLanguage(kit)} label={languageLabel} className="size-8" />
-        </div>
+        <TechIcon id={kitLanguage(kit)} label={languageLabel} className="size-10 shrink-0" />
         <div className="flex min-w-0 flex-col gap-2">
           <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
             <h1 className="text-3xl font-semibold tracking-tight text-balance sm:text-4xl">{kit.title}</h1>
             <div className="flex flex-wrap gap-1.5">
-              <Badge variant="outline">{meta.official ? "Oficial" : "Comunidad"}</Badge>
+              <Badge variant="outline" className="gap-1">
+                <OriginIcon origin={meta.official ? "official" : "community"} className="size-3" />
+                {meta.official ? "Official" : "Community"}
+              </Badge>
               {verification.verified && (
                 <Badge variant="outline" className="gap-1">
-                  <BadgeCheckIcon className="size-3" /> Verificado
+                  <OriginIcon origin="verified" className="size-3" /> Verified
                 </Badge>
               )}
               <Badge variant="outline" className="font-mono">v{kit.version}</Badge>
@@ -180,26 +193,29 @@ async function KitContent({ slug, searchParams }: { slug: Promise<string>; searc
           <p className="max-w-2xl text-lg text-pretty text-muted-foreground">{kit.description}</p>
           <div className="flex flex-wrap gap-1.5 pt-1">
             {kit.tags.map((t) => (
-              <Badge key={t} variant="secondary" className="font-mono font-normal">{t}</Badge>
+              <Badge key={t} variant="secondary" className="gap-1.5 font-mono font-normal">
+                <TechLogo id={t} label="" className="size-3" />
+                {t}
+              </Badge>
             ))}
           </div>
         </div>
       </header>
 
       <dl className="mt-8 grid grid-cols-2 overflow-hidden rounded-xl border sm:grid-cols-4 [&>div]:border-border [&>div:nth-child(2n)]:border-l sm:[&>div]:border-l sm:[&>div:first-child]:border-l-0 [&>div:nth-child(n+3)]:border-t sm:[&>div:nth-child(n+3)]:border-t-0">
-        <StatCell label="Instalaciones">
+        <StatCell label="Installs">
           <span className="flex items-end justify-between gap-3">
             <span className="font-mono text-2xl font-semibold tabular-nums">{formatCount(stats.installs)}</span>
             <Sparkline values={stats.weekly} className="h-7 w-20" />
           </span>
         </StatCell>
-        <StatCell label="Personas">
+        <StatCell label="People">
           <span className="font-mono text-2xl font-semibold tabular-nums">{formatCount(stats.unique)}</span>
         </StatCell>
         <StatCell label="Skills">
           <span className="font-mono text-2xl font-semibold tabular-nums">{allKitSkills(kit).length}</span>
         </StatCell>
-        <StatCell label={CATEGORIES[kit.category] ?? kit.category}>
+        <StatCell label={CATEGORY_LABELS[kit.category]}>
           <span className="flex items-center gap-2 text-lg font-medium">
             <TechIcon id={kitLanguage(kit)} label={languageLabel} className="size-5" />
             {languageLabel}
@@ -211,16 +227,16 @@ async function KitContent({ slug, searchParams }: { slug: Promise<string>; searc
         <Alert className="mt-6">
           <LockIcon />
           <AlertTitle>
-            Kit de pago · {formatPrice(premium.priceCents)}
-            {premium.licensed && " · ya es tuyo"}
+            Paid kit · {formatPrice(premium.priceCents)}
+            {premium.licensed && " · it's yours"}
           </AlertTitle>
           <AlertDescription className="flex flex-col gap-3">
             {premium.licensed ? (
-              <p>Instálalo con el comando de abajo tras iniciar sesión en el CLI ({`${BRAND.cli} login`}).</p>
+              <p>Install it with the command below after logging in to the CLI ({`${BRAND.cli} login`}).</p>
             ) : (
               <>
-                <p>Pago único: incluye todas sus versiones futuras. El dinero va al creador ({100 - premium.feePercent}%).</p>
-                {premium.canBuy ? <BuyKitButton slug={meta.slug}>Comprar por {formatPrice(premium.priceCents)}</BuyKitButton> : <p>Inicia sesión para comprarlo.</p>}
+                <p>One-time payment: includes all its future versions. The money goes to the creator ({100 - premium.feePercent}%).</p>
+                {premium.canBuy ? <BuyKitButton slug={meta.slug}>Buy for {formatPrice(premium.priceCents)}</BuyKitButton> : <p>Log in to buy it.</p>}
               </>
             )}
           </AlertDescription>
@@ -264,5 +280,5 @@ async function premiumState(meta: { priceCents?: number | null; slug: string; ow
   return { priceCents: meta.priceCents, licensed, canBuy: Boolean(viewer) && billingEnabled, feePercent: env.PLATFORM_FEE_PERCENT };
 }
 
-const formatPrice = (cents: number) => new Intl.NumberFormat("es", { style: "currency", currency: "EUR" }).format(cents / 100);
+const formatPrice = (cents: number) => new Intl.NumberFormat("en", { style: "currency", currency: "EUR" }).format(cents / 100);
 

@@ -1,0 +1,46 @@
+{
+  "$schema": "../../kit.schema.json",
+  "version": "1.0.0",
+  "author": "Marlon Chaviano",
+  "name": "mobile-expo-supabase",
+  "extends": "mobile-expo",
+  "title": "Mobile app with Expo and Supabase",
+  "category": "mobile",
+  "language": "typescript",
+  "description": "The Expo app with everything a real app needs: Supabase (auth and database), NativeWind, Zustand, TanStack Query and React Hook Form already chosen.",
+  "tags": [
+    "supabase",
+    "nativewind",
+    "auth"
+  ],
+  "options": [
+    {
+      "id": "styling",
+      "default": "nativewind"
+    },
+    {
+      "id": "backend",
+      "default": "supabase"
+    }
+  ],
+  "libraries": {
+    "state": "zustand",
+    "data": "tanstack-query",
+    "forms": [
+      "react-hook-form"
+    ]
+  },
+  "verify": {
+    "command": "npx expo export --platform web --output-dir .verify-export && npm run --if-present test -- --ci",
+    "matrix": [
+      {
+        "testing": [
+          "jest-expo"
+        ],
+        "i18n": [
+          "i18next-expo"
+        ]
+      }
+    ]
+  }
+}

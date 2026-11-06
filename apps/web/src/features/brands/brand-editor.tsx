@@ -1,6 +1,6 @@
 "use client";
 
-import { cliCommand, type BrandDetection, type BrandProfile } from "@kits/schema";
+import { brandLogo, cliCommand, type BrandDetection, type BrandProfile } from "@kits/schema";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
@@ -13,18 +13,19 @@ import { Textarea } from "@/components/ui/textarea";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
 import { saveBrandAction } from "./actions";
+import { BrandAssetsField, BrandLinksField } from "./brand-assets";
 import { BrandImporter } from "./brand-importer";
 
 type Colors = BrandProfile["colors"];
 const COLOR_FIELDS: { key: keyof Colors; label: string; required?: boolean }[] = [
-  { key: "primary", label: "Principal", required: true },
-  { key: "primaryForeground", label: "Texto sobre principal" },
-  { key: "background", label: "Fondo", required: true },
-  { key: "foreground", label: "Texto", required: true },
-  { key: "secondary", label: "Secundario" },
-  { key: "accent", label: "Acento" },
-  { key: "muted", label: "Fondos suaves" },
-  { key: "border", label: "Bordes" },
+  { key: "primary", label: "Primary", required: true },
+  { key: "primaryForeground", label: "Text on primary" },
+  { key: "background", label: "Background", required: true },
+  { key: "foreground", label: "Text", required: true },
+  { key: "secondary", label: "Secondary" },
+  { key: "accent", label: "Accent" },
+  { key: "muted", label: "Soft backgrounds" },
+  { key: "border", label: "Borders" },
   { key: "danger", label: "Error" },
 ];
 
@@ -35,20 +36,31 @@ const EMPTY: BrandProfile = {
   fonts: {},
   rules: [],
   docs: {},
+  assets: {},
+  social: {},
 };
 
 /** Brand profile form with a live preview of the colors, fonts and radius. */
-export function BrandEditor({ owners, initial, initialOwner }: { owners: string[]; initial?: BrandProfile; initialOwner?: string }) {
+/**
+ * The full form. `initial` edits a saved profile; `draft` starts a new one prefilled (from the creator's
+ * review step), without the importer, since the detection already happened.
+ */
+export function BrandEditor({ owners, initial, draft, initialOwner }: { owners: string[]; initial?: BrandProfile; draft?: BrandProfile; initialOwner?: string }) {
   const router = useRouter();
   const [owner, setOwner] = useState(initialOwner ?? owners[0] ?? "");
-  const [p, setP] = useState<BrandProfile>(initial ?? EMPTY);
-  const [rules, setRules] = useState((initial?.rules ?? []).join("\n"));
-  const [guide, setGuide] = useState(initial?.docs["guia.md"] ?? "");
+  // Profiles saved before `assets` existed keep their logo URL: it moves into the new field.
+  const [p, setP] = useState<BrandProfile>(() => {
+    const start = initial ?? draft ?? EMPTY;
+    const logo = brandLogo(start);
+    return { ...start, assets: { ...start.assets, ...(logo ? { logo } : {}) }, social: start.social ?? {}, logo: undefined };
+  });
+  const [rules, setRules] = useState(((initial ?? draft)?.rules ?? []).join("\n"));
+  const [guide, setGuide] = useState((initial ?? draft)?.docs["guide.md"] ?? "");
   const [pending, start] = useTransition();
   const editing = Boolean(initial);
   const set = <K extends keyof BrandProfile>(key: K, value: BrandProfile[K]) => setP((prev) => ({ ...prev, [key]: value }));
   const setColor = (key: keyof Colors, value: string) => setP((prev) => ({ ...prev, colors: { ...prev.colors, [key]: value || undefined } }));
-  const slug = `${owner}/${p.name || "nombre"}`;
+  const slug = `${owner}/${p.name || "name"}`;
 
   /** Merges a detection into the form: detected values win, everything else stays as typed. */
   const applyDetection = (d: BrandDetection) => {
@@ -57,7 +69,11 @@ export function BrandEditor({ owners, initial, initialOwner }: { owners: string[
       return {
         ...prev,
         ...(d.profile.voice ? { voice: d.profile.voice } : {}),
-        ...(d.profile.logo ? { logo: d.profile.logo } : {}),
+        // Detected images and links fill the gaps; what the person already set stays.
+        assets: { ...d.profile.assets, ...prev.assets },
+        social: { ...d.profile.social, ...prev.social },
+        website: prev.website ?? d.profile.website,
+        description: prev.description || d.profile.description,
         title,
         name: prev.name || (editing ? prev.name : title.toLowerCase().normalize("NFD").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")),
         colors: { ...prev.colors, ...d.profile.colors },
@@ -68,25 +84,25 @@ export function BrandEditor({ owners, initial, initialOwner }: { owners: string[
       };
     });
     if (d.profile.rules?.length) setRules(d.profile.rules.join("\n"));
-    if (d.profile.docs?.["guia.md"]) setGuide(d.profile.docs["guia.md"]);
+    if (d.profile.docs?.["guide.md"]) setGuide(d.profile.docs["guide.md"]);
   };
 
   const submit = () =>
     start(async () => {
       const docs = { ...p.docs };
-      if (guide.trim()) docs["guia.md"] = guide;
-      else delete docs["guia.md"];
+      if (guide.trim()) docs["guide.md"] = guide;
+      else delete docs["guide.md"];
       const profile = { ...p, rules: rules.split("\n").map((r) => r.trim()).filter(Boolean), docs };
       const r = await saveBrandAction(owner, profile);
       if (!r.ok) return void toast.error(r.error);
-      toast.success("Perfil guardado");
-      if (!editing) router.push(`/cuenta/marcas/${r.data}`);
+      toast.success("Profile saved");
+      if (!editing) router.push(`/brands/${r.data}`);
     });
 
   return (
     <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_320px]">
       <div className="flex flex-col gap-8">
-      <BrandImporter onDetect={applyDetection} />
+      {!draft && <BrandImporter onDetect={applyDetection} />}
       <form
         className="flex flex-col gap-8"
         onSubmit={(e) => {
@@ -97,25 +113,25 @@ export function BrandEditor({ owners, initial, initialOwner }: { owners: string[
         <FieldGroup>
           {owners.length > 1 && !editing && (
             <Field>
-              <FieldLabel>Dueño</FieldLabel>
+              <FieldLabel>Owner</FieldLabel>
               <ToggleGroup variant="outline" size="sm" spacing={1} value={[owner]} onValueChange={(v: string[]) => v[0] && setOwner(v[0])} className="flex-wrap">
                 {owners.map((o, i) => (
                   <ToggleGroupItem key={o} value={o} className="font-mono text-xs">
                     {o}
-                    {i === 0 ? " (tú)" : ""}
+                    {i === 0 ? " (you)" : ""}
                   </ToggleGroupItem>
                 ))}
               </ToggleGroup>
-              <FieldDescription>En una organización, todos sus miembros pueden usarlo.</FieldDescription>
+              <FieldDescription>In an organization, all its members can use it.</FieldDescription>
             </Field>
           )}
           <div className="grid gap-4 sm:grid-cols-2">
             <Field>
-              <FieldLabel htmlFor="brand-title">Nombre de la marca</FieldLabel>
+              <FieldLabel htmlFor="brand-title">Brand name</FieldLabel>
               <Input id="brand-title" value={p.title} onChange={(e) => set("title", e.target.value)} placeholder="Acme" required />
             </Field>
             <Field>
-              <FieldLabel htmlFor="brand-name">Identificador</FieldLabel>
+              <FieldLabel htmlFor="brand-name">Identifier</FieldLabel>
               <Input
                 id="brand-name"
                 value={p.name}
@@ -130,7 +146,7 @@ export function BrandEditor({ owners, initial, initialOwner }: { owners: string[
         </FieldGroup>
 
         <FieldSet>
-          <FieldLegend variant="label">Colores</FieldLegend>
+          <FieldLegend variant="label">Colors</FieldLegend>
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
             {COLOR_FIELDS.map(({ key, label, required }) => (
               <Field key={key} orientation="horizontal" className="items-center gap-2">
@@ -146,8 +162,8 @@ export function BrandEditor({ owners, initial, initialOwner }: { owners: string[
                   <input
                     value={p.colors[key] ?? ""}
                     onChange={(e) => setColor(key, e.target.value)}
-                    placeholder={required ? "obligatorio" : "opcional"}
-                    aria-label={`${label} en hex`}
+                    placeholder={required ? "required" : "optional"}
+                    aria-label={`${label} in hex`}
                     className="w-20 bg-transparent font-mono text-xs text-muted-foreground outline-none"
                   />
                 </div>
@@ -156,49 +172,53 @@ export function BrandEditor({ owners, initial, initialOwner }: { owners: string[
           </div>
         </FieldSet>
 
+        <BrandAssetsField assets={p.assets} onChange={(assets) => set("assets", assets)} />
+
         <FieldGroup>
           <div className="grid gap-4 sm:grid-cols-3">
             <Field>
-              <FieldLabel htmlFor="font-sans">Fuente de texto</FieldLabel>
+              <FieldLabel htmlFor="font-sans">Body font</FieldLabel>
               <Input id="font-sans" value={p.fonts.sans ?? ""} onChange={(e) => set("fonts", { ...p.fonts, sans: e.target.value || undefined })} placeholder="Inter" />
             </Field>
             <Field>
-              <FieldLabel htmlFor="font-heading">Fuente de títulos</FieldLabel>
-              <Input id="font-heading" value={p.fonts.heading ?? ""} onChange={(e) => set("fonts", { ...p.fonts, heading: e.target.value || undefined })} placeholder="igual que el texto" />
+              <FieldLabel htmlFor="font-heading">Heading font</FieldLabel>
+              <Input id="font-heading" value={p.fonts.heading ?? ""} onChange={(e) => set("fonts", { ...p.fonts, heading: e.target.value || undefined })} placeholder="same as body" />
             </Field>
             <Field>
-              <FieldLabel htmlFor="radius">Radio de esquinas</FieldLabel>
+              <FieldLabel htmlFor="radius">Corner radius</FieldLabel>
               <Input id="radius" value={p.radius ?? ""} onChange={(e) => set("radius", e.target.value || undefined)} placeholder="0.5rem" className="font-mono" />
             </Field>
           </div>
           <Field>
-            <FieldLabel htmlFor="voice">Tono de los textos</FieldLabel>
-            <Input id="voice" value={p.voice ?? ""} onChange={(e) => set("voice", e.target.value || undefined)} placeholder="Cercano y directo, de tú, sin tecnicismos" />
+            <FieldLabel htmlFor="voice">Voice and tone</FieldLabel>
+            <Input id="voice" value={p.voice ?? ""} onChange={(e) => set("voice", e.target.value || undefined)} placeholder="Friendly and direct, no jargon" />
           </Field>
           <Field>
-            <FieldLabel htmlFor="rules">Reglas de interfaz</FieldLabel>
-            <Textarea id="rules" value={rules} onChange={(e) => setRules(e.target.value)} rows={4} placeholder={"Una por línea:\nBotones principales siempre en el color principal\nIconos de Lucide, nunca emojis"} />
+            <FieldLabel htmlFor="rules">Interface rules</FieldLabel>
+            <Textarea id="rules" value={rules} onChange={(e) => setRules(e.target.value)} rows={4} placeholder={"One per line:\nPrimary buttons always use the primary color\nLucide icons, never emojis"} />
           </Field>
           <Field>
-            <FieldLabel htmlFor="guide">Guía de la empresa</FieldLabel>
-            <Textarea id="guide" value={guide} onChange={(e) => setGuide(e.target.value)} rows={6} placeholder="Pega aquí la guía de estilo, el manual de marca o cualquier documentación (Markdown)." className="font-mono text-xs" />
-            <FieldDescription>Se copia a docs/brand/guia.md en cada proyecto y el agente la lee antes de escribir interfaz.</FieldDescription>
+            <FieldLabel htmlFor="guide">Company guide</FieldLabel>
+            <Textarea id="guide" value={guide} onChange={(e) => setGuide(e.target.value)} rows={6} placeholder="Paste the style guide, brand manual or any documentation here (Markdown)." className="font-mono text-xs" />
+            <FieldDescription>Copied to docs/brand/guide.md in every project; the agent reads it before writing any interface.</FieldDescription>
           </Field>
         </FieldGroup>
 
+        <BrandLinksField website={p.website} social={p.social} onChange={({ website, social }) => setP((prev) => ({ ...prev, website, social }))} />
+
         <Button type="submit" disabled={pending || !p.name || !p.title || !owner} className="self-start">
-          {pending ? "Guardando…" : editing ? "Guardar cambios" : "Crear perfil"}
+          {pending ? "Saving…" : editing ? "Save changes" : "Create profile"}
         </Button>
       </form>
       </div>
 
       <aside className="flex flex-col gap-6 lg:sticky lg:top-20 lg:self-start">
         <div className="flex flex-col gap-2">
-          <h2 className="label-mono">Vista previa</h2>
+          <h2 className="label-mono">Preview</h2>
           <BrandPreview profile={p} />
         </div>
         <div className="flex flex-col gap-2">
-          <h2 className="label-mono">Úsalo</h2>
+          <h2 className="label-mono">Use it</h2>
           <Command command={cliCommand(`landing-next --brand ${slug}`)} wrap />
           <Command command={cliCommand(`brand ${slug}`)} wrap />
         </div>
@@ -214,29 +234,35 @@ export function BrandPreview({ profile: p }: { profile: BrandProfile }) {
   const font = p.fonts.sans ? `"${p.fonts.sans}", ui-sans-serif, system-ui` : undefined;
   return (
     <div className="flex flex-col gap-3 border p-4" style={{ background: c.background, color: c.foreground, borderRadius: radius, borderColor: c.border, fontFamily: font }}>
-      <p className="font-semibold" style={{ fontFamily: p.fonts.heading ? `"${p.fonts.heading}", ui-sans-serif` : font }}>
-        {p.title || "Tu marca"}
-      </p>
-      <p className="text-sm opacity-80">Así se verán los botones, las tarjetas y el texto en tus proyectos.</p>
+      <div className="flex items-center gap-2.5">
+        {(p.assets?.icon ?? brandLogo(p)) && (
+          // eslint-disable-next-line @next/next/no-img-element -- remote brand assets from any host
+          <img src={p.assets?.icon ?? brandLogo(p)} alt="" className="size-6 shrink-0 object-contain" referrerPolicy="no-referrer" />
+        )}
+        <p className="font-semibold" style={{ fontFamily: p.fonts.heading ? `"${p.fonts.heading}", ui-sans-serif` : font }}>
+          {p.title || "Your brand"}
+        </p>
+      </div>
+      <p className="text-sm opacity-80">This is how buttons, cards and text will look in your projects.</p>
       <div className="flex flex-wrap gap-2">
         <span className="px-3 py-1.5 text-sm" style={{ background: c.primary, color: c.primaryForeground ?? c.background, borderRadius: radius }}>
-          Principal
+          Primary
         </span>
         {c.secondary && (
           <span className="px-3 py-1.5 text-sm" style={{ background: c.secondary, color: c.foreground, borderRadius: radius }}>
-            Secundario
+            Secondary
           </span>
         )}
         <span className="border px-3 py-1.5 text-sm" style={{ borderColor: c.border ?? c.foreground, borderRadius: radius }}>
-          Contorno
+          Outline
         </span>
       </div>
       {c.muted && (
         <div className="p-3 text-xs" style={{ background: c.muted, borderRadius: radius }}>
-          Tarjeta con fondo suave
+          Card with a soft background
         </div>
       )}
-      {c.danger && <p className="text-xs" style={{ color: c.danger }}>Mensaje de error</p>}
+      {c.danger && <p className="text-xs" style={{ color: c.danger }}>Error message</p>}
     </div>
   );
 }

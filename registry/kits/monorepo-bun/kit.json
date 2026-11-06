@@ -1,0 +1,89 @@
+{
+  "$schema": "../../kit.schema.json",
+  "version": "1.0.0",
+  "author": "Marlon Chaviano",
+  "name": "monorepo-bun",
+  "title": "Full-stack monorepo with Bun",
+  "category": "monorepo",
+  "language": "typescript",
+  "description": "Bun workspaces with an Elysia API and a React + Vite web app, connected with Eden: the client knows the API's types without code generation.",
+  "tags": [
+    "bun",
+    "elysia",
+    "eden",
+    "react",
+    "vite",
+    "monorepo"
+  ],
+  "base": {
+    "command": "mkdir {{name}}"
+  },
+  "packageManagers": [
+    "bun"
+  ],
+  "postInstall": [
+    "bunx create-vite@latest apps/web --template react-ts --no-interactive"
+  ],
+  "finalize": [
+    "bun install",
+    "cd apps/web && bun add @app/client@workspace:*"
+  ],
+  "skills": [
+    "elysiajs/skills@elysiajs",
+    "vercel-labs/agent-skills@vercel-react-best-practices",
+    "antfu/skills@vite"
+  ],
+  "writeFiles": [
+    {
+      "path": "package.json",
+      "content": "{\n  \"name\": \"{{name}}\",\n  \"private\": true,\n  \"workspaces\": [\n    \"apps/*\",\n    \"packages/*\"\n  ],\n  \"scripts\": {\n    \"dev\": \"bun run --filter '*' dev\",\n    \"build\": \"bun run --filter '*' build\",\n    \"typecheck\": \"bun run --filter '*' typecheck\"\n  }\n}\n"
+    },
+    {
+      "path": "apps/api/package.json",
+      "content": "{\n  \"name\": \"@app/api\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"exports\": {\n    \".\": \"./src/index.ts\"\n  },\n  \"scripts\": {\n    \"dev\": \"bun --watch src/server.ts\",\n    \"build\": \"bun build src/server.ts --target bun --outdir dist\",\n    \"typecheck\": \"tsc --noEmit\"\n  },\n  \"dependencies\": {\n    \"elysia\": \"latest\",\n    \"@elysiajs/cors\": \"latest\"\n  },\n  \"devDependencies\": {\n    \"@types/bun\": \"latest\",\n    \"typescript\": \"latest\"\n  }\n}\n"
+    },
+    {
+      "path": "apps/api/tsconfig.json",
+      "content": "{\n  \"compilerOptions\": {\n    \"target\": \"ESNext\",\n    \"module\": \"ESNext\",\n    \"moduleResolution\": \"bundler\",\n    \"strict\": true,\n    \"skipLibCheck\": true,\n    \"noEmit\": true,\n    \"types\": [\n      \"bun\"\n    ]\n  },\n  \"include\": [\n    \"src\"\n  ]\n}\n"
+    },
+    {
+      "path": "apps/api/src/index.ts",
+      "content": "import { cors } from \"@elysiajs/cors\";\nimport { Elysia, t } from \"elysia\";\n\n// The API. Its type is exported so the client (packages/client) is typed without codegen.\nexport const app = new Elysia()\n  .use(cors())\n  .get(\"/health\", () => ({ ok: true }))\n  .post(\"/greet\", ({ body }) => ({ message: `Hello, ${body.name}!` }), { body: t.Object({ name: t.String() }) });\n\nexport type App = typeof app;\n"
+    },
+    {
+      "path": "apps/api/src/server.ts",
+      "content": "import { app } from \"./index\";\n\napp.listen(Number(process.env.PORT ?? 3000));\nconsole.log(`API en http://localhost:${app.server?.port}`);\n"
+    },
+    {
+      "path": "packages/client/package.json",
+      "content": "{\n  \"name\": \"@app/client\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"exports\": {\n    \".\": \"./src/index.ts\"\n  },\n  \"scripts\": {\n    \"typecheck\": \"tsc --noEmit\"\n  },\n  \"dependencies\": {\n    \"@elysiajs/eden\": \"latest\",\n    \"@app/api\": \"workspace:*\"\n  },\n  \"devDependencies\": {\n    \"typescript\": \"latest\",\n    \"@types/bun\": \"latest\"\n  }\n}\n"
+    },
+    {
+      "path": "packages/client/tsconfig.json",
+      "content": "{\n  \"compilerOptions\": {\n    \"target\": \"ESNext\",\n    \"module\": \"ESNext\",\n    \"moduleResolution\": \"bundler\",\n    \"strict\": true,\n    \"skipLibCheck\": true,\n    \"noEmit\": true,\n    \"types\": [\n      \"bun\"\n    ]\n  },\n  \"include\": [\n    \"src\"\n  ]\n}\n"
+    },
+    {
+      "path": "packages/client/src/index.ts",
+      "content": "import { treaty } from \"@elysiajs/eden\";\n\nimport type { App } from \"@app/api\";\n\n/** Typed client for the API: `await api.greet.post({ name })`. */\nexport const api = treaty<App>(import.meta.env?.VITE_API_URL ?? \"localhost:3000\");\n"
+    },
+    {
+      "path": ".gitignore",
+      "content": "node_modules\ndist\n.env\n"
+    }
+  ],
+  "libraries": {
+    "framework": [
+      "react"
+    ],
+    "design": [
+      "design-pack"
+    ],
+    "workflow": [
+      "essentials"
+    ]
+  },
+  "verify": {
+    "command": "bun run typecheck && bun run build"
+  },
+  "instructions": "## How to work here\n\n- `apps/api` is the API (Elysia) and `apps/web` the web app (React + Vite). `packages/client` exports `api`, the Eden client: the web app imports from `@app/client` and gets the API's types without code generation.\n- When you add an endpoint, declare it with its schema (`t.Object`) in `apps/api/src/index.ts`: that's how the client validates and types it.\n- From the root: `bun run dev`, `bun run build`, `bun run typecheck`.\n- Each app lives in its own folder with its own dependencies; don't mix code from one into another.\n- Whatever backend and frontend share (types, API contracts) is defined in one place and documented.\n"
+}
