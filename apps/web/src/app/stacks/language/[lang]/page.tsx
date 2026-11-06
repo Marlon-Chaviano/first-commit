@@ -76,7 +76,7 @@ async function LanguageContent({ lang: langPromise }: { lang: Promise<string> })
       ) : (
         <section className="mt-10 flex flex-col gap-4">
           <h2 className="label-mono">Kits ({kits.length})</h2>
-          <LoadMoreList pageSize={KITS_PER_PAGE} noun={["kit", "kits"]} className="grid gap-4 md:grid-cols-2">
+          <LoadMoreList pageSize={KITS_PER_PAGE} noun={["kit", "kits"]} className="grid grid-cols-1 gap-4 md:grid-cols-2">
             {kits.map(({ entry, kit }) => (
               <li key={entry.name} className="flex flex-col gap-3 rounded-lg border p-4">
                 <div className="flex items-start justify-between gap-3">

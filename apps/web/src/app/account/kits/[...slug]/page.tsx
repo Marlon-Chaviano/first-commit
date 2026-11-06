@@ -60,7 +60,7 @@ async function Stats({ slug: slugPromise }: { slug: Promise<string> }) {
         </section>
       )}
 
-      <section className="grid gap-6 sm:grid-cols-3">
+      <section className="grid grid-cols-1 gap-6 sm:grid-cols-3">
         <Number label="Installs" value={live.installs} />
         <Number label="Unique users" value={live.unique} />
         <div className="flex flex-col gap-2">
@@ -69,7 +69,7 @@ async function Stats({ slug: slugPromise }: { slug: Promise<string> }) {
         </div>
       </section>
 
-      <section className="grid gap-6 sm:grid-cols-3">
+      <section className="grid grid-cols-1 gap-6 sm:grid-cols-3">
         <Number label="Updates" value={live.retention.update ?? 0} />
         <Number label="Libraries added" value={live.retention.add ?? 0} />
       </section>

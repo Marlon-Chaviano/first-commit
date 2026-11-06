@@ -20,7 +20,7 @@ export default function PricingPage() {
       <p className="mt-3 max-w-2xl text-lg text-muted-foreground">
         Using kits, publishing public kits, and the CLI, the MCP and the skill are free, and will stay free.
       </p>
-      <div className="mt-10 grid gap-4 md:grid-cols-3">
+      <div className="mt-10 grid grid-cols-1 gap-4 md:grid-cols-3">
         {Object.entries(PLANS).map(([id, plan]) => (
           <div key={id} className="flex flex-col gap-4 rounded-lg border p-6">
             <div>

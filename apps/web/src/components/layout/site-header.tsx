@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
 
 import { BrandMark } from "./pixel-wordmark";
-import { NavLinks } from "./nav-links";
+import { MobileNav, NavLinks } from "./nav-links";
 import { StarButton } from "./star-button";
 import { UserMenu } from "./user-menu";
 
@@ -14,7 +14,7 @@ export function SiteHeader() {
       {/* Same width and gutters as the pages (max-w-5xl, px-4 sm:px-6), so the logo lines up with the content below. */}
       <nav aria-label="Main" className="mx-auto flex h-14 w-full max-w-5xl items-center justify-between gap-4 px-4 sm:px-6">
         {/* The horizontal logo: the symbol, then the name in Geist Mono Medium, as in public/brand/. */}
-        <Link href="/" aria-label={`${BRAND.name}, home`} className="flex items-center gap-2.5">
+        <Link href="/" aria-label={`${BRAND.name}, home`} className="flex shrink-0 items-center gap-2.5 whitespace-nowrap">
           <BrandMark className="size-7" />
           <span className="font-mono text-[17px] font-medium tracking-tight">{BRAND.name}</span>
         </Link>
@@ -25,6 +25,7 @@ export function SiteHeader() {
             <Separator orientation="vertical" className="mr-1 hidden h-5 data-vertical:self-center sm:block" />
             <StarButton />
             <UserMenu />
+            <MobileNav />
           </div>
         </div>
       </nav>

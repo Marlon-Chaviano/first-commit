@@ -75,7 +75,7 @@ async function Content() {
     <>
       <Header />
     <div className="flex flex-col gap-10">
-      <ul className="grid gap-4 sm:grid-cols-3">
+      <ul className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         {PARTS.map(({ icon: Icon, title, text }) => (
           <li key={title} className="flex flex-col gap-2 rounded-xl border p-5">
             <Icon className="size-5" />

@@ -20,9 +20,9 @@ export async function GET() {
     .join("\n");
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0"><channel>
-<title>${esc(BRAND.name)}: novedades</title>
+<title>${esc(BRAND.name)} changelog</title>
 <link>${BRAND.siteUrl}/changelog</link>
-<description>Lo nuevo en ${esc(BRAND.name)}</description>
+<description>What's new in ${esc(BRAND.name)}</description>
 ${items}
 </channel></rss>`;
   return new Response(xml, { headers: { "content-type": "application/rss+xml; charset=utf-8", "cache-control": "public, max-age=3600" } });

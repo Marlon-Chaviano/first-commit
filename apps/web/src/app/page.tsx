@@ -68,7 +68,7 @@ export default async function Home() {
             <div className="flex flex-col gap-3">
               <div className="flex items-baseline justify-between gap-4">
                 <h2 className="label-mono">By language</h2>
-                <Link href="/stacks" className="font-mono text-xs text-muted-foreground hover:text-foreground">
+                <Link href="/stacks" className="-my-2 py-2 font-mono text-xs text-muted-foreground hover:text-foreground">
                   See stacks →
                 </Link>
               </div>
@@ -109,7 +109,7 @@ export default async function Home() {
       {featured.length > 0 && (
         <section className="flex flex-col gap-4">
           <h2 className="label-mono">Community highlights</h2>
-          <ul className="grid gap-4 sm:grid-cols-3">
+          <ul className="grid grid-cols-1 gap-4 sm:grid-cols-3">
             {featured.map((k) => (
               <li key={k.name}>
                 <Link href={`/kits/${k.name}`} className="flex h-full flex-col gap-1.5 rounded-lg border p-4 hover:bg-muted/50">

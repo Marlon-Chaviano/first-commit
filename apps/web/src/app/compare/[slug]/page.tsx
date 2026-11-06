@@ -56,8 +56,8 @@ async function CompareContent({ slug }: { slug: Promise<string> }) {
       <p className="label-mono text-muted-foreground">comparar · {c.category}</p>
       <h1 className="mt-6 text-3xl font-semibold tracking-tight sm:text-4xl">{title}</h1>
       <p className="mt-3 max-w-2xl text-lg text-muted-foreground">
-        Las dos funcionan con {c.sharedFrameworks.map((f) => FRAMEWORK_LABELS[f] ?? f).join(", ")}. En un kit eliges una y tu agente
-        recibe la regla de usar solo esa.
+        Both work with {c.sharedFrameworks.map((f) => FRAMEWORK_LABELS[f] ?? f).join(", ")}. In a kit you pick one, and your agent
+        gets the rule to use only that one.
       </p>
       <div className="mt-10 overflow-x-auto">
         <table className="w-full min-w-[560px] border-y text-sm">

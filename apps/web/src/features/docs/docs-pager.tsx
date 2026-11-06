@@ -14,7 +14,7 @@ export function DocsPager() {
   const prev = DOCS_PAGES[index - 1];
   const next = DOCS_PAGES[index + 1];
   return (
-    <nav aria-label="Previous and next page" className="mt-16 grid gap-3 border-t pt-8 sm:grid-cols-2">
+    <nav aria-label="Previous and next page" className="mt-16 grid grid-cols-1 gap-3 border-t pt-8 sm:grid-cols-2">
       {prev && (
         <Link href={prev.href} className="group flex flex-col gap-1.5 rounded-lg border p-4 transition-colors hover:bg-muted/50">
           <span className="flex items-center gap-1.5 text-xs text-muted-foreground">

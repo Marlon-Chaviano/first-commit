@@ -88,7 +88,7 @@ export function Configurator({
   ] as const;
 
   const renderOption = (option: Kit["options"][number]) => (
-    <div key={option.id} className="grid gap-3 border-b py-5 last:border-b-0 sm:grid-cols-[180px_minmax(0,1fr)] sm:gap-6">
+    <div key={option.id} className="grid grid-cols-1 gap-3 border-b py-5 last:border-b-0 sm:grid-cols-[180px_minmax(0,1fr)] sm:gap-6">
       <p className="pt-1.5 text-sm font-medium">{option.label}</p>
       <ToggleGroup
         variant="outline"
@@ -159,14 +159,14 @@ export function Configurator({
         )}
 
         <Panel title="Project" description="Its name, which agents, and which package manager.">
-          <div className="grid gap-4 py-5 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-4 py-5 sm:grid-cols-2">
             <Field>
               <FieldLabel htmlFor="project-name">Name</FieldLabel>
               <Input id="project-name" value={name} onChange={(e) => setName(e.target.value)} placeholder={kit.name} className="font-mono" />
             </Field>
             <BrandPicker value={brand?.slug ?? ""} onChange={setBrand} />
           </div>
-          <div className="grid gap-3 border-t py-5 sm:grid-cols-[180px_minmax(0,1fr)] sm:gap-6">
+          <div className="grid grid-cols-1 gap-3 border-t py-5 sm:grid-cols-[180px_minmax(0,1fr)] sm:gap-6">
             <p className="pt-1.5 text-sm font-medium">Agents</p>
             <ToggleGroup
               variant="outline"
@@ -186,7 +186,7 @@ export function Configurator({
             </ToggleGroup>
           </div>
           {kit.packageManagers.length > 1 && (
-            <div className="grid gap-3 border-t py-5 sm:grid-cols-[180px_minmax(0,1fr)] sm:gap-6">
+            <div className="grid grid-cols-1 gap-3 border-t py-5 sm:grid-cols-[180px_minmax(0,1fr)] sm:gap-6">
               <p className="pt-1.5 text-sm font-medium">Package manager</p>
               <ToggleGroup
                 variant="outline"
@@ -421,7 +421,7 @@ function PackCard({
             return (
               <li key={ref} className="flex items-start gap-2.5 bg-background px-4 py-3">
                 <Checkbox id={id} checked={!isRemoved(ref)} onCheckedChange={(v) => onSkill(ref, v)} className="mt-0.5" />
-                <label htmlFor={id} className="flex min-w-0 cursor-pointer flex-col gap-0.5">
+                <label htmlFor={id} className="flex min-w-0 flex-1 cursor-pointer flex-col gap-0.5">
                   <span className="truncate font-mono text-sm">{name}</span>
                   <span className="text-xs text-pretty text-muted-foreground">{SKILL_BLURBS[name] ?? ref.slice(0, ref.lastIndexOf("@"))}</span>
                 </label>

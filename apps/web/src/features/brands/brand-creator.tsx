@@ -171,7 +171,7 @@ function Start({ onDetected, onBlank }: { onDetected: (d: BrandDetection, source
         <span className="h-px flex-1 bg-border" />
       </div>
 
-      <div className="grid gap-3 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <button
           type="button"
           disabled={pending}
@@ -264,7 +264,7 @@ function ReviewStep({
   return (
     <div className="flex flex-col gap-6">
       <BackButton onClick={onBack}>Try another website or file</BackButton>
-      <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_320px]">
+      <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1fr)_320px]">
         <form
           className="flex flex-col gap-8"
           onSubmit={(e) => {
@@ -291,7 +291,7 @@ function ReviewStep({
           </div>
 
           <Section title="Name">
-            <div className="grid gap-4 sm:grid-cols-2">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <Field>
                 <FieldLabel htmlFor="review-title">Brand name</FieldLabel>
                 <Input
@@ -369,7 +369,7 @@ function ReviewStep({
                 <option key={f} value={f} />
               ))}
             </datalist>
-            <div className="grid gap-4 sm:grid-cols-2">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <Field>
                 <FieldLabel htmlFor="review-sans">Body</FieldLabel>
                 <Input id="review-sans" list="review-fonts" value={sans} onChange={(e) => setSans(e.target.value)} placeholder="Inter" />

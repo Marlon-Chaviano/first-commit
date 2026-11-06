@@ -1,45 +1,51 @@
 "use client";
 
+import { MenuIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Suspense } from "react";
+import { Suspense, useState } from "react";
 
+import { Button } from "@/components/ui/button";
+import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 
 import { SectionLink } from "./section-link";
 
+// From md up they sit in the header; on phones they open from the menu button (MobileNav).
 const NAV = [
-  // On phones only the first two fit; the rest are also in the footer.
-  { href: "/#leaderboard", label: "Kits", mobile: true, match: ["/", "/kits"] },
+  { href: "/#leaderboard", label: "Kits", match: ["/", "/kits"] },
   { href: "/stacks", label: "Stacks", match: ["/stacks"] },
   { href: "/brands", label: "Brands", match: ["/brands"] },
-  { href: "/docs", label: "Docs", mobile: true, match: ["/docs"] },
+  { href: "/docs", label: "Docs", match: ["/docs"] },
   { href: "/changelog", label: "Changelog", match: ["/changelog"] },
 ];
 
 /** Is `pathname` this item's page or one below it? "/" only matches itself. */
 const isActive = (pathname: string, match: string[]) => match.some((m) => (m === "/" ? pathname === "/" : pathname === m || pathname.startsWith(`${m}/`)));
 
-function Links({ pathname }: { pathname: string | null }) {
+function Links({ pathname, className }: { pathname: string | null; className: (active: boolean) => string }) {
   return NAV.map((item) => {
     const active = pathname !== null && isActive(pathname, item.match);
-    const className = cn("transition-colors hover:text-foreground", active && "text-foreground", !item.mobile && "hidden md:inline");
     const current = active ? ("page" as const) : undefined;
     // Home sections scroll smoothly instead of jumping.
     return item.href.startsWith("/#") ? (
-      <SectionLink key={item.href} href={item.href as `/#${string}`} className={className} aria-current={current}>
+      <SectionLink key={item.href} href={item.href as `/#${string}`} className={className(active)} aria-current={current}>
         {item.label}
       </SectionLink>
     ) : (
-      <Link key={item.href} href={item.href as "/"} className={className} aria-current={current}>
+      <Link key={item.href} href={item.href as "/"} className={className(active)} aria-current={current}>
         {item.label}
       </Link>
     );
   });
 }
 
-function ActiveLinks() {
-  return <Links pathname={usePathname()} />;
+const inline = (active: boolean) => cn("hidden py-2 transition-colors hover:text-foreground md:inline", active && "text-foreground");
+const stacked = (active: boolean) =>
+  cn("flex h-12 items-center border-b text-base transition-colors last:border-b-0 hover:text-foreground", active ? "font-medium text-foreground" : "text-muted-foreground");
+
+function ActiveLinks({ className }: { className: (active: boolean) => string }) {
+  return <Links pathname={usePathname()} className={className} />;
 }
 
 /**
@@ -48,8 +54,29 @@ function ActiveLinks() {
  */
 export function NavLinks() {
   return (
-    <Suspense fallback={<Links pathname={null} />}>
-      <ActiveLinks />
+    <Suspense fallback={<Links pathname={null} className={inline} />}>
+      <ActiveLinks className={inline} />
     </Suspense>
+  );
+}
+
+/** Phones: every section behind one menu button, as full-width rows that are easy to tap. */
+export function MobileNav() {
+  const [open, setOpen] = useState(false);
+  return (
+    <Sheet open={open} onOpenChange={setOpen}>
+      <SheetTrigger render={<Button variant="ghost" size="icon" className="-mr-2 md:hidden" aria-label="Open menu" />}>
+        <MenuIcon />
+      </SheetTrigger>
+      <SheetContent side="top" className="px-4 pt-3 pb-6">
+        <SheetTitle className="label-mono h-8 content-center text-muted-foreground">Menu</SheetTitle>
+        {/* A tap on any link navigates and closes the menu. */}
+        <nav aria-label="Sections" className="flex flex-col" onClick={(e) => (e.target as HTMLElement).closest("a") && setOpen(false)}>
+          <Suspense fallback={<Links pathname={null} className={stacked} />}>
+            <ActiveLinks className={stacked} />
+          </Suspense>
+        </nav>
+      </SheetContent>
+    </Sheet>
   );
 }

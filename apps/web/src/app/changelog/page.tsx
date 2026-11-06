@@ -35,7 +35,7 @@ export default async function ChangelogPage() {
         </Button>
       </header>
 
-      <section aria-labelledby="newsletter" className="mt-10 grid gap-4 rounded-xl border p-5 sm:p-6 md:grid-cols-[minmax(0,1fr)_minmax(0,28rem)] md:items-center md:gap-10">
+      <section aria-labelledby="newsletter" className="mt-10 grid grid-cols-1 gap-4 rounded-xl border p-5 sm:p-6 md:grid-cols-[minmax(0,1fr)_minmax(0,28rem)] md:items-center md:gap-10">
         <div className="flex flex-col gap-1.5">
           <h2 id="newsletter" className="font-medium">Get it in your inbox</h2>
           <p className="text-sm text-pretty text-muted-foreground">A short weekly email with what changed here and the community&apos;s best new kits.</p>
@@ -54,7 +54,7 @@ export default async function ChangelogPage() {
 
       <ol className="changelog-rail relative mt-16">
         {days.map(([date, group], i) => (
-          <li key={date} className="relative grid gap-4 pb-14 last:pb-0 md:grid-cols-[180px_minmax(0,1fr)] md:gap-10">
+          <li key={date} className="relative grid grid-cols-1 gap-4 pb-14 last:pb-0 md:grid-cols-[180px_minmax(0,1fr)] md:gap-10">
             <div className="md:sticky md:top-24 md:self-start">
               <time dateTime={date} className="flex items-center gap-2 font-mono text-sm">
                 {formatDate.format(new Date(`${date}T00:00:00Z`))}

@@ -29,7 +29,7 @@ export default function AboutPage() {
         </p>
       </header>
 
-      <section className="grid gap-4 sm:grid-cols-2">
+      <section className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         {PRINCIPLES.map(([title, text]) => (
           <div key={title} className="flex flex-col gap-2 rounded-lg border p-5">
             <h2 className="font-medium">{title}</h2>

@@ -19,7 +19,7 @@ export function BrandAssetsField({ assets, onChange }: { assets: BrandProfile["a
     <FieldSet>
       <FieldLegend variant="label">Logo and images</FieldLegend>
       <FieldDescription>Downloaded into every project (public/brand/). The favicon also replaces the framework&apos;s default one.</FieldDescription>
-      <ul className="grid gap-3 sm:grid-cols-2">
+      <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         {KINDS.map((kind) => (
           <AssetSlot
             key={kind}
@@ -114,7 +114,7 @@ export function BrandLinksField({ website, social, onChange }: { website?: strin
   return (
     <FieldSet>
       <FieldLegend variant="label">Links</FieldLegend>
-      <div className="grid gap-4 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <Field>
           <FieldLabel htmlFor="brand-website">Website</FieldLabel>
           <Input id="brand-website" value={website ?? ""} onChange={(e) => onChange({ website: e.target.value.trim() || undefined, social })} placeholder="https://acme.com" className="font-mono text-sm" />

@@ -56,7 +56,7 @@ function NoBrands() {
 function BrandList({ brands }: { brands: Brands }) {
   return (
     <section className="flex flex-col gap-4">
-      <ul className="grid gap-4 sm:grid-cols-2">
+      <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         {brands.map((b) => {
           const profile = brandProfileSchema.safeParse(b.profile);
           return (

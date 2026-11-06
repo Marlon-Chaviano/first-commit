@@ -153,7 +153,7 @@ async function StackContent({ slug }: { slug: Promise<string> }) {
         </section>
       )}
 
-      <section className="mt-14 grid gap-10 md:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
+      <section className="mt-14 grid grid-cols-[minmax(0,1fr)] gap-10 md:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
         <div className="flex flex-col gap-4">
           <h2 className="label-mono">
             Skills <span className="text-muted-foreground">· {r.skills.length}</span>

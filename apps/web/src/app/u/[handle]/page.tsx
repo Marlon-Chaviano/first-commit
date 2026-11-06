@@ -41,7 +41,7 @@ async function Profile({ handle }: { handle: Promise<string> }) {
         <div className="flex flex-col gap-1">
           <h1 className="font-mono text-2xl font-semibold">{profile.user.handle}</h1>
           <p className="text-sm text-muted-foreground">
-            {profile.user.name} · {profile.kits.length} kits · {formatCount(total)} instalaciones ·{" "}
+            {profile.user.name} · {profile.kits.length} kits · {formatCount(total)} installs ·{" "}
             <a href={`https://github.com/${profile.user.handle}`} className="hover:underline">
               GitHub
             </a>

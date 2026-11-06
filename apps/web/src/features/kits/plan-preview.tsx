@@ -80,7 +80,7 @@ export function PlanPreview({ kit, sel, name, brand }: { kit: Kit; sel: Selectio
         <button
           type="button"
           onClick={() => setAll(!all)}
-          className="flex w-fit items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
+          className="-my-2 flex w-fit items-center gap-1.5 py-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
           aria-expanded={all}
         >
           <ChevronDownIcon className={cn("size-4 transition-transform", all && "rotate-180")} />
@@ -169,7 +169,7 @@ function Skills({ steps, rel }: { steps: RunStep[]; rel: (p: string) => string }
           </li>
         ))}
       </ul>
-      <button type="button" onClick={() => setOpen(!open)} className="flex w-fit items-center gap-1 font-mono text-xs text-muted-foreground hover:text-foreground" aria-expanded={open}>
+      <button type="button" onClick={() => setOpen(!open)} className="-my-2 flex w-fit items-center gap-1 py-2 font-mono text-xs text-muted-foreground hover:text-foreground" aria-expanded={open}>
         <ChevronDownIcon className={cn("size-3.5 transition-transform", open && "rotate-180")} />
         {open ? "hide the commands" : "see the commands"}
       </button>

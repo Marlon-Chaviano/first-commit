@@ -57,7 +57,7 @@ function NoOrgs() {
 
 function OrgList({ orgs }: { orgs: Awaited<ReturnType<typeof listUserOrgs>> }) {
   return (
-    <ul className="grid gap-3 sm:grid-cols-2">
+    <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2">
       {orgs.map(({ org, role }) => (
         <li key={org.id}>
           <Link href={`/orgs/${org.slug}`} className="flex h-full flex-col gap-3 rounded-xl border p-4 transition-colors hover:bg-muted/40">

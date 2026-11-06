@@ -30,7 +30,7 @@ export function ContactForm({ email: defaultEmail }: { email?: string }) {
     <form action={action} className="flex flex-col gap-4 rounded-xl border p-5 sm:p-6">
       {/* Honeypot for bots: hidden from people and from assistive tech. */}
       <input type="text" name="website" tabIndex={-1} autoComplete="off" aria-hidden className="hidden" />
-      <div className="grid gap-4 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <Field>
           <FieldLabel htmlFor="contact-email">Your email</FieldLabel>
           <Input id="contact-email" name="email" type="email" required autoComplete="email" defaultValue={defaultEmail} placeholder="you@email.com" className="h-10" />

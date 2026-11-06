@@ -25,7 +25,7 @@ function ActiveTabs() {
 
 function Tabs({ pathname }: { pathname: string | null }) {
   return (
-    <nav aria-label="Account" className="-mx-4 overflow-x-auto px-4 sm:mx-0 sm:px-0">
+    <nav aria-label="Account" className="-mx-4 overflow-x-auto px-4 [scrollbar-width:none] mask-r-from-[calc(100%-2rem)] sm:mx-0 sm:px-0 sm:mask-none">
       <ul className="flex min-w-max gap-6 border-b">
         {ACCOUNT_TABS.map((tab) => {
           const active = pathname !== null && (pathname === tab.href || pathname.startsWith(`${tab.href}/`));

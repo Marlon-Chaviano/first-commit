@@ -21,7 +21,7 @@ const UNLOCKS: { icon: LucideIcon; title: string; text: string }[] = [
 
 export default function SignInPage({ searchParams }: PageProps<"/login">) {
   return (
-    <div className="mx-auto grid min-h-[calc(100dvh-14rem)] w-full max-w-5xl items-center gap-12 px-4 py-12 sm:px-6 md:py-16 lg:grid-cols-[minmax(0,1fr)_400px] lg:gap-20">
+    <div className="mx-auto grid grid-cols-1 min-h-[calc(100dvh-14rem)] w-full max-w-5xl items-center gap-12 px-4 py-12 sm:px-6 md:py-16 lg:grid-cols-[minmax(0,1fr)_400px] lg:gap-20">
       <section className="order-2 flex flex-col gap-8 lg:order-1">
         <div className="flex flex-col gap-3">
           {/* The name is the protagonist: the site's pixel wordmark, built pixel by pixel and waiting at a cursor. */}

@@ -33,7 +33,7 @@ export default function DocsOverview() {
       <Cmd>{cliCommand("saas-next-supabase my-app --payments stripe")}</Cmd>
 
       <H2 id="how-it-works">How it works</H2>
-      <ol className="mt-3 grid gap-3 sm:grid-cols-3">
+      <ol className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-3">
         {STEPS.map(([title, text], i) => (
           <li key={title} className="flex flex-col gap-2 rounded-lg border p-4">
             <span className="font-mono text-xs text-muted-foreground tabular-nums">0{i + 1}</span>
@@ -81,7 +81,7 @@ export default function DocsOverview() {
       </dl>
 
       <H2 id="next-steps">Next steps</H2>
-      <div className="mt-3 grid gap-3 sm:grid-cols-2">
+      <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
         {DOCS_PAGES.filter((p) => p.href !== "/docs")
           .map((page) => (
             <Link key={page.href} href={page.href} className="rounded-lg border px-4 py-3 text-sm transition-colors hover:bg-muted/50">

@@ -51,7 +51,7 @@ export function PublishForm({ dev, orgs = [] }: { dev: boolean; orgs?: string[] 
           <Input id="path" value={path} onChange={(e) => setPath(e.target.value)} placeholder="kit (empty = root)" disabled={Boolean(local)} />
         </Field>
         <Field>
-          <FieldLabel htmlFor="ref">Rama, etiqueta o commit</FieldLabel>
+          <FieldLabel htmlFor="ref">Branch, tag or commit</FieldLabel>
           <Input id="ref" value={ref} onChange={(e) => setRef(e.target.value)} disabled={Boolean(local)} />
           <FieldDescription>It&apos;s pinned to the exact commit: the published version doesn&apos;t change as the repo moves on.</FieldDescription>
         </Field>

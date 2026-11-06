@@ -37,7 +37,7 @@ export default async function LibrariesDocs() {
                     </a>
                     <span className="text-sm text-muted-foreground">{lib.description}</span>
                   </div>
-                  <div className="flex shrink-0 flex-wrap items-center gap-1.5">
+                  <div className="flex flex-wrap items-center gap-1.5 sm:max-w-1/2 sm:justify-end">
                     <code className="font-mono text-xs text-muted-foreground">{lib.id}</code>
                     {lib.frameworks.map((f) => (
                       <Badge key={f} variant="outline" className="font-mono">

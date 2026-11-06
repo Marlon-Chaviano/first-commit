@@ -25,7 +25,7 @@ export default function ContactPage() {
         <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">Contact</h1>
         <p className="text-lg text-pretty text-muted-foreground">I reply personally, usually within a day or two.</p>
       </header>
-      <div className="grid gap-4 sm:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         {CHANNELS.map(({ icon: Icon, title, text, href, cta }) => (
           <a key={title} href={href} className="group flex flex-col gap-3 rounded-lg border p-5 transition-colors hover:bg-muted/40">
             <Icon className="size-5" />

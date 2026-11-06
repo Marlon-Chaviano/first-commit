@@ -46,7 +46,7 @@ export function P({ children }: { children: React.ReactNode }) {
 }
 
 export function Code({ children }: { children: React.ReactNode }) {
-  return <code className="font-mono text-[0.9em] text-foreground">{children}</code>;
+  return <code className="font-mono text-[0.9em] wrap-anywhere text-foreground">{children}</code>;
 }
 
 export function Cmd({ children }: { children: string }) {
@@ -56,7 +56,8 @@ export function Cmd({ children }: { children: string }) {
 export function CodeBlock({ code }: { code: string }) {
   return (
     <div className="relative mt-3">
-      <div className="absolute top-2 right-2">
+      {/* Opaque, with a soft edge: long lines scroll under the button instead of showing through it. */}
+      <div className="absolute top-2 right-2 z-10 rounded-md bg-muted shadow-[-12px_0_12px_var(--muted)]">
         <CopyButton text={code} />
       </div>
       <pre className="overflow-x-auto rounded-lg bg-muted p-4 pr-12 font-mono text-[12.5px] leading-relaxed">{code}</pre>
@@ -68,7 +69,7 @@ export function Fields({ rows }: { rows: [string, React.ReactNode][] }) {
   return (
     <dl className="divide-y">
       {rows.map(([field, text]) => (
-        <div key={field} className="grid gap-1 py-3 sm:grid-cols-[200px_1fr] sm:gap-4">
+        <div key={field} className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-[200px_minmax(0,1fr)] sm:gap-4">
           <dt className="font-mono text-[13px]">{field}</dt>
           <dd className="text-sm text-muted-foreground">{text}</dd>
         </div>

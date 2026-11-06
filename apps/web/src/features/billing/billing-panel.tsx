@@ -10,7 +10,7 @@ export function BillingPanel({ subject, plan, canManage, seats = 1 }: { subject:
   const paid = plan !== "free";
   return (
     <div className="flex flex-col gap-4">
-      <div className="grid gap-4 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         {[PLANS.free, target].map((p) => (
           <div key={p.label} className="flex flex-col gap-2 rounded-lg border p-4" data-current={PLANS[plan] === p || undefined}>
             <p className="flex items-baseline justify-between">

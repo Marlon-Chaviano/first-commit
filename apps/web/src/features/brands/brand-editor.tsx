@@ -72,7 +72,7 @@ export function BrandEditor({ owners, initial, draft, initialOwner }: { owners: 
     });
 
   return (
-    <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_320px]">
+    <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1fr)_320px]">
       <div className="flex flex-col gap-8">
       {!draft && <BrandImporter onDetect={onDetect} />}
       <form
@@ -97,7 +97,7 @@ export function BrandEditor({ owners, initial, draft, initialOwner }: { owners: 
               <FieldDescription>In an organization, all its members can use it.</FieldDescription>
             </Field>
           )}
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <Field>
               <FieldLabel htmlFor="brand-title">Brand name</FieldLabel>
               <Input id="brand-title" value={p.title} onChange={(e) => set("title", e.target.value)} placeholder="Acme" required />
@@ -147,7 +147,7 @@ export function BrandEditor({ owners, initial, draft, initialOwner }: { owners: 
         <BrandAssetsField assets={p.assets} onChange={(assets) => set("assets", assets)} />
 
         <FieldGroup>
-          <div className="grid gap-4 sm:grid-cols-3">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
             <Field>
               <FieldLabel htmlFor="font-sans">Body font</FieldLabel>
               <Input id="font-sans" value={p.fonts.sans ?? ""} onChange={(e) => set("fonts", { ...p.fonts, sans: e.target.value || undefined })} placeholder="Inter" />
