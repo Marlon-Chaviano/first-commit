@@ -63,14 +63,15 @@ const PROVIDERS = [
 ] as const;
 
 /** Link or unlink each sign-in provider. The last one can't be removed, or there would be no way back in. */
-export function ConnectedAccounts({ linked, available }: { linked: string[]; available: Record<"github" | "google", boolean> }) {
+export function ConnectedAccounts({ linked, available }: { linked: { providerId: string; id: string }[]; available: Record<"github" | "google", boolean> }) {
   const router = useRouter();
   const [busy, setBusy] = useState<string | null>(null);
   const signInMethods = linked.length;
   return (
     <ul className="flex flex-col divide-y rounded-xl border">
       {PROVIDERS.map((p) => {
-        const connected = linked.includes(p.id);
+        const linkedAccount = linked.find((a) => a.providerId === p.id);
+        const connected = Boolean(linkedAccount);
         return (
           <li key={p.id} className="flex items-center gap-4 p-4">
             <TechIcon id={p.id} label="" className="size-5 shrink-0" />
@@ -94,7 +95,7 @@ export function ConnectedAccounts({ linked, available }: { linked: string[]; ava
                 title={signInMethods <= 1 ? "It's your only way to sign in" : undefined}
                 onClick={async () => {
                   setBusy(p.id);
-                  const { error } = await authClient.unlinkAccount({ providerId: p.id });
+                  const { error } = await authClient.unlinkAccount({ accountId: linkedAccount!.id });
                   setBusy(null);
                   if (error) return void toast.error(error.message ?? `Couldn't disconnect ${p.label}`);
                   toast.success(`${p.label} disconnected`);

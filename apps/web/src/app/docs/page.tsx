@@ -4,7 +4,7 @@ import Link from "next/link";
 
 import { OriginIcon } from "@/components/shared/origin-icon";
 import { Cmd, Code, DocsHeader, H2, P } from "@/features/docs/docs-ui";
-import { DOCS_SECTIONS } from "@/lib/site-nav";
+import { DOCS_PAGES } from "@/lib/site-nav";
 import { BrandName } from "@/components/shared/brand-name";
 
 export const metadata: Metadata = {
@@ -82,8 +82,7 @@ export default function DocsOverview() {
 
       <H2 id="next-steps">Next steps</H2>
       <div className="mt-3 grid gap-3 sm:grid-cols-2">
-        {DOCS_SECTIONS.flatMap((s) => s.pages)
-          .filter((p) => p.href !== "/docs")
+        {DOCS_PAGES.filter((p) => p.href !== "/docs")
           .map((page) => (
             <Link key={page.href} href={page.href} className="rounded-lg border px-4 py-3 text-sm transition-colors hover:bg-muted/50">
               {page.label} <span className="text-muted-foreground">→</span>

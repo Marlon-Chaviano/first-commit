@@ -4,7 +4,7 @@ import { Suspense } from "react";
 
 import { Skeleton } from "@/components/ui/skeleton";
 import { ConnectedAccounts, DeleteAccount, ProfileForm } from "@/features/account/account-settings";
-import { linkedProviders } from "@/server/accounts";
+import { linkedAccounts } from "@/server/accounts";
 import { githubLogin, googleLogin } from "@/server/env";
 import { getViewer } from "@/server/session";
 
@@ -21,7 +21,7 @@ export default function AccountSettingsPage() {
 async function Settings() {
   const viewer = await getViewer();
   if (!viewer) redirect("/login?next=/account/settings");
-  const linked = await linkedProviders(viewer.id);
+  const linked = await linkedAccounts(viewer.id);
   return (
     <div className="flex flex-col gap-12">
       <section className="flex flex-col gap-4">

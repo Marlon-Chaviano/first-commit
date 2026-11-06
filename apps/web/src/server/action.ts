@@ -8,7 +8,7 @@ import { getViewer, isAdmin } from "./session";
 import type { TokenUser } from "./tokens";
 
 /** What every server action returns to the browser. */
-export type Result<T = undefined> = { ok: true; data: T } | { ok: false; error: string };
+export type Result<T = void> = { ok: true; data: T } | { ok: false; error: string };
 
 type Auth = "required" | "admin" | "optional";
 type ViewerFor<A extends Auth> = A extends "optional" ? TokenUser | null : TokenUser;

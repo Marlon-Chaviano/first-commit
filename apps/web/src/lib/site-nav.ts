@@ -1,4 +1,5 @@
 import { AUTHOR, REPO_URL } from "@kits/schema";
+import type { Route } from "next";
 
 /** The docs, grouped as in the sidebar. The footer and the sitemap read the same list. */
 export const DOCS_SECTIONS = [
@@ -29,7 +30,13 @@ export const DOCS_SECTIONS = [
   },
 ] as const;
 
-export const DOCS_PAGES = DOCS_SECTIONS.flatMap((s) => s.pages);
+export interface DocsPage {
+  href: Route;
+  label: string;
+}
+
+/** Every docs page in sidebar order (previous/next, sitemap, the docs index). */
+export const DOCS_PAGES: DocsPage[] = DOCS_SECTIONS.flatMap((s): readonly DocsPage[] => s.pages);
 
 /** Footer "Docs" column: the pages most people look for. */
 export const FOOTER_DOCS = [

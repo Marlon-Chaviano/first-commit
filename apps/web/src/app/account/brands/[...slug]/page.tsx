@@ -10,6 +10,6 @@ export default function LegacyBrandPage({ params }: PageProps<"/account/brands/[
   );
 }
 
-async function Redirect({ slug }: { slug: Promise<string> }) {
+async function Redirect({ slug }: { slug: Promise<string> }): Promise<null> {
   redirect(`/brands/${await slug}`);
 }

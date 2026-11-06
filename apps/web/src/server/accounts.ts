@@ -65,10 +65,10 @@ export async function getAdminData() {
   return { reports, kits: allKits };
 }
 
-/** Sign-in providers linked to the account: "github", "google" or "credential" (dev login). */
-export async function linkedProviders(userId: string): Promise<string[]> {
+/** Sign-in methods linked to the account ("github", "google", "credential" for dev login), with the id Better Auth unlinks by. */
+export async function linkedAccounts(userId: string): Promise<{ providerId: string; id: string }[]> {
   if (!db) return [];
-  return (await db.select({ providerId: account.providerId }).from(account).where(eq(account.userId, userId))).map((r) => r.providerId);
+  return db.select({ providerId: account.providerId, id: account.id }).from(account).where(eq(account.userId, userId));
 }
 
 /** Has the user linked GitHub? Publishing needs its token to check repo permissions. */

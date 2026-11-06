@@ -1,3 +1,5 @@
+import { join } from "node:path";
+
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
@@ -13,6 +15,10 @@ const nextConfig: NextConfig = {
   reactCompiler: true,
   // The shared kit schema ships as TypeScript source.
   transpilePackages: ["@kits/schema", "@kits/mcp"],
+  // The registry (kits, libraries, stacks, changelog) lives at the monorepo root and is read at
+  // runtime with a computed path, which tracing can't follow: include it in every function.
+  outputFileTracingRoot: join(__dirname, "../.."),
+  outputFileTracingIncludes: { "/*": ["../../registry/**/*"] },
   // The site moved from Spanish to English routes: old links keep working.
   async redirects() {
     const moved: [string, string][] = [

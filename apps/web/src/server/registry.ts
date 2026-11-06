@@ -13,6 +13,10 @@ import {
   type KitSource,
   type LoadedRawKit,
   type RegistryEntry,
+  KIT_CATEGORIES,
+  LANGUAGE_IDS,
+  type KitCategory,
+  type LanguageId,
 } from "@kits/schema";
 import { and, desc, eq, isNotNull, sql } from "drizzle-orm";
 import { cacheLife, cacheTag } from "next/cache";
@@ -75,9 +79,10 @@ export async function getCommunityEntries(): Promise<RegistryEntry[]> {
       version: kit.latestVersion,
       title: kit.title,
       description: kit.description,
-      category: kit.category,
+      category: (KIT_CATEGORIES as readonly string[]).includes(kit.category) ? (kit.category as KitCategory) : "other",
       tags: kit.tags,
-      language: kit.language,
+      // A language this version doesn't know yet is left out (the kit falls back to its package manager's).
+      language: (LANGUAGE_IDS as readonly string[]).includes(kit.language ?? "") ? (kit.language as LanguageId) : undefined,
       author: handle ?? "?",
       skills: 0,
       options: [],
