@@ -3,7 +3,7 @@ import { BarChart3Icon, KeyRoundIcon, PaletteIcon, UploadIcon, type LucideIcon }
 import type { Metadata } from "next";
 import { Suspense } from "react";
 
-import { BrandMark } from "@/components/layout/pixel-wordmark";
+import { BrandMark, PixelWordmark } from "@/components/layout/pixel-wordmark";
 import { Command } from "@/components/shared/command";
 import { SignIn } from "@/features/account/sign-in";
 import { oauthErrorMessage } from "@/lib/oauth-errors";
@@ -24,8 +24,12 @@ export default function SignInPage({ searchParams }: PageProps<"/login">) {
     <div className="mx-auto grid min-h-[calc(100dvh-14rem)] w-full max-w-5xl items-center gap-12 px-4 py-12 sm:px-6 md:py-16 lg:grid-cols-[minmax(0,1fr)_400px] lg:gap-20">
       <section className="order-2 flex flex-col gap-8 lg:order-1">
         <div className="flex flex-col gap-3">
-          <h1 className="text-3xl font-semibold tracking-tight text-balance sm:text-4xl">Log in to {BRAND.name}</h1>
-          <p className="max-w-md text-lg text-pretty text-muted-foreground">
+          {/* The name is the protagonist: the site's pixel wordmark, built pixel by pixel and waiting at a cursor. */}
+          <h1 className="flex flex-col gap-5">
+            <span className="text-lg font-medium text-muted-foreground">Log in to</span>
+            <PixelWordmark text={BRAND.name} layout="inline" animated cursor className="w-full max-w-md" />
+          </h1>
+          <p className="mt-3 max-w-md text-lg text-pretty text-muted-foreground">
             Browsing, the configurator and the CLI work without an account. Logging in adds what&apos;s yours:
           </p>
         </div>

@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { LegalPage } from "@/features/legal/legal-page";
+import { BrandName } from "@/components/shared/brand-name";
 
 export const metadata: Metadata = { title: "Privacy", description: `What data ${BRAND.name} collects, why, who processes it and how to delete it.` };
 
@@ -14,13 +15,13 @@ export default function PrivacyPage() {
       updated="2026-11-05"
       summary={
         <>
-          {BRAND.name} is a free, personal open-source project. It doesn&apos;t sell data, show ads or use tracking cookies, and the CLI&apos;s install counts are
+          <BrandName /> is a free, personal open-source project. It doesn&apos;t sell data, show ads or use tracking cookies, and the CLI&apos;s install counts are
           anonymous. You can ask for your data to be deleted at any time.
         </>
       }
     >
       <p>
-        This policy covers {BRAND.name}: the website at {new URL(BRAND.siteUrl).host}, its public API, its MCP server and the <code>{BRAND.cli}</code> CLI. It is run by{" "}
+        This policy covers <BrandName />: the website at {new URL(BRAND.siteUrl).host}, its public API, its MCP server and the <code>{BRAND.cli}</code> CLI. It is run by{" "}
         {AUTHOR.name}, who is responsible for your data and can be reached at {mail}.
       </p>
 
@@ -41,12 +42,12 @@ export default function PrivacyPage() {
         anything else in your GitHub or Google account, and we don&apos;t send you email because you signed in.
       </p>
       <p>
-        {BRAND.name}&apos;s use and transfer of information received from Google APIs adheres to the{" "}
+        <BrandName />&apos;s use and transfer of information received from Google APIs adheres to the{" "}
         <a href="https://developers.google.com/terms/api-services-user-data-policy" target="_blank" rel="noreferrer">
           Google API Services User Data Policy
         </a>
         , including the Limited Use requirements. Google user data is never sold, used for advertising, used to train AI models or shared with anyone except
-        the service providers listed below, who process it only to run {BRAND.name}.
+        the service providers listed below, who process it only to run <BrandName />.
       </p>
 
       <h2>What you publish</h2>
@@ -102,7 +103,7 @@ export default function PrivacyPage() {
         <li>GitHub and Google: sign-in. GitHub also hosts the source of the kits.</li>
         <li>Anthropic: the optional recommender, only the description you write.</li>
       </ul>
-      <p>We don&apos;t use any payment provider: {BRAND.name} doesn&apos;t charge for anything.</p>
+      <p>We don&apos;t use any payment provider: <BrandName /> doesn&apos;t charge for anything.</p>
 
       <h2>How long we keep data</h2>
       <ul>
@@ -116,11 +117,11 @@ export default function PrivacyPage() {
       <p>
         Write to {mail} from the email address of your account to get a copy of your data, correct it or delete your account. Deletion covers your account,
         OAuth tokens, sessions, CLI tokens and newsletter subscription, and is done within 30 days. Kits you published are removed or transferred, as you prefer.
-        You can also revoke {BRAND.name}&apos;s access at any time from your GitHub settings (Applications) or your Google account (Third-party connections).
+        You can also revoke <BrandName />&apos;s access at any time from your GitHub settings (Applications) or your Google account (Third-party connections).
       </p>
 
       <h2>Children</h2>
-      <p>{BRAND.name} is a developer tool and isn&apos;t directed at children under 16.</p>
+      <p><BrandName /> is a developer tool and isn&apos;t directed at children under 16.</p>
 
       <h2>Changes</h2>
       <p>If this policy changes in a meaningful way, the date above changes and the update is announced in the changelog.</p>

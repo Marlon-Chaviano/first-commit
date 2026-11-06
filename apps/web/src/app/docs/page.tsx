@@ -5,6 +5,7 @@ import Link from "next/link";
 import { OriginIcon } from "@/components/shared/origin-icon";
 import { Cmd, Code, DocsHeader, H2, P } from "@/features/docs/docs-ui";
 import { DOCS_SECTIONS } from "@/lib/site-nav";
+import { BrandName } from "@/components/shared/brand-name";
 
 export const metadata: Metadata = {
   title: "Documentation",
@@ -21,7 +22,7 @@ export default function DocsOverview() {
   return (
     <>
       <DocsHeader title="Introduction">
-        {BRAND.name} creates projects ready to build with your agent: the base project, the dependencies, the skills, the
+        <BrandName /> creates projects ready to build with your agent: the base project, the dependencies, the skills, the
         MCP servers and the rules in <Code>AGENTS.md</Code>, in a single command.
       </DocsHeader>
 
@@ -51,7 +52,7 @@ export default function DocsOverview() {
         <li>Runs the framework&apos;s official command (create-next-app, create-expo-app, rails new…).</li>
         <li>Installs the libraries you chose and writes their config files.</li>
         <li>
-          Installs the skills for your agents: the <strong className="text-foreground">{BRAND.name} pack</strong> (plan, debug,
+          Installs the skills for your agents: the <strong className="text-foreground"><BrandName /> pack</strong> (plan, debug,
           verify), the design pack when there&apos;s an interface, and the framework&apos;s official skills.
         </li>
         <li>Configures the MCP servers and writes the stack&apos;s rules in <Code>AGENTS.md</Code>.</li>

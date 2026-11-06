@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { LegalPage } from "@/features/legal/legal-page";
+import { BrandName } from "@/components/shared/brand-name";
 
 export const metadata: Metadata = { title: "Terms", description: `${BRAND.name} terms of use. The service is free.` };
 
@@ -14,19 +15,19 @@ export default function TermsPage() {
       updated="2026-11-05"
       summary={
         <>
-          {BRAND.name} is free. There are no paid plans, paid kits or charges of any kind. Kits run commands on your machine, so review the plan the CLI shows
+          <BrandName /> is free. There are no paid plans, paid kits or charges of any kind. Kits run commands on your machine, so review the plan the CLI shows
           before accepting it.
         </>
       }
     >
       <p>
-        By using {BRAND.name} (the website, API, MCP server and <code>{BRAND.cli}</code> CLI) you accept these terms. The service is run by {AUTHOR.name} as a
+        By using <BrandName /> (the website, API, MCP server and <code>{BRAND.cli}</code> CLI) you accept these terms. The service is run by {AUTHOR.name} as a
         personal open-source project ({mail}).
       </p>
 
       <h2>The service</h2>
       <p>
-        {BRAND.name} is a registry of workspace kits: templates that create a project with its dependencies, agent skills, MCP servers and agent rules.
+        <BrandName /> is a registry of workspace kits: templates that create a project with its dependencies, agent skills, MCP servers and agent rules.
         Installing a kit runs, on your machine, the commands that kit defines, and those commands install third-party software. The CLI shows you the full plan
         before running anything and asks for confirmation.
       </p>
@@ -53,7 +54,7 @@ export default function TermsPage() {
 
       <h2>Third-party software</h2>
       <p>
-        Kits install frameworks, libraries, skills and MCP servers made by others, under their own licenses and terms. {BRAND.name} doesn&apos;t control them.
+        Kits install frameworks, libraries, skills and MCP servers made by others, under their own licenses and terms. <BrandName /> doesn&apos;t control them.
         Official kits are tested, but community kits are the responsibility of their creators.
       </p>
 

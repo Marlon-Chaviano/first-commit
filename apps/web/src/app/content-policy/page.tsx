@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { LegalPage } from "@/features/legal/legal-page";
+import { BrandName } from "@/components/shared/brand-name";
 
 export const metadata: Metadata = { title: "Content policy", description: `Which kits can be published on ${BRAND.name} and how reports are handled.` };
 
@@ -33,7 +34,7 @@ export default function ContentPolicyPage() {
 
       <h2>Reporting and enforcement</h2>
       <p>
-        Anyone can report a kit from its page, without an account. Reports are reviewed by an admin, who can hide the kit: it stops appearing on {BRAND.name}{" "}
+        Anyone can report a kit from its page, without an account. Reports are reviewed by an admin, who can hide the kit: it stops appearing on <BrandName />{" "}
         and can no longer be installed from the registry. Serious or repeated violations lead to account suspension. Kits that put users at risk are hidden as
         soon as the report is confirmed.
       </p>

@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { SubscribeForm } from "@/features/newsletter/subscribe-form";
 import { getChangelog, type ChangelogEntry } from "@/server/newsletter";
+import { BrandName } from "@/components/shared/brand-name";
 
 export const metadata: Metadata = {
   title: "Changelog",
@@ -25,7 +26,7 @@ export default async function ChangelogPage() {
       <header className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
         <div className="flex flex-col gap-3">
           <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">Changelog</h1>
-          <p className="max-w-xl text-lg text-pretty text-muted-foreground">New kits, libraries and features in {BRAND.name}, newest first.</p>
+          <p className="max-w-xl text-lg text-pretty text-muted-foreground">New kits, libraries and features in <BrandName />, newest first.</p>
         </div>
         <Button variant="outline" size="sm" className="w-fit" nativeButton={false} render={<a href="/changelog/rss.xml" />}>
           <RssIcon data-icon="inline-start" />

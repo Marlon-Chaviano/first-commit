@@ -4,6 +4,7 @@ import Link from "next/link";
 
 import { AgentHelp } from "@/features/agent-help/agent-help";
 import { Cmd, Code, CodeBlock, DocsHeader, H2, P } from "@/features/docs/docs-ui";
+import { BrandName } from "@/components/shared/brand-name";
 
 export const metadata: Metadata = {
   title: "Create a kit",
@@ -59,7 +60,7 @@ export default function CreateKitDocs() {
           Your skills (from <Code>skills-lock.json</Code>), MCP servers (<Code>.mcp.json</Code>) and variables (
           <Code>.env.example</Code>; it never reads <Code>.env</Code>).
         </li>
-        <li>Your <Code>AGENTS.md</Code> instructions, minus what {BRAND.name} or the scaffolder generate.</li>
+        <li>Your <Code>AGENTS.md</Code> instructions, minus what <BrandName /> or the scaffolder generate.</li>
         <li>Your own files you choose to copy (config, utilities). None by default.</li>
       </ul>
       <P>

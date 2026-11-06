@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
+import { BrandName } from "@/components/shared/brand-name";
 
 export const metadata: Metadata = {
   title: "About",
@@ -21,9 +22,9 @@ export default function AboutPage() {
     <div className="mx-auto flex max-w-3xl flex-col gap-10 px-4 pt-8 sm:px-6 sm:pt-12">
       <header className="flex flex-col gap-4">
         <p className="label-mono text-muted-foreground">Project</p>
-        <h1 className="text-3xl font-semibold tracking-tight text-balance sm:text-4xl">About {BRAND.name}</h1>
+        <h1 className="text-3xl font-semibold tracking-tight text-balance sm:text-4xl">About <BrandName /></h1>
         <p className="text-lg text-pretty text-muted-foreground">
-          {BRAND.name} is a registry of kits to start projects: you pick the stack on the website, copy one command and get the project created,
+          <BrandName /> is a registry of kits to start projects: you pick the stack on the website, copy one command and get the project created,
           with its dependencies, the skills for your agent and the stack&apos;s rules in <code className="font-mono text-foreground">AGENTS.md</code>.
         </p>
       </header>
