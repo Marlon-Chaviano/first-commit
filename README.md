@@ -1,4 +1,9 @@
-# first-commit
+<h1>
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="apps/web/public/brand/first-commit-logo-white.svg">
+    <img src="apps/web/public/brand/first-commit-logo-black.svg" alt="first-commit" height="32">
+  </picture>
+</h1>
 
 Workspaces listos para programar con tu agente. Un kit crea el proyecto, instala dependencias,
 skills (de [skills.sh](https://skills.sh)) y servidores MCP, y escribe `AGENTS.md` para

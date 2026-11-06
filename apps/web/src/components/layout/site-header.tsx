@@ -3,7 +3,7 @@ import Link from "next/link";
 
 import { Separator } from "@/components/ui/separator";
 
-import { KitsMark } from "./pixel-wordmark";
+import { BrandMark } from "./pixel-wordmark";
 import { NavLinks } from "./nav-links";
 import { StarButton } from "./star-button";
 import { UserMenu } from "./user-menu";
@@ -13,10 +13,10 @@ export function SiteHeader() {
     <header className="sticky top-0 z-10 bg-background/80 backdrop-blur">
       {/* Same width and gutters as the pages (max-w-5xl, px-4 sm:px-6), so the logo lines up with the content below. */}
       <nav aria-label="Main" className="mx-auto flex h-14 w-full max-w-5xl items-center justify-between gap-4 px-4 sm:px-6">
-        <Link href="/" className="flex items-center gap-3 text-[17px]">
-          <KitsMark className="size-4.5" />
-          <span className="text-muted-foreground">/</span>
-          <span>{BRAND.name}</span>
+        {/* The horizontal logo: the symbol, then the name in Geist Mono Medium, as in public/brand/. */}
+        <Link href="/" aria-label={`${BRAND.name}, home`} className="flex items-center gap-2.5">
+          <BrandMark className="size-7" />
+          <span className="font-mono text-[17px] font-medium tracking-tight">{BRAND.name}</span>
         </Link>
         <div className="flex items-center gap-4 text-sm whitespace-nowrap text-muted-foreground sm:gap-5">
           <NavLinks />

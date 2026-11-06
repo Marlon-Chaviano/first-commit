@@ -3,7 +3,7 @@ import { BarChart3Icon, KeyRoundIcon, PaletteIcon, UploadIcon, type LucideIcon }
 import type { Metadata } from "next";
 import { Suspense } from "react";
 
-import { KitsMark } from "@/components/layout/pixel-wordmark";
+import { BrandMark } from "@/components/layout/pixel-wordmark";
 import { Command } from "@/components/shared/command";
 import { SignIn } from "@/features/account/sign-in";
 import { oauthErrorMessage } from "@/lib/oauth-errors";
@@ -48,7 +48,7 @@ export default function SignInPage({ searchParams }: PageProps<"/login">) {
 
       <section aria-labelledby="sign-in-title" className="order-1 flex w-full max-w-sm flex-col gap-6 justify-self-center rounded-xl border bg-card p-6 sm:p-8 lg:order-2 lg:max-w-none">
         <div className="flex flex-col gap-4">
-          <KitsMark className="size-6" />
+          <BrandMark className="-ml-1 size-9" />
           <div className="flex flex-col gap-1">
             <h2 id="sign-in-title" className="text-xl font-semibold tracking-tight">
               Continue with your account

@@ -98,13 +98,16 @@ export function PixelWordmark({
 }
 
 /** 2×2 block mark used in the header. */
-export function KitsMark({ className }: { className?: string }) {
+/**
+ * The first-commit symbol: one block on its own (the start), and two that form an open "c" (the commit,
+ * a kit already assembled). 8×8 grid of 4-unit cells on a 32-unit box; drawn in currentColor.
+ * Source files and every icon: public/brand/ and scripts/brand-assets.sh.
+ */
+export function BrandMark({ className, title }: { className?: string; title?: string }) {
   return (
-    <svg viewBox="0 0 10 10" className={className} aria-hidden shapeRendering="crispEdges">
-      <rect x="0" y="0" width="4.5" height="4.5" fill="currentColor" />
-      <rect x="5.5" y="0" width="4.5" height="4.5" fill="currentColor" />
-      <rect x="0" y="5.5" width="4.5" height="4.5" fill="currentColor" />
-      <rect x="5.5" y="5.5" width="4.5" height="4.5" fill="currentColor" fillOpacity={0.35} />
+    <svg viewBox="0 0 32 32" className={className} role={title ? "img" : undefined} aria-hidden={title ? undefined : true} shapeRendering="crispEdges">
+      {title && <title>{title}</title>}
+      <path fill="currentColor" d="M4 4H12V12H4Z M16 4H28V12H16Z M4 16H12V20H28V28H4Z" />
     </svg>
   );
 }
