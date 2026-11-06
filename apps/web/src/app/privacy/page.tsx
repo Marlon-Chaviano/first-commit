@@ -92,11 +92,14 @@ export default function PrivacyPage() {
       </p>
 
       <h2>Cookies and local storage</h2>
-      <p>Only the session cookie that keeps you signed in. No analytics, advertising or third-party tracking cookies.</p>
+      <p>Only the session cookie that keeps you signed in. No advertising or third-party tracking cookies.</p>
+
+      <h2>Analytics</h2>
+      <p>Vercel Web Analytics counts page views without cookies: it records the page, referrer, country and device type, and can&apos;t follow you across sites or identify you.</p>
 
       <h2>Service providers</h2>
       <ul>
-        <li>Vercel: hosting.</li>
+        <li>Vercel: hosting and cookieless page-view analytics.</li>
         <li>Neon: database (accounts, kits, subscribers, statistics).</li>
         <li>Upstash: event queue, rate-limit counters and scheduled jobs.</li>
         <li>Resend: sending email (newsletter, confirmations, contact messages).</li>
