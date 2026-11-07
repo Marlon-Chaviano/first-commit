@@ -1,0 +1,34 @@
+# Publishes create-first-commit to npm with provenance when a `cli-v*` tag is pushed.
+# Requires the NPM_TOKEN secret (automation token). Example: git tag cli-v0.1.0 && git push --tags
+name: Release CLI
+
+on:
+  push:
+    tags: ["cli-v*"]
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          registry-url: https://registry.npmjs.org
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm test
+      - name: Tag matches package version
+        run: test "cli-v$(node -p "require('./packages/cli/package.json').version")" = "${GITHUB_REF_NAME}"
+      - run: pnpm --filter create-first-commit build
+      - run: npm publish --provenance --access public
+        working-directory: packages/cli
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

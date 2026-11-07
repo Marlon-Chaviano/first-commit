@@ -11,7 +11,6 @@ import { Button } from "@/components/ui/button";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { authClient } from "@/lib/auth-client";
-import { BrandName } from "@/components/shared/brand-name";
 
 type Provider = "github" | "google";
 
@@ -136,7 +135,7 @@ export function SignIn({ github, google, dev, next = "/account", initialError }:
         <Link href="/privacy" className="underline underline-offset-4 hover:text-foreground">
           privacy policy
         </Link>
-        . <BrandName /> is free.
+        .
       </p>
     </div>
   );

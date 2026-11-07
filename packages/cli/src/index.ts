@@ -24,7 +24,9 @@ import { nodePaths } from "./paths";
 import { loadIndex, loadKit } from "./registry";
 import { reportInstall } from "./telemetry";
 
-const VERSION = "0.1.0";
+// Injected by tsup from package.json; the fallback covers running from source (tsx, vitest).
+declare const __CLI_VERSION__: string | undefined;
+const VERSION = typeof __CLI_VERSION__ === "string" ? __CLI_VERSION__ : "0.0.0-dev";
 
 const CLI = `npx ${BRAND.cli}`;
 

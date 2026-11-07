@@ -27,6 +27,15 @@
     "scaffold"
   ],
   "license": "MIT",
+  "homepage": "https://first-commit.dev",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Marlon-Chaviano/first-commit.git",
+    "directory": "packages/cli"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
