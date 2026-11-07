@@ -103,7 +103,7 @@ export async function add(args: ParsedArgs, guard: <T>(v: T) => Exclude<T, symbo
     return;
   }
   if (interactive && !guard(await p.confirm({ message: "Apply?" }))) {
-    p.cancel("Cancelado.");
+    p.cancel("Cancelled.");
     return;
   }
   const failed = await execute(steps, dir, { verbose: args.switches.has("verbose") });

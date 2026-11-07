@@ -6,6 +6,7 @@ import { join, resolve } from "node:path";
 import {
   BRAND,
   catalogSchema,
+  cliCommand,
   loadKitFrom,
   splitKitRef,
   type LoadedRawKit,
@@ -59,7 +60,10 @@ export async function loadRawKit(ref: string, from = process.cwd()): Promise<Loa
   const dir = await fetchKit(ref, location);
 
   const manifest = join(dir, "kit.json");
-  if (!existsSync(manifest)) throw new Error(`Kit "${ref}" not found (no kit.json in ${dir})`);
+  if (!existsSync(manifest)) {
+    // The download folder is a temp dir: only a local path is worth showing.
+    throw new Error(location.kind === "local" || location.kind === "local-registry" ? `Kit "${ref}" not found (no kit.json in ${dir})` : `Kit "${ref}" not found. ${cliCommand("list")} shows every kit.`);
+  }
   const raw = JSON.parse(await readFile(manifest, "utf8")) as Record<string, unknown>;
   // Each location is trusted its own way (see KitLocation).
   if (location.kind === "official") {

@@ -184,7 +184,8 @@
   },
   "saas-t3": {
     "1.0.0": "sha256-UILrHO+TgUgmfeou6JH6nM4Q3GA89CrLV00W4BkOTFM=",
-    "1.0.1": "sha256-6J1RJOLC9em8LWZnt7aZUdVJp8gxZk8MLc92OWQONjw="
+    "1.0.1": "sha256-6J1RJOLC9em8LWZnt7aZUdVJp8gxZk8MLc92OWQONjw=",
+    "1.0.2": "sha256-2skdniV4KFXE41UNeA9AhfIu7YLtsqL0QcgPPCr6tbg="
   },
   "saas-tanstack-start": {
     "1.0.0": "sha256-s0ZPdccBpUe0RyOktaWWpxkdWl7d48EbEsP6WnMnzes="
@@ -227,7 +228,8 @@
   },
   "monorepo-t3-turbo": {
     "1.0.0": "sha256-DYjAk0VxPjVKG6LV1+NHfF828RMc2/UnqONcdXDjyHI=",
-    "1.0.1": "sha256-bkROtuCKDelHadllrS+k3dKvxEb7CIIda6fHzW2uuWk="
+    "1.0.1": "sha256-bkROtuCKDelHadllrS+k3dKvxEb7CIIda6fHzW2uuWk=",
+    "1.0.2": "sha256-8mrsuHsn6T+5qo9YjFxCWZTo32556Jl6fUdkvXUgerE="
   },
   "monorepo-uv": {
     "1.0.0": "sha256-dtvOl8qJZDdPokQix2tYAUwAn3+LQCAq/0Dlp2vHJNY="

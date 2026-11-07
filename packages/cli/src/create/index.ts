@@ -115,10 +115,14 @@ export async function create(args: ParsedArgs, guard: <T>(v: T) => Exclude<T, sy
 
   const steps = buildPlan({ kit, kitDir: out, sel: defaultSelections(kit), parentDir: process.cwd(), name: "my-project", git: true, paths: nodePaths });
   p.note(steps.map((s, i) => `${pc.dim(`${i + 1}.`)} ${describe(s, resolve("my-project"))}`).join("\n"), "How it will install");
+  if (args.switches.has("dry-run")) {
+    p.outro(`Dry run: nothing was written (it would go to ${relative(process.cwd(), out) || "."}/kit.json).`);
+    return;
+  }
 
   if (existsSync(join(out, "kit.json")) && interactive) {
     if (!guard(await p.confirm({ message: `${relative(process.cwd(), out)}/kit.json already exists. Overwrite it?`, initialValue: false }))) {
-      p.cancel("Cancelado.");
+      p.cancel("Cancelled.");
       return;
     }
   }

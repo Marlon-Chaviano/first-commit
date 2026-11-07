@@ -1251,7 +1251,7 @@
   },
   {
     "name": "monorepo-t3-turbo",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "title": "T3 monorepo with Turborepo",
     "description": "create-t3-turbo: Next.js and Expo in the same repo sharing an API with tRPC, Drizzle, Better Auth and UI, all typed end to end with Turborepo.",
     "category": "monorepo",
@@ -1264,7 +1264,7 @@
       "drizzle"
     ],
     "author": "Marlon Chaviano",
-    "skills": 24,
+    "skills": 23,
     "options": [
       "Design pack",
       "Pack first-commit"
@@ -1843,7 +1843,7 @@
   },
   {
     "name": "saas-t3",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "title": "SaaS with the T3 stack",
     "description": "create-t3-app: Next.js with tRPC for an end-to-end typed API, Drizzle, Better Auth and Tailwind CSS. The go-to stack for TypeScript SaaS.",
     "category": "saas",
@@ -1856,7 +1856,7 @@
       "tailwind"
     ],
     "author": "Marlon Chaviano",
-    "skills": 29,
+    "skills": 28,
     "options": [
       "Payments",
       "Transactional email",

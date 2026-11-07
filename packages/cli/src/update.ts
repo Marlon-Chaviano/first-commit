@@ -125,7 +125,7 @@ export async function update(args: ParsedArgs, guard: <T>(v: T) => Exclude<T, sy
     return;
   }
   if (interactive && !guard(await p.confirm({ message: "Apply the update?" }))) {
-    p.cancel("Cancelado.");
+    p.cancel("Cancelled.");
     return;
   }
 
