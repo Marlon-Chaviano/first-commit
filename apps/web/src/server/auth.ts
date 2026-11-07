@@ -44,6 +44,8 @@ export const auth = db
       appName: BRAND.name,
       secret: env.BETTER_AUTH_SECRET,
       baseURL: env.BETTER_AUTH_URL,
+      // Without this, sign-out (a POST) is rejected with INVALID_ORIGIN whenever the site is opened from an origin other than BETTER_AUTH_URL (apex vs www, preview URLs).
+      trustedOrigins: [BRAND.siteUrl, BRAND.siteUrl.replace("https://", "https://www."), ...(env.BETTER_AUTH_URL ? [env.BETTER_AUTH_URL] : [])],
       database: drizzleAdapter(db, { provider: "pg", schema }),
       emailAndPassword: { enabled: devLogin },
       socialProviders: {

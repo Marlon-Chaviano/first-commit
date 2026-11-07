@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
 import { UserAvatar } from "@/components/shared/user-avatar";
@@ -70,9 +71,10 @@ export function UserMenu() {
           <DropdownMenuItem
             variant="destructive"
             onClick={async () => {
-              await authClient.signOut();
-              router.push("/");
-              router.refresh();
+              const { error } = await authClient.signOut();
+              if (error) return toast.error("Couldn't log out. Try again.");
+              // Full navigation: drops the client router cache so no page keeps showing the old session.
+              window.location.assign("/");
             }}
           >
             Log out
