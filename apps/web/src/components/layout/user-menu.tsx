@@ -74,6 +74,7 @@ export function UserMenu() {
               const { error } = await authClient.signOut();
               if (error) return toast.error("Couldn't log out. Try again.");
               // Full navigation: drops the client router cache so no page keeps showing the old session.
+              // eslint-disable-next-line @next/next/no-location-assign-relative-destination
               window.location.href = "/";
             }}
           >
