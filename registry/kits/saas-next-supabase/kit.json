@@ -1,7 +1,7 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "saas-next-supabase",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "title": "SaaS with Next.js + Supabase",
   "description": "Next.js with Supabase (auth and Postgres) and pieces from the catalog: Better Auth or Clerk, Drizzle, Stripe, Resend, i18n, AI, tests, CI and deployment, with their MCP servers and rules for your agent.",
   "category": "saas",
@@ -131,8 +131,7 @@
   "skills": [
     "supabase/agent-skills@supabase",
     "supabase/agent-skills@supabase-postgres-best-practices",
-    "vercel-labs/agent-skills@vercel-react-best-practices",
-    "vercel-labs/openreview@next-best-practices"
+    "vercel-labs/agent-skills@vercel-react-best-practices"
   ],
   "mcp": {
     "supabase": {

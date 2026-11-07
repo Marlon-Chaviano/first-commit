@@ -1,7 +1,7 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "monorepo-turbo",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Marlon Chaviano",
   "title": "Monorepo with Turborepo",
   "category": "monorepo",
@@ -66,7 +66,6 @@
           "label": "Next.js",
           "description": "App Router, using the shared @repo/ui package.",
           "skills": [
-            "vercel-labs/openreview@next-best-practices",
             "vercel-labs/agent-skills@vercel-react-best-practices"
           ]
         },

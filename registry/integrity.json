@@ -15,7 +15,8 @@
     "1.0.0": "sha256-v0ITt1Vr7ajNyR9D7nDP24PrzMXj5MiN0Y1vz1c8Rm4=",
     "1.1.0": "sha256-sK6Q3nuUbGjGPu11X45bKZ3TT33V5YSqE38lnxRNp1o=",
     "1.2.0": "sha256-icS4FfGPofqoSoHmKNtTzLI4MwnuvGZ+03lLwPgmJCI=",
-    "1.3.0": "sha256-Dd589dVcKhQq0e80/JfXmqexKrbP0m8b/kqSBKxXwwI="
+    "1.3.0": "sha256-Dd589dVcKhQq0e80/JfXmqexKrbP0m8b/kqSBKxXwwI=",
+    "1.3.1": "sha256-qbtfz0bTmRc79CF5lCBCt6rZLxgJLdGe9lYTtWAqN10="
   },
   "mobile-expo": {
     "1.0.0": "sha256-iKvuDwxOAvjes5pIeIj9LlAYu6JWeXLvibTON8otV8M=",
@@ -27,7 +28,8 @@
     "1.0.0": "sha256-SjRUO1+keSaYqmqc6hGBrOC/P+sn2oqIlt5aqwmI3iI=",
     "1.1.0": "sha256-tJV6hDm1AcQAoDf3OCVamBXOPbkD88jO34IKEXBoM7k=",
     "1.2.0": "sha256-mK7GwvUnZzuFlStputMEvhBfqT7ky2pYm7EXN1YezTk=",
-    "1.3.0": "sha256-WUOVXQ5qjVcOC/KM8Dg3a13VmccnWF8ZLMPLjCwKfx4="
+    "1.3.0": "sha256-WUOVXQ5qjVcOC/KM8Dg3a13VmccnWF8ZLMPLjCwKfx4=",
+    "1.3.1": "sha256-t8W5/I1fcHl3oB75k8quzYFeoaI8Qm7JJeEDwIUo0Jw="
   },
   "api-fastapi": {
     "1.0.0": "sha256-MnYf1FQPo4kUaFI7EC6KpQnBfCGm8BFpRj4zUErzv60=",
@@ -81,7 +83,8 @@
     "1.1.0": "sha256-Y8i1KdIkyenyhbBNZmmoyADuwTi4hmQwD/xZ+cnd3FE="
   },
   "monorepo-turbo": {
-    "1.0.0": "sha256-eQNN1VfV+kKViSeITdkuy7krEkW3Ew7Eb8WUaN5nPFo="
+    "1.0.0": "sha256-eQNN1VfV+kKViSeITdkuy7krEkW3Ew7Eb8WUaN5nPFo=",
+    "1.0.1": "sha256-dtY/enE7GLXrkZV9iSkwS1JQtycZ7e/VqHgXkMq474I="
   },
   "discord-bot": {
     "1.0.0": "sha256-dBTzF3Bm4jHzU3fplfQhgKaemo+T2sTEsQNC67aQE0c="
@@ -114,7 +117,8 @@
     "1.0.0": "sha256-+zVzsOeZLQoqNlZanYqfIA61lcUkdeztYMn1QZURa2I="
   },
   "docs-fumadocs": {
-    "1.0.0": "sha256-STun0fU2+GHt/dsQ4LIfmrWGKBz66sfUySjODy8vHsc="
+    "1.0.0": "sha256-STun0fU2+GHt/dsQ4LIfmrWGKBz66sfUySjODy8vHsc=",
+    "1.0.1": "sha256-qxON99i2bvVoXTt2R/Kn6/Ka2LyAtdXx5SIylt9E9yk="
   },
   "docs-starlight": {
     "1.0.0": "sha256-avJNs/5IAOX4Jxsd32NoSNH+fCdmNc3Js780sBWf5Tk="
@@ -159,13 +163,15 @@
     "1.0.0": "sha256-FFdfyTBEOArB+7phVCT7csJYcAZLqqI88kmI8uhuyXk="
   },
   "saas-ai-next": {
-    "1.0.0": "sha256-Ga6t7ow/RUW+V5uAB3P8g82HKgnVTqTyA21+Ij03tWw="
+    "1.0.0": "sha256-Ga6t7ow/RUW+V5uAB3P8g82HKgnVTqTyA21+Ij03tWw=",
+    "1.0.1": "sha256-Z3xkgBqdZ6jY18WrP3IvyevinGQf7d3G4oLyuyPB9Jk="
   },
   "saas-laravel": {
     "1.0.0": "sha256-+4IbN2uiGoGK3gM0tXVF7fIvDTWtjr6/s7wlx8Qe6S4="
   },
   "saas-next-better-auth": {
-    "1.0.0": "sha256-c+WCEttu4pSNRLAVXTL2k0S6iK7MYS4LbSgaLI8Y1tU="
+    "1.0.0": "sha256-c+WCEttu4pSNRLAVXTL2k0S6iK7MYS4LbSgaLI8Y1tU=",
+    "1.0.1": "sha256-Bfrz6zn3jXTqBPkkWxSuCtFOqKeejRzUXQqh9+CEq3I="
   },
   "saas-nuxt": {
     "1.0.0": "sha256-ZpBm1Dt9ugM5/TJwARIsDE+cT0Y5OvUv8yZiytOJsyI="
@@ -177,7 +183,8 @@
     "1.0.0": "sha256-NyQoVLwTi0CiRl5vMiElRFpxZvMyUcaWpYuG1oVhszo="
   },
   "saas-t3": {
-    "1.0.0": "sha256-UILrHO+TgUgmfeou6JH6nM4Q3GA89CrLV00W4BkOTFM="
+    "1.0.0": "sha256-UILrHO+TgUgmfeou6JH6nM4Q3GA89CrLV00W4BkOTFM=",
+    "1.0.1": "sha256-6J1RJOLC9em8LWZnt7aZUdVJp8gxZk8MLc92OWQONjw="
   },
   "saas-tanstack-start": {
     "1.0.0": "sha256-s0ZPdccBpUe0RyOktaWWpxkdWl7d48EbEsP6WnMnzes="
@@ -219,7 +226,8 @@
     "1.0.0": "sha256-OB4vmd1fbXYWm/czlpamyrKZtxNNdGcUeRIcTzaVkCM="
   },
   "monorepo-t3-turbo": {
-    "1.0.0": "sha256-DYjAk0VxPjVKG6LV1+NHfF828RMc2/UnqONcdXDjyHI="
+    "1.0.0": "sha256-DYjAk0VxPjVKG6LV1+NHfF828RMc2/UnqONcdXDjyHI=",
+    "1.0.1": "sha256-bkROtuCKDelHadllrS+k3dKvxEb7CIIda6fHzW2uuWk="
   },
   "monorepo-uv": {
     "1.0.0": "sha256-dtvOl8qJZDdPokQix2tYAUwAn3+LQCAq/0Dlp2vHJNY="

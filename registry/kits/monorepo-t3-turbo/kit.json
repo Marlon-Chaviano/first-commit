@@ -1,6 +1,6 @@
 {
   "$schema": "../../kit.schema.json",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Marlon Chaviano",
   "name": "monorepo-t3-turbo",
   "title": "T3 monorepo with Turborepo",
@@ -26,7 +26,6 @@
     "vercel/turborepo@turborepo",
     "trpc/trpc@trpc-router",
     "better-auth/skills@better-auth-best-practices",
-    "vercel-labs/openreview@next-best-practices",
     "expo/skills@expo-overview"
   ],
   "libraries": {

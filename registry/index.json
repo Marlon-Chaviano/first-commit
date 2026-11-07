@@ -450,7 +450,7 @@
   },
   {
     "name": "docs-fumadocs",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "title": "Docs with Fumadocs",
     "description": "Documentation with Fumadocs on Next.js: MDX, built-in search, Open Graph images and modern docs components.",
     "category": "landing",
@@ -461,7 +461,7 @@
       "mdx"
     ],
     "author": "Marlon Chaviano",
-    "skills": 22,
+    "skills": 21,
     "options": [
       "Deployment",
       "Design pack",
@@ -628,7 +628,7 @@
   },
   {
     "name": "landing-next",
-    "version": "1.3.0",
+    "version": "1.3.1",
     "title": "Landing page with Next.js",
     "description": "Next.js + Tailwind with design skills, React best practices and deployment on Vercel. For landing pages that don't look AI-made.",
     "category": "landing",
@@ -639,7 +639,7 @@
       "vercel"
     ],
     "author": "Marlon Chaviano",
-    "skills": 37,
+    "skills": 36,
     "options": [
       "Extras",
       "UI components",
@@ -1251,7 +1251,7 @@
   },
   {
     "name": "monorepo-t3-turbo",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "title": "T3 monorepo with Turborepo",
     "description": "create-t3-turbo: Next.js and Expo in the same repo sharing an API with tRPC, Drizzle, Better Auth and UI, all typed end to end with Turborepo.",
     "category": "monorepo",
@@ -1264,7 +1264,7 @@
       "drizzle"
     ],
     "author": "Marlon Chaviano",
-    "skills": 25,
+    "skills": 24,
     "options": [
       "Design pack",
       "Pack first-commit"
@@ -1277,7 +1277,7 @@
   },
   {
     "name": "monorepo-turbo",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "title": "Monorepo with Turborepo",
     "description": "One repo for your whole product: pick the web app (Next.js or Vite), and optionally a mobile app with Expo, an API with Hono and docs with Starlight. Shared UI and config packages, and cached builds with Turborepo.",
     "category": "monorepo",
@@ -1290,7 +1290,7 @@
       "typescript"
     ],
     "author": "Marlon Chaviano",
-    "skills": 29,
+    "skills": 28,
     "options": [
       "Web app",
       "More apps",
@@ -1394,7 +1394,7 @@
   },
   {
     "name": "saas-ai-next",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "title": "AI app with Next.js",
     "description": "An AI app ready to launch: streaming chat with the AI SDK and Claude, accounts with Better Auth, a Drizzle + Neon database and shadcn/ui.",
     "category": "saas",
@@ -1407,7 +1407,7 @@
       "streaming"
     ],
     "author": "Marlon Chaviano",
-    "skills": 48,
+    "skills": 47,
     "options": [
       "UI components",
       "Add-on libraries",
@@ -1552,7 +1552,7 @@
   },
   {
     "name": "saas-next-better-auth",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "title": "SaaS with Next.js and Better Auth",
     "description": "A SaaS foundation with no third-party dependency for accounts: Next.js, Better Auth with your own database (Drizzle + Neon), Stripe, Resend and shadcn/ui.",
     "category": "saas",
@@ -1565,7 +1565,7 @@
       "shadcn"
     ],
     "author": "Marlon Chaviano",
-    "skills": 48,
+    "skills": 47,
     "options": [
       "UI components",
       "Add-on libraries",
@@ -1653,7 +1653,7 @@
   },
   {
     "name": "saas-next-supabase",
-    "version": "1.3.0",
+    "version": "1.3.1",
     "title": "SaaS with Next.js + Supabase",
     "description": "Next.js with Supabase (auth and Postgres) and pieces from the catalog: Better Auth or Clerk, Drizzle, Stripe, Resend, i18n, AI, tests, CI and deployment, with their MCP servers and rules for your agent.",
     "category": "saas",
@@ -1665,7 +1665,7 @@
       "postgres"
     ],
     "author": "Marlon Chaviano",
-    "skills": 49,
+    "skills": 48,
     "options": [
       "UI components",
       "Add-on libraries",
@@ -1843,7 +1843,7 @@
   },
   {
     "name": "saas-t3",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "title": "SaaS with the T3 stack",
     "description": "create-t3-app: Next.js with tRPC for an end-to-end typed API, Drizzle, Better Auth and Tailwind CSS. The go-to stack for TypeScript SaaS.",
     "category": "saas",
@@ -1856,7 +1856,7 @@
       "tailwind"
     ],
     "author": "Marlon Chaviano",
-    "skills": 30,
+    "skills": 29,
     "options": [
       "Payments",
       "Transactional email",
@@ -2037,7 +2037,7 @@
       "server-actions"
     ],
     "author": "Marlon Chaviano",
-    "skills": 38,
+    "skills": 37,
     "options": [
       "Extras",
       "UI components",

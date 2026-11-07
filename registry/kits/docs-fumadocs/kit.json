@@ -1,6 +1,6 @@
 {
   "$schema": "../../kit.schema.json",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Marlon Chaviano",
   "name": "docs-fumadocs",
   "title": "Docs with Fumadocs",
@@ -17,9 +17,7 @@
     "command": "npx -y create-fumadocs-app@latest {{name}} --template +next+fuma-docs-mdx --pm {{pm}} --search orama --og-image next-og --no-git --yes",
     "install": "{{pm}} install"
   },
-  "skills": [
-    "vercel-labs/openreview@next-best-practices"
-  ],
+  "skills": [],
   "libraries": {
     "framework": [
       "react",

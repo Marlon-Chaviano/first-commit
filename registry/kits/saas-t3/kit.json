@@ -1,6 +1,6 @@
 {
   "$schema": "../../kit.schema.json",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Marlon Chaviano",
   "name": "saas-t3",
   "title": "SaaS with the T3 stack",
@@ -25,7 +25,6 @@
     "bun"
   ],
   "skills": [
-    "vercel-labs/openreview@next-best-practices",
     "vercel-labs/agent-skills@vercel-react-best-practices",
     "trpc/trpc@trpc-router",
     "better-auth/skills@better-auth-best-practices"
