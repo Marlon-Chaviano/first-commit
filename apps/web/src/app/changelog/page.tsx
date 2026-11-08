@@ -14,10 +14,9 @@ import { getViewer } from "@/server/session";
 import { BrandName } from "@/components/shared/brand-name";
 
 export const metadata: Metadata = {
-  alternates: { canonical: "/changelog" },
   title: "Changelog",
   description: `What's new in ${BRAND.name}: catalog, official kits, CLI and website. Plus the weekly newsletter.`,
-  alternates: { types: { "application/rss+xml": "/changelog/rss.xml" } },
+  alternates: { canonical: "/changelog", types: { "application/rss+xml": "/changelog/rss.xml" } },
 };
 
 const formatDate = new Intl.DateTimeFormat("en", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" });
