@@ -12,13 +12,13 @@ import { TechIcon } from "@/components/shared/tech-icon";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from "@/components/ui/empty";
+import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyTitle } from "@/components/ui/empty";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import { Kbd } from "@/components/ui/kbd";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { facets, queryKits, RANKING_MIN_INSTALLS, searchIndex } from "@/lib/kit-query";
+import { facets, queryKits, RANKING_MIN_INSTALLS, searchIndex, suggestKits } from "@/lib/kit-query";
 import { formatCount } from "@/lib/format";
 import { logosFor } from "@/lib/logos";
 import type { Leaderboard } from "@/server/metrics/queries";
@@ -303,17 +303,18 @@ export function KitLeaderboard({ kits, stats, verified, initial = DEFAULT_STATE,
         </Table>
       ) : null}
       {!rows.length && (
-        <Empty>
-          <EmptyHeader>
-            <EmptyTitle>No results</EmptyTitle>
-            <EmptyDescription>{q ? `No kit matches “${query}” with these filters.` : "No kit matches these filters."}</EmptyDescription>
-          </EmptyHeader>
-          {filtered && (
-            <Button variant="outline" size="sm" onClick={clear}>
-              Clear filters
-            </Button>
-          )}
-        </Empty>
+        <NoResults
+          kits={kits}
+          q={q}
+          index={index}
+          filters={source !== "all" || category !== "all" || language !== "all"}
+          onClearFilters={() => {
+            setSource("all");
+            setCategory("all");
+            setLanguage("all");
+          }}
+          onClear={clear}
+        />
       )}
     </div>
   );
@@ -380,5 +381,47 @@ function OriginBadge({ origin }: { origin: "official" | "community" | "verified"
       </TooltipTrigger>
       <TooltipContent>{ORIGIN_HINTS[origin]}</TooltipContent>
     </Tooltip>
+  );
+}
+
+/**
+ * Nothing matched: say why and offer a way out. With filters on, how many kits match the search
+ * without them; for a typo, the closest kits ("Looking for Supabase? Try saas-next-supabase").
+ */
+function NoResults({ kits, q, index, filters, onClearFilters, onClear }: { kits: RegistryEntry[]; q: string; index: Map<string, string>; filters: boolean; onClearFilters: () => void; onClear: () => void }) {
+  const withoutFilters = filters && q ? queryKits(kits, { q }, { counts: {}, verified: {} }, index).length : 0;
+  const suggestions = q ? suggestKits(kits, q) : [];
+  const word = suggestions[0]?.word;
+  return (
+    <Empty className="border">
+      <EmptyHeader>
+        <EmptyTitle>{q ? `No kit matches “${q}”` : "No kit matches these filters"}</EmptyTitle>
+        <EmptyDescription>
+          {withoutFilters
+            ? `${withoutFilters} ${withoutFilters === 1 ? "kit matches" : "kits match"} it without the filters.`
+            : suggestions.length && word
+              ? `Looking for ${word[0]!.toUpperCase()}${word.slice(1)}? Try ${suggestions.length === 1 ? "this kit" : "one of these"}:`
+              : "Try a framework (Next.js, Expo, FastAPI), a library (Stripe, Supabase) or what you're building (SaaS, API, landing)."}
+        </EmptyDescription>
+      </EmptyHeader>
+      <EmptyContent className="flex-row flex-wrap justify-center">
+        {!withoutFilters &&
+          suggestions.map(({ kit }) => (
+            <Button key={kit.name} variant="outline" size="sm" className="font-mono" nativeButton={false} render={<Link href={`/kits/${kit.name}`} />}>
+              {kit.name}
+            </Button>
+          ))}
+        {withoutFilters > 0 && (
+          <Button size="sm" onClick={onClearFilters}>
+            Show them
+          </Button>
+        )}
+        {(filters || q) && (
+          <Button variant="ghost" size="sm" onClick={onClear}>
+            Clear search
+          </Button>
+        )}
+      </EmptyContent>
+    </Empty>
   );
 }

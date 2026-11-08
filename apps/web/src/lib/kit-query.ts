@@ -65,3 +65,49 @@ export function facets(entries: RegistryEntry[]) {
   const languages = LANGUAGES.map((l) => ({ ...l, count: entries.filter((k) => entryLanguage(k) === l.id).length }));
   return { categories, languages };
 }
+
+/** Edit distance (Levenshtein), for spotting typos like "supbase" or "fastpi". */
+function distance(a: string, b: string): number {
+  const row = Array.from({ length: b.length + 1 }, (_, i) => i);
+  for (let i = 1; i <= a.length; i++) {
+    let prev = row[0]!;
+    row[0] = i;
+    for (let j = 1; j <= b.length; j++) {
+      const temp = row[j]!;
+      row[j] = Math.min(row[j]! + 1, row[j - 1]! + 1, prev + (a[i - 1] === b[j - 1] ? 0 : 1));
+      prev = temp;
+    }
+  }
+  return row[b.length]!;
+}
+
+/**
+ * When a search finds nothing: kits whose name, tags or libraries are close to what was typed
+ * ("supbase" → saas-next-supabase), with the word that matched. Best matches first.
+ */
+export function suggestKits(entries: RegistryEntry[], q: string, max = 3): { kit: RegistryEntry; word: string }[] {
+  const tokens = q.toLowerCase().split(/[^a-z0-9]+/).filter((t) => t.length >= 3);
+  if (!tokens.length) return [];
+  const scored = entries.map((kit) => {
+    const words = [...new Set([kit.name, ...kit.tags, ...(kit.libraries ?? [])].flatMap((w) => w.toLowerCase().split(/[^a-z0-9.]+/)).filter((w) => w.length >= 3))];
+    let score = 0;
+    let best = { word: "", d: Infinity };
+    for (const token of tokens) {
+      const allowed = Math.max(1, Math.floor(token.length / 4));
+      for (const word of words) {
+        const d = word.startsWith(token) || token.startsWith(word) ? 0 : distance(token, word);
+        if (d <= allowed) {
+          score += allowed + 1 - d;
+          if (d < best.d) best = { word, d };
+        }
+      }
+    }
+    // The general-purpose kit wins a tie: it's the safer suggestion.
+    return { kit, word: best.word, score: score + (FLAGSHIP_KITS.has(kit.name) ? 0.5 : 0) };
+  });
+  return scored
+    .filter((s) => s.score >= 1)
+    .sort((a, b) => b.score - a.score || a.kit.name.localeCompare(b.kit.name))
+    .slice(0, max)
+    .map(({ kit, word }) => ({ kit, word }));
+}

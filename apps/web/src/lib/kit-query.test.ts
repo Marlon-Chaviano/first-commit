@@ -1,7 +1,7 @@
 import type { RegistryEntry } from "@kits/schema";
 import { describe, expect, it } from "vitest";
 
-import { facets, queryKits } from "./kit-query";
+import { facets, queryKits, suggestKits } from "./kit-query";
 
 const entry = (name: string, extra: Partial<RegistryEntry> = {}): RegistryEntry => ({
   name,
@@ -55,5 +55,23 @@ describe("facets", () => {
     expect(languages.find((l) => l.id === "go")?.count).toBe(1);
     expect(languages.find((l) => l.id === "typescript")?.count).toBe(2);
     expect(languages.find((l) => l.id === "rust")?.count).toBe(0);
+  });
+});
+
+describe("suggestKits", () => {
+  const catalog = [
+    entry("saas-next-supabase", { category: "saas", tags: ["supabase", "stripe"] }),
+    entry("api-fastapi", { category: "api", language: "python", tags: ["fastapi"] }),
+    entry("landing-next", { category: "landing", libraries: ["Stripe"] }),
+  ];
+
+  it("finds kits through a typo in a name, tag or library", () => {
+    expect(suggestKits(catalog, "supbase")[0]).toMatchObject({ kit: { name: "saas-next-supabase" }, word: "supabase" });
+    expect(suggestKits(catalog, "fastpi")[0]?.kit.name).toBe("api-fastapi");
+  });
+
+  it("suggests nothing for unrelated words or very short ones", () => {
+    expect(suggestKits(catalog, "zzzzzz")).toEqual([]);
+    expect(suggestKits(catalog, "ab")).toEqual([]);
   });
 });
