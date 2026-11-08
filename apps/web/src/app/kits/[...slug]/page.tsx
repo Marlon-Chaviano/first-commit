@@ -155,6 +155,7 @@ async function KitContent({ slug, searchParams }: { slug: Promise<string>; searc
             </a>
           </Row>
         )}
+        {!meta.official && (
         <Row label="Verification">
           {verification.verified ? (
             <span className="flex items-center gap-1.5"><OriginIcon origin="verified" className="size-4" /> Verified</span>
@@ -162,6 +163,7 @@ async function KitContent({ slug, searchParams }: { slug: Promise<string>; searc
             <span className="text-muted-foreground">{verification.platforms.length ? "The last test failed" : `Unverified · ${BRAND.cli} test in CI`}</span>
           )}
         </Row>
+        )}
         {verification.platforms.length > 0 && (
           <Row label="Platforms">
             <span className="font-mono text-xs text-muted-foreground">
@@ -241,7 +243,8 @@ async function KitContent({ slug, searchParams }: { slug: Promise<string>; searc
                 <OriginIcon origin={meta.official ? "official" : "community"} className="size-3" />
                 {meta.official ? "Official" : "Community"}
               </Badge>
-              {verification.verified && (
+              {/* Official kits carry only "Official": they're all tested in CI. "Verified" is for community kits. */}
+              {verification.verified && !meta.official && (
                 <Badge variant="outline" className="gap-1">
                   <OriginIcon origin="verified" className="size-3" /> Verified
                 </Badge>

@@ -275,7 +275,7 @@ export function KitLeaderboard({ kits, logos, stats, verified, initial = DEFAULT
                         </ViewTransition>
                         <span className="flex items-center gap-1 text-muted-foreground">
                           <OriginBadge origin={kit.official ? "official" : "community"} />
-                          {verified[kit.name] && <OriginBadge origin="verified" />}
+                          {verified[kit.name] && !kit.official && <OriginBadge origin="verified" />}
                         </span>
                       </span>
                       <span className="font-mono text-xs text-pretty text-muted-foreground sm:truncate">{kit.title}</span>

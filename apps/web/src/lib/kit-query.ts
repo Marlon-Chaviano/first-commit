@@ -43,7 +43,7 @@ export function queryKits(
   const text = q.trim().toLowerCase();
   return entries
     .filter((k) => !text || index.get(k.name)?.includes(text))
-    .filter((k) => (origin === "official" ? k.official : origin === "community" ? !k.official : origin === "verified" ? verified[k.name] : true))
+    .filter((k) => (origin === "official" ? k.official : origin === "community" ? !k.official : origin === "verified" ? verified[k.name] && !k.official : true))
     .filter((k) => category === "all" || k.category === category)
     .filter((k) => language === "all" || entryLanguage(k) === language)
     .sort(sort === "catalog" ? byCatalog : (a, b) => (counts[b.name] ?? 0) - (counts[a.name] ?? 0) || a.name.localeCompare(b.name));

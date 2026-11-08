@@ -41,7 +41,9 @@ describe("queryKits", () => {
 
   it("filters by origin, category and language", () => {
     expect(queryKits(kits, { origin: "community" }, ranking).map((k) => k.name)).toEqual(["ana/blog"]);
-    expect(queryKits(kits, { origin: "verified" }, ranking).map((k) => k.name)).toEqual(["api-go"]);
+    // "Verified" is a community kit's badge: official kits carry only "Official".
+    expect(queryKits(kits, { origin: "verified" }, ranking).map((k) => k.name)).toEqual([]);
+    expect(queryKits(kits, { origin: "verified" }, { ...ranking, verified: { ...ranking.verified, "ana/blog": true } }).map((k) => k.name)).toEqual(["ana/blog"]);
     expect(queryKits(kits, { category: "landing" }, ranking).map((k) => k.name)).toEqual(["landing-next"]);
     // Entries without a language are TypeScript.
     expect(queryKits(kits, { language: "typescript" }, ranking).map((k) => k.name)).toEqual(["ana/blog", "landing-next"]);

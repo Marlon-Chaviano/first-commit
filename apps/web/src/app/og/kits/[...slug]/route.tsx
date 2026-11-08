@@ -23,6 +23,6 @@ export async function GET(_request: Request, { params }: RouteContext<"/og/kits/
     description: kit.description,
     logos: stackLogoKeys(kit.tags, selections.options),
     command: buildInitCommand(slug, kit, selections).replace("@latest", ""),
-    facts: [...(verified ? ["Verified"] : []), `${resolved.skills.length} skills`, ...(Object.keys(resolved.mcp).length ? [`${Object.keys(resolved.mcp).length} MCP`] : [])],
+    facts: [...(verified && !meta.official ? ["Verified"] : []), `${resolved.skills.length} skills`, ...(Object.keys(resolved.mcp).length ? [`${Object.keys(resolved.mcp).length} MCP`] : [])],
   });
 }
