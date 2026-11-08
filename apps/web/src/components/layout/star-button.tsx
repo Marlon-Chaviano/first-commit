@@ -6,9 +6,13 @@ import { Button } from "@/components/ui/button";
 import { formatCount } from "@/lib/format";
 import { getRepoStars } from "@/server/github";
 
+/** Below this the count says "nobody uses it" more than anything else: the button says "Star" instead. */
+const SHOW_STARS_FROM = 50;
+
 /** "★ Star 1.2k" — links to the repo, where GitHub handles the star itself. */
 export async function StarButton() {
-  const stars = await getRepoStars();
+  const fetched = await getRepoStars();
+  const stars = fetched !== null && fetched >= SHOW_STARS_FROM ? fetched : null;
   return (
     <Button
       variant="ghost"

@@ -38,7 +38,7 @@ function itemFor(task: AgentTask, kit?: { title: string; command: string }): Ite
 export function AgentSetup({
   tasks = ["project", "kit", "brand"],
   kit,
-  label = "Agent setup",
+  label = "Set up with your agent",
   className,
   variant = "outline",
 }: {

@@ -15,22 +15,26 @@ const LOOP_MS = 16_000;
 const FADE_MS = 450;
 const AGENT_AT = 9_200;
 
-const COMMAND = cliCommand("saas-next-better-auth my-app");
+// The same short command as the hero's button: the CLI asks for the kit and the name.
+const COMMAND = cliCommand();
 const SPINNER = ["◒", "◐", "◓", "◑"];
 
+const ANSWERS = [
+  { label: "Kit", value: "saas-next-better-auth", at: 1_900, ms: 700 },
+  { label: "Name", value: "my-app", at: 2_800, ms: 400 },
+];
+
 const STEPS = [
-  { label: "Create the base project", from: 2_900, to: 3_700 },
-  { label: "Install dependencies", from: 3_700, to: 5_300, progress: true },
-  { label: "Install 29 skills for Claude Code", from: 5_300, to: 6_300 },
-  { label: "Configure MCP · shadcn, stripe", from: 6_300, to: 6_800 },
-  { label: "Write AGENTS.md", from: 6_800, to: 7_200 },
-  { label: "Initial commit", from: 7_200, to: 7_600 },
+  { label: "Create the base project", from: 3_500, to: 4_100 },
+  { label: "Install dependencies", from: 4_100, to: 5_600, progress: true },
+  { label: "Add 29 skills and 2 MCP servers", from: 5_600, to: 6_500 },
+  { label: "Write AGENTS.md and the first commit", from: 6_500, to: 7_200 },
 ];
 
 const TOOLS = [
   { at: 11_300, name: "Read", arg: "AGENTS.md", result: "Next.js 16 · Better Auth · Drizzle on Neon · Stripe · shadcn/ui" },
   { at: 12_200, name: "Skill", arg: "stripe-best-practices", result: "Checkout + webhooks, customer linked to the Better Auth user" },
-  { at: 13_100, name: "Write", arg: "app/(app)/billing/page.tsx", result: "Stripe Checkout with your session", until: 14_300 },
+  { at: 13_100, name: "Write", arg: "app/(app)/billing/page.tsx", result: null, until: 14_300 },
 ];
 
 const REDUCED = "(prefers-reduced-motion: reduce)";
@@ -84,12 +88,12 @@ export function TerminalDemo({ className }: { className?: string }) {
         <span className="absolute inset-x-0 text-center font-mono text-xs text-muted-foreground">{agent ? "my-app — claude" : "~/projects — zsh"}</span>
       </div>
       <figcaption className="sr-only">
-        A terminal runs {COMMAND}. The project is created with its dependencies, 29 skills, MCP servers, an AGENTS.md and a first commit. Then Claude Code opens and, asked to add a
+        A terminal runs {COMMAND}, picks the saas-next-better-auth kit and names the project my-app. It&apos;s created with its dependencies, 29 skills, 2 MCP servers, an AGENTS.md and a first commit. Then Claude Code opens and, asked to add a
         billing page, already knows the stack: Next.js, Better Auth, Drizzle on Neon and Stripe.
       </figcaption>
       <div
         aria-hidden
-        className={cn("h-[25rem] p-4 font-mono text-[12px] leading-[1.7] transition-opacity sm:h-[24rem] sm:p-5 sm:text-[13px]", fading ? "opacity-0" : "opacity-100")}
+        className={cn("h-[20rem] px-4 py-3.5 font-mono text-[12px] leading-[1.6] transition-opacity sm:h-[18rem] sm:px-5 sm:py-4 sm:text-[13px]", fading ? "opacity-0" : "opacity-100")}
         style={{ transitionDuration: `${FADE_MS}ms` }}
       >
         {agent ? <AgentScene t={t} /> : <InstallScene t={t} />}
@@ -108,22 +112,35 @@ function Cursor({ blink = false }: { blink?: boolean }) {
 }
 
 function InstallScene({ t }: { t: number }) {
-  const typingCommand = t >= 400 && t < 2_300;
+  const typingCommand = t >= 400 && t < 1_300;
   return (
     <div className="flex flex-col">
       <div className="[overflow-wrap:anywhere]">
         <span className="text-muted-foreground">❯ </span>
-        {typed(COMMAND, t, 400, 1_900)}
-        {t < 2_500 && <Cursor blink={!typingCommand} />}
+        {typed(COMMAND, t, 400, 900)}
+        {t < 1_500 && <Cursor blink={!typingCommand} />}
       </div>
 
-      {t >= 2_500 && (
+      {t >= 1_500 && (
         <Line className="mt-3 mb-1">
           <span className="text-muted-foreground">┌ </span>
           <span className="rounded-sm bg-foreground px-1.5 font-semibold text-background">first-commit</span>
-          <span className="text-muted-foreground"> saas-next-better-auth</span>
         </Line>
       )}
+
+      {ANSWERS.filter((a) => t >= a.at).map((a) => {
+        const answering = t < a.at + a.ms + 200;
+        return (
+          <Line key={a.label} className="flex gap-2">
+            <span className={cn("w-[1ch] shrink-0", !answering && "text-muted-foreground")}>{answering ? "◆" : "◇"}</span>
+            <span className="w-[5ch] shrink-0 text-muted-foreground">{a.label}</span>
+            <span className="truncate">
+              {typed(a.value, t, a.at, a.ms)}
+              {answering && <Cursor />}
+            </span>
+          </Line>
+        );
+      })}
 
       {STEPS.filter((s) => t >= s.from).map((step) => {
         const running = t < step.to;
@@ -134,7 +151,7 @@ function InstallScene({ t }: { t: number }) {
             <span className={cn("truncate", !running && "text-muted-foreground")}>{step.label}</span>
             {step.progress && running && (
               <span className="ml-auto flex shrink-0 items-center gap-2">
-                <span className="h-1.5 w-20 overflow-hidden rounded-full bg-muted sm:w-28">
+                <span className="hidden h-1.5 w-20 overflow-hidden rounded-full bg-muted sm:block sm:w-28">
                   <span className="block h-full rounded-full bg-foreground" style={{ width: `${Math.round(pct * 100)}%` }} />
                 </span>
                 <span className="w-[4ch] text-right text-muted-foreground tabular-nums">{Math.round(pct * 100)}%</span>
@@ -145,19 +162,19 @@ function InstallScene({ t }: { t: number }) {
         );
       })}
 
-      {t >= 7_800 && (
+      {t >= 7_400 && (
         <Line className="mt-1">
           <span className="text-muted-foreground">└ </span>
-          <span className="font-semibold">Project ready</span>
-          <span className="text-muted-foreground"> · 29 skills · 2 MCP · AGENTS.md</span>
+          <span className="font-semibold">✓ Ready.</span>
+          <span className="text-muted-foreground"> cd my-app and open your agent</span>
         </Line>
       )}
 
-      {t >= 8_100 && (
+      {t >= 7_900 && (
         <Line className="mt-3">
           <span className="text-muted-foreground">❯ </span>
-          {typed("cd my-app && claude", t, 8_200, 700)}
-          <Cursor blink={t >= 8_900} />
+          {typed("cd my-app && claude", t, 8_000, 700)}
+          <Cursor blink={t >= 8_700} />
         </Line>
       )}
     </div>
@@ -167,14 +184,14 @@ function InstallScene({ t }: { t: number }) {
 function AgentScene({ t }: { t: number }) {
   const typingPrompt = t < 10_900;
   return (
-    <div className="flex flex-col gap-3">
-      <Line className="rounded-lg border px-3.5 py-2.5">
-        <div className="font-semibold">✻ Claude Code</div>
-        <div className="text-muted-foreground">cwd: ~/projects/my-app · AGENTS.md loaded</div>
+    <div className="flex flex-col gap-2.5">
+      <Line className="truncate rounded-lg border px-3.5 py-1.5">
+        <span className="font-semibold">✻ Claude Code</span>
+        <span className="text-muted-foreground"> · ~/projects/my-app · AGENTS.md loaded</span>
       </Line>
 
       {t >= 9_700 && (
-        <Line className="rounded-lg border px-3.5 py-2">
+        <Line className="rounded-lg border px-3.5 py-1.5">
           <span className="text-muted-foreground">❯ </span>
           {typed("add a billing page", t, 9_800, 1_000)}
           {typingPrompt && <Cursor />}
@@ -191,7 +208,7 @@ function AgentScene({ t }: { t: number }) {
                 <span className="font-semibold">{tool.name}</span>
                 <span className="text-muted-foreground">({tool.arg})</span>
               </div>
-              {!running && <div className="truncate pl-[2ch] text-muted-foreground">⎿ {tool.result}</div>}
+              {!running && tool.result && <div className="truncate pl-[2ch] text-muted-foreground">⎿ {tool.result}</div>}
             </Line>
           );
         })}
@@ -199,7 +216,7 @@ function AgentScene({ t }: { t: number }) {
 
       {t >= 14_500 && (
         <Line className="pl-[2ch] -indent-[2ch]">
-          ⏺ Billing page ready. It uses your Better Auth session and saves the Stripe customer in Drizzle.
+          ⏺ Done: /billing with Stripe Checkout, tied to the signed-in user.
         </Line>
       )}
     </div>

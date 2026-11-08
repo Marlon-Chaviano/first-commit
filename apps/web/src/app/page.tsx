@@ -25,26 +25,34 @@ export default async function Home() {
   ]);
 
   return (
-    <div className="mx-auto flex max-w-5xl flex-col gap-20 px-4 pt-8 sm:px-6 sm:pt-12">
-      <section className="flex flex-col gap-12">
+    <div className="mx-auto flex max-w-5xl flex-col gap-20 px-4 pt-8 sm:px-6">
+      <section className="flex flex-col gap-8">
         <div className="flex flex-col items-center gap-5 text-center">
           <h1 className="sr-only">{BRAND.name}: from empty folder to first commit</h1>
-          <PixelWordmark text={BRAND.name} layout="inline" animated className="hidden w-full md:block" />
+          <PixelWordmark text={BRAND.name} layout="inline" animated className="hidden w-full max-w-4xl md:block" />
           <PixelWordmark text={BRAND.name} layout="stacked" animated className="mx-auto w-full max-w-[420px] md:hidden" />
-          <p className="font-mono text-sm tracking-wider text-muted-foreground uppercase">From empty folder to first commit</p>
+          <p className="font-mono text-base tracking-[0.2em] text-muted-foreground uppercase sm:text-lg">From empty folder to first commit</p>
         </div>
 
-        <div className="flex flex-col items-center gap-12">
+        <div className="flex flex-col items-center gap-8">
           {/* What it does and how to try it, centered over the demo. */}
-          <div className="flex flex-col items-center gap-7 text-center">
+          <div className="flex flex-col items-center gap-6 text-center">
             <p className="max-w-2xl text-2xl leading-snug text-balance sm:text-[28px]">
-              One command and your project starts with dependencies, skills and MCP ready for your agent.
+              One command and your project starts with dependencies, skills and{" "}
+              <Tooltip>
+                <TooltipTrigger render={<span tabIndex={0} />} className="cursor-help underline decoration-muted-foreground decoration-dotted underline-offset-[6px]">
+                  MCP
+                </TooltipTrigger>
+                <TooltipContent className="max-w-64 text-pretty">Model Context Protocol: servers that give your agent tools, like your database, Stripe or your UI library.</TooltipContent>
+              </Tooltip>{" "}
+              ready for your agent.
             </p>
             <div className="flex max-w-full flex-wrap items-center justify-center gap-3">
               {/* As wide as the command plus its copy button, not the whole row. */}
               <Command command={cliCommand().trim()} className="w-fit max-w-full" />
               <AgentSetup className="h-11" />
             </div>
+            <p className="-mt-3 text-sm text-pretty text-muted-foreground">It asks for a kit and a name, or pass them directly. No account needed.</p>
           </div>
 
           {/* The 15-second demo: from the command to an agent that already knows the stack. */}

@@ -2,6 +2,7 @@
 
 import { CheckIcon, CopyIcon } from "lucide-react";
 import { useState } from "react";
+import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -17,8 +18,15 @@ export function CopyButton({ text, label = "Copy", stretch = false }: { text: st
       title={copied ? "Copied" : label}
       className={cn(stretch && "after:absolute after:inset-0 after:rounded-lg after:content-['']")}
       onClick={async () => {
-        await navigator.clipboard.writeText(text);
+        try {
+          await navigator.clipboard.writeText(text);
+        } catch {
+          toast.error("Couldn't copy: your browser blocked the clipboard");
+          return;
+        }
         setCopied(true);
+        // The icon turns into a check and a toast says it out loud (also for screen readers).
+        toast.success("Copied to your clipboard");
         setTimeout(() => setCopied(false), 1500);
       }}
     >
