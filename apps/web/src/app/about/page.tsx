@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { BrandName } from "@/components/shared/brand-name";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/about" },
   title: "About",
   description: `Why ${BRAND.name} exists and who makes it.`,
 };

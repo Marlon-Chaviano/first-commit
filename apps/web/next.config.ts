@@ -18,7 +18,7 @@ const nextConfig: NextConfig = {
   // The registry (kits, libraries, stacks, changelog) lives at the monorepo root and is read at
   // runtime with a computed path, which tracing can't follow: include it in every function.
   outputFileTracingRoot: join(__dirname, "../.."),
-  outputFileTracingIncludes: { "/*": ["../../registry/**/*"] },
+  outputFileTracingIncludes: { "/*": ["../../registry/**/*"], "/og/**": ["./assets/fonts/*.ttf", "./public/brand/first-commit-symbol-white.svg"] },
   // The site moved from Spanish to English routes: old links keep working.
   async redirects() {
     const moved: [string, string][] = [

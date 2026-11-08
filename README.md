@@ -10,27 +10,40 @@
   <p>
     <a href="https://www.npmjs.com/package/create-first-commit"><img src="https://img.shields.io/npm/v/create-first-commit?color=black&label=npm" alt="npm version"></a>
     <a href="https://www.npmjs.com/package/create-first-commit"><img src="https://img.shields.io/npm/dm/create-first-commit?color=black" alt="npm downloads"></a>
-    <a href="https://first-commit.dev/kits"><img src="https://img.shields.io/badge/kits-70-black" alt="70 kits"></a>
+    <a href="https://github.com/Marlon-Chaviano/first-commit/stargazers"><img src="https://img.shields.io/github/stars/Marlon-Chaviano/first-commit?color=black&label=stars" alt="GitHub stars"></a>
+    <a href="https://first-commit.dev/#leaderboard"><img src="https://img.shields.io/endpoint?url=https%3A%2F%2Ffirst-commit.dev%2Fapi%2Fv1%2Fbadges%2Fverified-kits" alt="Verified kits"></a>
     <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-black" alt="MIT license"></a>
   </p>
 
   <p>
     <a href="https://first-commit.dev">Website</a> ·
-    <a href="#quick-start">Quick start</a> ·
+    <a href="#start-in-10-seconds">Start in 10 seconds</a> ·
     <a href="#the-kits">Kits</a> ·
     <a href="#make-your-own-kit">Make a kit</a> ·
     <a href="#development">Development</a> ·
     <a href="CONTRIBUTING.md">Contributing</a>
   </p>
+
+  <img src="docs/assets/demo.gif" alt="npx create-first-commit creates a Next.js + Better Auth SaaS with 29 skills and 2 MCP servers; then Claude Code reads AGENTS.md and already knows the stack" width="800">
 </div>
 
 ---
 
+## Start in 10 seconds
+
 ```bash
-npx create-first-commit landing-next my-site
+npx create-first-commit
 ```
 
-That's it. You get a Next.js project that builds, a git history with one clean commit, the skills an agent needs to work on it well, and the rules of the project written down where every agent looks for them.
+Pick a kit, give the project a name, and open your agent in the new folder. That's it: a project that builds, one clean commit, the skills your agent needs and the project's rules in `AGENTS.md`, where every agent looks for them.
+
+Know what you want already? Skip the questions:
+
+```bash
+npx create-first-commit saas-next-better-auth my-app
+```
+
+No account, no config, nothing to install first. Prefer clicking? Build the command at **[first-commit.dev](https://first-commit.dev)**, or press **Set up with your agent** and paste the instruction into Claude Code, Cursor or Codex.
 
 ## Why
 
@@ -45,21 +58,16 @@ Starting a project with an agent usually goes like this: scaffold it, install a 
 - **Stays connected.** `kits.lock` remembers where the project came from: `update` brings in the kit's improvements without touching files you changed, `add` pulls more libraries in, `doctor` checks the project still follows its rules.
 - **Built for agents too.** An MCP server (`create-first-commit mcp`) lets an agent find, plan and install kits on its own, always asking before it executes anything.
 
-## Quick start
+## More ways to start
 
 ```bash
-# Pick a kit interactively
-npx create-first-commit
-
-# Or go straight to it, with options
+# Go straight to a kit, with options
 npx create-first-commit mobile-expo my-app --styling nativewind --backend supabase --agent claude-code,cursor
 
 # Look before you leap
 npx create-first-commit info landing-next
 npx create-first-commit landing-next my-site --dry-run
 ```
-
-Prefer clicking? Build the command in the configurator at **[first-commit.dev](https://first-commit.dev)**.
 
 ### Inside a project
 

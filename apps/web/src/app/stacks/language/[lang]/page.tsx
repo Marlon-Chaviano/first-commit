@@ -1,5 +1,7 @@
 import { BRAND, buildInitCommand, cliCommand, defaultSelections, entryLanguage, LANGUAGES } from "@kits/schema";
 import type { Metadata } from "next";
+
+import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
@@ -25,8 +27,11 @@ export async function generateMetadata({ params }: PageProps<"/stacks/language/[
   if (!language) return {};
   const count = (await getAllEntries()).filter((k) => entryLanguage(k) === language.id).length;
   return {
-    title: `${language.label} kits`,
-    description: `${language.label} project templates with dependencies, skills for your agent and MCP already set up. ${language.description}`,
+    ...pageMetadata({
+      title: `${language.label} kits`,
+      description: `${language.label} project templates with dependencies, skills for your agent and MCP already set up. ${language.description}`,
+      path: `/stacks/language/${language.id}`,
+    }),
     // A language without kits is a placeholder, not content.
     robots: count ? undefined : { index: false },
   };

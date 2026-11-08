@@ -7,6 +7,7 @@ import { Cmd, Code, CodeBlock, DocsHeader, H2, P } from "@/features/docs/docs-ui
 import { BrandName } from "@/components/shared/brand-name";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/docs/create-kit" },
   title: "Create a kit",
   description: "Turn your project into a kit with one command, make variants with extends and share it.",
 };

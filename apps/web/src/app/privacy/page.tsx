@@ -5,7 +5,8 @@ import Link from "next/link";
 import { LegalPage } from "@/features/legal/legal-page";
 import { BrandName } from "@/components/shared/brand-name";
 
-export const metadata: Metadata = { title: "Privacy", description: `What data ${BRAND.name} collects, why, who processes it and how to delete it.` };
+export const metadata: Metadata = {
+  alternates: { canonical: "/privacy" }, title: "Privacy", description: `What data ${BRAND.name} collects, why, who processes it and how to delete it.` };
 
 export default function PrivacyPage() {
   const mail = <a href={`mailto:${AUTHOR.email}`}>{AUTHOR.email}</a>;

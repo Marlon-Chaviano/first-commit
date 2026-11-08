@@ -17,6 +17,8 @@ import { StackCard, StackLogos, stackLogoKeys } from "@/features/stacks/stack-ca
 import { TechIcon, TechLogo } from "@/components/shared/tech-icon";
 import { formatCount } from "@/lib/format";
 import { getStack, getStacks } from "@/server/stacks";
+import { pageMetadata } from "@/lib/seo";
+import { ogImageUrl } from "@/server/og";
 
 export async function generateStaticParams() {
   return (await getStacks()).map((p) => ({ slug: p.stack.slug }));
@@ -24,7 +26,9 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: PageProps<"/stacks/[slug]">): Promise<Metadata> {
   const page = await getStack((await params).slug);
-  return page ? { title: page.stack.title, description: page.stack.description, alternates: { canonical: `/stacks/${page.stack.slug}` } } : {};
+  if (!page) return {};
+  const { stack } = page;
+  return pageMetadata({ title: stack.title, description: stack.description, path: `/stacks/${stack.slug}`, image: { url: ogImageUrl("stacks", stack.slug), alt: stack.title } });
 }
 
 // Popular stacks and new comparisons appear after the build, so params are request data for them.

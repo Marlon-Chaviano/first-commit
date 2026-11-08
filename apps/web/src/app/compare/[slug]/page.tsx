@@ -1,5 +1,7 @@
 import { BRAND, FRAMEWORK_LABELS } from "@kits/schema";
 import type { Metadata } from "next";
+
+import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
@@ -17,7 +19,7 @@ export async function generateMetadata({ params }: PageProps<"/compare/[slug]">)
   const c = await getComparison((await params).slug);
   if (!c) return {};
   const title = `${c.a.library.name} vs ${c.b.library.name}`;
-  return { title, description: `${title}: what each one offers, which frameworks it works with and how often it's chosen in kits.`, alternates: { canonical: `/compare/${c.slug}` } };
+  return pageMetadata({ title, description: `${title}: what each one offers, which frameworks it works with and how often it's chosen in kits.`, path: `/compare/${c.slug}` });
 }
 
 // Popular stacks and new comparisons appear after the build, so params are request data for them.

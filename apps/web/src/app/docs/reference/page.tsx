@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { Code, CodeBlock, DocsHeader, Fields, H2, P } from "@/features/docs/docs-ui";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/docs/reference" },
   title: "kit.json reference",
   description: "Every field of a kit: base, dependencies, skills, MCP, options, libraries, files and tasks.",
 };

@@ -17,7 +17,8 @@ import { billingEnabled } from "@/server/stripe";
 import { findCommunityVersion } from "@/server/registry";
 import { getViewer } from "@/server/session";
 
-export const metadata: Metadata = { title: "Kit statistics" };
+export const metadata: Metadata = {
+  robots: { index: false }, title: "Kit statistics" };
 
 export default function KitStatsPage({ params }: PageProps<"/account/kits/[...slug]">) {
   return (

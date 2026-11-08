@@ -7,6 +7,7 @@ import { PLANS } from "@/server/plans";
 import { billingEnabled } from "@/server/stripe";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/pricing" },
   title: "Pricing",
   description: "Free for public kits. Pro for creators, and Teams for a private registry with policies checked in CI.",
 };

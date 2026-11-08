@@ -5,7 +5,8 @@ import Link from "next/link";
 import { LegalPage } from "@/features/legal/legal-page";
 import { BrandName } from "@/components/shared/brand-name";
 
-export const metadata: Metadata = { title: "Terms", description: `${BRAND.name} terms of use. The service is free.` };
+export const metadata: Metadata = {
+  alternates: { canonical: "/terms" }, title: "Terms", description: `${BRAND.name} terms of use. The service is free.` };
 
 export default function TermsPage() {
   const mail = <a href={`mailto:${AUTHOR.email}`}>{AUTHOR.email}</a>;

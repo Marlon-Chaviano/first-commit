@@ -12,7 +12,8 @@ import { devLogin, githubLogin } from "@/server/env";
 import { listUserOrgs } from "@/server/orgs";
 import { getViewer } from "@/server/session";
 
-export const metadata: Metadata = { title: "Publish a kit" };
+export const metadata: Metadata = {
+  robots: { index: false }, title: "Publish a kit" };
 
 export default function PublishPage() {
   return (

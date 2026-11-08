@@ -6,6 +6,7 @@ import { AgentSetup } from "@/features/agent-help/agent-setup";
 import { Cmd, Code, CodeBlock, DocsHeader, Fields, H2, P } from "@/features/docs/docs-ui";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/docs/brands" },
   title: "Brand profiles",
   description: "A company's colors, fonts, interface rules and documentation, applied to any kit with --brand.",
 };

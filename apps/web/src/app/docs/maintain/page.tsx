@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { Cmd, Code, DocsHeader, Fields, H2, P } from "@/features/docs/docs-ui";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/docs/maintain" },
   title: "Keep your project up to date",
   description: "kits.lock, update, add and doctor: the project stays connected to its kit after it's created.",
 };

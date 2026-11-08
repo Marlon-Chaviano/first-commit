@@ -7,6 +7,7 @@ import { ContactForm } from "@/features/contact/contact-form";
 import { getViewer } from "@/server/session";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/contact" },
   title: "Contact",
   description: `How to reach ${BRAND.name}: email, bugs and ideas.`,
 };

@@ -8,6 +8,7 @@ import { DOCS_PAGES } from "@/lib/site-nav";
 import { BrandName } from "@/components/shared/brand-name";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/docs" },
   title: "Documentation",
   description: `What ${BRAND.name} is, how a kit works and how to start a project ready for your agent in one command.`,
 };

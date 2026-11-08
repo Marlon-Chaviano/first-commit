@@ -65,6 +65,7 @@ docs/                   Arquitectura (ARCHITECTURE.md) y roadmap por fases (road
 - **Gratis por ahora**: sin `STRIPE_SECRET_KEY` todo es gratis; usa `effectivePlan(plan, billingEnabled)` antes de `planAllows` y oculta lo de pago con `billingEnabled`. El único límite es el anti-spam (`MAX_KITS_PER_ACCOUNT`).
 - **Pagos**: Stripe es opcional (`stripe` es null sin `STRIPE_SECRET_KEY`). Los webhooks son la única fuente de verdad del plan y de las licencias; cada evento se aplica una vez (`stripe_events`) y uno antiguo no pisa uno nuevo. Los límites del plan se comprueban en el servidor con `planAllows`. Pruebas: `docker compose up -d stripe-mock` y `KITS_INTEGRATION=1 pnpm vitest run apps/web/src/server/billing.integration.test.ts`.
 - **MCP**: las herramientas que ejecutan comandos solo existen en el servidor local y piden aprobación (`approved: true`) tras enseñar `plan_init`. El remoto nunca ejecuta nada.
+- **SEO y AEO**: toda página pública declara su URL canónica; las que tienen tarjeta propia usan `pageMetadata` (`src/lib/seo.ts`) con su imagen de `src/server/og.tsx` (`/og/kits/<kit>`, `/og/stacks/<stack>`, Geist en `apps/web/assets/fonts`). Las privadas llevan `robots: { index: false }`. Los kits y el FAQ publican JSON-LD; `/llms.txt` y `/llms-full.txt` se generan del registro: si añades una sección pública, añádela también al sitemap y a `llms.txt`.
 - **Puerto**: la web arranca en **3200** (`pnpm dev:web`).
 
 ## Comandos

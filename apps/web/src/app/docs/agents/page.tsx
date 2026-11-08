@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { Cmd, Code, CodeBlock, DocsHeader, Fields, H2, P } from "@/features/docs/docs-ui";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/docs/agents" },
   title: "Use kits from your agent",
   description: "MCP server, skill and prompt so Claude Code, Cursor or Codex create and maintain projects with kits.",
 };

@@ -5,7 +5,8 @@ import Link from "next/link";
 import { LegalPage } from "@/features/legal/legal-page";
 import { BrandName } from "@/components/shared/brand-name";
 
-export const metadata: Metadata = { title: "Content policy", description: `Which kits can be published on ${BRAND.name} and how reports are handled.` };
+export const metadata: Metadata = {
+  alternates: { canonical: "/content-policy" }, title: "Content policy", description: `Which kits can be published on ${BRAND.name} and how reports are handled.` };
 
 export default function ContentPolicyPage() {
   return (

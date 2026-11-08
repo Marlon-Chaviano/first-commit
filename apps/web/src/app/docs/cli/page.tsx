@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { Cmd, Code, DocsHeader, Fields, H2, P } from "@/features/docs/docs-ui";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/docs/cli" },
   title: "CLI",
   description: `Every ${BRAND.cli} command: create projects, create and test kits, maintain projects and the MCP server.`,
 };

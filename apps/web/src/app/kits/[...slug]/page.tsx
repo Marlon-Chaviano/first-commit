@@ -1,4 +1,4 @@
-import { allKitSkills, AUTHOR, BRAND, CATEGORY_LABELS, kitLanguage, LANGUAGES, defaultSelections, selectionsFrom, type Selections } from "@kits/schema";
+import { allKitSkills, AUTHOR, BRAND, CATEGORY_LABELS, kitLanguage, LANGUAGES, defaultSelections, selectionsFrom, type Selections, cliCommand, REPO_URL } from "@kits/schema";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { LockIcon } from "lucide-react";
@@ -35,6 +35,9 @@ import { billingEnabled } from "@/server/stripe";
 import { getViewer } from "@/server/session";
 import { getVerification } from "@/server/verifications/queries";
 import { getSkillAudits } from "@/server/audits";
+import { pageMetadata } from "@/lib/seo";
+import { JsonLd } from "@/components/shared/json-ld";
+import { ogImageUrl } from "@/server/og";
 
 // Official kits are prerendered; community kits ("ana/landing") render on first visit.
 export async function generateStaticParams() {
@@ -45,7 +48,13 @@ export async function generateMetadata({ params }: PageProps<"/kits/[...slug]">)
   const page = await getKitPage((await params).slug.join("/"));
   // Private kits: no title or description in metadata (it's rendered before the membership check).
   if (!page || page.meta.visibility !== "public") return { robots: { index: false } };
-  return { title: page.meta.slug, description: page.kit.description };
+  const slug = page.meta.slug;
+  return pageMetadata({
+    title: `${page.kit.title} (${slug})`,
+    description: page.kit.description,
+    path: `/kits/${slug}`,
+    image: { url: ogImageUrl("kits", slug), alt: `${page.kit.title}: ${cliCommand(slug)}` },
+  });
 }
 
 export default function KitPage({ params, searchParams }: PageProps<"/kits/[...slug]">) {
@@ -156,8 +165,41 @@ async function KitContent({ slug, searchParams }: { slug: Promise<string>; searc
     </section>
   );
 
+  const url = `${BRAND.siteUrl}/kits/${meta.slug}`;
   return (
     <div className="mx-auto max-w-6xl px-4 pt-8 pb-16 sm:px-6 sm:pt-12">
+      {meta.visibility === "public" && (
+        <JsonLd
+          data={{
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "SoftwareSourceCode",
+                name: kit.title,
+                alternateName: meta.slug,
+                description: kit.description,
+                url,
+                image: `${BRAND.siteUrl}${ogImageUrl("kits", meta.slug)}`,
+                codeRepository: meta.official ? `${REPO_URL}/tree/${BRAND.branch}/registry/kits/${meta.slug}` : meta.repo ? `https://github.com/${meta.repo}` : undefined,
+                programmingLanguage: languageLabel || undefined,
+                keywords: kit.tags.join(", "),
+                version: meta.version,
+                author: { "@type": "Person", name: meta.owner?.name || meta.owner?.handle || kit.author },
+                isAccessibleForFree: true,
+                // What an answer engine should quote: the exact command.
+                text: cliCommand(meta.slug),
+              },
+              {
+                "@type": "BreadcrumbList",
+                itemListElement: [
+                  { "@type": "ListItem", position: 1, name: "Kits", item: `${BRAND.siteUrl}/#leaderboard` },
+                  { "@type": "ListItem", position: 2, name: meta.slug, item: url },
+                ],
+              },
+            ],
+          }}
+        />
+      )}
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>

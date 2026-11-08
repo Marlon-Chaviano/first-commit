@@ -1,4 +1,4 @@
-import { BRAND } from "@kits/schema";
+import { AUTHOR, BRAND } from "@kits/schema";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
@@ -14,11 +14,22 @@ import "./globals.css";
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
 
+const DESCRIPTION = "One command and your project starts with dependencies, skills and MCP ready for your agent.";
+
 export const metadata: Metadata = {
   title: { default: `${BRAND.name}: from empty folder to first commit`, template: `%s · ${BRAND.name}` },
   metadataBase: new URL(BRAND.siteUrl),
-  description:
-    "One command and your project starts with dependencies, skills and MCP ready for your agent.",
+  description: DESCRIPTION,
+  applicationName: BRAND.name,
+  authors: [{ name: AUTHOR.name, url: AUTHOR.github }],
+  creator: AUTHOR.name,
+  keywords: ["project starter", "project templates", "AI coding agent", "Claude Code", "Cursor", "Codex", "agent skills", "MCP", "AGENTS.md", "create-first-commit", "scaffolding", "boilerplate"],
+  // Pages that set their own openGraph repeat these through pageMetadata (lib/seo.ts).
+  openGraph: { type: "website", siteName: BRAND.name, locale: "en_US", title: BRAND.name, description: DESCRIPTION },
+  twitter: { card: "summary_large_image", title: BRAND.name, description: DESCRIPTION },
+  formatDetection: { telephone: false, email: false, address: false },
+  // Search Console: the domain is verified by DNS; this only adds the meta tag when the env var is set.
+  ...(process.env.GOOGLE_SITE_VERIFICATION ? { verification: { google: process.env.GOOGLE_SITE_VERIFICATION } } : {}),
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

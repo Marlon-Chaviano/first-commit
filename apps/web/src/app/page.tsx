@@ -1,7 +1,9 @@
-import { AGENTS, BRAND, cliCommand } from "@kits/schema";
+import { AGENTS, BRAND, cliCommand, REPO_URL } from "@kits/schema";
+import type { Metadata } from "next";
 import Link from "next/link";
 
 import { PixelWordmark } from "@/components/layout/pixel-wordmark";
+import { JsonLd } from "@/components/shared/json-ld";
 import { Command } from "@/components/shared/command";
 import { Marquee } from "@/components/shared/marquee";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
@@ -15,6 +17,8 @@ import { getAllEntries, getFeaturedEntries } from "@/server/registry";
 import { getVerification } from "@/server/verifications/queries";
 import { facets, RANKING_MIN_INSTALLS } from "@/lib/kit-query";
 
+export const metadata: Metadata = { alternates: { canonical: "/" } };
+
 export default async function Home() {
   const [kits, featured] = await Promise.all([getAllEntries(), getFeaturedEntries()]);
   // Every language, with kits first: the carousel also invites people to publish the missing ones.
@@ -26,6 +30,35 @@ export default async function Home() {
 
   return (
     <div className="mx-auto flex max-w-5xl flex-col gap-20 px-4 pt-8 sm:px-6">
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@graph": [
+            { "@type": "WebSite", "@id": `${BRAND.siteUrl}/#website`, name: BRAND.name, url: BRAND.siteUrl, description: "Project starters for AI coding agents." },
+            { "@type": "Organization", "@id": `${BRAND.siteUrl}/#org`, name: BRAND.name, url: BRAND.siteUrl, logo: `${BRAND.siteUrl}/icon.svg`, sameAs: [REPO_URL, `https://www.npmjs.com/package/${BRAND.cli}`] },
+            {
+              "@type": "SoftwareApplication",
+              name: BRAND.cli,
+              alternateName: BRAND.name,
+              applicationCategory: "DeveloperApplication",
+              operatingSystem: "macOS, Linux, Windows",
+              description: "A CLI that creates a project from a kit with its dependencies, agent skills, MCP servers and AGENTS.md set up.",
+              url: BRAND.siteUrl,
+              downloadUrl: `https://www.npmjs.com/package/${BRAND.cli}`,
+              installUrl: `https://www.npmjs.com/package/${BRAND.cli}`,
+              softwareHelp: `${BRAND.siteUrl}/docs`,
+              offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+              publisher: { "@id": `${BRAND.siteUrl}/#org` },
+            },
+            {
+              "@type": "ItemList",
+              name: "Kits",
+              numberOfItems: kits.length,
+              itemListElement: kits.slice(0, 30).map((k, i) => ({ "@type": "ListItem", position: i + 1, name: k.title, url: `${BRAND.siteUrl}/kits/${k.name}` })),
+            },
+          ],
+        }}
+      />
       <section className="flex flex-col gap-8">
         <div className="flex flex-col items-center gap-5 text-center">
           <h1 className="sr-only">{BRAND.name}: from empty folder to first commit</h1>

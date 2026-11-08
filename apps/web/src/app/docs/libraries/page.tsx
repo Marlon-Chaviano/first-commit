@@ -7,6 +7,7 @@ import { Code, DocsHeader, H2 } from "@/features/docs/docs-ui";
 import { getCatalog } from "@/server/registry";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/docs/libraries" },
   title: "Library catalog",
   description: "UI, animation, auth, database, payments, email, AI, observability, testing and deployment libraries any kit can offer.",
 };

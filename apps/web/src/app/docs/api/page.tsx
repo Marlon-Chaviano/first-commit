@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Code, CodeBlock, DocsHeader, Fields, H2, P } from "@/features/docs/docs-ui";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/docs/api" },
   title: "API",
   description: `The ${BRAND.name} public API: kits, recommendations, skills and the remote MCP server.`,
 };

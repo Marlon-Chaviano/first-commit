@@ -10,6 +10,7 @@ import { getAllEntries } from "@/server/registry";
 import { getStacks } from "@/server/stacks";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/stacks" },
   title: "Stacks",
   description: "Tech combinations ready to install in one command: Next.js + Supabase + Stripe, Expo + NativeWind, Hono + Drizzle…",
 };

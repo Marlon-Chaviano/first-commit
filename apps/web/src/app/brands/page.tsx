@@ -11,6 +11,7 @@ import { listBrands } from "@/server/brands";
 import { getViewer } from "@/server/session";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/brands" },
   title: "Brand profiles",
   description: "Save a client's or your company's colors, fonts, interface rules and docs, and apply them to any kit with --brand.",
 };
