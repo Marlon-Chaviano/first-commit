@@ -4,6 +4,7 @@ import { headers } from "next/headers";
 import { connection } from "next/server";
 
 import { auth } from "./auth";
+import { effectiveRole } from "./env";
 import { userFromToken, type TokenUser } from "./tokens";
 
 type SessionUser = NonNullable<Awaited<ReturnType<NonNullable<typeof auth>["api"]["getSession"]>>>["user"];
@@ -11,7 +12,7 @@ type SessionUser = NonNullable<Awaited<ReturnType<NonNullable<typeof auth>["api"
 /** The one mapping from a Better Auth session to the user the app works with. */
 function toUser(sessionUser: SessionUser): TokenUser {
   const u = sessionUser as SessionUser & { handle?: string | null; role?: string | null };
-  return { id: u.id, handle: u.handle ?? null, role: u.role ?? null, name: u.name, email: u.email, image: u.image ?? null };
+  return { id: u.id, handle: u.handle ?? null, role: effectiveRole(u.handle ?? null, u.role ?? null), name: u.name, email: u.email, image: u.image ?? null };
 }
 
 /**

@@ -90,3 +90,6 @@ export const devLogin = env.DEV_LOGIN === "1" && process.env.NODE_ENV !== "produ
 export const githubLogin = Boolean(env.GITHUB_CLIENT_ID && env.GITHUB_CLIENT_SECRET);
 export const googleLogin = Boolean(env.GOOGLE_CLIENT_ID && env.GOOGLE_CLIENT_SECRET);
 export const adminHandles = new Set((env.ADMIN_HANDLES ?? "").split(",").map((h) => h.trim().toLowerCase()).filter(Boolean));
+/** ADMIN_HANDLES applies on every read, so accounts created before it was set are admins too. */
+export const effectiveRole = (handle: string | null, role: string | null): string | null =>
+  handle && adminHandles.has(handle.toLowerCase()) ? "admin" : role;

@@ -1,12 +1,16 @@
 import { BRAND, slugify } from "@kits/schema";
 import { LinkIcon, RssIcon } from "lucide-react";
 import type { Metadata } from "next";
+import { cookies } from "next/headers";
+import { Suspense } from "react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from "@/components/ui/empty";
 import { SubscribeForm } from "@/features/newsletter/subscribe-form";
-import { getChangelog, type ChangelogEntry } from "@/server/newsletter";
+import { NEWSLETTER_COOKIE, parseNewsletterStatus } from "@/features/newsletter/status";
+import { getChangelog, newsletterStatus, type ChangelogEntry } from "@/server/newsletter";
+import { getViewer } from "@/server/session";
 import { BrandName } from "@/components/shared/brand-name";
 
 export const metadata: Metadata = {
@@ -40,7 +44,9 @@ export default async function ChangelogPage() {
           <h2 id="newsletter" className="font-medium">Get it in your inbox</h2>
           <p className="text-sm text-pretty text-muted-foreground">A short weekly email with what changed here and the community&apos;s best new kits.</p>
         </div>
-        <SubscribeForm />
+        <Suspense fallback={<SubscribeForm />}>
+          <Newsletter />
+        </Suspense>
       </section>
 
       {days.length === 0 && (
@@ -89,4 +95,12 @@ export default async function ChangelogPage() {
       </ol>
     </div>
   );
+}
+
+/** A signed-in subscriber sees "you're subscribed" on any device; anyone else, what this browser remembers. */
+async function Newsletter() {
+  const [viewer, jar] = await Promise.all([getViewer(), cookies()]);
+  const remembered = parseNewsletterStatus(jar.get(NEWSLETTER_COOKIE)?.value);
+  const stored = viewer?.email ? await newsletterStatus(viewer.email).catch(() => null) : null;
+  return <SubscribeForm initial={stored ?? remembered} email={viewer?.email ?? undefined} />;
 }

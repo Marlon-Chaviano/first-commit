@@ -6,6 +6,7 @@ import { and, desc, eq } from "drizzle-orm";
 
 import { db } from "./db";
 import { apiTokens, user } from "./db/schema";
+import { effectiveRole } from "./env";
 
 const PREFIX = "kits_";
 
@@ -59,5 +60,5 @@ export async function userFromToken(token: string): Promise<TokenUser | null> {
   const row = rows[0];
   if (!row) return null;
   await db.update(apiTokens).set({ lastUsedAt: new Date() }).where(eq(apiTokens.id, row.tokenId));
-  return { id: row.id, handle: row.handle, role: row.role, name: row.name };
+  return { id: row.id, handle: row.handle, role: effectiveRole(row.handle, row.role), name: row.name };
 }

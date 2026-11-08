@@ -78,6 +78,19 @@ export async function subscribe(rawEmail: string): Promise<SubscribeResult> {
   return "sent";
 }
 
+/** Where an email stands: shown on the changelog so a subscriber isn't asked to subscribe again. */
+export async function newsletterStatus(rawEmail: string): Promise<"confirmed" | "pending" | null> {
+  if (!db) return null;
+  const row = (
+    await db
+      .select({ status: newsletterSubscribers.status })
+      .from(newsletterSubscribers)
+      .where(eq(newsletterSubscribers.email, rawEmail.trim().toLowerCase()))
+      .limit(1)
+  )[0];
+  return row?.status === "confirmed" || row?.status === "pending" ? row.status : null;
+}
+
 export async function confirmSubscription(token: string): Promise<boolean> {
   if (!db || !token) return false;
   const rows = await db

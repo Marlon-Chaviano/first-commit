@@ -7,7 +7,7 @@ export const metadata: Metadata = { title: "Confirm subscription", robots: { ind
 
 export default function ConfirmPage({ searchParams }: PageProps<"/changelog/confirm">) {
   return (
-    <div className="mx-auto max-w-xl px-4 pt-16 sm:px-6">
+    <div className="mx-auto w-full max-w-xl px-4 py-12 sm:px-6 sm:py-20">
       <Suspense>
         <Form token={searchParams.then((p) => String(p.token ?? ""))} />
       </Suspense>
