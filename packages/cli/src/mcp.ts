@@ -55,7 +55,7 @@ export async function mcp(args: ParsedArgs, version: string): Promise<void> {
   });
 }
 
-/** The website's recommender (Claude, when configured there). Null when it can't be reached. */
+/** The website's recommender (the AI one, when configured there). Null when it can't be reached. */
 async function recommendRemote(description: string): Promise<(Recommendation & { source: ResolvedRecommendation["source"] }) | null> {
   if (process.env.KITS_OFFLINE) return null;
   try {
@@ -63,7 +63,8 @@ async function recommendRemote(description: string): Promise<(Recommendation & {
     if (!res.ok) return null;
     const body = res.data;
     const rec = recommendationSchema.parse(body);
-    return { ...rec, source: body.source === "claude" ? "claude" : "heuristic" };
+    // "claude" is what the site answered before it moved to Grok.
+    return { ...rec, source: body.source === "ai" || body.source === "claude" ? "ai" : "heuristic" };
   } catch {
     return null;
   }

@@ -101,7 +101,7 @@ Es un proyecto personal, así que la arquitectura está pensada para no pagar na
 | Sentry | Errores de la web | Plan Developer. |
 | Stripe (opcional) | Planes Pro y Equipos, kits de pago (Connect) | Sin cuota fija: comisión por cobro. **Cobrar exige salir de Vercel Hobby** (no admite uso comercial): Vercel Pro u otro proveedor. Desactivado sin `STRIPE_SECRET_KEY`. |
 | Resend | Confirmaciones y newsletter semanal | Plan gratuito con límite diario: con muchos suscriptores, enviar por tandas o pasar de plan. |
-| Anthropic API (opcional) | "Describe tu proyecto" y `recommend_kit` | **Lo único que puede costar dinero.** Sin `ANTHROPIC_API_KEY` responde el recomendador por palabras clave (gratis). Con clave: Claude Haiku 4.5 por defecto (`RECOMMEND_MODEL`), `max_tokens` 1024, respuesta cacheada por descripción normalizada (`"use cache"`, días) y 20 peticiones/hora por IP. |
+| xAI API (opcional) | "Describe tu proyecto" y `recommend_kit` | **Lo único que puede costar dinero.** Sin `XAI_API_KEY` responde el recomendador por palabras clave (gratis). Con clave: Grok (`RECOMMEND_MODEL`), temperatura 0, `max_tokens` 600, timeout de 15 s, el catálogo primero y siempre igual para que lo sirva la caché de prompts de xAI, respuesta cacheada por descripción normalizada (`"use cache"`, días) y 20 peticiones/hora por IP. |
 
 ## Agentes (fase 6)
 
@@ -110,7 +110,7 @@ Es un proyecto personal, así que la arquitectura está pensada para no pagar na
 | Servidor MCP | `packages/mcp` (`createKitsServer`) | Herramientas `search_kits`, `get_kit`, `recommend_kit`, `plan_init`; con acciones locales también `init_kit` (pide `approved: true`) y `add_library`. |
 | MCP local | `create-first-commit mcp` (stdio, SDK v2 `serveStdio`) | Lee el registro como el resto del CLI y ejecuta `init`/`add` lanzándose a sí mismo sin TTY. stdout es el protocolo: no se imprime nada más. |
 | MCP remoto | `apps/web/src/app/mcp/route.ts` (`createMcpHandler`, sin estado) | Solo lectura: oficiales y comunidad desde la base de datos; nunca ejecuta comandos. |
-| Recomendador | `packages/schema/src/recommend.ts` + `apps/web/src/server/recommend/` | Claude con salida estructurada (zod), validación con `resolveRecommendation` (añade requisitos, descarta ids desconocidos) y un reintento con el error; si falla o no hay clave, el recomendador por palabras clave. Siempre devuelve una combinación válida de un kit oficial. |
+| Recomendador | `packages/schema/src/recommend.ts` + `apps/web/src/server/recommend/` | Grok con salida estructurada (JSON Schema estricto desde zod), validación con `resolveRecommendation` (añade requisitos, descarta ids desconocidos) y un reintento con el error; si falla o no hay clave, el recomendador por palabras clave. Siempre devuelve una combinación válida de un kit oficial. |
 | Skill | `skills/kits/SKILL.md` (generado desde `scripts/skill-template.md` con `BRAND`) | Enseña al agente a crear y mantener proyectos. Los kits lo instalan cuando `KITS_SKILL_PUBLISHED` es `true` (fase 8). |
 
 ## Crecimiento y negocio (fase 7)

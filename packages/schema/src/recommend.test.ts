@@ -52,7 +52,7 @@ describe("recommendHeuristic", () => {
 
   it("drops unknown options and choices from a model's answer", () => {
     const kit = kits.find((k) => k.name === "saas-next-supabase")!;
-    const r = resolveRecommendation(kit, { kit: kit.name, options: { payments: ["fakepay"], nope: ["x"], email: ["resend"] }, reasons: [] }, "claude");
+    const r = resolveRecommendation(kit, { kit: kit.name, options: { payments: ["fakepay"], nope: ["x"], email: ["resend"] }, reasons: [] }, "ai");
     expect(r.options.payments).toEqual(["stripe"]);
     expect(r.options.email).toEqual(["resend"]);
     expect(r.options).not.toHaveProperty("nope");

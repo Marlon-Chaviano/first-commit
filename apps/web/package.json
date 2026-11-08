@@ -13,10 +13,10 @@
     "db:migrate": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio",
     "qstash:schedule": "tsx scripts/qstash-schedule.mts",
+    "recommend:eval": "tsx scripts/recommend-eval.mts",
     "audit": "NEXT_DIST_DIR=.next-audit next build && npx --yes @lhci/cli@0.16 autorun"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "1.5.0",
     "@base-ui/react": "^1.9.0",
     "@better-auth/drizzle-adapter": "^1.7.17",
     "@kits/mcp": "workspace:*",

@@ -47,10 +47,10 @@ const schema = z.object({
   STRIPE_API_URL: z.url().optional(),
   /** Platform commission on premium kits, in percent. */
   PLATFORM_FEE_PERCENT: z.coerce.number().min(0).max(50).default(15),
-  /** Optional: Claude for "Describe your project". Without it the keyword recommender answers. */
-  ANTHROPIC_API_KEY: z.string().min(1).optional(),
-  /** Model for the recommender. Haiku by default: it's the cheapest and the task is small. */
-  RECOMMEND_MODEL: z.string().default("claude-haiku-4-5"),
+  /** Optional: xAI's Grok for "Describe your project". Without it the keyword recommender answers. */
+  XAI_API_KEY: z.string().min(1).optional(),
+  /** Grok model for the recommender. A fast non-reasoning one: the task is picking from a list. */
+  RECOMMEND_MODEL: z.string().default("grok-4.20-non-reasoning"),
 });
 
 export const env = schema.parse({
@@ -79,7 +79,7 @@ export const env = schema.parse({
   STRIPE_PRICE_TEAM: process.env.STRIPE_PRICE_TEAM || undefined,
   STRIPE_API_URL: process.env.STRIPE_API_URL || undefined,
   PLATFORM_FEE_PERCENT: process.env.PLATFORM_FEE_PERCENT || undefined,
-  ANTHROPIC_API_KEY: process.env.ANTHROPIC_API_KEY || undefined,
+  XAI_API_KEY: process.env.XAI_API_KEY || undefined,
   RECOMMEND_MODEL: process.env.RECOMMEND_MODEL || undefined,
 });
 

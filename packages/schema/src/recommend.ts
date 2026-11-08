@@ -16,7 +16,7 @@ export type Recommendation = z.infer<typeof recommendationSchema>;
 export interface ResolvedRecommendation extends Recommendation {
   /** Full, valid selections for the kit (defaults + recommendation, requirements added). */
   selections: Selections;
-  source: "claude" | "heuristic";
+  source: "ai" | "heuristic";
 }
 
 const normalize = (text: string) =>
@@ -107,7 +107,7 @@ const CHOICE_HINTS: Record<string, RegExp> = {
  * On a tie, the general-purpose kit of each type wins; the rest (another language,
  * framework or tool) only when the description asks for them.
  */
-const FLAGSHIP = new Set(["landing-next", "saas-next-supabase", "mobile-expo", "api-hono", "chrome-extension", "spa-vite-react", "monorepo-turbo"]);
+export const FLAGSHIP_KITS: ReadonlySet<string> = new Set(["landing-next", "saas-next-supabase", "mobile-expo", "api-hono", "chrome-extension", "spa-vite-react", "monorepo-turbo"]);
 
 /** Tags many kits share: they say nothing about which kit fits better. */
 const GENERIC_TAGS = new Set(["landing", "saas", "api", "extension", "mobile", "monorepo", "plugin", "bot", "typescript", "tailwind", "node", "seo", "design", "personal", "agents", "auth"]);
@@ -123,14 +123,14 @@ function scoreKit(kit: Kit, text: string): number {
 
 /**
  * Keyword recommender: works offline and without an API key. It's the
- * fallback when Claude isn't configured or fails.
+ * fallback when the AI recommender isn't configured or fails.
  */
 export function recommendHeuristic(description: string, kits: Kit[]): Recommendation {
   if (!kits.length) throw new Error("There are no kits to recommend");
   const text = normalize(description);
   const ranked = kits
     .map((kit) => ({ kit, score: scoreKit(kit, text) }))
-    .sort((a, b) => b.score - a.score || Number(FLAGSHIP.has(b.kit.name)) - Number(FLAGSHIP.has(a.kit.name)));
+    .sort((a, b) => b.score - a.score || Number(FLAGSHIP_KITS.has(b.kit.name)) - Number(FLAGSHIP_KITS.has(a.kit.name)));
   const { kit } = ranked[0]!;
   const reasons = [ranked[0]!.score > 0 ? `${kit.title}: the kit that best fits the description.` : `${kit.title}: no clear hints, so it's a general starting point.`];
 
