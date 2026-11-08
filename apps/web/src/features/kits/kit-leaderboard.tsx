@@ -3,7 +3,7 @@
 import { CATEGORY_LABELS, entryLanguage, languageLabel, type KitCategory, type LanguageId, type RegistryEntry } from "@kits/schema";
 import { ChevronDownIcon, SearchIcon, XIcon } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useDeferredValue, useEffect, useMemo, useRef, useState } from "react";
 
 import { OriginIcon, ORIGINS, type Origin } from "@/components/shared/origin-icon";
@@ -48,23 +48,51 @@ function useDebounced<T>(value: T, ms: number): T {
   return debounced;
 }
 
-export function KitLeaderboard({
-  kits,
-  stats,
-  verified,
-}: {
+type Props = {
   kits: RegistryEntry[];
   stats: Leaderboard;
   /** kit → its current version passed `create-first-commit test` */
   verified: Record<string, boolean>;
-}) {
+};
+
+/** Search and filters as they travel in the URL: /?q=stripe&category=saas#leaderboard. */
+interface ListState {
+  q: string;
+  view: View;
+  origin: Source;
+  category: string;
+  language: string;
+}
+const DEFAULT_STATE: ListState = { q: "", view: "all", origin: "all", category: "all", language: "all" };
+
+function stateFromParams(params: URLSearchParams): ListState {
+  const origin = params.get("origin");
+  return {
+    q: (params.get("q") ?? "").slice(0, 100),
+    view: params.get("view") === "trending" ? "trending" : "all",
+    origin: SOURCES.some(([v]) => v === origin) ? (origin as Source) : "all",
+    category: params.get("category") ?? "all",
+    language: params.get("language") ?? "all",
+  };
+}
+
+/**
+ * The list with its search and filters in the URL, so a search can be shared. Rendered inside
+ * <Suspense> with the plain list as fallback: the prerendered page keeps every kit link in its HTML.
+ */
+export function KitLeaderboardFromUrl(props: Props) {
+  const params = useSearchParams();
+  return <KitLeaderboard {...props} initial={stateFromParams(new URLSearchParams(params))} syncUrl />;
+}
+
+export function KitLeaderboard({ kits, stats, verified, initial = DEFAULT_STATE, syncUrl = false }: Props & { initial?: ListState; syncUrl?: boolean }) {
   const router = useRouter();
   const input = useRef<HTMLInputElement>(null);
-  const [query, setQuery] = useState("");
-  const [view, setView] = useState<View>("all");
-  const [source, setSource] = useState<Source>("all");
-  const [category, setCategory] = useState<string>("all");
-  const [language, setLanguage] = useState<string>("all");
+  const [query, setQuery] = useState(initial.q);
+  const [view, setView] = useState<View>(initial.view);
+  const [source, setSource] = useState<Source>(initial.origin);
+  const [category, setCategory] = useState<string>(initial.category);
+  const [language, setLanguage] = useState<string>(initial.language);
   // The input updates at once; filtering waits for a pause and runs at low priority.
   const search = useDeferredValue(useDebounced(query, SEARCH_DEBOUNCE_MS));
   // Lowercased text to search in, computed once per kit instead of on every keystroke.
@@ -73,6 +101,23 @@ export function KitLeaderboard({
   const filterKey = [search, view, source, category, language].join("\u0000");
   const [paging, setPaging] = useState({ key: filterKey, pages: 1 });
   const pages = paging.key === filterKey ? paging.pages : 1;
+  // After the first "Show more", the next pages load on their own as the list reaches the bottom.
+  const [autoLoad, setAutoLoad] = useState(false);
+  const more = useRef<HTMLTableRowElement>(null);
+
+  // The search and filters live in the URL (replaceState: no navigation, no scroll jump).
+  useEffect(() => {
+    if (!syncUrl) return;
+    const url = new URL(window.location.href);
+    const next: Record<keyof ListState, string> = { q: search.trim(), view, origin: source, category, language };
+    for (const [key, value] of Object.entries(next)) {
+      if (value && value !== DEFAULT_STATE[key as keyof ListState]) url.searchParams.set(key, value);
+      else url.searchParams.delete(key);
+    }
+    // A shared search opens on the list, not on the hero.
+    if (url.searchParams.size) url.hash = "leaderboard";
+    if (url.href !== window.location.href) window.history.replaceState(window.history.state, "", url);
+  }, [syncUrl, search, view, source, category, language]);
 
   // "/" focuses search, like skills.sh.
   useEffect(() => {
@@ -102,6 +147,15 @@ export function KitLeaderboard({
   };
   const rows = queryKits(kits, { q, origin: source, category: category as KitCategory | "all", language, sort: ranked ? "installs" : "catalog" }, { counts, verified }, index);
   const shown = rows.slice(0, pages * PAGE_SIZE);
+  const hasMore = rows.length > shown.length;
+
+  useEffect(() => {
+    const row = more.current;
+    if (!autoLoad || !hasMore || !row) return;
+    const observer = new IntersectionObserver(([entry]) => entry?.isIntersecting && setPaging({ key: filterKey, pages: pages + 1 }), { rootMargin: "200px" });
+    observer.observe(row);
+    return () => observer.disconnect();
+  }, [autoLoad, hasMore, filterKey, pages]);
 
   return (
     <div className="flex flex-col gap-4">
@@ -226,13 +280,16 @@ export function KitLeaderboard({
                 {ranked && <TableCell className="hidden text-right font-mono tabular-nums sm:table-cell">{formatCount(counts[kit.name] ?? 0)}</TableCell>}
               </TableRow>
             ))}
-            {rows.length > shown.length && (
+            {hasMore && (
               // Like skills.sh: the list goes on with a "+N more" row in its own typography, not a separate button.
-              <TableRow className="hover:bg-transparent">
+              <TableRow ref={more} className="hover:bg-transparent">
                 <TableCell colSpan={ranked ? 4 : 1} className="p-0">
                   <button
                     type="button"
-                    onClick={() => setPaging({ key: filterKey, pages: pages + 1 })}
+                    onClick={() => {
+                      setPaging({ key: filterKey, pages: pages + 1 });
+                      setAutoLoad(true);
+                    }}
                     className="group flex h-12 w-full items-center gap-2 px-2 font-mono text-sm text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring"
                   >
                     <ChevronDownIcon className="size-4 transition-transform group-hover:translate-y-0.5 motion-reduce:transition-none" />

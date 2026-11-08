@@ -1,6 +1,7 @@
 import { AGENTS, BRAND, cliCommand, REPO_URL } from "@kits/schema";
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Suspense } from "react";
 
 import { PixelWordmark } from "@/components/layout/pixel-wordmark";
 import { JsonLd } from "@/components/shared/json-ld";
@@ -8,7 +9,7 @@ import { Command } from "@/components/shared/command";
 import { Marquee } from "@/components/shared/marquee";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { TechIcon } from "@/components/shared/tech-icon";
-import { KitLeaderboard } from "@/features/kits/kit-leaderboard";
+import { KitLeaderboard, KitLeaderboardFromUrl } from "@/features/kits/kit-leaderboard";
 import { AgentSetup } from "@/features/agent-help/agent-setup";
 import { TerminalDemo } from "@/features/home/terminal-demo";
 import { DescribeProject } from "@/features/recommend/describe-project";
@@ -167,7 +168,10 @@ export default async function Home() {
 
       <section id="leaderboard" className="flex scroll-mt-20 flex-col gap-4">
         <h2 className="label-mono">{stats.total >= RANKING_MIN_INSTALLS ? "Kit ranking" : "Kits"}</h2>
-        <KitLeaderboard kits={kits} stats={stats} verified={Object.fromEntries(verified)} />
+        {/* Prerendered as the plain list; in the browser, the one that reads ?q= and the filters from the URL. */}
+        <Suspense fallback={<KitLeaderboard kits={kits} stats={stats} verified={Object.fromEntries(verified)} />}>
+          <KitLeaderboardFromUrl kits={kits} stats={stats} verified={Object.fromEntries(verified)} />
+        </Suspense>
       </section>
     </div>
   );
