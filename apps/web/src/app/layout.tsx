@@ -3,6 +3,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Suspense } from "react";
 
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
@@ -44,7 +45,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             <main className="flex-1">{children}</main>
             <SiteFooter />
             <Toaster />
-            <OnboardingGuide />
+            {/* It reads the pathname: under Suspense so dynamic routes still prerender. */}
+            <Suspense fallback={null}>
+              <OnboardingGuide />
+            </Suspense>
           </TooltipProvider>
         </ThemeProvider>
         <Analytics />
