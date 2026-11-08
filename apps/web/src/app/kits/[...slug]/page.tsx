@@ -1,4 +1,4 @@
-import { allKitSkills, AUTHOR, BRAND, CATEGORY_LABELS, kitLanguage, LANGUAGES, defaultSelections, selectionsFrom, type Selections, cliCommand, REPO_URL, pruneSelections } from "@kits/schema";
+import { allKitSkills, AUTHOR, BRAND, CATEGORY_LABELS, kitLanguage, LANGUAGES, defaultSelections, selectionsFrom, type Selections, cliCommand, REPO_URL, pruneSelections, resolve } from "@kits/schema";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { LockIcon } from "lucide-react";
@@ -34,7 +34,8 @@ import { findCommunityVersion, getIndex, getKitPage } from "@/server/registry";
 import { env } from "@/server/env";
 import { billingEnabled } from "@/server/stripe";
 import { getViewer } from "@/server/session";
-import { getVerification } from "@/server/verifications/queries";
+import { getInstallMinutes, getVerification } from "@/server/verifications/queries";
+import { WhatYouGet } from "@/features/kits/what-you-get";
 import { getSkillAudits } from "@/server/audits";
 import { pageMetadata } from "@/lib/seo";
 import { JsonLd } from "@/components/shared/json-ld";
@@ -111,11 +112,13 @@ async function KitContent({ slug, searchParams }: { slug: Promise<string>; searc
   if (page.meta.visibility !== "public" && !(await canReadKit({ visibility: page.meta.visibility, orgId: page.meta.orgId ?? null }, viewer))) notFound();
   const { kit, meta } = page;
   const premium = await premiumState(meta, viewer);
-  const [stats, verification, audits] = await Promise.all([
+  const [stats, verification, audits, installMinutes] = await Promise.all([
     getKitStats(meta.slug),
     getVerification(meta.slug, meta.version),
     getSkillAudits(allKitSkills(kit)),
+    getInstallMinutes(meta.slug, meta.version),
   ]);
+  const defaults = defaultSelections(kit);
 
   const languageLabel = LANGUAGES.find((l) => l.id === kitLanguage(kit))?.label ?? "";
   // Details for the sticky column next to the install command.
@@ -294,6 +297,10 @@ async function KitContent({ slug, searchParams }: { slug: Promise<string>; searc
           </AlertDescription>
         </Alert>
       )}
+
+      <div className="mt-10">
+        <WhatYouGet kit={kit} resolved={resolve(kit, defaults)} options={defaults.options} installMinutes={installMinutes} />
+      </div>
 
       <div className="mt-10">
         {/* The shell shows the defaults; a recommendation in the URL (?animation=motion&why=…) streams in. */}

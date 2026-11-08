@@ -47,3 +47,34 @@ export async function getVerification(kit: string, version: string): Promise<Ver
     return { verified: false, platforms: [] };
   }
 }
+
+/**
+ * How long the default install takes, from the latest passing CI reports of this version: the
+ * median of their "defaults" combination, in minutes. It includes the checks (first build, tests),
+ * so it's an upper bound. Null until a report exists.
+ */
+export async function getInstallMinutes(kit: string, version: string): Promise<number | null> {
+  "use cache";
+  cacheLife("hours");
+  cacheTag(verificationTag(kit));
+
+  if (!db) return null;
+  try {
+    const rows = await db
+      .select({ report: kitVerifications.report })
+      .from(kitVerifications)
+      .where(and(eq(kitVerifications.kit, kit), eq(kitVerifications.version, version), eq(kitVerifications.ok, true)))
+      .orderBy(desc(kitVerifications.createdAt))
+      .limit(6);
+    const durations = rows
+      .map((r) => r.report.combinations.find((c) => c.label === "defaults" && c.ok)?.durationMs)
+      .filter((ms): ms is number => typeof ms === "number" && ms > 0)
+      .sort((a, b) => a - b);
+    if (!durations.length) return null;
+    const median = durations[Math.floor(durations.length / 2)]!;
+    return Math.max(1, Math.round(median / 60_000));
+  } catch (error) {
+    console.error("[verifications] install time unavailable", error);
+    return null;
+  }
+}
