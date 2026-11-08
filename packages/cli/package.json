@@ -1,6 +1,6 @@
 {
   "name": "create-first-commit",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Install ready-to-code workspace kits: project template, dependencies, agent skills and MCP servers in one command.",
   "type": "module",
   "bin": {
