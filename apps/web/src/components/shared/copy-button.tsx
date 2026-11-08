@@ -5,6 +5,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 
 import { markStep } from "@/features/onboarding/progress";
+import { pixelBurst } from "@/lib/pixel-burst";
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -19,7 +20,8 @@ export function CopyButton({ text, label = "Copy", stretch = false }: { text: st
       aria-label={copied ? "Copied" : label}
       title={copied ? "Copied" : label}
       className={cn(stretch && "after:absolute after:inset-0 after:rounded-lg after:content-['']")}
-      onClick={async () => {
+      onClick={async (event) => {
+        const button = event.currentTarget;
         try {
           await navigator.clipboard.writeText(text);
         } catch {
@@ -27,6 +29,7 @@ export function CopyButton({ text, label = "Copy", stretch = false }: { text: st
           return;
         }
         setCopied(true);
+        pixelBurst(button);
         // Copying an install command completes the first-visit guide.
         if (text.startsWith("npx ")) markStep("copy");
         // The icon turns into a check and a toast says it out loud (also for screen readers).

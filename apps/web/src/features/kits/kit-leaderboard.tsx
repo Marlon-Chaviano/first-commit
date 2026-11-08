@@ -4,7 +4,7 @@ import { CATEGORY_LABELS, entryLanguage, languageLabel, type KitCategory, type L
 import { ChevronDownIcon, SearchIcon, XIcon } from "lucide-react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useDeferredValue, useEffect, useMemo, useRef, useState } from "react";
+import { useDeferredValue, useEffect, useMemo, useRef, useState, ViewTransition } from "react";
 
 import { OriginIcon, ORIGINS, type Origin } from "@/components/shared/origin-icon";
 import { Sparkline } from "@/components/shared/sparkline";
@@ -21,6 +21,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 import { facets, queryKits, RANKING_MIN_INSTALLS, searchIndex, suggestKits } from "@/lib/kit-query";
 import { formatCount } from "@/lib/format";
 import { logosFor } from "@/lib/logos";
+import { kitTransitionName } from "@/lib/view-transition";
 import type { Leaderboard } from "@/server/metrics/queries";
 
 type View = "all" | "trending";
@@ -251,11 +252,15 @@ export function KitLeaderboard({ kits, stats, verified, initial = DEFAULT_STATE,
                 {ranked && <TableCell className="font-mono text-muted-foreground">{i + 1}</TableCell>}
                 <TableCell className="max-w-0 py-2.5">
                   <Link href={`/kits/${kit.name}`} className="flex min-w-0 items-center gap-2.5">
-                    <TechIcon id={entryLanguage(kit)} label={languageLabel(entryLanguage(kit))} className="shrink-0 text-muted-foreground" />
+                    <ViewTransition name={kitTransitionName("icon", kit.name)}>
+                      <TechIcon id={entryLanguage(kit)} label={languageLabel(entryLanguage(kit))} className="shrink-0 text-muted-foreground" />
+                    </ViewTransition>
                     {/* Phones: the description goes under the name instead of being cut off next to it. */}
                     <span className="flex min-w-0 flex-col gap-0.5 sm:flex-row sm:items-center sm:gap-2.5">
                       <span className="flex shrink-0 items-center gap-1.5 font-semibold">
-                        {kit.name}
+                        <ViewTransition name={kitTransitionName("name", kit.name)}>
+                          <span>{kit.name}</span>
+                        </ViewTransition>
                         <span className="flex items-center gap-1 text-muted-foreground">
                           <OriginBadge origin={kit.official ? "official" : "community"} />
                           {verified[kit.name] && <OriginBadge origin="verified" />}

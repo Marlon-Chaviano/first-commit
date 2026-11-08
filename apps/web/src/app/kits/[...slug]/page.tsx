@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { LockIcon } from "lucide-react";
 import { notFound } from "next/navigation";
-import { Suspense, type ComponentProps } from "react";
+import { Suspense, ViewTransition, type ComponentProps } from "react";
 
 import { CopyButton } from "@/components/shared/copy-button";
 import { TechIcon, TechLogo } from "@/components/shared/tech-icon";
@@ -38,6 +38,7 @@ import { getInstallMinutes, getVerification } from "@/server/verifications/queri
 import { WhatYouGet } from "@/features/kits/what-you-get";
 import { getSkillAudits } from "@/server/audits";
 import { pageMetadata } from "@/lib/seo";
+import { kitTransitionName } from "@/lib/view-transition";
 import { JsonLd } from "@/components/shared/json-ld";
 import { ogImageUrl } from "@/server/og";
 
@@ -227,7 +228,10 @@ async function KitContent({ slug, searchParams }: { slug: Promise<string>; searc
       </Breadcrumb>
 
       <header className="mt-8 flex flex-col gap-5 sm:flex-row sm:items-start">
-        <TechIcon id={kitLanguage(kit)} label={languageLabel} className="size-10 shrink-0" />
+        {/* The icon and the name travel from the list row into this header (view transitions). */}
+        <ViewTransition name={kitTransitionName("icon", meta.slug)}>
+          <TechIcon id={kitLanguage(kit)} label={languageLabel} className="size-10 shrink-0" />
+        </ViewTransition>
         <div className="flex min-w-0 flex-col gap-2">
           <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
             <h1 className="text-3xl font-semibold tracking-tight text-balance sm:text-4xl">{kit.title}</h1>
@@ -244,7 +248,9 @@ async function KitContent({ slug, searchParams }: { slug: Promise<string>; searc
               <Badge variant="outline" className="font-mono">v{kit.version}</Badge>
             </div>
           </div>
-          <p className="font-mono text-sm text-muted-foreground">{meta.slug}</p>
+          <ViewTransition name={kitTransitionName("name", meta.slug)}>
+            <p className="w-fit font-mono text-sm text-muted-foreground">{meta.slug}</p>
+          </ViewTransition>
           <p className="max-w-2xl text-lg text-pretty text-muted-foreground">{kit.description}</p>
           <div className="flex flex-wrap gap-1.5 pt-1">
             {kit.tags.map((t) => (

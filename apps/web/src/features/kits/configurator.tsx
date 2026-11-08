@@ -309,7 +309,7 @@ export function Configurator({
             </p>
           </div>
           <div className="flex flex-col gap-2">
-            <Command command={command} wrap />
+            <Command command={command} wrap typed />
             <p className="text-xs text-muted-foreground">
               Add <code className="font-mono text-foreground">--dry-run</code> to see the plan without running anything.
             </p>
