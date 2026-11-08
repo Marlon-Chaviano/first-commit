@@ -3,7 +3,7 @@ import "server-only";
 import { and, desc, eq, gte, sql } from "drizzle-orm";
 
 import { db } from "./db";
-import { installEvents, kitReports, kits, kitStatsDaily, user, account } from "./db/schema";
+import { installEvents, kits, kitStatsDaily, user, account } from "./db/schema";
 
 export async function getUserKits(userId: string) {
   if (!db) return [];
@@ -49,20 +49,6 @@ export async function getKitHistory(slug: string, days = 30) {
       .limit(10),
   ]);
   return { daily, versions, countries };
-}
-
-export async function getAdminData() {
-  if (!db) return { reports: [], kits: [] };
-  const [reports, allKits] = await Promise.all([
-    db.select().from(kitReports).orderBy(desc(kitReports.createdAt)).limit(100),
-    db
-      .select({ kit: kits, handle: user.handle })
-      .from(kits)
-      .leftJoin(user, eq(kits.ownerId, user.id))
-      .where(eq(kits.official, false))
-      .orderBy(desc(kits.updatedAt)),
-  ]);
-  return { reports, kits: allKits };
 }
 
 /** Sign-in methods linked to the account ("github", "google", "credential" for dev login), with the id Better Auth unlinks by. */

@@ -4,146 +4,275 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
 import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { FeaturedButton } from "@/features/account/featured-button";
-import { KitStatusButton } from "@/features/account/kit-status-button";
-import { RefundButton } from "@/features/billing/buttons";
-import { listPurchases } from "@/server/billing";
 import { ReportStatusButton } from "@/features/account/report-status-button";
+import { AdminTabs, type AdminTab } from "@/features/admin/admin-tabs";
+import { KitsTable, UsersTable } from "@/features/admin/tables";
+import { RefundButton } from "@/features/billing/buttons";
 import { REPORT_REASONS } from "@/lib/reports";
-import { getAdminData } from "@/server/accounts";
+import { getAdminOverview, listAdminKits, listAdminReports, listAdminSubscribers, listAdminUsers } from "@/server/admin";
+import { listPurchases } from "@/server/billing";
 import { getViewer, isAdmin } from "@/server/session";
+import { billingEnabled } from "@/server/stripe";
 
 export const metadata: Metadata = { title: "Admin", robots: { index: false } };
 
+const formatDate = new Intl.DateTimeFormat("en", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" });
+const formatNumber = new Intl.NumberFormat("en");
+
 export default function AdminPage() {
   return (
-    <div className="mx-auto flex max-w-5xl flex-col gap-12 px-4 py-12">
-      <Suspense fallback={<Skeleton className="h-96" />}>
+    <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-4 py-10 sm:px-6 sm:py-12">
+      <Suspense fallback={<AdminSkeleton />}>
         <Admin />
       </Suspense>
     </div>
   );
 }
 
+function AdminSkeleton() {
+  return (
+    <div className="flex flex-col gap-8">
+      <Skeleton className="h-16 w-64" />
+      <Skeleton className="h-8 w-full max-w-xl" />
+      <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+        {Array.from({ length: 8 }, (_, i) => (
+          <Skeleton key={i} className="h-28" />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 async function Admin() {
-  if (!isAdmin(await getViewer())) notFound();
-  const [{ reports, kits }, purchases] = await Promise.all([getAdminData(), listPurchases()]);
-  const open = reports.filter((r) => r.status === "open");
+  const viewer = await getViewer();
+  if (!viewer || !isAdmin(viewer)) notFound();
+  const [overview, users, kits, reports, newsletter, purchases] = await Promise.all([
+    getAdminOverview(),
+    listAdminUsers(),
+    listAdminKits(),
+    listAdminReports(),
+    listAdminSubscribers(),
+    billingEnabled ? listPurchases() : Promise.resolve([]),
+  ]);
+  const openReports = reports.filter((r) => r.status === "open");
+
+  const tabs: AdminTab[] = [
+    { id: "overview", label: "Overview", content: <Overview overview={overview} kits={kits} openReports={openReports.length} /> },
+    { id: "users", label: "Users", count: users.length, content: <UsersTable users={users} viewerId={viewer.id} /> },
+    { id: "kits", label: "Kits", count: kits.length, content: <KitsTable kits={kits} /> },
+    { id: "reports", label: "Reports", count: openReports.length, content: <Reports reports={reports} /> },
+    { id: "newsletter", label: "Newsletter", count: newsletter.subscribers.filter((s) => s.status === "confirmed").length, content: <Newsletter {...newsletter} /> },
+    ...(billingEnabled ? [{ id: "purchases", label: "Purchases", count: purchases.length, content: <Purchases purchases={purchases} /> }] : []),
+  ];
 
   return (
     <>
-      <header className="flex flex-col gap-1">
+      <header className="flex flex-col gap-2">
         <p className="label-mono text-muted-foreground">Admin</p>
-        <h1 className="text-3xl font-semibold tracking-tight">Moderation</h1>
+        <h1 className="text-3xl font-semibold tracking-tight">Administration</h1>
+        <p className="text-muted-foreground">Users, kits, verification, moderation and the newsletter.</p>
       </header>
+      <AdminTabs tabs={tabs} />
+    </>
+  );
+}
+
+function Stat({ label, value, hint, href }: { label: string; value: number; hint?: string; href?: string }) {
+  const body = (
+    <>
+      <span className="label-mono text-muted-foreground">{label}</span>
+      <span className="text-3xl font-semibold tracking-tight tabular-nums">{formatNumber.format(value)}</span>
+      {hint && <span className="text-xs text-muted-foreground">{hint}</span>}
+    </>
+  );
+  const className = "flex flex-col gap-2 rounded-xl border p-4 sm:p-5";
+  return href ? (
+    <Link href={href} className={`${className} transition-colors hover:bg-muted/50`}>
+      {body}
+    </Link>
+  ) : (
+    <div className={className}>{body}</div>
+  );
+}
+
+function Overview({ overview, kits, openReports }: { overview: Awaited<ReturnType<typeof getAdminOverview>>; kits: Awaited<ReturnType<typeof listAdminKits>>; openReports: number }) {
+  if (!overview) return <p className="text-sm text-muted-foreground">No database configured: there&apos;s nothing to administer.</p>;
+  const unverified = kits.filter((k) => !k.verified && k.status === "active");
+  const top = [...kits].sort((a, b) => b.installs - a.installs).slice(0, 5);
+
+  return (
+    <div className="flex flex-col gap-10">
+      <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+        <Stat label="Users" value={overview.users} hint={`+${overview.newUsers} this week`} href="/admin?tab=users" />
+        <Stat label="Installs" value={overview.installs} hint={`${formatNumber.format(overview.installsWeek)} in the last 7 days`} />
+        <Stat label="Official kits" value={overview.officialKits} href="/admin?tab=kits" />
+        <Stat label="Community kits" value={overview.communityKits} hint={overview.hiddenKits ? `${overview.hiddenKits} hidden` : undefined} href="/admin?tab=kits" />
+        <Stat label="Verified" value={kits.filter((k) => k.verified).length} hint={`of ${kits.length} kits`} href="/admin?tab=kits" />
+        <Stat label="Open reports" value={openReports} href="/admin?tab=reports" />
+        <Stat label="Subscribers" value={overview.subscribers} hint={overview.pendingSubscribers ? `${overview.pendingSubscribers} pending confirmation` : undefined} href="/admin?tab=newsletter" />
+        <Stat label="Need review" value={unverified.length} hint="active kits without a passing verification" href="/admin?tab=kits" />
+      </div>
 
       <section className="flex flex-col gap-4">
-        <h2 className="label-mono">Open reports ({open.length})</h2>
-        <Separator />
-        {reports.length ? (
+        <h2 className="label-mono">Most installed</h2>
+        {top.some((k) => k.installs > 0) ? (
+          <ol className="flex flex-col divide-y rounded-xl border">
+            {top.map((k, i) => (
+              <li key={k.slug} className="flex items-center gap-4 px-4 py-3">
+                <span className="w-4 font-mono text-xs text-muted-foreground tabular-nums">{i + 1}</span>
+                <Link href={`/kits/${k.slug}`} className="flex-1 truncate font-mono text-sm hover:underline">
+                  {k.slug}
+                </Link>
+                <span className="font-mono text-sm tabular-nums">{formatNumber.format(k.installs)}</span>
+              </li>
+            ))}
+          </ol>
+        ) : (
+          <p className="rounded-xl border border-dashed px-4 py-8 text-center text-sm text-muted-foreground">No installs counted yet.</p>
+        )}
+      </section>
+    </div>
+  );
+}
+
+function Reports({ reports }: { reports: Awaited<ReturnType<typeof listAdminReports>> }) {
+  if (!reports.length) return <p className="rounded-xl border border-dashed px-4 py-10 text-center text-sm text-muted-foreground">No reports. Nothing to moderate.</p>;
+  return (
+    <Table>
+      <TableHeader>
+        <TableRow className="hover:bg-transparent">
+          <TableHead className="label-mono text-muted-foreground">Kit</TableHead>
+          <TableHead className="label-mono text-muted-foreground">Reason</TableHead>
+          <TableHead className="label-mono text-muted-foreground">Details</TableHead>
+          <TableHead className="label-mono text-muted-foreground">Date</TableHead>
+          <TableHead className="label-mono text-muted-foreground">Status</TableHead>
+          <TableHead />
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {reports.map((r) => (
+          <TableRow key={r.id}>
+            <TableCell>
+              <Link href={`/kits/${r.kit}`} className="font-mono hover:underline">
+                {r.kit}
+              </Link>
+            </TableCell>
+            <TableCell className="text-xs">{REPORT_REASONS[r.reason as keyof typeof REPORT_REASONS] ?? r.reason}</TableCell>
+            <TableCell className="max-w-80 text-xs whitespace-normal text-muted-foreground">
+              {r.details}
+              {r.contact && <span className="mt-1 block font-mono">{r.contact}</span>}
+            </TableCell>
+            <TableCell className="font-mono text-xs text-muted-foreground">{formatDate.format(r.createdAt)}</TableCell>
+            <TableCell>
+              <Badge variant={r.status === "open" ? "default" : "outline"}>{r.status}</Badge>
+            </TableCell>
+            <TableCell className="text-right">
+              {r.status === "open" ? (
+                <>
+                  <ReportStatusButton id={r.id} to="resolved">
+                    Resolved
+                  </ReportStatusButton>
+                  <ReportStatusButton id={r.id} to="dismissed">
+                    Dismiss
+                  </ReportStatusButton>
+                </>
+              ) : (
+                <ReportStatusButton id={r.id} to="open">
+                  Reopen
+                </ReportStatusButton>
+              )}
+            </TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  );
+}
+
+function Newsletter({ subscribers, issues }: Awaited<ReturnType<typeof listAdminSubscribers>>) {
+  const by = (status: string) => subscribers.filter((s) => s.status === status).length;
+  return (
+    <div className="flex flex-col gap-10">
+      <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+        <Stat label="Confirmed" value={by("confirmed")} />
+        <Stat label="Pending" value={by("pending")} hint="haven't clicked the link yet" />
+        <Stat label="Unsubscribed" value={by("unsubscribed")} />
+        <Stat label="Issues sent" value={issues.length} hint="every Monday, 09:00 UTC" />
+      </div>
+
+      <section className="flex flex-col gap-4">
+        <h2 className="label-mono">Subscribers</h2>
+        {subscribers.length ? (
           <Table>
             <TableHeader>
               <TableRow className="hover:bg-transparent">
-                <TableHead className="label-mono text-muted-foreground">Kit</TableHead>
-                <TableHead className="label-mono text-muted-foreground">Reason</TableHead>
-                <TableHead className="label-mono text-muted-foreground">Details</TableHead>
+                <TableHead className="label-mono text-muted-foreground">Email</TableHead>
                 <TableHead className="label-mono text-muted-foreground">Status</TableHead>
-                <TableHead />
+                <TableHead className="label-mono text-muted-foreground">Signed up</TableHead>
+                <TableHead className="label-mono text-muted-foreground">Confirmed</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {reports.map((r) => (
-                <TableRow key={r.id}>
+              {subscribers.map((s) => (
+                <TableRow key={s.id}>
+                  <TableCell className="font-mono text-sm">{s.email}</TableCell>
                   <TableCell>
-                    <Link href={`/kits/${r.kit}`} className="font-mono hover:underline">
-                      {r.kit}
-                    </Link>
+                    <Badge variant={s.status === "confirmed" ? "default" : "outline"}>{s.status}</Badge>
                   </TableCell>
-                  <TableCell className="text-xs">{REPORT_REASONS[r.reason as keyof typeof REPORT_REASONS] ?? r.reason}</TableCell>
-                  <TableCell className="max-w-72 text-xs whitespace-normal text-muted-foreground">
-                    {r.details}
-                    {r.contact && <span className="block font-mono">{r.contact}</span>}
-                  </TableCell>
-                  <TableCell>
-                    <Badge variant={r.status === "open" ? "default" : "outline"}>{r.status}</Badge>
-                  </TableCell>
-                  <TableCell className="text-right">
-                    {r.status === "open" ? (
-                      <>
-                        <ReportStatusButton id={r.id} to="resolved">Resolved</ReportStatusButton>
-                        <ReportStatusButton id={r.id} to="dismissed">Dismiss</ReportStatusButton>
-                      </>
-                    ) : (
-                      <ReportStatusButton id={r.id} to="open">Reopen</ReportStatusButton>
-                    )}
-                  </TableCell>
+                  <TableCell className="font-mono text-xs text-muted-foreground">{formatDate.format(s.createdAt)}</TableCell>
+                  <TableCell className="font-mono text-xs text-muted-foreground">{s.confirmedAt ? formatDate.format(s.confirmedAt) : "—"}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
         ) : (
-          <p className="text-sm text-muted-foreground">No hay denuncias.</p>
+          <p className="rounded-xl border border-dashed px-4 py-10 text-center text-sm text-muted-foreground">No subscribers yet.</p>
         )}
       </section>
 
       <section className="flex flex-col gap-4">
-        <h2 className="label-mono">Community kits ({kits.length})</h2>
-        <Separator />
-        <Table>
-          <TableBody>
-            {kits.map(({ kit, handle }) => (
-              <TableRow key={kit.id}>
-                <TableCell>
-                  <Link href={`/kits/${kit.slug}`} className="font-mono hover:underline">
-                    {kit.slug}
-                  </Link>
-                </TableCell>
-                <TableCell className="font-mono text-xs text-muted-foreground">
-                  {handle} · {kit.repo} · v{kit.latestVersion}
-                </TableCell>
-                <TableCell>
-                  <Badge variant="outline">{kit.status}</Badge>
-                </TableCell>
-                <TableCell className="text-right">
-                  {kit.status === "active" && <FeaturedButton slug={kit.slug} featured={Boolean(kit.featuredAt)} />}
-                  {kit.status === "hidden" ? (
-                    <KitStatusButton slug={kit.slug} to="active">Show</KitStatusButton>
-                  ) : (
-                    <KitStatusButton slug={kit.slug} to="hidden">Hide</KitStatusButton>
-                  )}
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </section>
-      <section className="flex flex-col gap-4">
-        <h2 className="label-mono">Paid kit purchases ({purchases.length})</h2>
-        <Separator />
-        {purchases.length ? (
+        <h2 className="label-mono">Sent issues</h2>
+        {issues.length ? (
           <Table>
             <TableBody>
-              {purchases.map(({ license, kit, buyer }) => (
-                <TableRow key={license.id}>
-                  <TableCell className="font-mono">{kit}</TableCell>
-                  <TableCell className="font-mono text-xs text-muted-foreground">
-                    {buyer} · {(license.amountCents / 100).toFixed(2)} € (fee {(license.feeCents / 100).toFixed(2)} €) · {license.createdAt.toISOString().slice(0, 10)}
-                  </TableCell>
-                  <TableCell>
-                    <Badge variant="outline">{license.status}</Badge>
-                  </TableCell>
-                  <TableCell className="text-right">{license.status === "active" && <RefundButton licenseId={license.id} />}</TableCell>
+              {issues.map((i) => (
+                <TableRow key={i.id}>
+                  <TableCell className="font-mono text-sm">{i.week}</TableCell>
+                  <TableCell className="text-sm">{i.subject}</TableCell>
+                  <TableCell className="text-right font-mono text-xs text-muted-foreground tabular-nums">{i.recipients} recipients</TableCell>
+                  <TableCell className="text-right font-mono text-xs text-muted-foreground">{formatDate.format(i.sentAt)}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
         ) : (
-          <p className="text-sm text-muted-foreground">No purchases yet.</p>
+          <p className="rounded-xl border border-dashed px-4 py-8 text-center text-sm text-muted-foreground">The first issue goes out next Monday.</p>
         )}
       </section>
-    </>
+    </div>
+  );
+}
+
+function Purchases({ purchases }: { purchases: Awaited<ReturnType<typeof listPurchases>> }) {
+  if (!purchases.length) return <p className="rounded-xl border border-dashed px-4 py-10 text-center text-sm text-muted-foreground">No purchases yet.</p>;
+  return (
+    <Table>
+      <TableBody>
+        {purchases.map(({ license, kit, buyer }) => (
+          <TableRow key={license.id}>
+            <TableCell className="font-mono">{kit}</TableCell>
+            <TableCell className="font-mono text-xs text-muted-foreground">
+              {buyer} · {(license.amountCents / 100).toFixed(2)} € (fee {(license.feeCents / 100).toFixed(2)} €) · {formatDate.format(license.createdAt)}
+            </TableCell>
+            <TableCell>
+              <Badge variant="outline">{license.status}</Badge>
+            </TableCell>
+            <TableCell className="text-right">{license.status === "active" && <RefundButton licenseId={license.id} />}</TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
   );
 }
