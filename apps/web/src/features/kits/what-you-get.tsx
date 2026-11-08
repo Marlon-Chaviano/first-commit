@@ -1,10 +1,9 @@
 import { parseSkillRef, type Kit, type Resolved } from "@kits/schema";
 import { BotIcon, ClockIcon, LayersIcon } from "lucide-react";
 
-import { Badge } from "@/components/ui/badge";
 import { StackLogos, stackLogoKeys } from "@/features/stacks/stack-card";
 
-const SKILLS_SHOWN = 8;
+import { FitBadges } from "./fit-badges";
 
 /**
  * "What you get", above the configurator: the stack as logos, what the agent gets (skills, MCP,
@@ -21,20 +20,10 @@ export function WhatYouGet({ kit, resolved, options, installMinutes }: { kit: Ki
       <h2 id="what-you-get" className="label-mono">
         What you get
       </h2>
-      <div className="grid grid-cols-[minmax(0,1fr)] gap-3 md:grid-cols-3">
+      <div className="grid grid-cols-[minmax(0,1fr)] gap-3 md:grid-cols-3 md:items-stretch">
         <Card icon={LayersIcon} title="The stack">
           <StackLogos keys={stackLogoKeys(kit.tags, options)} size="lg" />
-          {picks.length > 0 && (
-            <ul className="flex flex-wrap gap-1.5">
-              {picks.map((label) => (
-                <li key={label}>
-                  <Badge variant="outline" className="font-mono">
-                    {label}
-                  </Badge>
-                </li>
-              ))}
-            </ul>
-          )}
+          {picks.length > 0 && <FitBadges names={picks} variant="outline" className="min-h-[3.75rem] flex-1" />}
         </Card>
 
         <Card icon={BotIcon} title="For your agent">
@@ -47,22 +36,8 @@ export function WhatYouGet({ kit, resolved, options, installMinutes }: { kit: Ki
             )}{" "}
             and the project&apos;s rules in <code className="font-mono text-foreground">AGENTS.md</code>.
           </p>
-          <ul className="flex flex-wrap gap-1.5">
-            {skills.slice(0, SKILLS_SHOWN).map((name) => (
-              <li key={name}>
-                <Badge variant="secondary" className="font-mono">
-                  {name}
-                </Badge>
-              </li>
-            ))}
-            {skills.length > SKILLS_SHOWN && (
-              <li>
-                <Badge variant="outline" className="font-mono text-muted-foreground">
-                  +{skills.length - SKILLS_SHOWN} more
-                </Badge>
-              </li>
-            )}
-          </ul>
+          {/* At least two rows; the rest of the height comes from the tallest fixed content in the row. */}
+          <FitBadges names={skills} className="min-h-[3.75rem] flex-1" />
         </Card>
 
         <Card icon={ClockIcon} title="Ready in">
