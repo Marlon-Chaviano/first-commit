@@ -7,6 +7,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
 import { Toaster } from "@/components/ui/sonner";
+import { OnboardingGuide } from "@/features/onboarding/onboarding-guide";
 import { TooltipProvider } from "@/components/ui/tooltip";
 
 import "./globals.css";
@@ -41,6 +42,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <main className="flex-1">{children}</main>
           <SiteFooter />
           <Toaster />
+          <OnboardingGuide />
         </TooltipProvider>
         <Analytics />
         <SpeedInsights />

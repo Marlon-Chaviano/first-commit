@@ -25,6 +25,7 @@ import { SKILL_BLURBS } from "@/lib/skill-blurbs";
 import type { SkillResult } from "@/app/api/v1/skills/route";
 
 import { AgentSetup } from "../agent-help/agent-setup";
+import { markStep } from "../onboarding/progress";
 import { ShareButtons } from "./share-buttons";
 import type { BrandChoice } from "../brands/actions";
 import { BrandPicker } from "./brand-picker";
@@ -78,7 +79,12 @@ export function Configurator({
   const resolved = resolve(kit, effective);
   const command = buildInitCommand(kitRef, kit, effective, isProjectName(name) ? name : undefined, brand?.slug);
   // Changing one option can invalidate others (Vue drops React libraries, HeroUI drops shadcn add-ons).
-  const update = (patch: Partial<Selections>) => setSel((s) => pruneSelections(kit, { ...s, ...patch }));
+  const update = (patch: Partial<Selections>) => {
+    markStep("configure");
+    setSel((s) => pruneSelections(kit, { ...s, ...patch }));
+  };
+  // Opening a kit is the guide's first step.
+  useEffect(() => markStep("pick"), []);
 
   // Curated skill packs get their own cards; their skills aren't repeated in the list below.
   const packs = kit.options.filter((o) => o.id === LIBRARY_OPTION_IDS.design || o.id === LIBRARY_OPTION_IDS.workflow);
