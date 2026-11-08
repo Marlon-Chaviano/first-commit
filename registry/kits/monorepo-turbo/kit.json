@@ -1,7 +1,7 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "monorepo-turbo",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "author": "Marlon Chaviano",
   "title": "Monorepo with Turborepo",
   "category": "monorepo",
@@ -16,7 +16,7 @@
     "typescript"
   ],
   "base": {
-    "command": "npx create-turbo@latest {{name}} -m {{pm}} --skip-install --no-git && rm -rf {{name}}/apps/docs"
+    "command": "npx create-turbo@latest {{name}} -m {{pm}} --skip-install --no-git && rm -rf {{name}}/apps/docs {{name}}/pnpm-lock.yaml"
   },
   "packageManagers": [
     "pnpm",

@@ -1,7 +1,7 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "api-elysia",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "author": "Marlon Chaviano",
   "title": "API with Elysia on Bun",
   "category": "api",
@@ -14,7 +14,7 @@
     "typescript"
   ],
   "base": {
-    "command": "bun create elysia {{name}}"
+    "command": "bun create elysia {{name}} && cd {{name}} && perl -pi -e 's/\"moduleResolution\":\\s*\"node(10)?\"/\"moduleResolution\": \"bundler\"/' tsconfig.json"
   },
   "packageManagers": [
     "bun"

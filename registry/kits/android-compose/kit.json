@@ -1,6 +1,6 @@
 {
   "$schema": "../../kit.schema.json",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Marlon Chaviano",
   "name": "android-compose",
   "title": "Android app with Jetpack Compose",
@@ -15,7 +15,7 @@
     "room"
   ],
   "base": {
-    "command": "command -v git >/dev/null || exit 1; git clone --depth 1 -b base https://github.com/android/architecture-templates.git {{name}} && cd {{name}} && rm -rf .git && bash customizer.sh com.example.app Item App"
+    "command": "command -v git >/dev/null || exit 1; bash -c '[ \"${BASH_VERSINFO[0]}\" -ge 4 ]' || { echo 'bash 4+ is required (macOS: brew install bash)' >&2; exit 1; }; git clone --depth 1 -b base https://github.com/android/architecture-templates.git {{name}} && cd {{name}} && rm -rf .git && bash customizer.sh com.example.app Item App"
   },
   "packageManagers": [
     "gradle"

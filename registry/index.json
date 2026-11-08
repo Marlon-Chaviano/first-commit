@@ -1,7 +1,7 @@
 [
   {
     "name": "android-compose",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "title": "Android app with Jetpack Compose",
     "description": "Google's official architecture template: Kotlin, Jetpack Compose, Hilt, Room, navigation and tests, following the recommended Android architecture.",
     "category": "mobile",
@@ -56,7 +56,7 @@
   },
   {
     "name": "api-elysia",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "title": "API with Elysia on Bun",
     "description": "End-to-end typed API with Elysia on Bun: built-in validation, OpenAPI and a typed client.",
     "category": "api",
@@ -919,7 +919,7 @@
   },
   {
     "name": "mobile-flutter",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "title": "Cross-platform app with Flutter",
     "description": "Flutter with the official CLI: one Dart codebase for iOS, Android and web, with hot reload, widget tests and the Flutter team's architecture guides.",
     "category": "mobile",
@@ -944,7 +944,7 @@
   },
   {
     "name": "mobile-ignite",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "title": "Mobile app with Ignite",
     "description": "Ignite by Infinite Red: the most battle-tested React Native boilerplate, with Expo, navigation, theming, i18n, MMKV and a structure that scales.",
     "category": "mobile",
@@ -1026,7 +1026,7 @@
   },
   {
     "name": "mobile-kmp",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "title": "App with Kotlin Multiplatform",
     "description": "JetBrains' official template: Kotlin Multiplatform with Compose Multiplatform to share logic and UI between Android and iOS.",
     "category": "mobile",
@@ -1277,7 +1277,7 @@
   },
   {
     "name": "monorepo-turbo",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "title": "Monorepo with Turborepo",
     "description": "One repo for your whole product: pick the web app (Next.js or Vite), and optionally a mobile app with Expo, an API with Hono and docs with Starlight. Shared UI and config packages, and cached builds with Turborepo.",
     "category": "monorepo",
@@ -1778,7 +1778,7 @@
   },
   {
     "name": "saas-rails",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "title": "SaaS with Rails",
     "description": "Rails 8 for a SaaS: authentication with the official generator, Tailwind CSS, Hotwire and the Solid stack (cache, queues and websockets without Redis).",
     "category": "saas",
@@ -1807,7 +1807,7 @@
   },
   {
     "name": "saas-sveltekit",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "title": "SaaS with SvelteKit",
     "description": "SvelteKit with the official add-ons: Better Auth with email and password, Drizzle with a SQLite/Turso database, Tailwind CSS and Vitest.",
     "category": "saas",
@@ -1843,7 +1843,7 @@
   },
   {
     "name": "saas-t3",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "title": "SaaS with the T3 stack",
     "description": "create-t3-app: Next.js with tRPC for an end-to-end typed API, Drizzle, Better Auth and Tailwind CSS. The go-to stack for TypeScript SaaS.",
     "category": "saas",

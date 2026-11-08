@@ -103,8 +103,11 @@ jobs:
         with:
           php-version: "8.4"
           tools: composer
-      - if: contains(steps.kit.outputs.pms, ' swift ')
+      - if: contains(steps.kit.outputs.pms, ' swift ') && runner.os == 'macOS'
         run: brew install xcodegen
+      # Android's customizer.sh needs bash 4+; macOS ships 3.2.
+      - if: contains(steps.kit.outputs.pms, ' gradle ') && runner.os == 'macOS'
+        run: brew install bash
       - name: create-first-commit test
         # iOS kits need Xcode: they only run on macOS.
         if: ${{ !(contains(steps.kit.outputs.pms, ' swift ') && runner.os == 'Linux') }}

@@ -53,7 +53,8 @@
   },
   "api-elysia": {
     "1.0.0": "sha256-wlq4mDhP1sOJLIPVa5K2tapOv8/aTeziucWdHipy3tY=",
-    "1.1.0": "sha256-gUccCvOte2vhk7BY+c5TNxnsKlMg05Yw1/LtoGus5Y0="
+    "1.1.0": "sha256-gUccCvOte2vhk7BY+c5TNxnsKlMg05Yw1/LtoGus5Y0=",
+    "1.1.1": "sha256-B09dCUp63dzSg7v6coGvMYxKB5L6BCDpD7jRVcUWVl8="
   },
   "api-spring-boot": {
     "1.0.0": "sha256-3jIZWiMhgrB2PRnk2ek6aalLtf0pIcuDLFRS2L9fyuA=",
@@ -87,7 +88,8 @@
   },
   "monorepo-turbo": {
     "1.0.0": "sha256-eQNN1VfV+kKViSeITdkuy7krEkW3Ew7Eb8WUaN5nPFo=",
-    "1.0.1": "sha256-dtY/enE7GLXrkZV9iSkwS1JQtycZ7e/VqHgXkMq474I="
+    "1.0.1": "sha256-dtY/enE7GLXrkZV9iSkwS1JQtycZ7e/VqHgXkMq474I=",
+    "1.0.2": "sha256-eP1TVXGhrYIl2U4C0IzsgEC/X84OZ/AYl7Ol4d483iY="
   },
   "discord-bot": {
     "1.0.0": "sha256-dBTzF3Bm4jHzU3fplfQhgKaemo+T2sTEsQNC67aQE0c="
@@ -182,16 +184,19 @@
   },
   "saas-rails": {
     "1.0.0": "sha256-Z88JjA1lrQGFTRRoL8y2UKzP01gzcrD3Axty/10teVk=",
-    "1.0.1": "sha256-E+Dx/1dgtHbyK0Yov2IFn0kneyiYewbIpiB4Nyrxstw="
+    "1.0.1": "sha256-E+Dx/1dgtHbyK0Yov2IFn0kneyiYewbIpiB4Nyrxstw=",
+    "1.0.2": "sha256-0dMPAeeWKAhGUWQhdFlc42ZPUsqmrlmk40I0V4dJIJU="
   },
   "saas-sveltekit": {
-    "1.0.0": "sha256-NyQoVLwTi0CiRl5vMiElRFpxZvMyUcaWpYuG1oVhszo="
+    "1.0.0": "sha256-NyQoVLwTi0CiRl5vMiElRFpxZvMyUcaWpYuG1oVhszo=",
+    "1.0.1": "sha256-x0VeU3G6jpEzhAGcH6OMAPw/xE0oMKhEt6nBHm7HORk="
   },
   "saas-t3": {
     "1.0.0": "sha256-UILrHO+TgUgmfeou6JH6nM4Q3GA89CrLV00W4BkOTFM=",
     "1.0.1": "sha256-6J1RJOLC9em8LWZnt7aZUdVJp8gxZk8MLc92OWQONjw=",
     "1.0.2": "sha256-2skdniV4KFXE41UNeA9AhfIu7YLtsqL0QcgPPCr6tbg=",
-    "1.0.3": "sha256-+ekwlNfxcmXYj84hDXfWymqEKa5WzFr8H7tSpqlvp0A="
+    "1.0.3": "sha256-+ekwlNfxcmXYj84hDXfWymqEKa5WzFr8H7tSpqlvp0A=",
+    "1.0.4": "sha256-eCn84Brxt+mGHps0zX9G1Qg+/oWQQl8Q6kThtE7wMm4="
   },
   "saas-tanstack-start": {
     "1.0.0": "sha256-s0ZPdccBpUe0RyOktaWWpxkdWl7d48EbEsP6WnMnzes="
@@ -200,7 +205,8 @@
     "1.0.0": "sha256-NCvOc9g4UzblspEMQaDgRn41Egc0TlCKKDPnSbNvFJg="
   },
   "mobile-ignite": {
-    "1.0.0": "sha256-AVdppr+t59v1S5161OI7ab9lqTXx45ZyZ84eJFNHWzA="
+    "1.0.0": "sha256-AVdppr+t59v1S5161OI7ab9lqTXx45ZyZ84eJFNHWzA=",
+    "1.0.1": "sha256-0W6L73jeIYdG2kal4O40upZzcidwzFjVjtBeMPp+kgA="
   },
   "mobile-ionic-angular": {
     "1.0.0": "sha256-58637sA5txWCHJp+J3BuUGbpFxDTyDsEfC3yuMczQ9w="
@@ -250,13 +256,16 @@
     "1.0.0": "sha256-bwNadst/vBa537Jf6+8+Cpa/cYDJqdA+ASIqAqM4iPI="
   },
   "android-compose": {
-    "1.0.0": "sha256-S1BI3iA3iQudJ795Z5FrO8Q3fkXPfz3QIXddd5c/amw="
+    "1.0.0": "sha256-S1BI3iA3iQudJ795Z5FrO8Q3fkXPfz3QIXddd5c/amw=",
+    "1.0.1": "sha256-kloLwyIDv0/4cIb0AZW1CA27iJdmdt0LDY6yFKfSV9c="
   },
   "mobile-flutter": {
     "1.0.0": "sha256-hd0i68b5iWJaXUrqfRVjjWa3rI+YI0ojwxkvZfh+NRQ=",
-    "1.0.1": "sha256-0ZBGmfp/azMWEXp+n6FyyM+2fqJfCs4+2HCmVtpE14M="
+    "1.0.1": "sha256-0ZBGmfp/azMWEXp+n6FyyM+2fqJfCs4+2HCmVtpE14M=",
+    "1.0.2": "sha256-v6gfEcIK6J2rE2MEjIgmHpFcBE4fiHpJ9DD1sXegrjs="
   },
   "mobile-kmp": {
-    "1.0.0": "sha256-SFlcGMTT1QMm50tw/bxXtHxmqAW1REY1Imnl9AZAVtY="
+    "1.0.0": "sha256-SFlcGMTT1QMm50tw/bxXtHxmqAW1REY1Imnl9AZAVtY=",
+    "1.0.1": "sha256-YEyWSJWcV+oyEyVwO6dVVPtUb5NzqVDcowphzv3BiZM="
   }
 }

@@ -1,6 +1,6 @@
 {
   "$schema": "../../kit.schema.json",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Marlon Chaviano",
   "name": "mobile-ignite",
   "title": "Mobile app with Ignite",
@@ -14,7 +14,7 @@
     "mobile"
   ],
   "base": {
-    "command": "npx -y ignite-cli@latest new {{name}} --yes --workflow=cng --remove-demo --install-deps=false --git=false --packager=npm",
+    "command": "npx -y ignite-cli@latest new {{name}} --yes --workflow=cng --remove-demo --install-deps=false --git=false --packager=npm && cd {{name}} && perl -pi -e 's/getActiveRouteName\\(navigationRef\\.getRootState\\(\\)\\)/getActiveRouteName(navigationRef.getRootState()!)/' app/navigators/navigationUtilities.ts",
     "install": "npm install"
   },
   "packageManagers": [

@@ -1,6 +1,6 @@
 {
   "$schema": "../../kit.schema.json",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "author": "Marlon Chaviano",
   "name": "mobile-flutter",
   "title": "Cross-platform app with Flutter",
@@ -38,7 +38,7 @@
     ]
   },
   "verify": {
-    "command": "flutter analyze && flutter test"
+    "command": "flutter analyze && (test ! -d test || flutter test)"
   },
   "instructions": "## How to work here\n\n- Keep the UI (widgets in `lib/ui/`) apart from the logic (ViewModels) and the data (repositories and services in `lib/data/`), as Flutter's architecture guide recommends.\n- Small widgets, `const` whenever possible; no business logic inside `build()`.\n- Add packages with `flutter pub add`.\n- Before finishing: `flutter analyze && flutter test`."
 }

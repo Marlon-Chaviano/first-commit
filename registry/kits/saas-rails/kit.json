@@ -1,6 +1,6 @@
 {
   "$schema": "../../kit.schema.json",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "author": "Marlon Chaviano",
   "name": "saas-rails",
   "title": "SaaS with Rails",
@@ -16,7 +16,7 @@
   ],
   "base": {
     "command": "command -v rails >/dev/null || { echo 'Rails is required: gem install rails' >&2; exit 1; }; rails new {{name}} --css tailwind --skip-git --skip-bundle --skip-kamal --skip-thruster",
-    "install": "bundle install --quiet"
+    "install": "bundle install --quiet && bin/rails tailwindcss:install"
   },
   "packageManagers": [
     "bundler"

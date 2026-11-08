@@ -1,6 +1,6 @@
 {
   "$schema": "../../kit.schema.json",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Marlon Chaviano",
   "name": "mobile-kmp",
   "title": "App with Kotlin Multiplatform",
@@ -35,10 +35,10 @@
     ]
   },
   "verify": {
-    "command": "./gradlew --no-daemon :composeApp:assembleDebug"
+    "command": "./gradlew --no-daemon :androidApp:assembleDebug"
   },
   "setupTasks": [
     "KMP: open the project in Android Studio or IntelliJ with the Kotlin Multiplatform plugin; for iOS you need Xcode on macOS."
   ],
-  "instructions": "## How to work here\n\n- Shared code lives in `composeApp/src/commonMain/` (logic and UI with Compose Multiplatform); platform-specific code in `androidMain/` and `iosMain/` through `expect`/`actual`.\n- Prefer multiplatform libraries (Ktor, Koin, kotlinx) over single-platform ones.\n- Before finishing: `./gradlew :composeApp:assembleDebug`."
+  "instructions": "## How to work here\n\n- Shared code lives in `composeApp/src/commonMain/` (logic and UI with Compose Multiplatform); platform-specific code in `androidMain/` and `iosMain/` through `expect`/`actual`.\n- Prefer multiplatform libraries (Ktor, Koin, kotlinx) over single-platform ones.\n- Before finishing: `./gradlew :androidApp:assembleDebug`."
 }

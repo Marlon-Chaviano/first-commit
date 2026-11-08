@@ -1,6 +1,6 @@
 {
   "$schema": "../../kit.schema.json",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Marlon Chaviano",
   "name": "saas-sveltekit",
   "title": "SaaS with SvelteKit",
@@ -15,7 +15,7 @@
     "tailwind"
   ],
   "base": {
-    "command": "npx sv@latest create {{name}} --template minimal --types ts --add tailwindcss drizzle=\"database:sqlite+client:libsql\" better-auth=\"demo:password\" vitest=\"usages:unit\" --no-install",
+    "command": "npx sv@latest create {{name}} --template minimal --types ts --add tailwindcss=\"plugins:none\" drizzle=\"database:sqlite+client:libsql\" better-auth=\"demo:password\" vitest=\"usages:unit\" --no-install",
     "install": "{{pm}} install"
   },
   "skills": [
