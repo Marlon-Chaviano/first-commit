@@ -5,6 +5,7 @@ import { BanIcon, PackageIcon, PaletteIcon, PlusIcon, SearchIcon, SparklesIcon, 
 import { toast } from "sonner";
 import { useEffect, useRef, useState } from "react";
 
+import { BrandName } from "@/components/shared/brand-name";
 import { Command } from "@/components/shared/command";
 import { TechIcon, TechLogo } from "@/components/shared/tech-icon";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -203,6 +204,13 @@ export function Configurator({
               </ToggleGroup>
             </div>
           )}
+          <label htmlFor="readme-badge" className="grid cursor-pointer grid-cols-[minmax(0,1fr)_auto] items-center gap-3 border-t py-5 sm:grid-cols-[180px_minmax(0,1fr)_auto] sm:gap-6">
+            <span className="text-sm font-medium">README badge</span>
+            <span className="hidden text-sm text-pretty text-muted-foreground sm:block">
+              Adds a small &ldquo;Started with <BrandName />&rdquo; badge under your README&apos;s title, linking to this kit.
+            </span>
+            <Switch id="readme-badge" checked={sel.badge !== false} onCheckedChange={(on) => update({ badge: on })} />
+          </label>
         </Panel>
 
         {stackOptions.length > 0 && (
@@ -274,7 +282,7 @@ export function Configurator({
         </Panel>
 
         <Panel title="What will run" description="The CLI's exact steps with these options, in order. It shows them again and waits for your yes before running anything.">
-          <PlanPreview kit={kit} sel={effective} name={projectName} brand={brand && { ref: brand.slug, title: brand.title, images: brand.images }} />
+          <PlanPreview kit={kit} kitRef={kitRef} sel={effective} name={projectName} brand={brand && { ref: brand.slug, title: brand.title, images: brand.images }} />
         </Panel>
       </div>
 

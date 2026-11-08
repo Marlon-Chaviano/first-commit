@@ -32,6 +32,7 @@ export default function CliDocs() {
           ["--brand <owner/name>", "Applies a brand profile (or a file: --brand ./brand.json)."],
           ["--dry-run", "Shows the plan without running anything."],
           ["--no-git", "Skips the initial commit."],
+          ["--no-badge", "Doesn't add the \"Started with first-commit\" badge under the README's title (it's on by default and links to the kit)."],
           ["-y, --yes", "No questions: uses the defaults. With unverified community kits it also needs --allow-commands."],
         ]}
       />

@@ -1,6 +1,6 @@
 import { describe, expect, it, test } from "vitest";
 
-import { applyWrite, buildPlan, mergeJson } from "./plan";
+import { addReadmeBadge, applyWrite, buildPlan, mergeJson, readmeBadge } from "./plan";
 import { defaultSelections } from "./resolve";
 import { parseKit } from "./schema";
 
@@ -88,5 +88,35 @@ describe("brand step", () => {
   it("names the ref when the profile isn't known, and is absent without --brand", () => {
     expect(plan({ ref: "acme/web" }).at(-2)).toMatchObject({ title: "Apply brand acme/web", images: [] });
     expect(plan().some((s) => s.kind === "brand")).toBe(false);
+  });
+});
+
+describe("README badge", () => {
+  const kit = parseKit({ name: "demo", version: "1.0.0", title: "Demo", description: "", category: "web", author: "a", base: { command: "mkdir {{name}}" } });
+  const badge = readmeBadge("landing-next");
+
+  it("links the badge to the kit, and local kits to the site", () => {
+    expect(badge).toBe("[![Started with first-commit](https://first-commit.dev/badge/started.svg)](https://first-commit.dev/kits/landing-next?ref=badge)");
+    expect(readmeBadge("ana/landing")).toContain("/kits/ana/landing?ref=badge");
+    expect(readmeBadge("./kit")).toContain("](https://first-commit.dev/?ref=badge)");
+  });
+
+  it("goes under the title, keeps the rest and is never added twice", () => {
+    const merge = addReadmeBadge(badge, "app");
+    const once = merge("# My app\n\nWhat it does.\n")!;
+    expect(once).toBe(`# My app\n\n<!-- first-commit:badge -->\n${badge}\n<!-- /first-commit:badge -->\n\nWhat it does.\n`);
+    expect(merge(once)).toBe(once);
+  });
+
+  it("creates a README when there isn't one, and goes first when there's no title", () => {
+    const merge = addReadmeBadge(badge, "app");
+    expect(merge(undefined)).toBe(`# app\n\n<!-- first-commit:badge -->\n${badge}\n<!-- /first-commit:badge -->\n`);
+    expect(merge("Some notes.\n")).toMatch(/^<!-- first-commit:badge -->/);
+  });
+
+  it("is a step of the plan unless --no-badge", () => {
+    const plan = (sel = defaultSelections(kit)) => buildPlan({ kit, kitDir: "kit", sel, parentDir: ".", name: "app", git: true, kitRef: "demo" });
+    expect(plan().find((s) => s.title === "Add the first-commit badge to README.md")).toMatchObject({ kind: "write", path: "./app/README.md", optional: true });
+    expect(plan({ ...defaultSelections(kit), badge: false }).some((s) => s.title.includes("badge"))).toBe(false);
   });
 });

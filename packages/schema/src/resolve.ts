@@ -26,6 +26,8 @@ export interface Selections {
   removeSkills: string[];
   agents: string[];
   pm: PackageManager;
+  /** false: no "Started with first-commit" badge in README.md (`--no-badge`). On by default. */
+  badge?: boolean;
 }
 
 export interface Resolved {
@@ -165,6 +167,7 @@ export function initArgs(kitRef: string, kit: Kit, sel: Selections, projectName?
   for (const s of sel.removeSkills) args.push("--no-skill", s);
   if (!sameSet(sel.agents, defaults.agents)) args.push("--agent", sel.agents.join(","));
   if (sel.pm !== defaults.pm) args.push("--pm", sel.pm);
+  if (sel.badge === false) args.push("--no-badge");
   return args;
 }
 

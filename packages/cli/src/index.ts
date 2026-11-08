@@ -150,6 +150,7 @@ async function init(args: ParsedArgs) {
   if (existsSync(join(parentDir, name))) throw new Error(`A directory named "${name}" already exists`);
 
   const sel = await collectSelections(kit, args, interactive);
+  if (args.switches.has("no-badge")) sel.badge = false;
   validateSelections(kit, sel);
 
   const projectDir = resolvePath(parentDir, name);
@@ -164,6 +165,7 @@ async function init(args: ParsedArgs) {
     name,
     git: !args.switches.has("no-git"),
     paths: nodePaths,
+    kitRef: ref,
     brand: brandRef && brandProfile ? { ref: brandRef, profile: brandProfile } : null,
   });
 

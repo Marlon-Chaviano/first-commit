@@ -7,7 +7,7 @@ export interface ParsedArgs {
   switches: Set<string>;
 }
 
-const SWITCHES = new Set(["dry-run", "yes", "no-git", "no-skills", "help", "version", "blank", "only-defaults", "skip-skills", "upload", "allow-commands", "local", "force", "json", "offline", "keep", "verbose", "no-browser"]);
+const SWITCHES = new Set(["dry-run", "yes", "no-git", "no-skills", "help", "version", "blank", "only-defaults", "skip-skills", "upload", "allow-commands", "local", "force", "json", "offline", "keep", "verbose", "no-browser", "no-badge"]);
 const ALIASES: Record<string, string> = { y: "yes", h: "help", v: "version" };
 
 /**

@@ -22,9 +22,9 @@ const FIRST = 6;
  * The same steps `--dry-run` prints, computed with the shared planner: what
  * will run on the user's machine, before they copy the command.
  */
-export function PlanPreview({ kit, sel, name, brand }: { kit: Kit; sel: Selections; name: string; brand?: PlanBrand | null }) {
+export function PlanPreview({ kit, kitRef, sel, name, brand }: { kit: Kit; kitRef?: string; sel: Selections; name: string; brand?: PlanBrand | null }) {
   const [all, setAll] = useState(false);
-  const steps = buildPlan({ kit, kitDir: "kit", sel, parentDir: ".", name, git: true, brand });
+  const steps = buildPlan({ kit, kitDir: "kit", sel, parentDir: ".", name, git: true, brand, kitRef });
   const project = `./${name}/`;
   const rel = (path: string) => (path.startsWith(project) ? path.slice(project.length) : path);
 

@@ -152,9 +152,11 @@ export interface PlanInput {
   git: boolean;
   /** --brand: applied after the kit's files and AGENTS.md, before the initial commit. */
   brand?: PlanBrand | null;
+  /** The kit as the user typed it ("landing-next", "ana/landing"): where the README badge links to. */
+  kitRef?: string;
 }
 
-export function buildPlan({ kit, kitDir, sel, parentDir, name, git, brand, paths = posixPaths }: PlanInput): Step[] {
+export function buildPlan({ kit, kitDir, sel, parentDir, name, git, brand, kitRef, paths = posixPaths }: PlanInput): Step[] {
   const { join, basename } = paths;
   const resolvePath = paths.resolve;
   const r = resolve(kit, sel);
@@ -215,6 +217,10 @@ export function buildPlan({ kit, kitDir, sel, parentDir, name, git, brand, paths
     if (stub) steps.push({ kind: "write", title: `Link ${stub} to AGENTS.md`, path: join(projectDir, stub), merge: importAgentsMd });
   }
 
+  if (sel.badge !== false) {
+    // Optional: a README the base project wrote in an unusual way must never stop the install.
+    steps.push({ kind: "write", title: "Add the first-commit badge to README.md", path: join(projectDir, "README.md"), merge: addReadmeBadge(readmeBadge(kitRef ?? kit.name), name), optional: true });
+  }
   if (brand) steps.push(brandStep(brand, projectDir));
   if (git) steps.push({ kind: "git", title: "Initial commit", cwd: projectDir });
   return steps;
@@ -311,4 +317,35 @@ export function mergeJson(current: unknown, patch: unknown): unknown {
 
 function isPlainObject(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+const BADGE_START = "<!-- first-commit:badge -->";
+const BADGE_END = "<!-- /first-commit:badge -->";
+
+/**
+ * The "Started with first-commit" badge, linking to the kit the project came from (`?ref=badge`
+ * tells the site where the visit came from). Local kits (paths) link to the site itself.
+ */
+export function readmeBadge(kitRef: string): string {
+  const local = kitRef.startsWith(".") || kitRef.startsWith("/") || /^[a-z]:[\\/]/i.test(kitRef);
+  const href = local ? `${BRAND.siteUrl}/?ref=badge` : `${BRAND.siteUrl}/kits/${kitRef}?ref=badge`;
+  return `[![Started with ${BRAND.name}](${BRAND.siteUrl}/badge/started.svg)](${href})`;
+}
+
+/**
+ * Puts the badge under the README's title (where badges go), in a block it can find again: an
+ * existing block is replaced, never duplicated. Without a README it creates one with the project name.
+ */
+export function addReadmeBadge(badge: string, title: string): Merge {
+  const block = `${BADGE_START}\n${badge}\n${BADGE_END}`;
+  return (existing) => {
+    if (!existing?.trim()) return `# ${title}\n\n${block}\n`;
+    const start = existing.indexOf(BADGE_START);
+    const end = existing.indexOf(BADGE_END);
+    if (start !== -1 && end !== -1) return existing.slice(0, start) + block + existing.slice(end + BADGE_END.length);
+    const lines = existing.split("\n");
+    const heading = lines.findIndex((l) => /^#\s/.test(l));
+    if (heading === -1) return `${block}\n\n${existing}`;
+    return [...lines.slice(0, heading + 1), "", block, ...lines.slice(heading + 1)].join("\n");
+  };
 }

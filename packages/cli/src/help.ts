@@ -44,6 +44,7 @@ const CREATE_OPTIONS: Row[] = [
   ["--dry-run", "show the plan without running anything"],
   ["--verbose", "show every command's output instead of the progress bar"],
   ["--no-git", "skip the initial commit"],
+  ["--no-badge", "don't add the \"Started with first-commit\" badge to README.md"],
   ["-y, --yes", "no questions: use the defaults (--allow-commands for unverified kits)"],
 ];
 

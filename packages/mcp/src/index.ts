@@ -199,7 +199,7 @@ export function createKitsServer({ source, version, local, cwd = "." }: KitsServ
       try {
         const kit = await source.kit(ref);
         const sel = selectionsFor(kit, input);
-        const steps = buildPlan({ kit, kitDir: "", sel, parentDir: cwd, name, git: true });
+        const steps = buildPlan({ kit, kitDir: "", sel, parentDir: cwd, name, git: true, kitRef: ref });
         return text({ command: buildInitCommand(ref, kit, sel, name), steps: describeSteps(steps, cwd) });
       } catch (error) {
         return fail(error);
