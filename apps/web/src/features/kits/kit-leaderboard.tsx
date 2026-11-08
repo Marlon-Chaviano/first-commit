@@ -3,8 +3,8 @@
 import { CATEGORY_LABELS, entryLanguage, languageLabel, type KitCategory, type LanguageId, type RegistryEntry } from "@kits/schema/light";
 import { ChevronDownIcon, SearchIcon, XIcon } from "lucide-react";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useDeferredValue, useEffect, useMemo, useRef, useState, ViewTransition } from "react";
+import { useRouter } from "next/navigation";
+import { useDeferredValue, useEffect, useMemo, useRef, useState, useSyncExternalStore, ViewTransition } from "react";
 
 import { OriginIcon, ORIGINS, type Origin } from "@/components/shared/origin-icon";
 import { Sparkline } from "@/components/shared/sparkline";
@@ -79,13 +79,21 @@ function stateFromParams(params: URLSearchParams): ListState {
   };
 }
 
+// The query string, read without useSearchParams (which would need <Suspense> and a second list).
+// On the server and during hydration it's empty, so the prerendered HTML is the plain list.
+const subscribeSearch = (onChange: () => void) => {
+  window.addEventListener("popstate", onChange);
+  return () => window.removeEventListener("popstate", onChange);
+};
+
 /**
- * The list with its search and filters in the URL, so a search can be shared. Rendered inside
- * <Suspense> with the plain list as fallback: the prerendered page keeps every kit link in its HTML.
+ * The list with its search and filters in the URL, so a search can be shared. One list: right after
+ * hydration it restarts from the URL's search and filters if there are any (a key change), before
+ * anyone types. Our own URL updates use replaceState, which doesn't fire popstate.
  */
 export function KitLeaderboardFromUrl(props: Props) {
-  const params = useSearchParams();
-  return <KitLeaderboard {...props} initial={stateFromParams(new URLSearchParams(params))} syncUrl />;
+  const search = useSyncExternalStore(subscribeSearch, () => window.location.search, () => "");
+  return <KitLeaderboard key={search} {...props} initial={stateFromParams(new URLSearchParams(search))} syncUrl />;
 }
 
 export function KitLeaderboard({ kits, logos, stats, verified, initial = DEFAULT_STATE, syncUrl = false }: Props & { initial?: ListState; syncUrl?: boolean }) {
@@ -111,8 +119,10 @@ export function KitLeaderboard({ kits, logos, stats, verified, initial = DEFAULT
   // The search and filters live in the URL (replaceState: no navigation, no scroll jump).
   useEffect(() => {
     if (!syncUrl) return;
-    const url = new URL(window.location.href);
     const next: Record<keyof ListState, string> = { q: search.trim(), view, origin: source, category, language };
+    // Nothing changed yet: leave the URL alone (during hydration it may hold filters not read yet).
+    if ((Object.keys(next) as (keyof ListState)[]).every((key) => next[key] === initial[key])) return;
+    const url = new URL(window.location.href);
     for (const [key, value] of Object.entries(next)) {
       if (value && value !== DEFAULT_STATE[key as keyof ListState]) url.searchParams.set(key, value);
       else url.searchParams.delete(key);
@@ -120,7 +130,7 @@ export function KitLeaderboard({ kits, logos, stats, verified, initial = DEFAULT
     // A shared search opens on the list, not on the hero.
     if (url.searchParams.size) url.hash = "leaderboard";
     if (url.href !== window.location.href) window.history.replaceState(window.history.state, "", url);
-  }, [syncUrl, search, view, source, category, language]);
+  }, [syncUrl, initial, search, view, source, category, language]);
 
   // "/" focuses search, like skills.sh.
   useEffect(() => {

@@ -20,3 +20,12 @@ test("an unknown page answers 404 with the ASCII page", async ({ page }) => {
   await expect(page.getByRole("img", { name: "404" })).toBeVisible();
   await expect(page.getByRole("heading", { name: "This page doesn't exist" })).toBeVisible();
 });
+
+test("a search in the URL is restored, and typing writes it back", async ({ page }) => {
+  await page.goto("/?q=fastapi#leaderboard");
+  await expect(page.getByRole("textbox", { name: "Search kits" })).toHaveValue("fastapi");
+  await expect(page.locator('a[href="/kits/api-fastapi"]').first()).toBeVisible();
+
+  await page.getByRole("textbox", { name: "Search kits" }).fill("hono");
+  await expect(page).toHaveURL(/\?q=hono/);
+});
