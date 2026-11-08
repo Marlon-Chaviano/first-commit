@@ -23,7 +23,9 @@ export function SiteHeader() {
           {/* Actions sit apart from the links: the GitHub star, then the account. */}
           <div className="flex items-center gap-2">
             <Separator orientation="vertical" className="mr-1 hidden h-5 data-vertical:self-center sm:block" />
-            <StarButton />
+            <span className="hidden md:contents">
+              <StarButton />
+            </span>
             <UserMenu />
             <MobileNav />
           </div>

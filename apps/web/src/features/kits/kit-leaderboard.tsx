@@ -17,7 +17,8 @@ import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/in
 import { Kbd } from "@/components/ui/kbd";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { facets, queryKits, searchIndex } from "@/lib/kit-query";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { facets, queryKits, RANKING_MIN_INSTALLS, searchIndex } from "@/lib/kit-query";
 import { formatCount } from "@/lib/format";
 import { logosFor } from "@/lib/logos";
 import type { Leaderboard } from "@/server/metrics/queries";
@@ -85,6 +86,8 @@ export function KitLeaderboard({
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
+  // With few installs a ranking says "nobody uses it": show a catalog until the numbers help.
+  const ranked = stats.total >= RANKING_MIN_INSTALLS;
   const counts = view === "all" ? stats.allTime : stats.trending;
   const q = search.trim();
   const { categories, languages: allLanguages } = useMemo(() => facets(kits), [kits]);
@@ -97,7 +100,7 @@ export function KitLeaderboard({
     setCategory("all");
     setLanguage("all");
   };
-  const rows = queryKits(kits, { q, origin: source, category: category as KitCategory | "all", language }, { counts, verified }, index);
+  const rows = queryKits(kits, { q, origin: source, category: category as KitCategory | "all", language, sort: ranked ? "installs" : "catalog" }, { counts, verified }, index);
   const shown = rows.slice(0, pages * PAGE_SIZE);
 
   return (
@@ -120,14 +123,20 @@ export function KitLeaderboard({
       </InputGroup>
 
       <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-        <Tabs value={view} onValueChange={(v) => setView(v as View)}>
-          <TabsList variant="line" className="font-mono">
-            <TabsTrigger value="all" className="text-xs">
-              All <span className="text-muted-foreground tabular-nums">· {formatCount(stats.total)} installs</span>
-            </TabsTrigger>
-            <TabsTrigger value="trending" className="text-xs">Trending (24h)</TabsTrigger>
-          </TabsList>
-        </Tabs>
+        {ranked ? (
+          <Tabs value={view} onValueChange={(v) => setView(v as View)}>
+            <TabsList variant="line" className="font-mono">
+              <TabsTrigger value="all" className="text-xs">
+                All time
+              </TabsTrigger>
+              <TabsTrigger value="trending" className="text-xs">Trending (24h)</TabsTrigger>
+            </TabsList>
+          </Tabs>
+        ) : (
+          <p className="font-mono text-xs text-muted-foreground tabular-nums">
+            {kits.length} kits · by category
+          </p>
+        )}
         <div className="flex flex-wrap items-center gap-2">
           <FilterSelect
             label="Origin"
@@ -176,31 +185,30 @@ export function KitLeaderboard({
         <Table className="mt-2">
           <TableHeader>
             <TableRow className="hover:bg-transparent">
-              <TableHead className="label-mono w-12 text-muted-foreground">#</TableHead>
+              {ranked && <TableHead className="label-mono w-12 text-muted-foreground">#</TableHead>}
               <TableHead className="label-mono text-muted-foreground">Kit</TableHead>
-              <TableHead className="label-mono hidden w-40 text-muted-foreground sm:table-cell">Activity 8W</TableHead>
-              <TableHead className="label-mono w-24 text-right text-muted-foreground">Installs</TableHead>
+              {ranked && <TableHead className="label-mono hidden w-40 text-muted-foreground md:table-cell">Activity 8W</TableHead>}
+              {ranked && <TableHead className="label-mono hidden w-24 text-right text-muted-foreground sm:table-cell">Installs</TableHead>}
             </TableRow>
           </TableHeader>
           <TableBody>
             {shown.map((kit, i) => (
               <TableRow key={kit.name} className="h-14 cursor-pointer" onClick={() => router.push(`/kits/${kit.name}`)}>
-                <TableCell className="font-mono text-muted-foreground">{i + 1}</TableCell>
-                <TableCell className="max-w-0">
+                {ranked && <TableCell className="font-mono text-muted-foreground">{i + 1}</TableCell>}
+                <TableCell className="max-w-0 py-2.5">
                   <Link href={`/kits/${kit.name}`} className="flex min-w-0 items-center gap-2.5">
-                    <TechIcon
-                      id={entryLanguage(kit)}
-                      label={languageLabel(entryLanguage(kit))}
-                      className="text-muted-foreground"
-                    />
-                    <span className="flex shrink-0 items-center gap-1.5 font-semibold">
-                      {kit.name}
-                      <span className="flex items-center gap-1 text-muted-foreground">
-                        <OriginIcon origin={kit.official ? "official" : "community"} label />
-                        {verified[kit.name] && <OriginIcon origin="verified" label />}
+                    <TechIcon id={entryLanguage(kit)} label={languageLabel(entryLanguage(kit))} className="shrink-0 text-muted-foreground" />
+                    {/* Phones: the description goes under the name instead of being cut off next to it. */}
+                    <span className="flex min-w-0 flex-col gap-0.5 sm:flex-row sm:items-center sm:gap-2.5">
+                      <span className="flex shrink-0 items-center gap-1.5 font-semibold">
+                        {kit.name}
+                        <span className="flex items-center gap-1 text-muted-foreground">
+                          <OriginBadge origin={kit.official ? "official" : "community"} />
+                          {verified[kit.name] && <OriginBadge origin="verified" />}
+                        </span>
                       </span>
+                      <span className="font-mono text-xs text-pretty text-muted-foreground sm:truncate">{kit.title}</span>
                     </span>
-                    <span className="truncate font-mono text-xs text-muted-foreground">{kit.title}</span>
                     <span className="ml-auto hidden shrink-0 items-center gap-2 pr-2 text-muted-foreground md:flex" aria-hidden>
                       {logosFor(kit.tags, 4).map(({ key, icon }) => (
                         <svg key={key} viewBox="0 0 24 24" fill="currentColor" className="size-3.5">
@@ -210,26 +218,26 @@ export function KitLeaderboard({
                     </span>
                   </Link>
                 </TableCell>
-                <TableCell className="hidden sm:table-cell">
-                  <Sparkline values={stats.weekly[kit.name] ?? []} />
-                </TableCell>
-                <TableCell className="text-right font-mono tabular-nums">{formatCount(counts[kit.name] ?? 0)}</TableCell>
+                {ranked && (
+                  <TableCell className="hidden md:table-cell">
+                    <Sparkline values={stats.weekly[kit.name] ?? []} />
+                  </TableCell>
+                )}
+                {ranked && <TableCell className="hidden text-right font-mono tabular-nums sm:table-cell">{formatCount(counts[kit.name] ?? 0)}</TableCell>}
               </TableRow>
             ))}
             {rows.length > shown.length && (
               // Like skills.sh: the list goes on with a "+N more" row in its own typography, not a separate button.
               <TableRow className="hover:bg-transparent">
-                <TableCell colSpan={4} className="p-0">
+                <TableCell colSpan={ranked ? 4 : 1} className="p-0">
                   <button
                     type="button"
                     onClick={() => setPaging({ key: filterKey, pages: pages + 1 })}
                     className="group flex h-12 w-full items-center gap-2 px-2 font-mono text-sm text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring"
                   >
                     <ChevronDownIcon className="size-4 transition-transform group-hover:translate-y-0.5 motion-reduce:transition-none" />
-                    +{Math.min(PAGE_SIZE, rows.length - shown.length)} more {rows.length - shown.length === 1 ? "kit" : "kits"}
-                    <span className="ml-auto text-xs tabular-nums">
-                      {shown.length} of {rows.length}
-                    </span>
+                    Show {Math.min(PAGE_SIZE, rows.length - shown.length)} more
+                    <span className="text-xs tabular-nums">({rows.length - shown.length} remaining)</span>
                   </button>
                 </TableCell>
               </TableRow>
@@ -296,5 +304,24 @@ function FilterChip({ label, icon, onRemove }: { label: string; icon?: React.Rea
         <XIcon className="size-3" />
       </button>
     </Badge>
+  );
+}
+
+const ORIGIN_HINTS = {
+  official: "Official kit, maintained in the first-commit repo",
+  community: "Community kit, published by its author",
+  verified: "Verified: the current version installs and passes its checks in CI",
+  all: "",
+} as const;
+
+/** Official / community / verified icon with what it means, on hover or focus. */
+function OriginBadge({ origin }: { origin: "official" | "community" | "verified" }) {
+  return (
+    <Tooltip>
+      <TooltipTrigger render={<span tabIndex={0} />} className="rounded-sm outline-none focus-visible:ring-2 focus-visible:ring-ring/50">
+        <OriginIcon origin={origin} label />
+      </TooltipTrigger>
+      <TooltipContent>{ORIGIN_HINTS[origin]}</TooltipContent>
+    </Tooltip>
   );
 }

@@ -13,7 +13,7 @@ import { DescribeProject } from "@/features/recommend/describe-project";
 import { getLeaderboard } from "@/server/metrics/queries";
 import { getAllEntries, getFeaturedEntries } from "@/server/registry";
 import { getVerification } from "@/server/verifications/queries";
-import { facets } from "@/lib/kit-query";
+import { facets, RANKING_MIN_INSTALLS } from "@/lib/kit-query";
 
 export default async function Home() {
   const [kits, featured] = await Promise.all([getAllEntries(), getFeaturedEntries()]);
@@ -50,70 +50,70 @@ export default async function Home() {
             <div className="flex max-w-full flex-wrap items-center justify-center gap-3">
               {/* As wide as the command plus its copy button, not the whole row. */}
               <Command command={cliCommand().trim()} className="w-fit max-w-full" />
-              <AgentSetup className="h-11" />
+              <AgentSetup className="hidden h-11 sm:inline-flex" />
             </div>
             <p className="-mt-3 text-sm text-pretty text-muted-foreground">It asks for a kit and a name, or pass them directly. No account needed.</p>
+            <AgentSetup variant="link" className="-mt-4 h-auto p-0 text-foreground sm:hidden" />
           </div>
 
           {/* The 15-second demo: from the command to an agent that already knows the stack. */}
           <TerminalDemo className="w-full max-w-3xl" />
         </div>
-
-        <div className="grid grid-cols-[minmax(0,1fr)] gap-8 md:grid-cols-2 md:gap-14">
-          <div className="flex flex-col gap-3">
-            <h2 className="label-mono">Works with these agents</h2>
-            <Marquee label="Supported agents" seconds={22}>
-              {(copy) =>
-                AGENTS.map((a) => (
-                  <li key={a.id} className="px-1.5">
-                    <Tooltip>
-                      <TooltipTrigger
-                        render={<span tabIndex={copy ? -1 : 0} />}
-                        className="flex size-12 items-center justify-center rounded-lg border text-foreground transition-colors hover:bg-muted/50"
-                      >
-                        <TechIcon id={a.id} label={a.label} className="size-6" />
-                      </TooltipTrigger>
-                      <TooltipContent>{a.label}</TooltipContent>
-                    </Tooltip>
-                  </li>
-                ))
-              }
-            </Marquee>
-          </div>
-          <div className="flex flex-col gap-3">
-            <div className="flex items-baseline justify-between gap-4">
-              <h2 className="label-mono">By language</h2>
-              <Link href="/stacks" className="-my-2 py-2 font-mono text-xs text-muted-foreground hover:text-foreground">
-                See stacks →
-              </Link>
-            </div>
-            <Marquee label="Languages" seconds={40}>
-              {(copy) =>
-                languages.map((l) => (
-                  <li key={l.id} className="px-1.5">
-                    <Tooltip>
-                      <TooltipTrigger
-                        render={<Link href={`/stacks/language/${l.id}`} tabIndex={copy ? -1 : undefined} />}
-                        data-empty={l.count === 0}
-                        className="flex size-12 items-center justify-center rounded-lg border text-foreground transition-colors hover:bg-muted/50 data-[empty=true]:text-muted-foreground"
-                      >
-                        <TechIcon id={l.id} label={l.label} className="size-6" />
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        {l.label} · {l.count ? `${l.count} ${l.count === 1 ? "kit" : "kits"}` : "no kits yet"}
-                      </TooltipContent>
-                    </Tooltip>
-                  </li>
-                ))
-              }
-            </Marquee>
-          </div>
-        </div>
       </section>
 
-      <section className="flex flex-col gap-4">
-        <h2 className="label-mono">Describe your project</h2>
+      {/* Right under the hero: the most useful thing for someone who doesn't know which kit they need. */}
+      <section className="mx-auto flex w-full max-w-3xl flex-col gap-4">
+        <div className="flex flex-col gap-1.5">
+          <h2 className="label-mono">Describe your project</h2>
+          <p className="text-sm text-pretty text-muted-foreground">Tell it what you&apos;re building. You get the kit that fits, with its options chosen and the exact command to run.</p>
+        </div>
         <DescribeProject />
+      </section>
+
+      <section aria-label="What it works with" className="grid grid-cols-[minmax(0,1fr)] gap-8 md:grid-cols-2 md:gap-14">
+        <div className="flex flex-col gap-3">
+          <h2 className="label-mono">Works with these agents</h2>
+          <Marquee label="Supported agents" seconds={30}>
+            {(copy) =>
+              AGENTS.map((a) => (
+                <li key={a.id} className="px-1">
+                  {/* Named, not a bare glyph: the label says which agent it is. */}
+                  <span className="flex h-11 items-center gap-2 rounded-lg border px-3 text-sm whitespace-nowrap" tabIndex={copy ? -1 : undefined}>
+                    <TechIcon id={a.id} label={a.label} className="size-4" />
+                    {a.label}
+                  </span>
+                </li>
+              ))
+            }
+          </Marquee>
+        </div>
+        <div className="flex flex-col gap-3">
+          <div className="flex items-baseline justify-between gap-4">
+            <h2 className="label-mono">By language</h2>
+            <Link href="/stacks" className="-my-2 py-2 font-mono text-xs text-muted-foreground hover:text-foreground">
+              See stacks →
+            </Link>
+          </div>
+          <Marquee label="Languages" seconds={50}>
+            {(copy) =>
+              languages.map((l) => (
+                <li key={l.id} className="px-1">
+                  <Link
+                    href={`/stacks/language/${l.id}`}
+                    tabIndex={copy ? -1 : undefined}
+                    aria-label={`${l.label}: ${l.count ? `${l.count} ${l.count === 1 ? "kit" : "kits"}` : "no kits yet"}`}
+                    data-empty={l.count === 0}
+                    className="flex h-11 items-center gap-2 rounded-lg border px-3 text-sm whitespace-nowrap transition-colors hover:bg-muted/50 data-[empty=true]:text-muted-foreground"
+                  >
+                    <TechIcon id={l.id} label={l.label} className="size-4" />
+                    {l.label}
+                    {l.count > 0 && <span className="font-mono text-xs text-muted-foreground tabular-nums">{l.count}</span>}
+                  </Link>
+                </li>
+              ))
+            }
+          </Marquee>
+        </div>
       </section>
 
       {featured.length > 0 && (
@@ -133,7 +133,7 @@ export default async function Home() {
       )}
 
       <section id="leaderboard" className="flex scroll-mt-20 flex-col gap-4">
-        <h2 className="label-mono">Kit ranking</h2>
+        <h2 className="label-mono">{stats.total >= RANKING_MIN_INSTALLS ? "Kit ranking" : "Kits"}</h2>
         <KitLeaderboard kits={kits} stats={stats} verified={Object.fromEntries(verified)} />
       </section>
     </div>

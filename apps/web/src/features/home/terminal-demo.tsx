@@ -13,6 +13,7 @@ import { cn } from "@/lib/utils";
  */
 const LOOP_MS = 16_000;
 const FADE_MS = 450;
+const FIRST_FRAME = 1_600;
 const AGENT_AT = 9_200;
 
 // The same short command as the hero's button: the CLI asks for the kit and the name.
@@ -49,7 +50,8 @@ const typed = (text: string, t: number, at: number, ms: number) => text.slice(0,
 const spinner = (t: number) => SPINNER[Math.floor(t / 110) % SPINNER.length];
 
 export function TerminalDemo({ className }: { className?: string }) {
-  const [tick, setTick] = useState(0);
+  // Starts with the command typed and the CLI open, so the first paint is never an empty window.
+  const [tick, setTick] = useState(FIRST_FRAME);
   const root = useRef<HTMLElement>(null);
   const reduced = useSyncExternalStore(subscribeReduced, () => window.matchMedia(REDUCED).matches, () => false);
   const t = reduced ? 15_000 : tick;

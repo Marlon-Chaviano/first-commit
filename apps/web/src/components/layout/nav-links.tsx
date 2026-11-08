@@ -1,6 +1,7 @@
 "use client";
 
-import { MenuIcon } from "lucide-react";
+import { REPO_URL } from "@kits/schema";
+import { ArrowUpRightIcon, MenuIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Suspense, useState } from "react";
@@ -8,6 +9,8 @@ import { Suspense, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
+
+import { TechIcon } from "@/components/shared/tech-icon";
 
 import { SectionLink } from "./section-link";
 
@@ -75,6 +78,11 @@ export function MobileNav() {
           <Suspense fallback={<Links pathname={null} className={stacked} />}>
             <ActiveLinks className={stacked} />
           </Suspense>
+          <a href={REPO_URL} target="_blank" rel="noreferrer" className={cn(stacked(false), "flex items-center gap-2")}>
+            <TechIcon id="github" label="GitHub" className="size-4" />
+            Star on GitHub
+            <ArrowUpRightIcon className="size-3.5" />
+          </a>
         </nav>
       </SheetContent>
     </Sheet>

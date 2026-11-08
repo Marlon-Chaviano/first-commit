@@ -29,6 +29,11 @@ describe("queryKits", () => {
     expect(queryKits(kits, {}, ranking).map((k) => k.name)).toEqual(["ana/blog", "api-go", "landing-next"]);
   });
 
+  it("as a catalog: by category, the general-purpose kit first, then by name", () => {
+    const catalog = [...kits, entry("landing-astro", { category: "landing" }), entry("api-hono", { category: "api" })];
+    expect(queryKits(catalog, { sort: "catalog" }, ranking).map((k) => k.name).filter((n) => n !== "ana/blog")).toEqual(["landing-next", "landing-astro", "api-hono", "api-go"]);
+  });
+
   it("searches name, tags and libraries, ignoring case", () => {
     expect(queryKits(kits, { q: "STRIPE" }, ranking).map((k) => k.name)).toEqual(["landing-next"]);
     expect(queryKits(kits, { q: " blog " }, ranking).map((k) => k.name)).toEqual(["ana/blog"]);

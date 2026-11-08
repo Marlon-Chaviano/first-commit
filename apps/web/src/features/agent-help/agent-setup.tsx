@@ -46,7 +46,7 @@ export function AgentSetup({
   kit?: { title: string; command: string };
   label?: string;
   className?: string;
-  variant?: "outline" | "default" | "ghost";
+  variant?: "outline" | "default" | "ghost" | "link";
 }) {
   const items = tasks.map((task) => itemFor(task, kit));
   return (

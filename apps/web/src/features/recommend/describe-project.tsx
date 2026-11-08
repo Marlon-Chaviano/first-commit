@@ -2,7 +2,7 @@
 
 import { ArrowRightIcon, LoaderCircleIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useState, useTransition } from "react";
+import { useRef, useState, useTransition } from "react";
 
 import { Badge } from "@/components/ui/badge";
 import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupTextarea } from "@/components/ui/input-group";
@@ -32,6 +32,13 @@ export function DescribeProject() {
   // Animated only while the field is empty and not being used.
   const placeholder = useTypewriter(PLACEHOLDERS, { paused: focused || description.length > 0 });
   const [pending, startTransition] = useTransition();
+  const field = useRef<HTMLTextAreaElement>(null);
+  /** The button is always active: with nothing written it says what's missing instead of looking disabled. */
+  const send = () => {
+    if (description.trim()) return submit(description);
+    setError("Describe what you want to build in a few words.");
+    field.current?.focus();
+  };
 
   const submit = (text: string) => {
     setError(null);
@@ -55,17 +62,21 @@ export function DescribeProject() {
       className="flex flex-col gap-3"
       onSubmit={(e) => {
         e.preventDefault();
-        if (description.trim()) submit(description);
+        send();
       }}
     >
       <InputGroup>
         <InputGroupTextarea
+          ref={field}
           value={description}
-          onChange={(e) => setDescription(e.target.value)}
+          onChange={(e) => {
+            setDescription(e.target.value);
+            if (error) setError(null);
+          }}
           onKeyDown={(e) => {
             if (e.key === "Enter" && !e.shiftKey) {
               e.preventDefault();
-              if (description.trim()) submit(description);
+              send();
             }
           }}
           placeholder={placeholder}
@@ -77,7 +88,7 @@ export function DescribeProject() {
           className="font-mono text-sm"
         />
         <InputGroupAddon align="block-end" className="justify-end">
-          <InputGroupButton type="submit" variant="default" size="sm" disabled={pending || !description.trim()}>
+          <InputGroupButton type="submit" variant="default" size="sm" disabled={pending}>
             {pending ? <LoaderCircleIcon className="animate-spin" /> : <ArrowRightIcon />}
             Recommend a kit
           </InputGroupButton>
