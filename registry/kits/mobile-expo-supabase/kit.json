@@ -1,7 +1,7 @@
 {
   "$schema": "../../kit.schema.json",
-  "version": "1.0.0",
-  "author": "Marlon Chaviano",
+  "version": "1.0.1",
+  "author": "marlon-chaviano",
   "name": "mobile-expo-supabase",
   "extends": "mobile-expo",
   "title": "Mobile app with Expo and Supabase",

@@ -1,7 +1,7 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "chrome-extension",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "title": "Browser extension with WXT",
   "description": "An extension for Chrome, Firefox and Edge with WXT (Manifest V3, hot reload) and the UI framework you prefer.",
   "category": "extension",
@@ -10,7 +10,7 @@
     "wxt",
     "manifest-v3"
   ],
-  "author": "Marlon Chaviano",
+  "author": "marlon-chaviano",
   "base": {
     "command": "npx wxt@latest init {{name}} --template {{opt.framework}} --pm {{pm}}",
     "install": "{{pm}} install"

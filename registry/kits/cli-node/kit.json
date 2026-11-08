@@ -1,8 +1,8 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "cli-node",
-  "version": "1.0.0",
-  "author": "Marlon Chaviano",
+  "version": "1.0.1",
+  "author": "marlon-chaviano",
   "title": "Command-line tool with Node.js",
   "description": "A TypeScript CLI ready to publish to npm: commands with Commander, bundled with tsup, tests with Vitest and `npx` support from day one.",
   "category": "other",

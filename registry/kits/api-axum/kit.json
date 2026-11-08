@@ -1,8 +1,8 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "api-axum",
-  "version": "1.0.0",
-  "author": "Marlon Chaviano",
+  "version": "1.0.1",
+  "author": "marlon-chaviano",
   "title": "API with Rust and Axum",
   "description": "A fast, type-safe HTTP API in Rust with Axum and Tokio: JSON with Serde, structured logs with tracing and in-process tests with no open ports.",
   "category": "api",

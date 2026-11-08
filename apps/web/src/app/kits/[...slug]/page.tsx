@@ -134,12 +134,12 @@ async function KitContent({ slug, searchParams }: { slug: Promise<string>; searc
               <UserAvatar name={meta.owner.name || meta.owner.handle} image={meta.owner.image} size="sm" />
               {meta.owner.handle}
             </Link>
-          ) : kit.author === AUTHOR.name ? (
-            // Official kits: their author's GitHub picture.
-            <a href={AUTHOR.github} className="flex items-center gap-2 font-mono hover:underline">
-              <UserAvatar name={kit.author} image={`${AUTHOR.github}.png?size=64`} size="sm" />
-              {kit.author}
-            </a>
+          ) : kit.author === AUTHOR.handle || kit.author === AUTHOR.name ? (
+            // Official kits (older versions still say the name): their author's profile and GitHub picture.
+            <Link href={`/u/${AUTHOR.handle}`} className="flex items-center gap-2 font-mono hover:underline">
+              <UserAvatar name={AUTHOR.handle} image={`${AUTHOR.github}.png?size=64`} size="sm" />
+              {AUTHOR.handle}
+            </Link>
           ) : (
             <span className="flex items-center gap-2 font-mono">
               <UserAvatar name={kit.author} size="sm" />

@@ -1,7 +1,7 @@
 {
   "$schema": "../../kit.schema.json",
-  "version": "1.1.0",
-  "author": "Marlon Chaviano",
+  "version": "1.1.1",
+  "author": "marlon-chaviano",
   "name": "monorepo-t3-turbo",
   "title": "T3 monorepo with Turborepo",
   "category": "monorepo",

@@ -1,7 +1,7 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "saas-next-supabase",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "title": "SaaS with Next.js + Supabase",
   "description": "Next.js with Supabase (auth and Postgres) and pieces from the catalog: Better Auth or Clerk, Drizzle, Stripe, Resend, i18n, AI, tests, CI and deployment, with their MCP servers and rules for your agent.",
   "category": "saas",
@@ -12,7 +12,7 @@
     "auth",
     "postgres"
   ],
-  "author": "Marlon Chaviano",
+  "author": "marlon-chaviano",
   "base": {
     "command": "npx create-next-app@latest {{name}} --ts --tailwind --eslint --app --src-dir --import-alias \"@/*\" --use-{{pm}} --disable-git --no-agent-feedback --yes"
   },

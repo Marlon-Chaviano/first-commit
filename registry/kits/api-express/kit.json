@@ -1,8 +1,8 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "api-express",
-  "version": "1.0.0",
-  "author": "Marlon Chaviano",
+  "version": "1.0.1",
+  "author": "marlon-chaviano",
   "title": "API with Express",
   "description": "A REST API with Express 5 and TypeScript: input validation with Zod, security headers, centralized error handling and tests with Vitest and Supertest.",
   "category": "api",

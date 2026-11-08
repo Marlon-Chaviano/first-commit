@@ -1,8 +1,8 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "spa-vite-react",
-  "version": "1.2.0",
-  "author": "Marlon Chaviano",
+  "version": "1.2.1",
+  "author": "marlon-chaviano",
   "title": "SPA with Vite and React",
   "category": "web",
   "language": "typescript",

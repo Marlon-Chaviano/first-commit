@@ -1,7 +1,7 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "mobile-expo",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "title": "Mobile app with Expo",
   "description": "React Native + Expo Router ready for iOS, Android and web, with Expo's official skills so your agent doesn't reach for outdated APIs.",
   "category": "mobile",
@@ -11,7 +11,7 @@
     "expo-router",
     "typescript"
   ],
-  "author": "Marlon Chaviano",
+  "author": "marlon-chaviano",
   "base": {
     "command": "npx create-expo-app@latest {{name}} --template default --no-install --yes",
     "install": "{{pm}} install"

@@ -1,8 +1,8 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "api-aspnet",
-  "version": "1.0.0",
-  "author": "Marlon Chaviano",
+  "version": "1.0.1",
+  "author": "marlon-chaviano",
   "title": "API with ASP.NET Core",
   "description": "A minimal API with ASP.NET Core and C# (.NET 10): OpenAPI, a solution with a test project and integration tests with WebApplicationFactory.",
   "category": "api",

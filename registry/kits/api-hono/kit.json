@@ -1,7 +1,7 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "api-hono",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "title": "API with Hono",
   "description": "Typed REST API with Hono on Node, Bun or Cloudflare Workers. Validation with Zod and an optional Drizzle database.",
   "category": "api",
@@ -12,7 +12,7 @@
     "zod",
     "drizzle"
   ],
-  "author": "Marlon Chaviano",
+  "author": "marlon-chaviano",
   "base": {
     "command": "npx create-hono@latest {{name}} --template {{opt.runtime}} --pm {{pm}} --install"
   },

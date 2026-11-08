@@ -1,7 +1,7 @@
 {
   "$schema": "../../kit.schema.json",
-  "version": "1.1.0",
-  "author": "Marlon Chaviano",
+  "version": "1.1.1",
+  "author": "marlon-chaviano",
   "name": "saas-t3",
   "title": "SaaS with the T3 stack",
   "category": "saas",

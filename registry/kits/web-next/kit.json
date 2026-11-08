@@ -1,8 +1,8 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "web-next",
-  "version": "1.0.0",
-  "author": "Marlon Chaviano",
+  "version": "1.0.1",
+  "author": "marlon-chaviano",
   "title": "Web app with Next.js",
   "description": "A full Next.js app (App Router, TypeScript, Tailwind and shadcn/ui) ready to grow: add auth, a database, payments, email or AI from the catalog.",
   "category": "web",

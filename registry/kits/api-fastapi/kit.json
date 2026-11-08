@@ -1,7 +1,7 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "api-fastapi",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "title": "API with FastAPI",
   "description": "A Python API with FastAPI, its own virtual environment and tests with pytest. Automatic OpenAPI docs.",
   "category": "api",
@@ -11,7 +11,7 @@
     "api",
     "pytest"
   ],
-  "author": "Marlon Chaviano",
+  "author": "marlon-chaviano",
   "base": {
     "command": "mkdir {{name}} && cd {{name}} && python3 -m venv .venv"
   },

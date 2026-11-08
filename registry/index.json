@@ -1,7 +1,7 @@
 [
   {
     "name": "ai-agent-python",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "title": "AI agent with Python and LangGraph",
     "description": "A tool-using AI agent in Python with LangChain v1 and LangGraph: typed tools, any model provider, the LangGraph dev server and tests that don't spend tokens.",
     "category": "other",
@@ -13,7 +13,7 @@
       "python",
       "claude"
     ],
-    "author": "Marlon Chaviano",
+    "author": "marlon-chaviano",
     "skills": 36,
     "options": [
       "Observability",
@@ -31,7 +31,7 @@
   },
   {
     "name": "android-compose",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "title": "Android app with Jetpack Compose",
     "description": "Google's official architecture template: Kotlin, Jetpack Compose, Hilt, Room, navigation and tests, following the recommended Android architecture.",
     "category": "mobile",
@@ -42,7 +42,7 @@
       "hilt",
       "room"
     ],
-    "author": "Marlon Chaviano",
+    "author": "marlon-chaviano",
     "skills": 29,
     "options": [
       "Design pack",
@@ -56,7 +56,7 @@
   },
   {
     "name": "api-aspnet",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "title": "API with ASP.NET Core",
     "description": "A minimal API with ASP.NET Core and C# (.NET 10): OpenAPI, a solution with a test project and integration tests with WebApplicationFactory.",
     "category": "api",
@@ -67,7 +67,7 @@
       "api",
       "xunit"
     ],
-    "author": "Marlon Chaviano",
+    "author": "marlon-chaviano",
     "skills": 23,
     "options": [
       "Pack first-commit"
@@ -79,7 +79,7 @@
   },
   {
     "name": "api-axum",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "title": "API with Rust and Axum",
     "description": "A fast, type-safe HTTP API in Rust with Axum and Tokio: JSON with Serde, structured logs with tracing and in-process tests with no open ports.",
     "category": "api",
@@ -89,7 +89,7 @@
       "tokio",
       "api"
     ],
-    "author": "Marlon Chaviano",
+    "author": "marlon-chaviano",
     "skills": 20,
     "options": [
       "Pack first-commit"
@@ -101,7 +101,7 @@
   },
   {
     "name": "api-django",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "title": "Backend with Django",
     "description": "Django with its admin, ORM and migrations, in its own virtual environment. For backends with a database and an admin panel from day one.",
     "category": "api",
@@ -111,7 +111,7 @@
       "orm",
       "admin"
     ],
-    "author": "Marlon Chaviano",
+    "author": "marlon-chaviano",
     "skills": 30,
     "options": [
       "Database",
@@ -131,7 +131,7 @@
   },
   {
     "name": "api-elysia",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "title": "API with Elysia on Bun",
     "description": "End-to-end typed API with Elysia on Bun: built-in validation, OpenAPI and a typed client.",
     "category": "api",
@@ -141,7 +141,7 @@
       "api",
       "typescript"
     ],
-    "author": "Marlon Chaviano",
+    "author": "marlon-chaviano",
     "skills": 18,
     "options": [
       "Pack first-commit"
@@ -153,7 +153,7 @@
   },
   {
     "name": "api-express",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "title": "API with Express",
     "description": "A REST API with Express 5 and TypeScript: input validation with Zod, security headers, centralized error handling and tests with Vitest and Supertest.",
     "category": "api",
@@ -164,7 +164,7 @@
       "typescript",
       "zod"
     ],
-    "author": "Marlon Chaviano",
+    "author": "marlon-chaviano",
     "skills": 32,
     "options": [
       "Transactional email",
@@ -190,7 +190,7 @@
   },
   {
     "name": "api-fastapi",
-    "version": "1.3.0",
+    "version": "1.3.1",
     "title": "API with FastAPI",
     "description": "A Python API with FastAPI, its own virtual environment and tests with pytest. Automatic OpenAPI docs.",
     "category": "api",
@@ -200,7 +200,7 @@
       "api",
       "pytest"
     ],
-    "author": "Marlon Chaviano",
+    "author": "marlon-chaviano",
     "skills": 31,
     "options": [
       "Database",
@@ -220,7 +220,7 @@
   },
   {
     "name": "api-fastify",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "title": "API with Fastify",
     "description": "A Fastify API in TypeScript generated with its official CLI: plugins, folder-based routes with autoload, schema validation and tests.",
     "category": "api",
@@ -230,7 +230,7 @@
       "typescript",
       "node"
     ],
-    "author": "Marlon Chaviano",
+    "author": "marlon-chaviano",
     "skills": 27,
     "options": [
       "Transactional email",
@@ -253,7 +253,7 @@
   },
   {
     "name": "api-go",
-    "version": "1.3.0",
+    "version": "1.3.1",
     "title": "API with Go and chi",
     "description": "An HTTP API in Go with the chi router: standard middlewares, JSON and tests with httptest. No heavy frameworks.",
     "category": "api",
@@ -262,7 +262,7 @@
       "chi",
       "api"
     ],
-    "author": "Marlon Chaviano",
+    "author": "marlon-chaviano",
     "skills": 40,
     "options": [
       "Database",
@@ -286,7 +286,7 @@
   },
   {
     "name": "api-hono",
-    "version": "1.4.0",
+    "version": "1.4.1",
     "title": "API with Hono",
     "description": "Typed REST API with Hono on Node, Bun or Cloudflare Workers. Validation with Zod and an optional Drizzle database.",
     "category": "api",
@@ -297,7 +297,7 @@
       "zod",
       "drizzle"
     ],
-    "author": "Marlon Chaviano",
+    "author": "marlon-chaviano",
     "skills": 41,
     "options": [
       "Runtime",
@@ -333,7 +333,7 @@
   },
   {
     "name": "api-laravel",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "title": "API with Laravel",
     "description": "Laravel as an API: routes in routes/api.php, token auth with Sanctum, Eloquent, validation with Form Requests and tests ready to go.",
     "category": "api",
@@ -344,7 +344,7 @@
       "sanctum",
       "eloquent"
     ],
-    "author": "Marlon Chaviano",
+    "author": "marlon-chaviano",
     "skills": 20,
     "options": [
       "Authentication",
@@ -360,7 +360,7 @@
   },
   {
     "name": "api-nestjs",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "title": "API with NestJS",
     "description": "An API with NestJS: modules, controllers and dependency injection, validation, tests with Jest and an architecture that holds up for large teams.",
     "category": "api",
@@ -370,7 +370,7 @@
       "typescript",
       "node"
     ],
-    "author": "Marlon Chaviano",
+    "author": "marlon-chaviano",
     "skills": 28,
     "options": [
       "Transactional email",
@@ -393,7 +393,7 @@
   },
   {
     "name": "api-rails",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "title": "API with Rails",
     "description": "Rails 8 in API mode: JSON only, no views, with Active Record, migrations, tests and optional RSpec.",
     "category": "api",
@@ -403,7 +403,7 @@
       "api",
       "sqlite"
     ],
-    "author": "Marlon Chaviano",
+    "author": "marlon-chaviano",
     "skills": 16,
     "options": [
       "Tests",
@@ -417,7 +417,7 @@
   },
   {
     "name": "api-spring-boot",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "title": "API with Spring Boot",
     "description": "Spring Boot with Java 17, Maven, Web, Validation and Actuator: a production-ready REST API from the first commit.",
     "category": "api",
@@ -427,7 +427,7 @@
       "spring-boot",
       "maven"
     ],
-    "author": "Marlon Chaviano",
+    "author": "marlon-chaviano",
     "skills": 24,
     "options": [
       "Authentication",
@@ -443,7 +443,7 @@
   },
   {
     "name": "blog-astro",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "title": "Blog with Astro",
     "description": "Astro's official blog: posts in Markdown and MDX with typed content collections, RSS, sitemap and SEO, ready to publish.",
     "category": "landing",
@@ -453,7 +453,7 @@
       "mdx",
       "rss"
     ],
-    "author": "Marlon Chaviano",
+    "author": "marlon-chaviano",
     "skills": 22,
     "options": [
       "Design pack",
@@ -467,7 +467,7 @@
   },
   {
     "name": "chrome-extension",
-    "version": "1.4.0",
+    "version": "1.4.1",
     "title": "Browser extension with WXT",
     "description": "An extension for Chrome, Firefox and Edge with WXT (Manifest V3, hot reload) and the UI framework you prefer.",
     "category": "extension",
@@ -476,7 +476,7 @@
       "wxt",
       "manifest-v3"
     ],
-    "author": "Marlon Chaviano",
+    "author": "marlon-chaviano",
     "skills": 73,
     "options": [
       "UI framework",
@@ -530,7 +530,7 @@
   },
   {
     "name": "cli-node",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "title": "Command-line tool with Node.js",
     "description": "A TypeScript CLI ready to publish to npm: commands with Commander, bundled with tsup, tests with Vitest and `npx` support from day one.",
     "category": "other",
@@ -541,7 +541,7 @@
       "commander",
       "npm"
     ],
-    "author": "Marlon Chaviano",
+    "author": "marlon-chaviano",
     "skills": 22,
     "options": [
       "Code quality",
@@ -558,7 +558,7 @@
   },
   {
     "name": "desktop-electron",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "title": "Desktop app with Electron",
     "description": "A cross-platform desktop app with Electron Forge, Vite and TypeScript: secure preload, hot reload and installers for macOS, Windows and Linux.",
     "category": "desktop",
@@ -571,7 +571,7 @@
       "windows",
       "linux"
     ],
-    "author": "Marlon Chaviano",
+    "author": "marlon-chaviano",
     "skills": 22,
     "options": [
       "Design pack",
@@ -585,7 +585,7 @@
   },
   {
     "name": "desktop-tauri",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "title": "Desktop app with Tauri",
     "description": "A small, fast desktop app with Tauri 2: a React + Vite interface and a Rust backend, with mobile targets available. Installers a fraction of Electron's size.",
     "category": "desktop",
@@ -596,7 +596,7 @@
       "vite",
       "desktop"
     ],
-    "author": "Marlon Chaviano",
+    "author": "marlon-chaviano",
     "skills": 59,
     "options": [
       "UI components",
@@ -634,7 +634,7 @@
   },
   {
     "name": "discord-bot",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "title": "Discord bot",
     "description": "A Discord bot with discord.js and TypeScript: slash commands with their registration, events and environment variables ready to go.",
     "category": "extension",
@@ -644,7 +644,7 @@
       "discord.js",
       "typescript"
     ],
-    "author": "Marlon Chaviano",
+    "author": "marlon-chaviano",
     "skills": 27,
     "options": [
       "Observability",
@@ -666,7 +666,7 @@
   },
   {
     "name": "docs-fumadocs",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "title": "Docs with Fumadocs",
     "description": "Documentation with Fumadocs on Next.js: MDX, built-in search, Open Graph images and modern docs components.",
     "category": "landing",
@@ -676,7 +676,7 @@
       "fumadocs",
       "mdx"
     ],
-    "author": "Marlon Chaviano",
+    "author": "marlon-chaviano",
     "skills": 35,
     "options": [
       "Deployment",
@@ -697,7 +697,7 @@
   },
   {
     "name": "docs-starlight",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "title": "Docs with Starlight",
     "description": "A documentation site with Starlight (Astro): navigation, search, dark mode, i18n and Markdown/MDX pages from minute one.",
     "category": "landing",
@@ -707,7 +707,7 @@
       "starlight",
       "markdown"
     ],
-    "author": "Marlon Chaviano",
+    "author": "marlon-chaviano",
     "skills": 22,
     "options": [
       "Design pack",
@@ -721,7 +721,7 @@
   },
   {
     "name": "docs-vitepress",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "title": "Docs with VitePress",
     "description": "Documentation with VitePress, the one Vue and Vite use: Markdown with superpowers, local search and a ready-made home page, in a blazing-fast static site.",
     "category": "landing",
@@ -731,7 +731,7 @@
       "vue",
       "markdown"
     ],
-    "author": "Marlon Chaviano",
+    "author": "marlon-chaviano",
     "skills": 29,
     "options": [
       "Design pack",
@@ -745,7 +745,7 @@
   },
   {
     "name": "github-action",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "title": "GitHub Action with TypeScript",
     "description": "A GitHub Action in TypeScript from the official template: typed inputs and outputs, tests with Jest and the bundle in dist/ ready to publish on the Marketplace.",
     "category": "extension",
@@ -754,7 +754,7 @@
       "ci",
       "typescript"
     ],
-    "author": "Marlon Chaviano",
+    "author": "marlon-chaviano",
     "skills": 20,
     "options": [
       "Pack first-commit"
@@ -766,7 +766,7 @@
   },
   {
     "name": "ios-swiftui",
-    "version": "1.3.0",
+    "version": "1.3.1",
     "title": "iOS app with SwiftUI",
     "description": "A native iOS app with SwiftUI and Swift Testing. The Xcode project is generated from project.yml with XcodeGen, so your agent edits YAML instead of the .xcodeproj.",
     "category": "mobile",
@@ -777,7 +777,7 @@
       "xcode",
       "xcodegen"
     ],
-    "author": "Marlon Chaviano",
+    "author": "marlon-chaviano",
     "skills": 21,
     "options": [
       "Design pack",
@@ -791,7 +791,7 @@
   },
   {
     "name": "landing-astro",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "title": "Landing page with Astro",
     "description": "A landing page that loads instantly: Astro with static HTML, Tailwind CSS, ready-made sections (hero, features, FAQ, call to action), SEO and sitemap.",
     "category": "landing",
@@ -801,7 +801,7 @@
       "tailwind",
       "seo"
     ],
-    "author": "Marlon Chaviano",
+    "author": "marlon-chaviano",
     "skills": 31,
     "options": [
       "Animation",
@@ -822,7 +822,7 @@
   },
   {
     "name": "landing-next",
-    "version": "1.4.0",
+    "version": "1.4.1",
     "title": "Landing page with Next.js",
     "description": "Next.js + Tailwind with design skills, React best practices and deployment on Vercel. For landing pages that don't look AI-made.",
     "category": "landing",
@@ -832,7 +832,7 @@
       "design",
       "vercel"
     ],
-    "author": "Marlon Chaviano",
+    "author": "marlon-chaviano",
     "skills": 80,
     "options": [
       "Extras",
@@ -896,7 +896,7 @@
   },
   {
     "name": "landing-nuxt",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "title": "Landing page with Nuxt UI",
     "description": "Nuxt UI's official landing template: sections, pricing, testimonials and FAQ already designed, content in Markdown with Nuxt Content, and dark mode.",
     "category": "landing",
@@ -907,7 +907,7 @@
       "landing",
       "tailwind"
     ],
-    "author": "Marlon Chaviano",
+    "author": "marlon-chaviano",
     "skills": 32,
     "options": [
       "Design pack",
@@ -921,7 +921,7 @@
   },
   {
     "name": "landing-sveltekit",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "title": "Landing page with SvelteKit",
     "description": "A prerendered SvelteKit landing page with Tailwind CSS: ready-made sections, per-page SEO and no JavaScript you don't need.",
     "category": "landing",
@@ -931,7 +931,7 @@
       "landing",
       "tailwind"
     ],
-    "author": "Marlon Chaviano",
+    "author": "marlon-chaviano",
     "skills": 40,
     "options": [
       "Animation",
@@ -952,7 +952,7 @@
   },
   {
     "name": "mcp-server-python",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "title": "MCP server with Python",
     "description": "An MCP server in Python with the official SDK (v2, MCPServer): every tool is a typed function, ready to connect to any agent.",
     "category": "extension",
@@ -961,7 +961,7 @@
       "agents",
       "python"
     ],
-    "author": "Marlon Chaviano",
+    "author": "marlon-chaviano",
     "skills": 25,
     "options": [
       "Code quality",
@@ -977,7 +977,7 @@
   },
   {
     "name": "mcp-server-ts",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "title": "MCP server with TypeScript",
     "description": "An MCP server ready to connect to Claude, Cursor or any agent: tools typed with Zod, stdio transport and the official inspector to try it out.",
     "category": "extension",
@@ -987,7 +987,7 @@
       "typescript",
       "zod"
     ],
-    "author": "Marlon Chaviano",
+    "author": "marlon-chaviano",
     "skills": 29,
     "options": [
       "Observability",
@@ -1009,7 +1009,7 @@
   },
   {
     "name": "mobile-expo",
-    "version": "1.4.0",
+    "version": "1.4.1",
     "title": "Mobile app with Expo",
     "description": "React Native + Expo Router ready for iOS, Android and web, with Expo's official skills so your agent doesn't reach for outdated APIs.",
     "category": "mobile",
@@ -1019,7 +1019,7 @@
       "expo-router",
       "typescript"
     ],
-    "author": "Marlon Chaviano",
+    "author": "marlon-chaviano",
     "skills": 51,
     "options": [
       "Styling",
@@ -1059,7 +1059,7 @@
   },
   {
     "name": "mobile-expo-supabase",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "extends": "mobile-expo",
     "title": "Mobile app with Expo and Supabase",
     "description": "The Expo app with everything a real app needs: Supabase (auth and database), NativeWind, Zustand, TanStack Query and React Hook Form already chosen.",
@@ -1073,7 +1073,7 @@
       "nativewind",
       "auth"
     ],
-    "author": "Marlon Chaviano",
+    "author": "marlon-chaviano",
     "skills": 51,
     "options": [
       "Styling",
@@ -1113,7 +1113,7 @@
   },
   {
     "name": "mobile-flutter",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "title": "Cross-platform app with Flutter",
     "description": "Flutter with the official CLI: one Dart codebase for iOS, Android and web, with hot reload, widget tests and the Flutter team's architecture guides.",
     "category": "mobile",
@@ -1124,7 +1124,7 @@
       "android",
       "mobile"
     ],
-    "author": "Marlon Chaviano",
+    "author": "marlon-chaviano",
     "skills": 33,
     "options": [
       "Design pack",
@@ -1138,7 +1138,7 @@
   },
   {
     "name": "mobile-ignite",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "title": "Mobile app with Ignite",
     "description": "Ignite by Infinite Red: the most battle-tested React Native boilerplate, with Expo, navigation, theming, i18n, MMKV and a structure that scales.",
     "category": "mobile",
@@ -1148,7 +1148,7 @@
       "ignite",
       "mobile"
     ],
-    "author": "Marlon Chaviano",
+    "author": "marlon-chaviano",
     "skills": 32,
     "options": [
       "Design pack",
@@ -1162,7 +1162,7 @@
   },
   {
     "name": "mobile-ionic-react",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "title": "Mobile app with Ionic and React",
     "description": "Ionic with React and Capacitor: one web codebase for iOS, Android and PWA, with Ionic's mobile components and access to native APIs.",
     "category": "mobile",
@@ -1173,7 +1173,7 @@
       "pwa",
       "mobile"
     ],
-    "author": "Marlon Chaviano",
+    "author": "marlon-chaviano",
     "skills": 28,
     "options": [
       "Global state",
@@ -1196,7 +1196,7 @@
   },
   {
     "name": "mobile-kmp",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "title": "App with Kotlin Multiplatform",
     "description": "JetBrains' official template: Kotlin Multiplatform with Compose Multiplatform to share logic and UI between Android and iOS.",
     "category": "mobile",
@@ -1207,7 +1207,7 @@
       "android",
       "ios"
     ],
-    "author": "Marlon Chaviano",
+    "author": "marlon-chaviano",
     "skills": 23,
     "options": [
       "Design pack",
@@ -1221,7 +1221,7 @@
   },
   {
     "name": "monorepo-django-react",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "title": "Django + React in one repo",
     "description": "A Django backend with Django REST Framework and a React + Vite frontend in the same repo, with CORS configured to develop both at once.",
     "category": "monorepo",
@@ -1232,7 +1232,7 @@
       "vite",
       "fullstack"
     ],
-    "author": "Marlon Chaviano",
+    "author": "marlon-chaviano",
     "skills": 35,
     "options": [
       "Design pack",
@@ -1246,7 +1246,7 @@
   },
   {
     "name": "monorepo-go",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "title": "Go monorepo with go.work",
     "description": "A Go workspace (go.work): an HTTP API, a worker and a shared package, each in its own module and using only the standard library.",
     "category": "monorepo",
@@ -1256,7 +1256,7 @@
       "workspace",
       "monorepo"
     ],
-    "author": "Marlon Chaviano",
+    "author": "marlon-chaviano",
     "skills": 26,
     "options": [
       "Pack first-commit"
@@ -1268,7 +1268,7 @@
   },
   {
     "name": "monorepo-nx",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "title": "Monorepo with Nx",
     "description": "An Nx monorepo with a React (Vite) app and libraries: generators, task caching, a dependency graph and module boundary rules.",
     "category": "monorepo",
@@ -1279,7 +1279,7 @@
       "vite",
       "vitest"
     ],
-    "author": "Marlon Chaviano",
+    "author": "marlon-chaviano",
     "skills": 29,
     "options": [
       "Design pack",
@@ -1293,7 +1293,7 @@
   },
   {
     "name": "monorepo-packages",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "title": "npm libraries monorepo",
     "description": "To publish several npm libraries from one repo: pnpm workspaces, builds with tsup (ESM + types), tests with Vitest, and versions and changelogs with Changesets.",
     "category": "monorepo",
@@ -1305,7 +1305,7 @@
       "changesets",
       "vitest"
     ],
-    "author": "Marlon Chaviano",
+    "author": "marlon-chaviano",
     "skills": 20,
     "options": [
       "Continuous integration",
@@ -1319,7 +1319,7 @@
   },
   {
     "name": "monorepo-rails-react",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "title": "Rails API + React in one repo",
     "description": "A Rails 8 API and a React + Vite frontend in the same repo: Rails productivity on the backend and a modern SPA in front.",
     "category": "monorepo",
@@ -1331,7 +1331,7 @@
       "vite",
       "fullstack"
     ],
-    "author": "Marlon Chaviano",
+    "author": "marlon-chaviano",
     "skills": 26,
     "options": [
       "Design pack",
@@ -1345,7 +1345,7 @@
   },
   {
     "name": "monorepo-spring-react",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "title": "Spring Boot + React in one repo",
     "description": "A Spring Boot backend (Maven, Java 17) and a React + Vite frontend in the same repo: the classic shape of an enterprise product, ready to build.",
     "category": "monorepo",
@@ -1357,7 +1357,7 @@
       "vite",
       "fullstack"
     ],
-    "author": "Marlon Chaviano",
+    "author": "marlon-chaviano",
     "skills": 30,
     "options": [
       "Design pack",
@@ -1371,7 +1371,7 @@
   },
   {
     "name": "monorepo-t3-turbo",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "title": "T3 monorepo with Turborepo",
     "description": "create-t3-turbo: Next.js and Expo in the same repo sharing an API with tRPC, Drizzle, Better Auth and UI, all typed end to end with Turborepo.",
     "category": "monorepo",
@@ -1383,7 +1383,7 @@
       "trpc",
       "drizzle"
     ],
-    "author": "Marlon Chaviano",
+    "author": "marlon-chaviano",
     "skills": 37,
     "options": [
       "Design pack",
@@ -1397,7 +1397,7 @@
   },
   {
     "name": "monorepo-turbo",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "title": "Monorepo with Turborepo",
     "description": "One repo for your whole product: pick the web app (Next.js or Vite), and optionally a mobile app with Expo, an API with Hono and docs with Starlight. Shared UI and config packages, and cached builds with Turborepo.",
     "category": "monorepo",
@@ -1409,7 +1409,7 @@
       "hono",
       "typescript"
     ],
-    "author": "Marlon Chaviano",
+    "author": "marlon-chaviano",
     "skills": 45,
     "options": [
       "Web app",
@@ -1425,7 +1425,7 @@
   },
   {
     "name": "portfolio-astro",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "title": "Portfolio with Astro",
     "description": "Astro's official portfolio: a personal page, projects in Markdown and a work section, fast and easy to customize.",
     "category": "landing",
@@ -1434,7 +1434,7 @@
       "portfolio",
       "personal"
     ],
-    "author": "Marlon Chaviano",
+    "author": "marlon-chaviano",
     "skills": 22,
     "options": [
       "Design pack",
@@ -1448,7 +1448,7 @@
   },
   {
     "name": "saas-ai-next",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "title": "AI app with Next.js",
     "description": "An AI app ready to launch: streaming chat with the AI SDK and Claude, accounts with Better Auth, a Drizzle + Neon database and shadcn/ui.",
     "category": "saas",
@@ -1460,7 +1460,7 @@
       "better-auth",
       "streaming"
     ],
-    "author": "Marlon Chaviano",
+    "author": "marlon-chaviano",
     "skills": 124,
     "options": [
       "UI components",
@@ -1549,7 +1549,7 @@
   },
   {
     "name": "saas-django",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "title": "SaaS with Django",
     "description": "Django for a SaaS: accounts with django-allauth (sign-up, email login and password reset), admin, ORM and tests, with optional Postgres and Sentry.",
     "category": "saas",
@@ -1559,7 +1559,7 @@
       "allauth",
       "saas"
     ],
-    "author": "Marlon Chaviano",
+    "author": "marlon-chaviano",
     "skills": 36,
     "options": [
       "Database",
@@ -1581,7 +1581,7 @@
   },
   {
     "name": "saas-laravel",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "title": "SaaS with Laravel and React",
     "description": "Laravel's official starter kit with React and Inertia: sign-up, login, email verification, account settings and a dashboard with shadcn/ui.",
     "category": "saas",
@@ -1592,7 +1592,7 @@
       "inertia",
       "shadcn"
     ],
-    "author": "Marlon Chaviano",
+    "author": "marlon-chaviano",
     "skills": 30,
     "options": [
       "Design pack",
@@ -1606,7 +1606,7 @@
   },
   {
     "name": "saas-next-better-auth",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "title": "SaaS with Next.js and Better Auth",
     "description": "A SaaS foundation with no third-party dependency for accounts: Next.js, Better Auth with your own database (Drizzle + Neon), Stripe, Resend and shadcn/ui.",
     "category": "saas",
@@ -1618,7 +1618,7 @@
       "stripe",
       "shadcn"
     ],
-    "author": "Marlon Chaviano",
+    "author": "marlon-chaviano",
     "skills": 124,
     "options": [
       "UI components",
@@ -1707,7 +1707,7 @@
   },
   {
     "name": "saas-next-supabase",
-    "version": "1.4.0",
+    "version": "1.4.1",
     "title": "SaaS with Next.js + Supabase",
     "description": "Next.js with Supabase (auth and Postgres) and pieces from the catalog: Better Auth or Clerk, Drizzle, Stripe, Resend, i18n, AI, tests, CI and deployment, with their MCP servers and rules for your agent.",
     "category": "saas",
@@ -1718,7 +1718,7 @@
       "auth",
       "postgres"
     ],
-    "author": "Marlon Chaviano",
+    "author": "marlon-chaviano",
     "skills": 125,
     "options": [
       "UI components",
@@ -1807,7 +1807,7 @@
   },
   {
     "name": "saas-nuxt",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "title": "SaaS with Nuxt UI",
     "description": "Nuxt UI's official SaaS template: landing, pricing, blog, docs and account pages already designed, with Nuxt Content and dark mode.",
     "category": "saas",
@@ -1818,7 +1818,7 @@
       "saas",
       "tailwind"
     ],
-    "author": "Marlon Chaviano",
+    "author": "marlon-chaviano",
     "skills": 32,
     "options": [
       "Design pack",
@@ -1832,7 +1832,7 @@
   },
   {
     "name": "saas-rails",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "title": "SaaS with Rails",
     "description": "Rails 8 for a SaaS: authentication with the official generator, Tailwind CSS, Hotwire and the Solid stack (cache, queues and websockets without Redis).",
     "category": "saas",
@@ -1843,7 +1843,7 @@
       "tailwind",
       "saas"
     ],
-    "author": "Marlon Chaviano",
+    "author": "marlon-chaviano",
     "skills": 22,
     "options": [
       "Authentication",
@@ -1861,7 +1861,7 @@
   },
   {
     "name": "saas-sveltekit",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "title": "SaaS with SvelteKit",
     "description": "SvelteKit with the official add-ons: Better Auth with email and password, Drizzle with a SQLite/Turso database, Tailwind CSS and Vitest.",
     "category": "saas",
@@ -1872,7 +1872,7 @@
       "drizzle",
       "tailwind"
     ],
-    "author": "Marlon Chaviano",
+    "author": "marlon-chaviano",
     "skills": 48,
     "options": [
       "UI components",
@@ -1897,7 +1897,7 @@
   },
   {
     "name": "saas-t3",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "title": "SaaS with the T3 stack",
     "description": "create-t3-app: Next.js with tRPC for an end-to-end typed API, Drizzle, Better Auth and Tailwind CSS. The go-to stack for TypeScript SaaS.",
     "category": "saas",
@@ -1909,7 +1909,7 @@
       "better-auth",
       "tailwind"
     ],
-    "author": "Marlon Chaviano",
+    "author": "marlon-chaviano",
     "skills": 67,
     "options": [
       "Payments",
@@ -1945,7 +1945,7 @@
   },
   {
     "name": "saas-tanstack-start",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "title": "SaaS with TanStack Start",
     "description": "TanStack Start with the official add-ons: Better Auth, Drizzle, shadcn/ui, TanStack Query and TanStack Form, with typed routes and server functions.",
     "category": "saas",
@@ -1956,7 +1956,7 @@
       "drizzle",
       "shadcn"
     ],
-    "author": "Marlon Chaviano",
+    "author": "marlon-chaviano",
     "skills": 51,
     "options": [
       "Animation",
@@ -1978,7 +1978,7 @@
   },
   {
     "name": "slack-app",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "title": "Slack app with Bolt",
     "description": "A Slack app with Bolt for TypeScript from the official template: commands, shortcuts, events and Block Kit messages, connected through Socket Mode.",
     "category": "extension",
@@ -1988,7 +1988,7 @@
       "bot",
       "typescript"
     ],
-    "author": "Marlon Chaviano",
+    "author": "marlon-chaviano",
     "skills": 21,
     "options": [
       "Pack first-commit"
@@ -2000,7 +2000,7 @@
   },
   {
     "name": "spa-vite-react",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "title": "SPA with Vite and React",
     "description": "React + TypeScript with Vite and Tailwind CSS: instant startup and fast builds, no server. For dashboards, internal tools and API frontends.",
     "category": "web",
@@ -2011,7 +2011,7 @@
       "tailwind",
       "typescript"
     ],
-    "author": "Marlon Chaviano",
+    "author": "marlon-chaviano",
     "skills": 57,
     "options": [
       "UI components",
@@ -2049,7 +2049,7 @@
   },
   {
     "name": "vscode-extension",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "title": "VS Code extension",
     "description": "A VS Code (and Cursor) extension in TypeScript: commands, settings and F5 debugging ready, packageable with vsce.",
     "category": "extension",
@@ -2059,7 +2059,7 @@
       "extension",
       "typescript"
     ],
-    "author": "Marlon Chaviano",
+    "author": "marlon-chaviano",
     "skills": 22,
     "options": [
       "Code quality",
@@ -2076,7 +2076,7 @@
   },
   {
     "name": "web-angular",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "title": "Web app with Angular",
     "description": "Modern Angular: standalone components, signals, the new control flow and esbuild builds, from the official CLI.",
     "category": "web",
@@ -2085,7 +2085,7 @@
       "typescript",
       "signals"
     ],
-    "author": "Marlon Chaviano",
+    "author": "marlon-chaviano",
     "skills": 30,
     "options": [
       "Design pack",
@@ -2099,7 +2099,7 @@
   },
   {
     "name": "web-astro",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "title": "Content site with Astro",
     "description": "A fast site with Astro: static pages by default, interactive islands only where needed. For blogs, docs and product sites.",
     "category": "web",
@@ -2109,7 +2109,7 @@
       "static",
       "typescript"
     ],
-    "author": "Marlon Chaviano",
+    "author": "marlon-chaviano",
     "skills": 32,
     "options": [
       "Animation",
@@ -2132,7 +2132,7 @@
   },
   {
     "name": "web-laravel",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "title": "Web app with Laravel",
     "description": "Laravel with Eloquent, migrations, queues and Artisan: PHP apps and APIs with everything built in.",
     "category": "web",
@@ -2141,7 +2141,7 @@
       "laravel",
       "eloquent"
     ],
-    "author": "Marlon Chaviano",
+    "author": "marlon-chaviano",
     "skills": 26,
     "options": [
       "Authentication",
@@ -2159,7 +2159,7 @@
   },
   {
     "name": "web-next",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "title": "Web app with Next.js",
     "description": "A full Next.js app (App Router, TypeScript, Tailwind and shadcn/ui) ready to grow: add auth, a database, payments, email or AI from the catalog.",
     "category": "web",
@@ -2170,7 +2170,7 @@
       "shadcn",
       "typescript"
     ],
-    "author": "Marlon Chaviano",
+    "author": "marlon-chaviano",
     "skills": 124,
     "options": [
       "UI components",
@@ -2259,7 +2259,7 @@
   },
   {
     "name": "web-nuxt",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "title": "Web app with Nuxt",
     "description": "Nuxt with Vue 3 and TypeScript: server rendering, file-based routes and auto-imports.",
     "category": "web",
@@ -2269,7 +2269,7 @@
       "ssr",
       "typescript"
     ],
-    "author": "Marlon Chaviano",
+    "author": "marlon-chaviano",
     "skills": 43,
     "options": [
       "UI components",
@@ -2301,7 +2301,7 @@
   },
   {
     "name": "web-rails",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "title": "Web app with Ruby on Rails",
     "description": "Rails 8 with Hotwire, SQLite and Propshaft: a complete app (views, database, jobs) without setting up anything else.",
     "category": "web",
@@ -2311,7 +2311,7 @@
       "hotwire",
       "sqlite"
     ],
-    "author": "Marlon Chaviano",
+    "author": "marlon-chaviano",
     "skills": 22,
     "options": [
       "Authentication",
@@ -2329,7 +2329,7 @@
   },
   {
     "name": "web-react-router",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "title": "Web app with React Router",
     "description": "React Router v7 in framework mode (what used to be Remix): routes with loaders and actions, SSR, Tailwind CSS and per-route generated types.",
     "category": "web",
@@ -2340,7 +2340,7 @@
       "ssr",
       "tailwind"
     ],
-    "author": "Marlon Chaviano",
+    "author": "marlon-chaviano",
     "skills": 61,
     "options": [
       "UI components",
@@ -2383,7 +2383,7 @@
   },
   {
     "name": "web-sveltekit",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "title": "Web app with SvelteKit",
     "description": "SvelteKit with Svelte 5 and TypeScript: file-system routes, server-side data loading and Svelte's official skills.",
     "category": "web",
@@ -2392,7 +2392,7 @@
       "sveltekit",
       "typescript"
     ],
-    "author": "Marlon Chaviano",
+    "author": "marlon-chaviano",
     "skills": 41,
     "options": [
       "Animation",
@@ -2417,7 +2417,7 @@
   },
   {
     "name": "web-tanstack-start",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "title": "Web app with TanStack Start",
     "description": "TanStack Start: full-stack React with end-to-end typed routes, server functions, SSR and streaming, with Tailwind CSS.",
     "category": "web",
@@ -2428,7 +2428,7 @@
       "ssr",
       "tailwind"
     ],
-    "author": "Marlon Chaviano",
+    "author": "marlon-chaviano",
     "skills": 62,
     "options": [
       "UI components",
@@ -2471,7 +2471,7 @@
   },
   {
     "name": "web-vue-vite",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "title": "Web app with Vue and Vite",
     "description": "Vue's official template: Vue 3 with TypeScript, Vue Router, Pinia, tests with Vitest and ESLint, on Vite.",
     "category": "web",
@@ -2482,7 +2482,7 @@
       "vue-router",
       "typescript"
     ],
-    "author": "Marlon Chaviano",
+    "author": "marlon-chaviano",
     "skills": 37,
     "options": [
       "Animation",

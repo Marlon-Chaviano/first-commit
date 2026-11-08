@@ -1,8 +1,8 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "api-django",
-  "version": "1.2.0",
-  "author": "Marlon Chaviano",
+  "version": "1.2.1",
+  "author": "marlon-chaviano",
   "title": "Backend with Django",
   "category": "api",
   "language": "python",

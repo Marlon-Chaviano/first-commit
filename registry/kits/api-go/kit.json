@@ -1,7 +1,7 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "api-go",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "title": "API with Go and chi",
   "description": "An HTTP API in Go with the chi router: standard middlewares, JSON and tests with httptest. No heavy frameworks.",
   "category": "api",
@@ -10,7 +10,7 @@
     "chi",
     "api"
   ],
-  "author": "Marlon Chaviano",
+  "author": "marlon-chaviano",
   "base": {
     "command": "mkdir {{name}} && cd {{name}} && go mod init {{name}}"
   },

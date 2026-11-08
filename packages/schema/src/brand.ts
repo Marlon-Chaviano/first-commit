@@ -23,6 +23,8 @@ export const BRAND = {
 /** Who makes the product (footer credit and contact). */
 export const AUTHOR = {
   name: "Marlon Chaviano",
+  /** The site account that signs the official kits (kit.json `author`, /u/<handle>). */
+  handle: "marlon-chaviano",
   github: "https://github.com/Marlon-Chaviano",
   email: "chavianomarlon@gmail.com",
 } as const;

@@ -1,6 +1,6 @@
 "use client";
 
-import { CircleCheckIcon, LoaderCircleIcon, MailIcon } from "lucide-react";
+import { CheckIcon, LoaderCircleIcon, MailIcon } from "lucide-react";
 import { useActionState, useState } from "react";
 import { toast } from "sonner";
 
@@ -65,29 +65,29 @@ export function SubscribeForm({ initial = null, email }: { initial?: NewsletterS
   );
 }
 
+/** Same footprint as the form: the box doesn't jump when someone subscribes. */
 function SubscribedCard({ email }: { email?: string }) {
   return (
-    <section aria-labelledby="newsletter" className="overflow-hidden rounded-xl border bg-card">
-      <div className="flex items-center justify-between border-b px-5 py-3 sm:px-6">
-        <span className="label-mono text-muted-foreground">Newsletter</span>
-        <span className="inline-flex items-center gap-1.5 font-mono text-xs">
-          <CircleCheckIcon className="size-3.5" aria-hidden />
-          Subscribed
+    <section
+      aria-labelledby="newsletter"
+      aria-live="polite"
+      className="grid grid-cols-1 gap-4 rounded-xl border p-5 sm:p-6 md:grid-cols-[minmax(0,1fr)_auto] md:items-center md:gap-10"
+    >
+      <div className="flex items-start gap-3.5">
+        <span className="mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-full bg-foreground text-background">
+          <CheckIcon className="size-4" strokeWidth={2.5} aria-hidden />
         </span>
+        <div className="flex min-w-0 flex-col gap-1">
+          <h2 id="newsletter" className="font-medium">You&apos;re subscribed</h2>
+          <p className="text-sm text-pretty text-muted-foreground">Every Monday: what changed here and the best new kits. Unsubscribe from any email.</p>
+        </div>
       </div>
-      <div className="flex flex-col gap-1.5 px-5 py-5 sm:px-6" aria-live="polite">
-        <h2 id="newsletter" className="font-medium tracking-tight">You&apos;re subscribed</h2>
-        <p className="max-w-xl text-sm text-pretty text-muted-foreground">
-          The next issue lands on Monday
-          {email ? (
-            <>
-              {" "}
-              at <span className="font-mono text-foreground">{email}</span>
-            </>
-          ) : null}
-          . Every email has a one-click unsubscribe link.
-        </p>
-      </div>
+      {email && (
+        <dl className="flex min-w-0 flex-col gap-0.5 border-t pt-4 md:items-end md:border-t-0 md:pt-0">
+          <dt className="text-xs text-muted-foreground">Sending to</dt>
+          <dd className="truncate font-mono text-sm">{email}</dd>
+        </dl>
+      )}
     </section>
   );
 }

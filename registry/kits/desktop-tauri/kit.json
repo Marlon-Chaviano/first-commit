@@ -1,8 +1,8 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "desktop-tauri",
-  "version": "1.0.0",
-  "author": "Marlon Chaviano",
+  "version": "1.0.1",
+  "author": "marlon-chaviano",
   "title": "Desktop app with Tauri",
   "description": "A small, fast desktop app with Tauri 2: a React + Vite interface and a Rust backend, with mobile targets available. Installers a fraction of Electron's size.",
   "category": "desktop",

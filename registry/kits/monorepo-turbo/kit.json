@@ -1,8 +1,8 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "monorepo-turbo",
-  "version": "1.1.0",
-  "author": "Marlon Chaviano",
+  "version": "1.1.1",
+  "author": "marlon-chaviano",
   "title": "Monorepo with Turborepo",
   "category": "monorepo",
   "language": "typescript",

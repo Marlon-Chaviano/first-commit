@@ -1,7 +1,7 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "landing-next",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "title": "Landing page with Next.js",
   "description": "Next.js + Tailwind with design skills, React best practices and deployment on Vercel. For landing pages that don't look AI-made.",
   "category": "landing",
@@ -11,7 +11,7 @@
     "design",
     "vercel"
   ],
-  "author": "Marlon Chaviano",
+  "author": "marlon-chaviano",
   "base": {
     "command": "npx create-next-app@latest {{name}} --ts --tailwind --eslint --app --src-dir --import-alias \"@/*\" --use-{{pm}} --disable-git --no-agent-feedback --yes"
   },

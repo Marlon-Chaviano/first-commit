@@ -10,6 +10,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { formatCount } from "@/lib/format";
 import { getProfile } from "@/server/accounts";
 import { getLeaderboard } from "@/server/metrics/queries";
+import { getIndex } from "@/server/registry";
 
 export async function generateMetadata({ params }: PageProps<"/u/[handle]">): Promise<Metadata> {
   return { title: (await params).handle };
@@ -28,8 +29,11 @@ export default function ProfilePage({ params }: PageProps<"/u/[handle]">) {
 async function Profile({ handle }: { handle: Promise<string> }) {
   const profile = await getProfile((await handle).toLowerCase());
   if (!profile) notFound();
-  const stats = await getLeaderboard(profile.kits.map((k) => k.slug));
-  const total = profile.kits.reduce((sum, k) => sum + (stats.allTime[k.slug] ?? 0), 0);
+  // Official kits are signed with the author's handle in kit.json: they belong on that profile too.
+  const official = (await getIndex()).filter((e) => e.author === profile.user.handle).map((e) => ({ slug: e.name, title: e.title }));
+  const kits = [...official, ...profile.kits.map((k) => ({ slug: k.slug, title: k.title }))];
+  const stats = await getLeaderboard(kits.map((k) => k.slug));
+  const total = kits.reduce((sum, k) => sum + (stats.allTime[k.slug] ?? 0), 0);
 
   return (
     <>
@@ -41,7 +45,7 @@ async function Profile({ handle }: { handle: Promise<string> }) {
         <div className="flex flex-col gap-1">
           <h1 className="font-mono text-2xl font-semibold">{profile.user.handle}</h1>
           <p className="text-sm text-muted-foreground">
-            {profile.user.name} · {profile.kits.length} kits · {formatCount(total)} installs ·{" "}
+            {profile.user.name} · {kits.length} kits · {formatCount(total)} installs ·{" "}
             <a href={`https://github.com/${profile.user.handle}`} className="hover:underline">
               GitHub
             </a>
@@ -51,7 +55,7 @@ async function Profile({ handle }: { handle: Promise<string> }) {
       <section className="flex flex-col gap-4">
         <h2 className="label-mono">Kits</h2>
         <Separator />
-        {profile.kits.length ? (
+        {kits.length ? (
           <Table>
             <TableHeader>
               <TableRow className="hover:bg-transparent">
@@ -60,8 +64,8 @@ async function Profile({ handle }: { handle: Promise<string> }) {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {profile.kits.map((k) => (
-                <TableRow key={k.id}>
+              {kits.map((k) => (
+                <TableRow key={k.slug}>
                   <TableCell className="max-w-0">
                     <Link href={`/kits/${k.slug}`} className="flex items-baseline gap-2">
                       <span className="shrink-0 font-semibold">{k.slug}</span>

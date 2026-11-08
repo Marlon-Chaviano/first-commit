@@ -1,8 +1,8 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "ai-agent-python",
-  "version": "1.0.0",
-  "author": "Marlon Chaviano",
+  "version": "1.0.1",
+  "author": "marlon-chaviano",
   "title": "AI agent with Python and LangGraph",
   "description": "A tool-using AI agent in Python with LangChain v1 and LangGraph: typed tools, any model provider, the LangGraph dev server and tests that don't spend tokens.",
   "category": "other",
