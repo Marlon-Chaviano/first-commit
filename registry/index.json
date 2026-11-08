@@ -1277,7 +1277,7 @@
   },
   {
     "name": "monorepo-turbo",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "title": "Monorepo with Turborepo",
     "description": "One repo for your whole product: pick the web app (Next.js or Vite), and optionally a mobile app with Expo, an API with Hono and docs with Starlight. Shared UI and config packages, and cached builds with Turborepo.",
     "category": "monorepo",

@@ -1,7 +1,7 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "monorepo-turbo",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "author": "Marlon Chaviano",
   "title": "Monorepo with Turborepo",
   "category": "monorepo",
@@ -28,6 +28,7 @@
   ],
   "finalize": [
     "npm pkg set packageManager=\"{{pm}}@$({{pm}} --version)\"",
+    "[ ! -f pnpm-workspace.yaml ] || grep -q '^allowBuilds:' pnpm-workspace.yaml || printf '\\nallowBuilds:\\n  esbuild: true\\n' >> pnpm-workspace.yaml",
     "{{pm}} install"
   ],
   "verify": {

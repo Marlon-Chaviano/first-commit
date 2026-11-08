@@ -89,7 +89,8 @@
   "monorepo-turbo": {
     "1.0.0": "sha256-eQNN1VfV+kKViSeITdkuy7krEkW3Ew7Eb8WUaN5nPFo=",
     "1.0.1": "sha256-dtY/enE7GLXrkZV9iSkwS1JQtycZ7e/VqHgXkMq474I=",
-    "1.0.2": "sha256-eP1TVXGhrYIl2U4C0IzsgEC/X84OZ/AYl7Ol4d483iY="
+    "1.0.2": "sha256-eP1TVXGhrYIl2U4C0IzsgEC/X84OZ/AYl7Ol4d483iY=",
+    "1.0.3": "sha256-43iKONWmz14Mjib+WfOAJsZy48UA2zGUJFTdr9GHVCg="
   },
   "discord-bot": {
     "1.0.0": "sha256-dBTzF3Bm4jHzU3fplfQhgKaemo+T2sTEsQNC67aQE0c="
