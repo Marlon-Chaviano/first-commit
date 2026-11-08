@@ -2,9 +2,8 @@ import { cliCommand } from "@kits/schema";
 import type { Metadata } from "next";
 import Link from "next/link";
 
-import { PromptBlock } from "@/components/shared/prompt-block";
+import { AgentSetup } from "@/features/agent-help/agent-setup";
 import { Cmd, Code, CodeBlock, DocsHeader, Fields, H2, P } from "@/features/docs/docs-ui";
-import { brandPrompt } from "@/lib/agent-prompts";
 
 export const metadata: Metadata = {
   title: "Brand profiles",
@@ -30,10 +29,10 @@ export default function BrandsDocs() {
         rules, voice and documentation) and apply it to any kit. The agent follows it from the first commit, without you explaining it every time.
       </DocsHeader>
 
-      <H2 id="prompt">Prompt</H2>
-      <P>Paste this prompt into your agent: it detects the brand (from the project, the website or the logo), reviews it with you and applies it.</P>
+      <H2 id="agent">With your agent</H2>
+      <P>Copy the instruction and paste it into your agent: it detects the brand (from the project, the website or the logo), reviews it with you and applies it.</P>
       <div className="mt-3">
-        <PromptBlock text={brandPrompt()} />
+        <AgentSetup tasks={["brand"]} />
       </div>
 
       <H2 id="create">Create a profile</H2>

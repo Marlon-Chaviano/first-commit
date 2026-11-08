@@ -1,19 +1,17 @@
 import { brandProfileSchema, cliCommand } from "@kits/schema";
-import { ChevronDownIcon } from "lucide-react";
 import Link from "next/link";
 
 import { Command } from "@/components/shared/command";
-import { PromptBlock } from "@/components/shared/prompt-block";
 import { Button } from "@/components/ui/button";
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from "@/components/ui/empty";
 import { TabHeader } from "@/features/account/tab-header";
-import { brandPrompt } from "@/lib/agent-prompts";
+import { AgentSetup } from "@/features/agent-help/agent-setup";
 import { listBrands } from "@/server/brands";
 import type { TokenUser } from "@/server/tokens";
 
 import { BrandPreview } from "./brand-editor";
 
-/** The viewer's brand profiles with the "New" button, the empty state and the agent prompt. Shared by /brands and the account tab. */
+/** The viewer's brand profiles with the "New" button, the empty state and Agent setup. Shared by /brands and the account tab. */
 export async function MyBrands({ viewer }: { viewer: TokenUser }) {
   const brands = await listBrands(viewer);
   return (
@@ -31,12 +29,12 @@ export async function MyBrands({ viewer }: { viewer: TokenUser }) {
 
 type Brands = Awaited<ReturnType<typeof listBrands>>;
 
-/** The list (or the empty state) and the agent prompt, for pages that draw their own header. */
+/** The list (or the empty state) and Agent setup, for pages that draw their own header. */
 export function BrandsBody({ brands }: { brands: Brands }) {
   return (
     <>
       {brands.length ? <BrandList brands={brands} /> : <NoBrands />}
-      <AgentPrompt />
+      <AgentSetup tasks={["brand"]} className="w-fit" />
     </>
   );
 }
@@ -79,19 +77,3 @@ function BrandList({ brands }: { brands: Brands }) {
   );
 }
 
-function AgentPrompt() {
-  return (
-    <details className="group rounded-lg border">
-        <summary className="flex cursor-pointer list-none items-center justify-between px-4 py-3 text-sm [&::-webkit-details-marker]:hidden">
-          <span>
-            <span className="font-medium">Rather have your agent do it?</span>{" "}
-            <span className="text-muted-foreground">Copy this prompt and paste it into Claude Code, Cursor or Codex.</span>
-          </span>
-          <ChevronDownIcon className="size-4 text-muted-foreground transition-transform group-open:rotate-180" />
-        </summary>
-        <div className="border-t p-4">
-          <PromptBlock text={brandPrompt()} />
-        </div>
-      </details>
-  );
-}

@@ -2,7 +2,7 @@ import { BRAND, cliCommand } from "@kits/schema";
 import type { Metadata } from "next";
 import Link from "next/link";
 
-import { AgentHelp } from "@/features/agent-help/agent-help";
+import { AgentSetup } from "@/features/agent-help/agent-setup";
 import { Cmd, Code, CodeBlock, DocsHeader, H2, P } from "@/features/docs/docs-ui";
 import { BrandName } from "@/components/shared/brand-name";
 
@@ -41,8 +41,9 @@ export default function CreateKitDocs() {
         is to generate it from a project you already like.
       </DocsHeader>
 
-      <div className="mt-8">
-        <AgentHelp defaultTask="kit" />
+      <div className="mt-8 flex flex-wrap items-center gap-3">
+        <AgentSetup tasks={["kit"]} />
+        <span className="text-sm text-muted-foreground">Or let your agent create it for you.</span>
       </div>
 
       <H2 id="from-your-project">1. From your project</H2>

@@ -163,9 +163,6 @@ export function BrandImporter({ onDetect }: { onDetect: (d: BrandDetection) => v
             It generates a <code className="font-mono">brand.json</code>. Use it directly with <code className="font-mono">--brand ./brand.json</code> or upload it in
             &quot;From a file&quot; to save it here.
           </p>
-          <p className="text-sm text-muted-foreground">
-            Rather have your agent do it? Ask it to, with the <code className="font-mono">extract-design-system</code> skill.
-          </p>
         </TabsContent>
       </Tabs>
 

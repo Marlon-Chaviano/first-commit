@@ -5,8 +5,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
-import { InstallTabs } from "@/components/shared/install-tabs";
-import { newProjectPrompt } from "@/lib/agent-prompts";
+import { Command } from "@/components/shared/command";
+import { AgentSetup } from "@/features/agent-help/agent-setup";
 import { JsonLd } from "@/components/shared/json-ld";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
@@ -120,7 +120,8 @@ async function StackContent({ slug }: { slug: Promise<string> }) {
 
       <section className="mt-12 flex flex-col gap-4">
         <h2 className="label-mono">Install</h2>
-        <InstallTabs command={command} prompt={newProjectPrompt({ title: stack.title, command })} />
+        <Command command={command} wrap className="w-fit max-w-full" />
+        <AgentSetup tasks={["project"]} kit={{ title: stack.title, command }} className="w-fit" />
       </section>
 
       {chosen.length > 0 && (

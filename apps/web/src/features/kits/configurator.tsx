@@ -6,11 +6,8 @@ import { toast } from "sonner";
 import { useEffect, useRef, useState } from "react";
 
 import { Command } from "@/components/shared/command";
-import { newProjectPrompt } from "@/lib/agent-prompts";
 import { TechIcon, TechLogo } from "@/components/shared/tech-icon";
-import { PromptPreview } from "@/components/shared/prompt-preview";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -26,6 +23,7 @@ import { formatCount } from "@/lib/format";
 import { SKILL_BLURBS } from "@/lib/skill-blurbs";
 import type { SkillResult } from "@/app/api/v1/skills/route";
 
+import { AgentSetup } from "../agent-help/agent-setup";
 import type { BrandChoice } from "../brands/actions";
 import { BrandPicker } from "./brand-picker";
 import { PlanPreview } from "./plan-preview";
@@ -289,22 +287,13 @@ export function Configurator({
               {counts.filter(([n]) => n > 0).map(([n, label]) => `${n} ${label}`).join(" · ")}
             </p>
           </div>
-          <Tabs defaultValue="command" className="gap-3">
-            <TabsList variant="line" className="font-mono">
-              <TabsTrigger value="command" className="text-xs">Command</TabsTrigger>
-              <TabsTrigger value="prompt" className="text-xs">Prompt</TabsTrigger>
-            </TabsList>
-            <TabsContent value="command" className="flex flex-col gap-2">
-              <Command command={command} wrap />
-              <p className="text-xs text-muted-foreground">
-                Add <code className="font-mono text-foreground">--dry-run</code> to see the plan without running anything.
-              </p>
-            </TabsContent>
-            <TabsContent value="prompt" className="flex flex-col gap-2">
-              <PromptPreview text={newProjectPrompt({ title: kit.title, command })} />
-              <p className="text-xs text-pretty text-muted-foreground">Paste it into your agent in an empty folder: it shows the plan and asks before installing.</p>
-            </TabsContent>
-          </Tabs>
+          <div className="flex flex-col gap-2">
+            <Command command={command} wrap />
+            <p className="text-xs text-muted-foreground">
+              Add <code className="font-mono text-foreground">--dry-run</code> to see the plan without running anything.
+            </p>
+          </div>
+          <AgentSetup tasks={["project"]} kit={{ title: kit.title, command }} className="w-full" />
         </section>
 
         <section className="flex flex-col gap-4 rounded-xl border p-4">
