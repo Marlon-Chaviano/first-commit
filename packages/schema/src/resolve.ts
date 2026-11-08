@@ -2,18 +2,9 @@ import { BRAND, KITS_SKILL, KITS_SKILL_PUBLISHED } from "./brand";
 import type { PackageManager } from "./package-managers";
 import type { Choice, Kit, McpServer, WriteFile } from "./schema";
 
-export const AGENTS = [
-  { id: "claude-code", label: "Claude Code" },
-  { id: "cursor", label: "Cursor" },
-  { id: "codex", label: "Codex" },
-  { id: "gemini-cli", label: "Gemini CLI" },
-  { id: "github-copilot", label: "GitHub Copilot" },
-  { id: "windsurf", label: "Windsurf" },
-  { id: "opencode", label: "OpenCode" },
-] as const;
+import { DEFAULT_AGENTS } from "./catalog";
 
-export type AgentId = (typeof AGENTS)[number]["id"];
-export const DEFAULT_AGENTS: AgentId[] = ["claude-code"];
+export { AGENTS, DEFAULT_AGENTS, type AgentId } from "./catalog";
 
 export { PACKAGE_MANAGER_IDS as PACKAGE_MANAGERS } from "./package-managers";
 

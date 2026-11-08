@@ -25,6 +25,8 @@ export default function FaqDocs() {
         }}
       />
       <DocsHeader title="FAQ">What people ask us most. If it isn&apos;t here, get in touch.</DocsHeader>
+      {/* The questions are h3s (Accordion): an h2 keeps the heading order for screen readers. */}
+      <h2 className="sr-only">Questions</h2>
       <Accordion className="mt-8">
         {FAQ.map(([question, answer]) => (
           <AccordionItem key={question} value={question}>

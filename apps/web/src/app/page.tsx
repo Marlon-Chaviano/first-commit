@@ -17,6 +17,7 @@ import { getLeaderboard } from "@/server/metrics/queries";
 import { getAllEntries, getFeaturedEntries } from "@/server/registry";
 import { getVerification } from "@/server/verifications/queries";
 import { facets, RANKING_MIN_INSTALLS } from "@/lib/kit-query";
+import { logosFor } from "@/lib/logos";
 
 export const metadata: Metadata = { alternates: { canonical: "/" } };
 
@@ -28,6 +29,9 @@ export default async function Home() {
     getLeaderboard(kits.map((k) => k.name)),
     Promise.all(kits.map(async (k) => [k.name, (await getVerification(k.name, k.version)).verified] as const)),
   ]);
+
+  // The list's row logos, picked here: the client gets these paths only, not the whole logo set.
+  const rowLogos = Object.fromEntries(kits.map((k) => [k.name, logosFor(k.tags, 4).map(({ icon }) => icon)]));
 
   return (
     <div className="mx-auto flex max-w-5xl flex-col gap-20 px-4 pt-8 sm:px-6">
@@ -169,8 +173,8 @@ export default async function Home() {
       <section id="leaderboard" className="flex scroll-mt-20 flex-col gap-4">
         <h2 className="label-mono">{stats.total >= RANKING_MIN_INSTALLS ? "Kit ranking" : "Kits"}</h2>
         {/* Prerendered as the plain list; in the browser, the one that reads ?q= and the filters from the URL. */}
-        <Suspense fallback={<KitLeaderboard kits={kits} stats={stats} verified={Object.fromEntries(verified)} />}>
-          <KitLeaderboardFromUrl kits={kits} stats={stats} verified={Object.fromEntries(verified)} />
+        <Suspense fallback={<KitLeaderboard kits={kits} logos={rowLogos} stats={stats} verified={Object.fromEntries(verified)} />}>
+          <KitLeaderboardFromUrl kits={kits} logos={rowLogos} stats={stats} verified={Object.fromEntries(verified)} />
         </Suspense>
       </section>
     </div>

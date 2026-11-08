@@ -3,18 +3,51 @@
     "collect": {
       "startServerCommand": "NEXT_DIST_DIR=.next-audit pnpm exec next start -p 3300",
       "startServerReadyPattern": "Ready",
-      "url": ["http://localhost:3300/", "http://localhost:3300/kits/landing-next", "http://localhost:3300/stacks/nextjs-supabase-stripe"],
+      "url": [
+        "http://localhost:3300/",
+        "http://localhost:3300/kits/landing-next",
+        "http://localhost:3300/stacks/nextjs-supabase-stripe",
+        "http://localhost:3300/docs",
+        "http://localhost:3300/docs/cli",
+        "http://localhost:3300/changelog",
+        "http://localhost:3300/brands"
+      ],
       "numberOfRuns": 3,
-      "settings": { "preset": "desktop" }
+      "settings": {
+        "preset": "desktop"
+      }
     },
     "assert": {
       "assertions": {
-        "categories:performance": ["error", { "minScore": 0.9 }],
-        "categories:accessibility": ["error", { "minScore": 0.9 }],
-        "categories:seo": ["error", { "minScore": 0.9 }],
-        "categories:best-practices": ["warn", { "minScore": 0.9 }]
+        "categories:performance": [
+          "error",
+          {
+            "minScore": 0.95
+          }
+        ],
+        "categories:accessibility": [
+          "error",
+          {
+            "minScore": 0.95
+          }
+        ],
+        "categories:seo": [
+          "error",
+          {
+            "minScore": 0.95
+          }
+        ],
+        "categories:best-practices": [
+          "error",
+          {
+            "minScore": 0.95
+          }
+        ]
       }
     },
-    "upload": { "target": "filesystem", "outputDir": ".lighthouseci" }
+    "upload": {
+      "target": "filesystem",
+      "outputDir": ".lighthouseci"
+    }
   }
 }

@@ -1,4 +1,4 @@
-import { BRAND } from "@kits/schema";
+import { BRAND } from "@kits/schema/light";
 import type { Metadata } from "next";
 
 /**

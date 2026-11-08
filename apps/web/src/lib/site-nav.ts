@@ -1,4 +1,4 @@
-import { AUTHOR, REPO_URL } from "@kits/schema";
+import { AUTHOR, REPO_URL } from "@kits/schema/light";
 import type { Route } from "next";
 
 /** The docs, grouped as in the sidebar. The footer and the sitemap read the same list. */

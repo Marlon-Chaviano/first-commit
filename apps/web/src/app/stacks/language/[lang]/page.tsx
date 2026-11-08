@@ -7,7 +7,8 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
 import { Command } from "@/components/shared/command";
-import { TechIcon, TechLogo } from "@/components/shared/tech-icon";
+import { TechIcon } from "@/components/shared/tech-icon";
+import { TechLogo } from "@/components/shared/tech-logo";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";

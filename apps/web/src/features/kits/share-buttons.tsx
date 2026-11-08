@@ -1,6 +1,7 @@
 "use client";
 
-import { BRAND, type Selections } from "@kits/schema";
+import type { Selections } from "@kits/schema";
+import { BRAND } from "@kits/schema/light";
 import { CheckIcon, LinkIcon, LoaderCircleIcon } from "lucide-react";
 import { useRef, useState } from "react";
 import { toast } from "sonner";

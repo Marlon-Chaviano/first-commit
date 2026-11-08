@@ -1,7 +1,7 @@
 import { LIBRARY_CATEGORIES } from "@kits/schema";
 import type { Metadata } from "next";
 
-import { TechLogo } from "@/components/shared/tech-icon";
+import { TechLogo } from "@/components/shared/tech-logo";
 import { Badge } from "@/components/ui/badge";
 import { Code, DocsHeader, H2 } from "@/features/docs/docs-ui";
 import { getCatalog } from "@/server/registry";

@@ -1,6 +1,6 @@
 "use client";
 
-import { REPO_URL } from "@kits/schema";
+import { REPO_URL } from "@kits/schema/light";
 import { ArrowUpRightIcon, MenuIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";

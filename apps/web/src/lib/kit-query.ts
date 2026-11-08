@@ -1,4 +1,4 @@
-import { entryLanguage, FLAGSHIP_KITS, KIT_CATEGORIES, LANGUAGES, type KitCategory, type RegistryEntry } from "@kits/schema";
+import { entryLanguage, FLAGSHIP_KITS, KIT_CATEGORIES, LANGUAGES, type KitCategory, type RegistryEntry } from "@kits/schema/light";
 
 export type KitOrigin = "all" | "official" | "community" | "verified";
 

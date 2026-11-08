@@ -1,6 +1,6 @@
 "use client";
 
-import { BRAND } from "@kits/schema";
+import { BRAND } from "@kits/schema/light";
 import { CircleCheckIcon, CircleXIcon, LoaderCircleIcon, MailCheckIcon, MailMinusIcon } from "lucide-react";
 import Link from "next/link";
 import { useActionState } from "react";

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { useSyncExternalStore } from "react";
 
 import { UserAvatar } from "@/components/shared/user-avatar";
 import { Button } from "@/components/ui/button";
@@ -16,7 +17,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Skeleton } from "@/components/ui/skeleton";
-import { authClient } from "@/lib/auth-client";
+import { subscribeViewer, viewerServerSnapshot, viewerSnapshot } from "@/lib/viewer-store";
 import { ACCOUNT_TABS } from "@/lib/site-nav";
 
 /** The menu names the tabs from the person's point of view. */
@@ -24,16 +25,16 @@ const MENU_LABELS: Record<string, string> = { "/account/kits": "My kits", "/acco
 
 export function UserMenu() {
   const router = useRouter();
-  const { data, isPending } = authClient.useSession();
-  if (isPending) return <Skeleton className="size-8 rounded-full" />;
-  if (!data) {
+  const session = useSyncExternalStore(subscribeViewer, viewerSnapshot, viewerServerSnapshot);
+  if (session.status === "loading") return <Skeleton className="size-8 rounded-full" />;
+  if (!session.viewer) {
     return (
       <Button size="sm" nativeButton={false} render={<Link href="/login" />} className="px-3 font-medium">
         Log in
       </Button>
     );
   }
-  const { user } = data;
+  const user = session.viewer;
   const go = (href: string) => () => router.push(href);
   return (
     <DropdownMenu>
@@ -71,6 +72,8 @@ export function UserMenu() {
           <DropdownMenuItem
             variant="destructive"
             onClick={async () => {
+              // Better Auth's client only loads here, when it's needed.
+              const { authClient } = await import("@/lib/auth-client");
               const { error } = await authClient.signOut();
               if (error) return toast.error("Couldn't log out. Try again.");
               // Full navigation: drops the client router cache so no page keeps showing the old session.

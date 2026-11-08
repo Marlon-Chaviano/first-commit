@@ -6,7 +6,8 @@ import { notFound } from "next/navigation";
 import { Suspense, ViewTransition, type ComponentProps } from "react";
 
 import { CopyButton } from "@/components/shared/copy-button";
-import { TechIcon, TechLogo } from "@/components/shared/tech-icon";
+import { TechIcon } from "@/components/shared/tech-icon";
+import { TechLogo } from "@/components/shared/tech-logo";
 import { Sparkline } from "@/components/shared/sparkline";
 import { Badge } from "@/components/ui/badge";
 import { ScrollToTop } from "@/components/shared/scroll-to-top";

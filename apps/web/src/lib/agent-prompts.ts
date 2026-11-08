@@ -1,4 +1,4 @@
-import { BRAND, cliCommand, KITS_SKILL } from "@kits/schema";
+import { BRAND, cliCommand, KITS_SKILL } from "@kits/schema/light";
 
 /**
  * Prompts for people who don't use a terminal: they paste one into their agent

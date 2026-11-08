@@ -1,6 +1,6 @@
 "use client";
 
-import { cliCommand } from "@kits/schema";
+import { cliCommand } from "@kits/schema/light";
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 
 import { cn } from "@/lib/utils";

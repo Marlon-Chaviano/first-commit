@@ -71,12 +71,13 @@ export default function DocsOverview() {
             ["community", "Community", "Published by anyone from their repository. Review the plan before installing them."],
           ] as const
         ).map(([origin, title, text]) => (
-          <div key={origin} className="flex gap-3 py-3">
-            <OriginIcon origin={origin} className="mt-0.5 size-4" />
-            <div className="flex flex-col gap-0.5">
-              <dt className="font-medium">{title}</dt>
-              <dd className="text-sm text-muted-foreground">{text}</dd>
-            </div>
+          // Only dt/dd inside each group (valid <dl>): the icon lives in the term.
+          <div key={origin} className="flex flex-col gap-0.5 py-3">
+            <dt className="flex items-center gap-3 font-medium">
+              <OriginIcon origin={origin} className="size-4" />
+              {title}
+            </dt>
+            <dd className="pl-7 text-sm text-muted-foreground">{text}</dd>
           </div>
         ))}
       </dl>

@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+import { FLAGSHIP_KITS } from "./catalog";
+
 import type { Selections } from "./resolve";
 import type { Kit } from "./schema";
 import { selectionsFrom } from "./selections";
@@ -103,11 +105,6 @@ const CHOICE_HINTS: Record<string, RegExp> = {
   seo: /\b(seo|google|open graph|posicionamiento|search engines|ranking)\b/,
 };
 
-/**
- * On a tie, the general-purpose kit of each type wins; the rest (another language,
- * framework or tool) only when the description asks for them.
- */
-export const FLAGSHIP_KITS: ReadonlySet<string> = new Set(["landing-next", "saas-next-supabase", "mobile-expo", "api-hono", "chrome-extension", "spa-vite-react", "monorepo-turbo"]);
 
 /** Tags many kits share: they say nothing about which kit fits better. */
 const GENERIC_TAGS = new Set(["landing", "saas", "api", "extension", "mobile", "monorepo", "plugin", "bot", "typescript", "tailwind", "node", "seo", "design", "personal", "agents", "auth"]);
@@ -155,3 +152,5 @@ export function resolveRecommendation(kit: Kit, rec: Recommendation, source: Res
   const { selections } = selectionsFrom(kit, { options: rec.options }, { requirements: "autofill", unknown: "ignore" });
   return { ...rec, kit: kit.name, options: selections.options, selections, source };
 }
+
+export { FLAGSHIP_KITS } from "./catalog";

@@ -7,7 +7,8 @@ import { useEffect, useRef, useState } from "react";
 
 import { BrandName } from "@/components/shared/brand-name";
 import { Command } from "@/components/shared/command";
-import { TechIcon, TechLogo } from "@/components/shared/tech-icon";
+import { TechIcon } from "@/components/shared/tech-icon";
+import { TechLogo } from "@/components/shared/tech-logo";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";

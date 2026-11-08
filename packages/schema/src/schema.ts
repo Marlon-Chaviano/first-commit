@@ -1,4 +1,7 @@
 import { z } from "zod";
+import { KIT_CATEGORIES } from "./catalog";
+
+export { CATEGORY_LABELS, KIT_CATEGORIES, type KitCategory } from "./catalog";
 
 import { LANGUAGE_IDS } from "./languages";
 import { PACKAGE_MANAGER_IDS } from "./package-managers";
@@ -13,21 +16,6 @@ const categoryDefaults = Object.fromEntries(
 export { PACKAGE_MANAGER_IDS } from "./package-managers";
 
 /** Kit types. A monorepo holds several apps and shared packages in one repo. */
-export const KIT_CATEGORIES = ["mobile", "web", "landing", "saas", "api", "extension", "monorepo", "other"] as const;
-export type KitCategory = (typeof KIT_CATEGORIES)[number];
-
-/** How each kit type is shown (website and CLI). */
-export const CATEGORY_LABELS: Record<KitCategory, string> = {
-  mobile: "Mobile",
-  landing: "Landing",
-  saas: "SaaS",
-  web: "Web",
-  api: "API",
-  extension: "Extensions",
-  monorepo: "Monorepo",
-  other: "Other",
-};
-
 export const SEMVER = /^\d+\.\d+\.\d+(?:-[\w.]+)?$/;
 
 /** "owner/repo@skill" — the same reference format skills.sh uses. */

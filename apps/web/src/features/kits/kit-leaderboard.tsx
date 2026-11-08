@@ -1,6 +1,6 @@
 "use client";
 
-import { CATEGORY_LABELS, entryLanguage, languageLabel, type KitCategory, type LanguageId, type RegistryEntry } from "@kits/schema";
+import { CATEGORY_LABELS, entryLanguage, languageLabel, type KitCategory, type LanguageId, type RegistryEntry } from "@kits/schema/light";
 import { ChevronDownIcon, SearchIcon, XIcon } from "lucide-react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -20,7 +20,7 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { facets, queryKits, RANKING_MIN_INSTALLS, searchIndex, suggestKits } from "@/lib/kit-query";
 import { formatCount } from "@/lib/format";
-import { logosFor } from "@/lib/logos";
+import type { Logo } from "@/lib/tech-icons";
 import { kitTransitionName } from "@/lib/view-transition";
 import type { Leaderboard } from "@/server/metrics/queries";
 
@@ -51,6 +51,8 @@ function useDebounced<T>(value: T, ms: number): T {
 
 type Props = {
   kits: RegistryEntry[];
+  /** Up to four logos per kit, from its tags. Picked on the server, so the list doesn't ship every logo. */
+  logos: Record<string, Logo[]>;
   stats: Leaderboard;
   /** kit → its current version passed `create-first-commit test` */
   verified: Record<string, boolean>;
@@ -86,7 +88,7 @@ export function KitLeaderboardFromUrl(props: Props) {
   return <KitLeaderboard {...props} initial={stateFromParams(new URLSearchParams(params))} syncUrl />;
 }
 
-export function KitLeaderboard({ kits, stats, verified, initial = DEFAULT_STATE, syncUrl = false }: Props & { initial?: ListState; syncUrl?: boolean }) {
+export function KitLeaderboard({ kits, logos, stats, verified, initial = DEFAULT_STATE, syncUrl = false }: Props & { initial?: ListState; syncUrl?: boolean }) {
   const router = useRouter();
   const input = useRef<HTMLInputElement>(null);
   const [query, setQuery] = useState(initial.q);
@@ -269,9 +271,9 @@ export function KitLeaderboard({ kits, stats, verified, initial = DEFAULT_STATE,
                       <span className="font-mono text-xs text-pretty text-muted-foreground sm:truncate">{kit.title}</span>
                     </span>
                     <span className="ml-auto hidden shrink-0 items-center gap-2 pr-2 text-muted-foreground md:flex" aria-hidden>
-                      {logosFor(kit.tags, 4).map(({ key, icon }) => (
-                        <svg key={key} viewBox="0 0 24 24" fill="currentColor" className="size-3.5">
-                          <path d={icon.path} />
+                      {(logos[kit.name] ?? []).map((logo) => (
+                        <svg key={logo.slug} viewBox="0 0 24 24" fill="currentColor" className="size-3.5">
+                          <path d={logo.path} />
                         </svg>
                       ))}
                     </span>
