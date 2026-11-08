@@ -1,4 +1,4 @@
-import { allKitSkills, AUTHOR, BRAND, CATEGORY_LABELS, kitLanguage, LANGUAGES, defaultSelections, selectionsFrom, type Selections, cliCommand, REPO_URL } from "@kits/schema";
+import { allKitSkills, AUTHOR, BRAND, CATEGORY_LABELS, kitLanguage, LANGUAGES, defaultSelections, selectionsFrom, type Selections, cliCommand, REPO_URL, pruneSelections } from "@kits/schema";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { LockIcon } from "lucide-react";
@@ -25,6 +25,7 @@ import { ReportDialog } from "@/features/kits/report-dialog";
 import { BuyKitButton } from "@/features/billing/buttons";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { readRecommendation } from "@/features/recommend/href";
+import { getSharedConfig, SHARE_PARAM } from "@/server/share";
 import { OriginIcon } from "@/components/shared/origin-icon";
 import { formatCount } from "@/lib/format";
 import { getKitStats } from "@/server/metrics/queries";
@@ -69,8 +70,18 @@ export default function KitPage({ params, searchParams }: PageProps<"/kits/[...s
 async function RecommendedConfigurator({
   searchParams,
   ...props
-}: { searchParams: PageProps<"/kits/[...slug]">["searchParams"] } & Omit<ComponentProps<typeof Configurator>, "initial" | "reasons">) {
-  const { options, reasons } = readRecommendation(await searchParams);
+}: { searchParams: PageProps<"/kits/[...slug]">["searchParams"] } & Omit<ComponentProps<typeof Configurator>, "initial" | "reasons" | "initialName">) {
+  const { [SHARE_PARAM]: shareId, ...params } = await searchParams;
+  // A shared link (/k/<id> → ?c=<id>): exactly what the person shared, checked against today's kit.
+  const shared = typeof shareId === "string" ? await getSharedConfig(shareId) : null;
+  if (shared && shared.kit === props.kitRef) {
+    try {
+      return <Configurator {...props} initial={pruneSelections(props.kit, shared.selections)} initialName={shared.name ?? undefined} />;
+    } catch {
+      // The kit changed since and the configuration no longer fits: fall through to the defaults.
+    }
+  }
+  const { options, reasons } = readRecommendation(params);
   if (!Object.keys(options).length) return <Configurator {...props} />;
   let initial: Selections;
   try {
@@ -287,7 +298,7 @@ async function KitContent({ slug, searchParams }: { slug: Promise<string>; searc
       <div className="mt-10">
         {/* The shell shows the defaults; a recommendation in the URL (?animation=motion&why=…) streams in. */}
         <Suspense fallback={<Configurator kit={kit} kitRef={meta.slug} audits={audits} details={details} />}>
-          <RecommendedConfigurator kit={kit} kitRef={meta.slug} audits={audits} details={details} searchParams={searchParams} />
+          <RecommendedConfigurator kit={kit} kitRef={meta.slug} audits={audits} details={details} searchParams={searchParams} shareable={meta.visibility === "public"} />
         </Suspense>
       </div>
     </div>

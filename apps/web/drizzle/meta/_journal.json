@@ -85,6 +85,13 @@
       "when": 1793936975240,
       "tag": "0011_slimy_scalphunter",
       "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1794165175776,
+      "tag": "0012_brief_daimon_hellstrom",
+      "breakpoints": true
     }
   ]
 }

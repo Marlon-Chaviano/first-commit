@@ -25,6 +25,7 @@ import { SKILL_BLURBS } from "@/lib/skill-blurbs";
 import type { SkillResult } from "@/app/api/v1/skills/route";
 
 import { AgentSetup } from "../agent-help/agent-setup";
+import { ShareButtons } from "./share-buttons";
 import type { BrandChoice } from "../brands/actions";
 import { BrandPicker } from "./brand-picker";
 import { PlanPreview } from "./plan-preview";
@@ -35,8 +36,10 @@ export function Configurator({
   kitRef = kit.name,
   audits = {},
   initial,
+  initialName = "",
   reasons = [],
   details,
+  shareable = false,
 }: {
   kit: Kit;
   /** How the CLI installs it: "mobile-expo" or "ana/landing". */
@@ -46,11 +49,15 @@ export function Configurator({
   initial?: Selections;
   /** Why those selections, shown above the command. */
   reasons?: string[];
+  /** Project name to start with (a shared configuration that set one). */
+  initialName?: string;
+  /** Public kits get "Share" (a short link to this configuration) and "Post on X". */
+  shareable?: boolean;
   /** Server-rendered extras for the sticky column (stats, author, badge…). */
   details?: React.ReactNode;
 }) {
   const [sel, setSel] = useState<Selections>(() => initial ?? defaultSelections(kit));
-  const [name, setName] = useState("");
+  const [name, setName] = useState(initialName);
   const [brand, setBrand] = useState<BrandChoice | null>(null);
   // When the install command scrolls out of view, a bar at the bottom keeps it one click away.
   const installRef = useRef<HTMLElement>(null);
@@ -302,6 +309,11 @@ export function Configurator({
             </p>
           </div>
           <AgentSetup tasks={["project"]} kit={{ title: kit.title, command }} className="w-full" />
+          {shareable && (
+            <div className="grid grid-cols-2 gap-2 [&>button]:w-full">
+              <ShareButtons config={{ kit: kitRef, selections: effective, ...(isProjectName(name) ? { name } : {}) }} title={kit.title} command={command} />
+            </div>
+          )}
         </section>
 
         <section className="flex flex-col gap-4 rounded-xl border p-4">

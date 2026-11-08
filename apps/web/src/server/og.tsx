@@ -84,9 +84,10 @@ export async function ogCard(card: OgCard, init?: ResponseInit): Promise<ImageRe
           <span style={{ fontSize: 28, lineHeight: 1.35, color: MUTED, maxWidth: 1040 }}>{clip(card.description, 120)}</span>
         </div>
 
-        <div style={{ display: "flex", alignItems: "center", gap: 14, alignSelf: "flex-start", background: "#141414", border: `1px solid ${BORDER}`, borderRadius: 14, padding: "18px 26px", fontFamily: "Geist Mono", fontSize: 28 }}>
+        {/* One line always: a long command (a shared setup with many flags) gets a smaller size, then an ellipsis. */}
+        <div style={{ display: "flex", alignItems: "center", gap: 14, alignSelf: "flex-start", maxWidth: "100%", background: "#141414", border: `1px solid ${BORDER}`, borderRadius: 14, padding: "18px 26px", fontFamily: "Geist Mono", fontSize: card.command.length > 52 ? 22 : 28, whiteSpace: "nowrap" }}>
           <span style={{ color: MUTED }}>$</span>
-          <span>{clip(card.command, 64)}</span>
+          <span>{clip(card.command, card.command.length > 52 ? 74 : 56)}</span>
         </div>
       </div>
     ),

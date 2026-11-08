@@ -20,6 +20,7 @@ import {
   siSwift,
   siTypescript,
   siWindsurf,
+  siX,
   type SimpleIcon,
 } from "simple-icons";
 
@@ -50,6 +51,7 @@ const ICONS: Record<string, SimpleIcon> = {
   elixir: siElixir,
   csharp: siDotnet,
   github: siGithub,
+  x: siX,
   google: siGoogle,
 };
 

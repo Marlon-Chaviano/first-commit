@@ -1,4 +1,4 @@
-import type { VerificationReport } from "@kits/schema";
+import type { Selections, VerificationReport } from "@kits/schema";
 import { boolean, customType, date, index, integer, jsonb, pgTable, primaryKey, text, timestamp, uuid } from "drizzle-orm/pg-core";
 
 import { user } from "./auth-schema";
@@ -319,3 +319,24 @@ export const cliLoginRequests = pgTable("cli_login_requests", {
   expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
 });
+
+/**
+ * Shared configurations: the short link (/k/<id>) for a kit with its options, agents and package
+ * manager. The id is derived from the configuration itself, so sharing the same one twice gives the
+ * same link. `opens` counts visits to the link, the only metric the feature needs.
+ */
+export const sharedConfigs = pgTable(
+  "shared_configs",
+  {
+    id: text("id").primaryKey(),
+    kit: text("kit").notNull(),
+    kitVersion: text("kit_version").notNull(),
+    /** Selections (options, skills, agents, pm, badge), already validated against the kit. */
+    selections: jsonb("selections").$type<Selections>().notNull(),
+    /** Project name in the command, if the person set one. */
+    name: text("name"),
+    opens: integer("opens").notNull().default(0),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [index("shared_configs_kit_idx").on(t.kit)],
+);

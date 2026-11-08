@@ -106,8 +106,8 @@ S: 1-2 días · M: 3-5 días · L: 1-2 semanas.
 
 ## Tareas
 
-- [ ] Ola 1: insignia (SVG, paso del plan, `--no-badge`, interruptor, `referral_daily`, tests).
-- [ ] Ola 1: `shared_configs`, `POST /api/v1/share`, `/k/<id>`, tarjeta OG, botones Share y Share on X.
+- [x] Ola 1: insignia (SVG, paso del plan, `--no-badge`, interruptor, tests). CLI 1.0.2. Pendiente: `referral_daily` (de momento, `?ref=badge` en Vercel Analytics).
+- [x] Ola 1: `shared_configs`, `POST /api/v1/share`, `/k/<id>`, tarjeta OG, botones Share y Post on X (migración `0012`).
 - [ ] Ola 1: `getLiveStats`, contador y feed en la home (ocultos bajo el umbral).
 - [ ] Ola 1: kit de la semana (columna, elección automática, panel de admin, home, newsletter).
 - [ ] Ola 2: paleta ⌘K (`command` de shadcn, `/api/v1/search-index`, atajo global).
