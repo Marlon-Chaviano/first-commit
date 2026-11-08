@@ -6,6 +6,7 @@ import { db } from "./db";
 import { account, user } from "./db/auth-schema";
 import { installEvents, kitReports, kitStatsDaily, kitVerifications, kits, newsletterIssues, newsletterSubscribers } from "./db/schema";
 import { adminHandles } from "./env";
+import { getIndex } from "./registry";
 
 const DAY = 24 * 60 * 60 * 1000;
 const since = (days: number) => new Date(Date.now() - days * DAY);
@@ -135,35 +136,23 @@ export async function listAdminInstalls({ page = 1, pageSize = 50, q = "", type 
 
 export type AdminKit = Awaited<ReturnType<typeof listAdminKits>>[number];
 
-/** Every kit (official and community) with its owner, installs and the verification of its latest version. */
+/**
+ * Every kit with its owner, installs and the verification of its latest version. Official kits live
+ * in the registry (registry/index.json), not in Postgres: they're merged in from there.
+ */
 export async function listAdminKits() {
-  if (!db) return [];
-  const [rows, installs, reports] = await Promise.all([
-    db
-      .select({ kit: kits, handle: user.handle })
-      .from(kits)
-      .leftJoin(user, eq(kits.ownerId, user.id))
-      .orderBy(desc(kits.official), kits.slug),
-    db.select({ kit: kitStatsDaily.kit, n: sum(kitStatsDaily.installs) }).from(kitStatsDaily).groupBy(kitStatsDaily.kit),
-    db.select({ kit: kitReports.kit, n: count() }).from(kitReports).where(eq(kitReports.status, "open")).groupBy(kitReports.kit),
+  const [index, rows, installs, reports] = await Promise.all([
+    getIndex(),
+    db ? db.select({ kit: kits, handle: user.handle }).from(kits).leftJoin(user, eq(kits.ownerId, user.id)).orderBy(kits.slug) : [],
+    db ? db.select({ kit: kitStatsDaily.kit, n: sum(kitStatsDaily.installs) }).from(kitStatsDaily).groupBy(kitStatsDaily.kit) : [],
+    db ? db.select({ kit: kitReports.kit, n: count() }).from(kitReports).where(eq(kitReports.status, "open")).groupBy(kitReports.kit) : [],
   ]);
-  const verifications = rows.length
-    ? await db
-        .select({ kit: kitVerifications.kit, version: kitVerifications.version, platform: kitVerifications.platform, ok: kitVerifications.ok, createdAt: kitVerifications.createdAt })
-        .from(kitVerifications)
-        .where(inArray(kitVerifications.kit, rows.map((r) => r.kit.slug)))
-        .orderBy(desc(kitVerifications.createdAt))
-    : [];
-  const installsBy = new Map(installs.map((i) => [i.kit, Number(i.n ?? 0)]));
-  const reportsBy = new Map(reports.map((r) => [r.kit, r.n]));
-  return rows.map(({ kit, handle }) => {
-    // Same rule as the public badge: the latest report on every platform tested passed.
-    const latest = new Map<string, { ok: boolean; at: Date }>();
-    for (const v of verifications) {
-      if (v.kit === kit.slug && v.version === kit.latestVersion && !latest.has(v.platform)) latest.set(v.platform, { ok: v.ok, at: v.createdAt });
-    }
-    const platforms = [...latest.entries()].map(([platform, v]) => ({ platform, ...v }));
-    return {
+  const inDb = new Set(rows.map((r) => r.kit.slug));
+  const all = [
+    ...index
+      .filter((e) => !inDb.has(e.name))
+      .map((e) => ({ slug: e.name, title: e.title, official: true, status: "active", visibility: "public", version: e.version, featured: false, owner: e.author as string | null, repo: "", updatedAt: null as Date | null })),
+    ...rows.map(({ kit, handle }) => ({
       slug: kit.slug,
       title: kit.title,
       official: kit.official,
@@ -173,7 +162,29 @@ export async function listAdminKits() {
       featured: Boolean(kit.featuredAt),
       owner: handle,
       repo: kit.repo,
-      updatedAt: kit.updatedAt,
+      updatedAt: kit.updatedAt as Date | null,
+    })),
+  ].sort((a, b) => Number(b.official) - Number(a.official) || a.slug.localeCompare(b.slug));
+
+  const verifications =
+    db && all.length
+      ? await db
+          .select({ kit: kitVerifications.kit, version: kitVerifications.version, platform: kitVerifications.platform, ok: kitVerifications.ok, createdAt: kitVerifications.createdAt })
+          .from(kitVerifications)
+          .where(inArray(kitVerifications.kit, all.map((k) => k.slug)))
+          .orderBy(desc(kitVerifications.createdAt))
+      : [];
+  const installsBy = new Map(installs.map((i) => [i.kit, Number(i.n ?? 0)]));
+  const reportsBy = new Map(reports.map((r) => [r.kit, r.n]));
+  return all.map((kit) => {
+    // Same rule as the public badge: the latest report on every platform tested passed.
+    const latest = new Map<string, { ok: boolean; at: Date }>();
+    for (const v of verifications) {
+      if (v.kit === kit.slug && v.version === kit.version && !latest.has(v.platform)) latest.set(v.platform, { ok: v.ok, at: v.createdAt });
+    }
+    const platforms = [...latest.entries()].map(([platform, v]) => ({ platform, ...v }));
+    return {
+      ...kit,
       installs: installsBy.get(kit.slug) ?? 0,
       openReports: reportsBy.get(kit.slug) ?? 0,
       platforms,

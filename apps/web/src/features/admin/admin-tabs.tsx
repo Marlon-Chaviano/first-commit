@@ -29,7 +29,8 @@ export function AdminTabs({ tabs }: { tabs: AdminTab[] }) {
       }}
       className="gap-8"
     >
-      <div className="-mx-4 overflow-x-auto px-4 sm:mx-0 sm:px-0">
+      {/* Scrolls sideways on phones without a scrollbar; the bottom padding keeps the active underline (5px below the list) inside the box, so it never adds a vertical scroll. */}
+      <div className="-mx-4 overflow-x-auto overflow-y-hidden px-4 pb-1.5 [scrollbar-width:none] sm:mx-0 sm:px-0 [&::-webkit-scrollbar]:hidden">
         <TabsList variant="line" className="w-max">
           {tabs.map((tab) => (
             <TabsTrigger key={tab.id} value={tab.id} className="gap-1.5">
