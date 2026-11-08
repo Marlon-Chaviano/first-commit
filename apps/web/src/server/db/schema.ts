@@ -27,7 +27,8 @@ export const installEvents = pgTable(
     country: text("country"),
     createdAt: timestamp("created_at", { withTimezone: true }).notNull(),
   },
-  (t) => [index("install_events_kit_created_idx").on(t.kit, t.createdAt)],
+  // created_at alone: the admin lists every event newest first, a page at a time.
+  (t) => [index("install_events_kit_created_idx").on(t.kit, t.createdAt), index("install_events_created_idx").on(t.createdAt)],
 );
 
 /** Daily rollup per kit, upserted by the flush job. Feeds history charts and analytics. */

@@ -92,6 +92,13 @@
       "when": 1794165175776,
       "tag": "0012_brief_daimon_hellstrom",
       "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1794181025497,
+      "tag": "0013_goofy_sphinx",
+      "breakpoints": true
     }
   ]
 }

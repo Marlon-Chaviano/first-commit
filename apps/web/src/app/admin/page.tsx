@@ -8,10 +8,20 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { ReportStatusButton } from "@/features/account/report-status-button";
 import { AdminTabs, type AdminTab } from "@/features/admin/admin-tabs";
-import { KitsTable, UsersTable } from "@/features/admin/tables";
+import { InstallsTable, KitsTable, SubscribersTable, UsersTable } from "@/features/admin/tables";
 import { RefundButton } from "@/features/billing/buttons";
 import { REPORT_REASONS } from "@/lib/reports";
-import { getAdminOverview, listAdminKits, listAdminReports, listAdminSubscribers, listAdminUsers } from "@/server/admin";
+import {
+  getAdminOverview,
+  INSTALL_TYPES,
+  listAdminInstalls,
+  listAdminKits,
+  listAdminReports,
+  listAdminSubscribers,
+  listAdminUsers,
+  SUBSCRIBER_FILTERS,
+  USER_FILTERS,
+} from "@/server/admin";
 import { listPurchases } from "@/server/billing";
 import { getViewer, isAdmin } from "@/server/session";
 import { billingEnabled } from "@/server/stripe";
@@ -21,11 +31,11 @@ export const metadata: Metadata = { title: "Admin", robots: { index: false } };
 const formatDate = new Intl.DateTimeFormat("en", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" });
 const formatNumber = new Intl.NumberFormat("en");
 
-export default function AdminPage() {
+export default function AdminPage({ searchParams }: PageProps<"/admin">) {
   return (
     <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-4 py-10 sm:px-6 sm:py-12">
       <Suspense fallback={<AdminSkeleton />}>
-        <Admin />
+        <Admin searchParams={searchParams} />
       </Suspense>
     </div>
   );
@@ -45,25 +55,34 @@ function AdminSkeleton() {
   );
 }
 
-async function Admin() {
-  const viewer = await getViewer();
+type Params = Record<string, string | string[] | undefined>;
+const text = (params: Params, key: string) => (typeof params[key] === "string" ? params[key] : "");
+const pageOf = (params: Params, key: string) => Math.max(1, Math.min(10_000, Number.parseInt(text(params, key), 10) || 1));
+/** A filter from the URL, or the first (default) one when it's missing or unknown. */
+const oneOf = <T extends string>(params: Params, key: string, values: readonly T[]): T => (values.includes(text(params, key) as T) ? (text(params, key) as T) : values[0]!);
+
+async function Admin({ searchParams }: { searchParams: Promise<Params> }) {
+  const [viewer, params] = await Promise.all([getViewer(), searchParams]);
   if (!viewer || !isAdmin(viewer)) notFound();
-  const [overview, users, kits, reports, newsletter, purchases] = await Promise.all([
+  // Long lists are paginated on the server; each tab keeps its search, filter and page in the URL.
+  const [overview, users, installs, kits, reports, newsletter, purchases] = await Promise.all([
     getAdminOverview(),
-    listAdminUsers(),
+    listAdminUsers({ page: pageOf(params, "up"), q: text(params, "uq"), filter: oneOf(params, "uf", USER_FILTERS) }),
+    listAdminInstalls({ page: pageOf(params, "ip"), q: text(params, "iq"), type: oneOf(params, "if", INSTALL_TYPES) }),
     listAdminKits(),
     listAdminReports(),
-    listAdminSubscribers(),
+    listAdminSubscribers({ page: pageOf(params, "np"), q: text(params, "nq"), filter: oneOf(params, "nf", SUBSCRIBER_FILTERS) }),
     billingEnabled ? listPurchases() : Promise.resolve([]),
   ]);
   const openReports = reports.filter((r) => r.status === "open");
 
   const tabs: AdminTab[] = [
     { id: "overview", label: "Overview", content: <Overview overview={overview} kits={kits} openReports={openReports.length} /> },
-    { id: "users", label: "Users", count: users.length, content: <UsersTable users={users} viewerId={viewer.id} /> },
+    { id: "users", label: "Users", count: overview?.users, content: <UsersTable users={users} viewerId={viewer.id} /> },
     { id: "kits", label: "Kits", count: kits.length, content: <KitsTable kits={kits} /> },
+    { id: "installs", label: "Installs", count: overview?.events, content: <InstallsTable installs={installs} /> },
     { id: "reports", label: "Reports", count: openReports.length, content: <Reports reports={reports} /> },
-    { id: "newsletter", label: "Newsletter", count: newsletter.subscribers.filter((s) => s.status === "confirmed").length, content: <Newsletter {...newsletter} /> },
+    { id: "newsletter", label: "Newsletter", count: overview?.subscribers, content: <Newsletter {...newsletter} overview={overview} /> },
     ...(billingEnabled ? [{ id: "purchases", label: "Purchases", count: purchases.length, content: <Purchases purchases={purchases} /> }] : []),
   ];
 
@@ -72,7 +91,7 @@ async function Admin() {
       <header className="flex flex-col gap-2">
         <p className="label-mono text-muted-foreground">Admin</p>
         <h1 className="text-3xl font-semibold tracking-tight">Administration</h1>
-        <p className="text-muted-foreground">Users, kits, verification, moderation and the newsletter.</p>
+        <p className="text-muted-foreground">Users, kits, installs, verification, moderation and the newsletter.</p>
       </header>
       <AdminTabs tabs={tabs} />
     </>
@@ -106,7 +125,7 @@ function Overview({ overview, kits, openReports }: { overview: Awaited<ReturnTyp
     <div className="flex flex-col gap-10">
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
         <Stat label="Users" value={overview.users} hint={`+${overview.newUsers} this week`} href="/admin?tab=users" />
-        <Stat label="Installs" value={overview.installs} hint={`${formatNumber.format(overview.installsWeek)} in the last 7 days`} />
+        <Stat label="Installs" value={overview.installs} hint={`${formatNumber.format(overview.installsWeek)} in the last 7 days`} href="/admin?tab=installs" />
         <Stat label="Official kits" value={overview.officialKits} href="/admin?tab=kits" />
         <Stat label="Community kits" value={overview.communityKits} hint={overview.hiddenKits ? `${overview.hiddenKits} hidden` : undefined} href="/admin?tab=kits" />
         <Stat label="Verified" value={kits.filter((k) => k.verified).length} hint={`of ${kits.length} kits`} href="/admin?tab=kits" />
@@ -191,45 +210,19 @@ function Reports({ reports }: { reports: Awaited<ReturnType<typeof listAdminRepo
   );
 }
 
-function Newsletter({ subscribers, issues }: Awaited<ReturnType<typeof listAdminSubscribers>>) {
-  const by = (status: string) => subscribers.filter((s) => s.status === status).length;
+function Newsletter({ subscribers, issues, overview }: Awaited<ReturnType<typeof listAdminSubscribers>> & { overview: Awaited<ReturnType<typeof getAdminOverview>> }) {
   return (
     <div className="flex flex-col gap-10">
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-        <Stat label="Confirmed" value={by("confirmed")} />
-        <Stat label="Pending" value={by("pending")} hint="haven't clicked the link yet" />
-        <Stat label="Unsubscribed" value={by("unsubscribed")} />
+        <Stat label="Confirmed" value={overview?.subscribers ?? 0} />
+        <Stat label="Pending" value={overview?.pendingSubscribers ?? 0} hint="haven't clicked the link yet" />
+        <Stat label="Unsubscribed" value={overview?.unsubscribed ?? 0} />
         <Stat label="Issues sent" value={issues.length} hint="every Monday, 09:00 UTC" />
       </div>
 
       <section className="flex flex-col gap-4">
         <h2 className="label-mono">Subscribers</h2>
-        {subscribers.length ? (
-          <Table>
-            <TableHeader>
-              <TableRow className="hover:bg-transparent">
-                <TableHead className="label-mono text-muted-foreground">Email</TableHead>
-                <TableHead className="label-mono text-muted-foreground">Status</TableHead>
-                <TableHead className="label-mono text-muted-foreground">Signed up</TableHead>
-                <TableHead className="label-mono text-muted-foreground">Confirmed</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {subscribers.map((s) => (
-                <TableRow key={s.id}>
-                  <TableCell className="font-mono text-sm">{s.email}</TableCell>
-                  <TableCell>
-                    <Badge variant={s.status === "confirmed" ? "default" : "outline"}>{s.status}</Badge>
-                  </TableCell>
-                  <TableCell className="font-mono text-xs text-muted-foreground">{formatDate.format(s.createdAt)}</TableCell>
-                  <TableCell className="font-mono text-xs text-muted-foreground">{s.confirmedAt ? formatDate.format(s.confirmedAt) : "—"}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        ) : (
-          <p className="rounded-xl border border-dashed px-4 py-10 text-center text-sm text-muted-foreground">No subscribers yet.</p>
-        )}
+        <SubscribersTable subscribers={subscribers} />
       </section>
 
       <section className="flex flex-col gap-4">

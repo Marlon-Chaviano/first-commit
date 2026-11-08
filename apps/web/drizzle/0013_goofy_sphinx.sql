@@ -1,0 +1,1 @@
+CREATE INDEX "install_events_created_idx" ON "install_events" USING btree ("created_at");
