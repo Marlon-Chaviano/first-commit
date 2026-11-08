@@ -6,6 +6,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
+import { ThemeProvider } from "@/components/layout/theme";
 import { Toaster } from "@/components/ui/sonner";
 import { OnboardingGuide } from "@/features/onboarding/onboarding-guide";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -35,15 +36,17 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" data-scroll-behavior="smooth" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
+    <html lang="en" data-scroll-behavior="smooth" suppressHydrationWarning className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
       <body className="flex min-h-full flex-col">
-        <TooltipProvider>
-          <SiteHeader />
-          <main className="flex-1">{children}</main>
-          <SiteFooter />
-          <Toaster />
-          <OnboardingGuide />
-        </TooltipProvider>
+        <ThemeProvider>
+          <TooltipProvider>
+            <SiteHeader />
+            <main className="flex-1">{children}</main>
+            <SiteFooter />
+            <Toaster />
+            <OnboardingGuide />
+          </TooltipProvider>
+        </ThemeProvider>
         <Analytics />
         <SpeedInsights />
       </body>

@@ -13,6 +13,7 @@ import { cn } from "@/lib/utils";
 import { TechIcon } from "@/components/shared/tech-icon";
 
 import { SectionLink } from "./section-link";
+import { ThemeToggle } from "./theme";
 
 // From md up they sit in the header; on phones they open from the menu button (MobileNav).
 const NAV = [
@@ -84,6 +85,10 @@ export function MobileNav() {
             <ArrowUpRightIcon className="size-3.5" />
           </a>
         </nav>
+        <div className="flex items-center justify-between gap-3 pt-4">
+          <span className="text-sm text-muted-foreground">Theme</span>
+          <ThemeToggle />
+        </div>
       </SheetContent>
     </Sheet>
   );

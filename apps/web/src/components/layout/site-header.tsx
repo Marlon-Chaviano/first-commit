@@ -6,6 +6,7 @@ import { Separator } from "@/components/ui/separator";
 import { BrandMark } from "./pixel-wordmark";
 import { MobileNav, NavLinks } from "./nav-links";
 import { StarButton } from "./star-button";
+import { ThemeMenu } from "./theme";
 import { UserMenu } from "./user-menu";
 
 export function SiteHeader() {
@@ -25,6 +26,7 @@ export function SiteHeader() {
             <Separator orientation="vertical" className="mr-1 hidden h-5 data-vertical:self-center sm:block" />
             <span className="hidden md:contents">
               <StarButton />
+              <ThemeMenu />
             </span>
             <UserMenu />
             <MobileNav />
