@@ -75,6 +75,9 @@ jobs:
           java-version: 17
       - if: contains(steps.kit.outputs.pms, ' gradle ') && runner.os == 'Linux'
         uses: android-actions/setup-android@v3
+        with:
+          # The default list includes "tools", which the SDK manager no longer ships.
+          packages: platform-tools
       - if: contains(steps.kit.outputs.pms, ' flutter ')
         uses: subosito/flutter-action@v2
         with:
@@ -112,7 +115,7 @@ jobs:
         run: |
           UPLOAD=""
           if [ "${{ github.event_name }}" != "pull_request" ] && [ -n "$KITS_API_URL" ]; then UPLOAD="--upload"; fi
-          node packages/cli/dist/index.js test registry/kits/${{ matrix.kit }} --pm ${{ steps.kit.outputs.pm }} --report report.json $UPLOAD
+          node packages/cli/dist/index.js test ${{ matrix.kit }} --pm ${{ steps.kit.outputs.pm }} --report report.json $UPLOAD
       - if: always()
         uses: actions/upload-artifact@v4
         with:
