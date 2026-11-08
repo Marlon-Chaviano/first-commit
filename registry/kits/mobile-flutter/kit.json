@@ -1,6 +1,6 @@
 {
   "$schema": "../../kit.schema.json",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Marlon Chaviano",
   "name": "mobile-flutter",
   "title": "Cross-platform app with Flutter",
@@ -15,7 +15,7 @@
     "mobile"
   ],
   "base": {
-    "command": "command -v flutter >/dev/null || { echo 'Necesitas Flutter: https://docs.flutter.dev/get-started/install' >&2; exit 1; }; flutter create {{name}} --org com.example --platforms ios,android,web --empty"
+    "command": "command -v flutter >/dev/null || { echo 'Flutter is required: https://docs.flutter.dev/get-started/install' >&2; exit 1; }; flutter create {{name}} --org com.example --platforms ios,android,web --empty"
   },
   "packageManagers": [
     "flutter"

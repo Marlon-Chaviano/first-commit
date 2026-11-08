@@ -1,7 +1,7 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "ios-swiftui",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "title": "iOS app with SwiftUI",
   "description": "A native iOS app with SwiftUI and Swift Testing. The Xcode project is generated from project.yml with XcodeGen, so your agent edits YAML instead of the .xcodeproj.",
   "category": "mobile",
@@ -14,7 +14,7 @@
   ],
   "author": "Marlon Chaviano",
   "base": {
-    "command": "command -v xcodegen >/dev/null || { echo 'Necesitas XcodeGen: brew install xcodegen' >&2; exit 1; }; mkdir {{name}}"
+    "command": "command -v xcodegen >/dev/null || { echo 'XcodeGen is required: brew install xcodegen' >&2; exit 1; }; mkdir {{name}}"
   },
   "packageManagers": [
     "swift"

@@ -1,7 +1,7 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "web-rails",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "author": "Marlon Chaviano",
   "title": "Web app with Ruby on Rails",
   "category": "web",
@@ -14,7 +14,7 @@
     "sqlite"
   ],
   "base": {
-    "command": "command -v rails >/dev/null || { echo 'Necesitas Rails: gem install rails' >&2; exit 1; }; rails new {{name}} --skip-git --skip-bundle --skip-kamal --skip-thruster",
+    "command": "command -v rails >/dev/null || { echo 'Rails is required: gem install rails' >&2; exit 1; }; rails new {{name}} --skip-git --skip-bundle --skip-kamal --skip-thruster",
     "install": "bundle install --quiet"
   },
   "packageManagers": [

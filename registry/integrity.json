@@ -44,7 +44,8 @@
   "ios-swiftui": {
     "1.0.0": "sha256-dRBrHLiASXX5A84PneKLZq6qbQJ7CQFFwNJcBYG2xmM=",
     "1.1.0": "sha256-6CWNdocWCvJQTbRR+ZPEumgl+vtRORhZiiQlI2jy+Ag=",
-    "1.2.0": "sha256-aliRPGcQmlyjidKrHgV5VRjCu5RxJ77YXcliLTz2he8="
+    "1.2.0": "sha256-aliRPGcQmlyjidKrHgV5VRjCu5RxJ77YXcliLTz2he8=",
+    "1.2.1": "sha256-JQr2obDoLYsQd6og21bOlvuGJActBzboyjKGut15QtM="
   },
   "api-django": {
     "1.0.0": "sha256-/2F2CHU+zzaHpNYaZw7/udmHl35FTMzRS3LWjBbdFhQ=",
@@ -68,7 +69,8 @@
   },
   "web-laravel": {
     "1.0.0": "sha256-QJUc3uk2CL3a1W6eGWKFenM6EpaWG+EWZmQg9vYI3l4=",
-    "1.1.0": "sha256-8lQkWLV6oS42rjye8SsURzaV+duvwAsbom02xGmvI6o="
+    "1.1.0": "sha256-8lQkWLV6oS42rjye8SsURzaV+duvwAsbom02xGmvI6o=",
+    "1.1.1": "sha256-z4iphkhsxqpHor7nGMfam6SWvoSZK3hkbmtdanIIgC0="
   },
   "web-nuxt": {
     "1.0.0": "sha256-oT+qPmPkrQtUadONb8cs3yOcBSgI3r1lfDv2d9RFUVY=",
@@ -76,7 +78,8 @@
   },
   "web-rails": {
     "1.0.0": "sha256-vZFj/M9ZTrOCn3ncCKjwz9+t6SejH2mdDHpCcRqJ6Lk=",
-    "1.1.0": "sha256-C/Rl2FMUPfVW3di3B1RyyFi2rAYkZociREn1DcegaHk="
+    "1.1.0": "sha256-C/Rl2FMUPfVW3di3B1RyyFi2rAYkZociREn1DcegaHk=",
+    "1.1.1": "sha256-/dE+VO04GY8gS/Q1q1SkdTK/fvHvfRjzjtXb2qiUl5w="
   },
   "web-sveltekit": {
     "1.0.0": "sha256-uZKuqd8ja3JdbbK/ieWYO8QJJuJrjrl18Og0Vg1r0Vs=",
@@ -148,7 +151,8 @@
     "1.0.0": "sha256-aFcCbjRQo45GUCzQu27RW8IgoSJRLtKBVeaqtML9gZM="
   },
   "api-rails": {
-    "1.0.0": "sha256-11QQDUDeqJ+Aadz6akRRHHqcEGRqIbE2AToiiCkmons="
+    "1.0.0": "sha256-11QQDUDeqJ+Aadz6akRRHHqcEGRqIbE2AToiiCkmons=",
+    "1.0.1": "sha256-IK7AnzjjgG9/PY86IVrhXPRU4A5ZY8XPR0eVxqfOx+8="
   },
   "web-angular": {
     "1.0.0": "sha256-UKmgNMO/yz8jxg8Ii9MBLBq4QD7SIQ1VEg8iqjttxuw="
@@ -177,7 +181,8 @@
     "1.0.0": "sha256-ZpBm1Dt9ugM5/TJwARIsDE+cT0Y5OvUv8yZiytOJsyI="
   },
   "saas-rails": {
-    "1.0.0": "sha256-Z88JjA1lrQGFTRRoL8y2UKzP01gzcrD3Axty/10teVk="
+    "1.0.0": "sha256-Z88JjA1lrQGFTRRoL8y2UKzP01gzcrD3Axty/10teVk=",
+    "1.0.1": "sha256-E+Dx/1dgtHbyK0Yov2IFn0kneyiYewbIpiB4Nyrxstw="
   },
   "saas-sveltekit": {
     "1.0.0": "sha256-NyQoVLwTi0CiRl5vMiElRFpxZvMyUcaWpYuG1oVhszo="
@@ -185,7 +190,8 @@
   "saas-t3": {
     "1.0.0": "sha256-UILrHO+TgUgmfeou6JH6nM4Q3GA89CrLV00W4BkOTFM=",
     "1.0.1": "sha256-6J1RJOLC9em8LWZnt7aZUdVJp8gxZk8MLc92OWQONjw=",
-    "1.0.2": "sha256-2skdniV4KFXE41UNeA9AhfIu7YLtsqL0QcgPPCr6tbg="
+    "1.0.2": "sha256-2skdniV4KFXE41UNeA9AhfIu7YLtsqL0QcgPPCr6tbg=",
+    "1.0.3": "sha256-+ekwlNfxcmXYj84hDXfWymqEKa5WzFr8H7tSpqlvp0A="
   },
   "saas-tanstack-start": {
     "1.0.0": "sha256-s0ZPdccBpUe0RyOktaWWpxkdWl7d48EbEsP6WnMnzes="
@@ -221,7 +227,8 @@
     "1.0.0": "sha256-qrLPn77buVQYofaIoHW7eIdH1h+ZgpapJgAteOU3WkY="
   },
   "monorepo-rails-react": {
-    "1.0.0": "sha256-ueQyM0c2Dt6fucEMD73Ku7/OjjKNU8iw63UiO8uqA/Y="
+    "1.0.0": "sha256-ueQyM0c2Dt6fucEMD73Ku7/OjjKNU8iw63UiO8uqA/Y=",
+    "1.0.1": "sha256-e0dyhLvIuDCJnkZQtYxvHskB1lMESH4M/Xm5hMRIK4s="
   },
   "monorepo-spring-react": {
     "1.0.0": "sha256-OB4vmd1fbXYWm/czlpamyrKZtxNNdGcUeRIcTzaVkCM="
@@ -232,10 +239,12 @@
     "1.0.2": "sha256-8mrsuHsn6T+5qo9YjFxCWZTo32556Jl6fUdkvXUgerE="
   },
   "monorepo-uv": {
-    "1.0.0": "sha256-dtvOl8qJZDdPokQix2tYAUwAn3+LQCAq/0Dlp2vHJNY="
+    "1.0.0": "sha256-dtvOl8qJZDdPokQix2tYAUwAn3+LQCAq/0Dlp2vHJNY=",
+    "1.0.1": "sha256-dD7zAERxsIcka/rn6dgalxKzGzXyaWa9QwCx2v9jnnY="
   },
   "api-laravel": {
-    "1.0.0": "sha256-usbDcfHpZUgHbpjArw+Mua3shyW51GkLPO8tQ8FD3AI="
+    "1.0.0": "sha256-usbDcfHpZUgHbpjArw+Mua3shyW51GkLPO8tQ8FD3AI=",
+    "1.0.1": "sha256-/QyX7ZIWFdM/TlzbDLeFxICrq9EvWYbAJcjuBvpC2e8="
   },
   "saas-django": {
     "1.0.0": "sha256-bwNadst/vBa537Jf6+8+Cpa/cYDJqdA+ASIqAqM4iPI="
@@ -244,7 +253,8 @@
     "1.0.0": "sha256-S1BI3iA3iQudJ795Z5FrO8Q3fkXPfz3QIXddd5c/amw="
   },
   "mobile-flutter": {
-    "1.0.0": "sha256-hd0i68b5iWJaXUrqfRVjjWa3rI+YI0ojwxkvZfh+NRQ="
+    "1.0.0": "sha256-hd0i68b5iWJaXUrqfRVjjWa3rI+YI0ojwxkvZfh+NRQ=",
+    "1.0.1": "sha256-0ZBGmfp/azMWEXp+n6FyyM+2fqJfCs4+2HCmVtpE14M="
   },
   "mobile-kmp": {
     "1.0.0": "sha256-SFlcGMTT1QMm50tw/bxXtHxmqAW1REY1Imnl9AZAVtY="

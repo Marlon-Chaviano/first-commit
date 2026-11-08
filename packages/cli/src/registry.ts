@@ -1,4 +1,4 @@
-import { existsSync } from "node:fs";
+import { existsSync, rmSync } from "node:fs";
 import { mkdtemp, readFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
@@ -76,10 +76,17 @@ export async function loadRawKit(ref: string, from = process.cwd()): Promise<Loa
   return { raw, dir };
 }
 
+/** Download folders, removed when the process ends (the plan copies files from them until then). */
+const downloads = new Set<string>();
+process.once("exit", () => {
+  for (const dir of downloads) rmSync(dir, { recursive: true, force: true });
+});
+
 /** The kit's files on disk: in place for local kits, otherwise downloaded to a temporary folder. */
 async function fetchKit(ref: string, location: KitLocation): Promise<string> {
   if (location.kind === "local" || location.kind === "local-registry") return location.dir;
   const dir = await mkdtemp(join(tmpdir(), "kits-"));
+  downloads.add(dir);
   try {
     // Private (org) kits come from the registry itself, with the user's token.
     if (location.kind === "private") unpackArchive(await downloadArchive(location.slug, location.published.version), dir);

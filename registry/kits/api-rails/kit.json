@@ -1,6 +1,6 @@
 {
   "$schema": "../../kit.schema.json",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Marlon Chaviano",
   "name": "api-rails",
   "title": "API with Rails",
@@ -14,7 +14,7 @@
     "sqlite"
   ],
   "base": {
-    "command": "command -v rails >/dev/null || { echo 'Necesitas Rails: gem install rails' >&2; exit 1; }; rails new {{name}} --api --skip-git --skip-bundle --skip-kamal --skip-thruster",
+    "command": "command -v rails >/dev/null || { echo 'Rails is required: gem install rails' >&2; exit 1; }; rails new {{name}} --api --skip-git --skip-bundle --skip-kamal --skip-thruster",
     "install": "bundle install --quiet"
   },
   "packageManagers": [

@@ -1,7 +1,7 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "web-laravel",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "author": "Marlon Chaviano",
   "title": "Web app with Laravel",
   "category": "web",
@@ -13,7 +13,7 @@
     "eloquent"
   ],
   "base": {
-    "command": "command -v composer >/dev/null || { echo 'Necesitas Composer: https://getcomposer.org' >&2; exit 1; }; composer create-project laravel/laravel {{name}} --no-interaction --prefer-dist --quiet"
+    "command": "command -v composer >/dev/null || { echo 'Composer is required: https://getcomposer.org' >&2; exit 1; }; composer create-project laravel/laravel {{name}} --no-interaction --prefer-dist --quiet"
   },
   "packageManagers": [
     "composer"

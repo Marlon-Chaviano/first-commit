@@ -1,6 +1,6 @@
 {
   "$schema": "../../kit.schema.json",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "author": "Marlon Chaviano",
   "name": "saas-t3",
   "title": "SaaS with the T3 stack",
@@ -16,7 +16,7 @@
     "tailwind"
   ],
   "base": {
-    "command": "npx -y create-t3-app@latest {{name}} --CI --tailwind --trpc --drizzle --betterAuth --appRouter --dbProvider postgres --noGit --noInstall",
+    "command": "npx -y create-t3-app@latest {{name}} --CI --tailwind --trpc --drizzle --betterAuth --appRouter --dbProvider postgres --noGit --noInstall && cd {{name}} && npm pkg set devDependencies.drizzle-kit=^0.31.4 dependencies.drizzle-orm=^0.45.2",
     "install": "{{pm}} install"
   },
   "packageManagers": [

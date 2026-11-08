@@ -1,6 +1,6 @@
 {
   "$schema": "../../kit.schema.json",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Marlon Chaviano",
   "name": "monorepo-rails-react",
   "title": "Rails API + React in one repo",
@@ -16,7 +16,7 @@
     "fullstack"
   ],
   "base": {
-    "command": "command -v rails >/dev/null || { echo 'Necesitas Rails: gem install rails' >&2; exit 1; }; mkdir {{name}} && cd {{name}} && rails new backend --api --skip-git --skip-kamal --skip-thruster --quiet && npx -y create-vite@latest frontend --template react-ts --no-interactive",
+    "command": "command -v rails >/dev/null || { echo 'Rails is required: gem install rails' >&2; exit 1; }; mkdir {{name}} && cd {{name}} && rails new backend --api --skip-git --skip-kamal --skip-thruster --quiet && npx -y create-vite@latest frontend --template react-ts --no-interactive",
     "install": "cd frontend && npm install"
   },
   "packageManagers": [

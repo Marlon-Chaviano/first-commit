@@ -221,7 +221,7 @@
   },
   {
     "name": "api-laravel",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "title": "API with Laravel",
     "description": "Laravel as an API: routes in routes/api.php, token auth with Sanctum, Eloquent, validation with Form Requests and tests ready to go.",
     "category": "api",
@@ -281,7 +281,7 @@
   },
   {
     "name": "api-rails",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "title": "API with Rails",
     "description": "Rails 8 in API mode: JSON only, no views, with Active Record, migrations, tests and optional RSpec.",
     "category": "api",
@@ -572,7 +572,7 @@
   },
   {
     "name": "ios-swiftui",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "title": "iOS app with SwiftUI",
     "description": "A native iOS app with SwiftUI and Swift Testing. The Xcode project is generated from project.yml with XcodeGen, so your agent edits YAML instead of the .xcodeproj.",
     "category": "mobile",
@@ -919,7 +919,7 @@
   },
   {
     "name": "mobile-flutter",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "title": "Cross-platform app with Flutter",
     "description": "Flutter with the official CLI: one Dart codebase for iOS, Android and web, with hot reload, widget tests and the Flutter team's architecture guides.",
     "category": "mobile",
@@ -1199,7 +1199,7 @@
   },
   {
     "name": "monorepo-rails-react",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "title": "Rails API + React in one repo",
     "description": "A Rails 8 API and a React + Vite frontend in the same repo: Rails productivity on the backend and a modern SPA in front.",
     "category": "monorepo",
@@ -1305,7 +1305,7 @@
   },
   {
     "name": "monorepo-uv",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "title": "Python monorepo with uv",
     "description": "A uv workspace: a FastAPI API and shared Python packages with a single lockfile, tests with pytest and linting with Ruff.",
     "category": "monorepo",
@@ -1778,7 +1778,7 @@
   },
   {
     "name": "saas-rails",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "title": "SaaS with Rails",
     "description": "Rails 8 for a SaaS: authentication with the official generator, Tailwind CSS, Hotwire and the Solid stack (cache, queues and websockets without Redis).",
     "category": "saas",
@@ -1843,7 +1843,7 @@
   },
   {
     "name": "saas-t3",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "title": "SaaS with the T3 stack",
     "description": "create-t3-app: Next.js with tRPC for an end-to-end typed API, Drizzle, Better Auth and Tailwind CSS. The go-to stack for TypeScript SaaS.",
     "category": "saas",
@@ -2156,7 +2156,7 @@
   },
   {
     "name": "web-laravel",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "title": "Web app with Laravel",
     "description": "Laravel with Eloquent, migrations, queues and Artisan: PHP apps and APIs with everything built in.",
     "category": "web",
@@ -2225,7 +2225,7 @@
   },
   {
     "name": "web-rails",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "title": "Web app with Ruby on Rails",
     "description": "Rails 8 with Hotwire, SQLite and Propshaft: a complete app (views, database, jobs) without setting up anything else.",
     "category": "web",
