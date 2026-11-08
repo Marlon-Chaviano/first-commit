@@ -1,7 +1,7 @@
 import { describe, expect, it, test } from "vitest";
 
-import { addReadmeBadge, applyWrite, buildPlan, mergeJson, readmeBadge } from "./plan";
-import { defaultSelections } from "./resolve";
+import { addReadmeBadge, agentsSection, applyWrite, buildPlan, mergeJson, readmeBadge, skillGroups } from "./plan";
+import { defaultSelections, resolve } from "./resolve";
 import { parseKit } from "./schema";
 
 describe("applyWrite", () => {
@@ -118,5 +118,57 @@ describe("README badge", () => {
     const plan = (sel = defaultSelections(kit)) => buildPlan({ kit, kitDir: "kit", sel, parentDir: ".", name: "app", git: true, kitRef: "demo" });
     expect(plan().find((s) => s.title === "Add the first-commit badge to README.md")).toMatchObject({ kind: "write", path: "./app/README.md", optional: true });
     expect(plan({ ...defaultSelections(kit), badge: false }).some((s) => s.title.includes("badge"))).toBe(false);
+  });
+});
+
+describe("AGENTS.md for the chosen stack", () => {
+  const kit = parseKit({
+    name: "saas",
+    version: "1.0.0",
+    title: "SaaS",
+    description: "",
+    category: "saas",
+    author: "a",
+    base: { command: "mkdir {{name}}" },
+    packageManagers: ["pnpm", "npm"],
+    skills: ["vercel-labs/agent-skills@vercel-react-best-practices"],
+    options: [
+      {
+        id: "payments",
+        label: "Payments",
+        default: "stripe",
+        choices: [
+          { id: "stripe", label: "Stripe", skills: ["stripe/ai@stripe-best-practices", "stripe/ai@upgrade-stripe"] },
+          { id: "paddle", label: "Paddle", skills: ["paddlehq/paddle-agent-skills@paddle-webhooks"] },
+        ],
+      },
+    ],
+  });
+  const sel = { ...defaultSelections(kit), addSkills: ["acme/skills@mine"], removeSkills: ["stripe/ai@upgrade-stripe"] };
+  const r = resolve(kit, sel);
+
+  it("groups the skills by the part of the stack that brought them", () => {
+    const groups = skillGroups(kit, r);
+    expect(groups.slice(0, 2).map((g) => [g.title, g.skills])).toEqual([
+      ["SaaS (framework and language)", ["vercel-labs/agent-skills@vercel-react-best-practices"]],
+      ["Payments: Stripe", ["stripe/ai@stripe-best-practices"]],
+    ]);
+    // Added by hand (and the first-commit skill) go last.
+    expect(groups.at(-1)?.title).toBe("Other");
+    expect(groups.at(-1)?.skills).toContain("acme/skills@mine");
+  });
+
+  it("names the language, the package manager and its conventions", () => {
+    const md = agentsSection(kit, r, "pnpm");
+    expect(md).toContain("TypeScript with pnpm: add a dependency with `pnpm add <package>`");
+    expect(md).toContain("Keep `strict` TypeScript");
+    expect(md).toContain("- **Payments: Stripe**: `stripe-best-practices`");
+    expect(md).not.toContain("upgrade-stripe");
+    expect(md).not.toContain("paddle");
+  });
+
+  it("says where dependencies go when the manager has no add command", () => {
+    const java = parseKit({ name: "api", version: "1.0.0", title: "API", description: "", category: "api", author: "a", base: { command: "x" }, packageManagers: ["maven"] });
+    expect(agentsSection(java, resolve(java, defaultSelections(java)))).toContain("Java with maven: dependencies go in <dependencies> in pom.xml.");
   });
 });

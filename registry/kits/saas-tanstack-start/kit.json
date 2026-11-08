@@ -1,6 +1,6 @@
 {
   "$schema": "../../kit.schema.json",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": "Marlon Chaviano",
   "name": "saas-tanstack-start",
   "title": "SaaS with TanStack Start",
@@ -25,7 +25,19 @@
   ],
   "skills": [
     "vercel-labs/agent-skills@vercel-react-best-practices",
-    "better-auth/skills@better-auth-best-practices"
+    "vercel-labs/agent-skills@vercel-composition-patterns",
+    "wshobson/agents@typescript-advanced-types",
+    "deckardger/tanstack-agent-skills@tanstack-start-best-practices",
+    "deckardger/tanstack-agent-skills@tanstack-router-best-practices",
+    "deckardger/tanstack-agent-skills@tanstack-query-best-practices",
+    "deckardger/tanstack-agent-skills@tanstack-integration-best-practices",
+    "better-auth/skills@better-auth-best-practices",
+    "better-auth/skills@better-auth-security-best-practices",
+    "better-auth/skills@create-auth",
+    "better-auth/skills@email-and-password-best-practices",
+    "better-auth/skills@organization-best-practices",
+    "better-auth/skills@two-factor-authentication-best-practices",
+    "giuseppe-trisciuoglio/developer-kit@drizzle-orm-patterns"
   ],
   "libraries": {
     "framework": [

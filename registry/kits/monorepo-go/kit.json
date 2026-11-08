@@ -1,6 +1,6 @@
 {
   "$schema": "../../kit.schema.json",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": "Marlon Chaviano",
   "name": "monorepo-go",
   "title": "Go monorepo with go.work",
@@ -21,8 +21,17 @@
   ],
   "skills": [
     "samber/cc-skills-golang@golang-code-style",
+    "samber/cc-skills-golang@golang-naming",
     "samber/cc-skills-golang@golang-error-handling",
-    "samber/cc-skills-golang@golang-testing"
+    "samber/cc-skills-golang@golang-testing",
+    "samber/cc-skills-golang@golang-concurrency",
+    "samber/cc-skills-golang@golang-context",
+    "samber/cc-skills-golang@golang-project-layout",
+    "samber/cc-skills-golang@golang-structs-interfaces",
+    "samber/cc-skills-golang@golang-design-patterns",
+    "samber/cc-skills-golang@golang-security",
+    "samber/cc-skills-golang@golang-lint",
+    "samber/cc-skills-golang@golang-modernize"
   ],
   "writeFiles": [
     {

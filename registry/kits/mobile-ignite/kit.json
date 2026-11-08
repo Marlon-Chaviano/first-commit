@@ -1,6 +1,6 @@
 {
   "$schema": "../../kit.schema.json",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "author": "Marlon Chaviano",
   "name": "mobile-ignite",
   "title": "Mobile app with Ignite",
@@ -22,7 +22,19 @@
   ],
   "skills": [
     "expo/skills@expo-overview",
-    "vercel-labs/agent-skills@vercel-react-native-skills"
+    "expo/skills@expo-router",
+    "expo/skills@expo-native-ui",
+    "expo/skills@expo-ui",
+    "expo/skills@expo-project-structure",
+    "expo/skills@expo-design-system",
+    "expo/skills@expo-data-fetching",
+    "expo/skills@expo-animation",
+    "expo/skills@expo-dev-client",
+    "expo/skills@expo-upgrade",
+    "vercel-labs/agent-skills@vercel-react-native-skills",
+    "callstackincubator/agent-skills@react-native-best-practices",
+    "callstackincubator/agent-skills@upgrading-react-native",
+    "wshobson/agents@typescript-advanced-types"
   ],
   "libraries": {
     "framework": [

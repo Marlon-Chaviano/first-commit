@@ -1,0 +1,68 @@
+{
+  "$schema": "../../kit.schema.json",
+  "name": "desktop-tauri",
+  "version": "1.0.0",
+  "author": "Marlon Chaviano",
+  "title": "Desktop app with Tauri",
+  "description": "A small, fast desktop app with Tauri 2: a React + Vite interface and a Rust backend, with mobile targets available. Installers a fraction of Electron's size.",
+  "category": "desktop",
+  "language": "typescript",
+  "tags": [
+    "tauri",
+    "rust",
+    "react",
+    "vite",
+    "desktop"
+  ],
+  "base": {
+    "command": "npx -y create-tauri-app@latest {{name}} --template react-ts --manager {{pm}} --yes",
+    "install": "{{pm}} install"
+  },
+  "packageManagers": [
+    "npm",
+    "pnpm",
+    "bun"
+  ],
+  "skills": [
+    "nodnarbnitram/claude-code-extensions@tauri-v2",
+    "apollographql/skills@rust-best-practices",
+    "vercel-labs/agent-skills@vercel-react-best-practices",
+    "vercel-labs/agent-skills@vercel-composition-patterns",
+    "wshobson/agents@typescript-advanced-types",
+    "antfu/skills@vite"
+  ],
+  "libraries": {
+    "framework": [
+      "react"
+    ],
+    "components": "none",
+    "animation": [],
+    "state": "none",
+    "data": "none",
+    "forms": [],
+    "design": [
+      "design-pack"
+    ],
+    "workflow": [
+      "essentials"
+    ]
+  },
+  "verify": {
+    "command": "{{pm}} run build && cargo metadata --format-version 1 --manifest-path src-tauri/Cargo.toml > /dev/null",
+    "matrix": [
+      {
+        "state": [
+          "zustand"
+        ],
+        "data": [
+          "tanstack-query"
+        ],
+        "forms": [
+          "react-hook-form",
+          "zod"
+        ]
+      }
+    ]
+  },
+  "instructions": "## How to work here\n\n- The UI is a React app in `src/`; the native side is Rust in `src-tauri/src/`. They talk through commands: a `#[tauri::command]` function in Rust, registered in `invoke_handler`, called from React with `invoke(\"name\", { args })`.\n- Permissions are explicit: every plugin or API the UI uses must be allowed in `src-tauri/capabilities/`. Grant the minimum.\n- Heavy or privileged work (files, the network with secrets, the OS) goes in Rust commands; the UI never gets more access than it needs.\n- Start with `npm run tauri dev`; build installers with `npm run tauri build`. Needs Rust (rustup) and the platform prerequisites from tauri.app.\n- Before finishing: `npm run build` and `cargo clippy --manifest-path src-tauri/Cargo.toml`."
+}

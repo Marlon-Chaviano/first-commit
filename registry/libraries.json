@@ -58,7 +58,12 @@
       "@mantine/core",
       "@mantine/hooks"
     ],
-    "setup": "wrap the app in `<MantineProvider>` and import `@mantine/core/styles.css` in the root layout."
+    "setup": "wrap the app in `<MantineProvider>` and import `@mantine/core/styles.css` in the root layout.",
+    "skills": [
+      "mantinedev/skills@mantine-custom-components",
+      "mantinedev/skills@mantine-combobox",
+      "mantinedev/skills@mantine-form"
+    ]
   },
   {
     "id": "mui",
@@ -77,7 +82,10 @@
     ],
     "setup": "define the theme with `ThemeProvider`; with the Next.js App Router add `@mui/material-nextjs` and `AppRouterCacheProvider`.",
     "skills": [
-      "mui/material-ui@material-ui-theming"
+      "mui/material-ui@material-ui-theming",
+      "mui/material-ui@material-ui-styling",
+      "mui/material-ui@material-ui-nextjs",
+      "mui/material-ui@material-ui-tailwind"
     ]
   },
   {
@@ -96,7 +104,8 @@
     ],
     "setup": "wrap the app in `<ChakraProvider value={defaultSystem}>`.",
     "skills": [
-      "chakra-ui/chakra-ui@chakra-ui-builder"
+      "chakra-ui/chakra-ui@chakra-ui-builder",
+      "chakra-ui/chakra-ui@chakra-ui-refactor"
     ]
   },
   {
@@ -329,9 +338,7 @@
         "shadcn"
       ]
     },
-    "skills": [
-      "kokonut-labs/kokonutui@install-kokonutui-component"
-    ]
+    "skills": []
   },
   {
     "id": "magicui",
@@ -514,7 +521,13 @@
     ],
     "skills": [
       "greensock/gsap-skills@gsap-core",
-      "greensock/gsap-skills@gsap-scrolltrigger"
+      "greensock/gsap-skills@gsap-timeline",
+      "greensock/gsap-skills@gsap-scrolltrigger",
+      "greensock/gsap-skills@gsap-plugins",
+      "greensock/gsap-skills@gsap-utils",
+      "greensock/gsap-skills@gsap-performance",
+      "greensock/gsap-skills@gsap-react",
+      "greensock/gsap-skills@gsap-frameworks"
     ]
   },
   {
@@ -600,7 +613,15 @@
       "@types/three"
     ],
     "skills": [
-      "cloudai-x/threejs-skills@threejs-fundamentals"
+      "cloudai-x/threejs-skills@threejs-react-three-fiber",
+      "cloudai-x/threejs-skills@threejs-fundamentals",
+      "cloudai-x/threejs-skills@threejs-geometry",
+      "cloudai-x/threejs-skills@threejs-materials",
+      "cloudai-x/threejs-skills@threejs-lighting",
+      "cloudai-x/threejs-skills@threejs-animation",
+      "cloudai-x/threejs-skills@threejs-interaction",
+      "cloudai-x/threejs-skills@threejs-loaders",
+      "cloudai-x/threejs-skills@threejs-performance"
     ]
   },
   {
@@ -645,7 +666,10 @@
       "@sentry/nextjs"
     ],
     "skills": [
-      "getsentry/sentry-for-ai@sentry-nextjs-sdk"
+      "getsentry/sentry-for-ai@sentry-nextjs-sdk",
+      "getsentry/sentry-for-ai@sentry-fix-issues",
+      "getsentry/sentry-for-ai@sentry-setup-releases",
+      "getsentry/sentry-for-ai@sentry-fix-stack-traces"
     ],
     "env": {
       "NEXT_PUBLIC_SENTRY_DSN": "",
@@ -695,7 +719,10 @@
       "@sentry/react-native"
     ],
     "skills": [
-      "getsentry/sentry-for-ai@sentry-react-native-sdk"
+      "getsentry/sentry-for-ai@sentry-react-native-sdk",
+      "getsentry/sentry-for-ai@sentry-fix-issues",
+      "getsentry/sentry-for-ai@sentry-setup-releases",
+      "getsentry/sentry-for-ai@sentry-fix-stack-traces"
     ],
     "env": {
       "EXPO_PUBLIC_SENTRY_DSN": ""
@@ -730,7 +757,9 @@
       "@sentry/node"
     ],
     "skills": [
-      "getsentry/sentry-for-ai@sentry-node-sdk"
+      "getsentry/sentry-for-ai@sentry-node-sdk",
+      "getsentry/sentry-for-ai@sentry-fix-issues",
+      "getsentry/sentry-for-ai@sentry-setup-releases"
     ],
     "env": {
       "SENTRY_DSN": ""
@@ -765,7 +794,9 @@
       "@sentry/bun"
     ],
     "skills": [
-      "getsentry/sentry-for-ai@sentry-node-sdk"
+      "getsentry/sentry-for-ai@sentry-node-sdk",
+      "getsentry/sentry-for-ai@sentry-fix-issues",
+      "getsentry/sentry-for-ai@sentry-setup-releases"
     ],
     "env": {
       "SENTRY_DSN": ""
@@ -799,7 +830,9 @@
       "@sentry/cloudflare"
     ],
     "skills": [
-      "getsentry/sentry-for-ai@sentry-cloudflare-sdk"
+      "getsentry/sentry-for-ai@sentry-cloudflare-sdk",
+      "getsentry/sentry-for-ai@sentry-fix-issues",
+      "getsentry/sentry-for-ai@sentry-setup-releases"
     ],
     "setupTasks": [
       "Sentry: wrap the Worker's `export default` with `Sentry.withSentry((env) => ({ dsn: env.SENTRY_DSN }), app)`, add the `nodejs_als` (or `nodejs_compat`) flag in `wrangler` and store `SENTRY_DSN` as a secret (`sentry-cloudflare-sdk` skill)."
@@ -820,7 +853,9 @@
       "posthog-node"
     ],
     "skills": [
-      "posthog/ai-plugin@instrument-product-analytics"
+      "posthog/ai-plugin@instrument-product-analytics",
+      "posthog/ai-plugin@instrument-feature-flags",
+      "posthog/ai-plugin@instrument-error-tracking"
     ],
     "env": {
       "NEXT_PUBLIC_POSTHOG_KEY": "",
@@ -860,7 +895,9 @@
       "expo-localization"
     ],
     "skills": [
-      "posthog/ai-plugin@instrument-product-analytics"
+      "posthog/ai-plugin@instrument-product-analytics",
+      "posthog/ai-plugin@instrument-feature-flags",
+      "posthog/ai-plugin@instrument-error-tracking"
     ],
     "env": {
       "EXPO_PUBLIC_POSTHOG_KEY": "",
@@ -893,7 +930,9 @@
       "posthog-node"
     ],
     "skills": [
-      "posthog/ai-plugin@instrument-product-analytics"
+      "posthog/ai-plugin@instrument-product-analytics",
+      "posthog/ai-plugin@instrument-feature-flags",
+      "posthog/ai-plugin@instrument-error-tracking"
     ],
     "env": {
       "POSTHOG_KEY": "",
@@ -962,7 +1001,11 @@
     },
     "skills": [
       "better-auth/skills@better-auth-best-practices",
-      "better-auth/skills@better-auth-security-best-practices"
+      "better-auth/skills@better-auth-security-best-practices",
+      "better-auth/skills@create-auth",
+      "better-auth/skills@email-and-password-best-practices",
+      "better-auth/skills@organization-best-practices",
+      "better-auth/skills@two-factor-authentication-best-practices"
     ],
     "env": {
       "BETTER_AUTH_SECRET": "",
@@ -1001,7 +1044,14 @@
       "@clerk/nextjs"
     ],
     "skills": [
-      "clerk/skills@clerk-nextjs-patterns"
+      "clerk/skills@clerk",
+      "clerk/skills@clerk-setup",
+      "clerk/skills@clerk-nextjs-patterns",
+      "clerk/skills@clerk-custom-ui",
+      "clerk/skills@clerk-orgs",
+      "clerk/skills@clerk-webhooks",
+      "clerk/skills@clerk-backend-api",
+      "clerk/skills@clerk-testing"
     ],
     "env": {
       "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY": "",
@@ -1036,7 +1086,9 @@
       "drizzle-kit"
     ],
     "skills": [
-      "supabase/agent-skills@supabase-postgres-best-practices"
+      "giuseppe-trisciuoglio/developer-kit@drizzle-orm-patterns",
+      "supabase/agent-skills@supabase-postgres-best-practices",
+      "wshobson/agents@postgresql-table-design"
     ],
     "env": {
       "DATABASE_URL": "postgres://postgres:postgres@localhost:5432/app"
@@ -1079,7 +1131,9 @@
       "server-only"
     ],
     "skills": [
-      "stripe/ai@stripe-best-practices"
+      "stripe/ai@stripe-best-practices",
+      "stripe/ai@stripe-docs",
+      "stripe/ai@upgrade-stripe"
     ],
     "mcp": {
       "stripe": {
@@ -1116,7 +1170,8 @@
       "resend"
     ],
     "skills": [
-      "resend/resend-skills@resend"
+      "resend/resend-skills@resend",
+      "resend/resend-skills@email-best-practices"
     ],
     "env": {
       "RESEND_API_KEY": ""
@@ -1147,7 +1202,8 @@
     ],
     "skills": [
       "resend/resend-skills@resend",
-      "resend/react-email@react-email"
+      "resend/resend-skills@react-email",
+      "resend/resend-skills@email-best-practices"
     ],
     "env": {
       "RESEND_API_KEY": ""
@@ -1364,7 +1420,8 @@
       "@playwright/test"
     ],
     "skills": [
-      "microsoft/playwright-cli@playwright-cli"
+      "microsoft/playwright-cli@playwright-cli",
+      "currents-dev/playwright-best-practices-skill@playwright-best-practices"
     ],
     "writeFiles": [
       {
@@ -1411,7 +1468,8 @@
         "mode": "json-merge",
         "content": "{\"scripts\": {\"test\": \"jest\"}, \"jest\": {\"preset\": \"jest-expo\"}}"
       }
-    ]
+    ],
+    "skills": []
   },
   {
     "id": "biome",
@@ -1507,6 +1565,11 @@
         "path": ".github/workflows/ci.yml",
         "content": "name: CI\n\non:\n  push:\n    branches: [main]\n  pull_request:\n\njobs:\n  ci:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n{{ciSetup}}      - uses: actions/setup-node@v4\n        with:\n          node-version: 22\n      - run: {{pm}} install\n      # npm runs scripts for any package manager and skips missing ones.\n      - run: npm run --if-present lint\n      - run: npm run --if-present build\n      - run: npm run --if-present test\n"
       }
+    ],
+    "skills": [
+      "github/awesome-copilot@github-actions-hardening",
+      "github/awesome-copilot@github-actions-efficiency",
+      "wshobson/agents@github-actions-templates"
     ]
   },
   {
@@ -1520,7 +1583,8 @@
     "description": "Deployments with a preview for every PR.",
     "usage": "Deploy by connecting the repository at vercel.com (every push to main goes to production and every PR gets its own URL) or with `npx vercel`. Set the variables from `.env.example` in the Vercel project.",
     "skills": [
-      "vercel-labs/agent-skills@deploy-to-vercel"
+      "vercel-labs/agent-skills@deploy-to-vercel",
+      "vercel-labs/agent-skills@vercel-cli-with-tokens"
     ],
     "setupTasks": [
       "Vercel: import the repository at vercel.com/new and copy the variables from `.env.example` there."
@@ -1546,6 +1610,10 @@
         "path": ".dockerignore",
         "content": "node_modules\n.next\ndist\n.git\n.env\n.env.local\n"
       }
+    ],
+    "skills": [
+      "github/awesome-copilot@multi-stage-dockerfile",
+      "affaan-m/ecc@docker-patterns"
     ]
   },
   {
@@ -1560,7 +1628,8 @@
     "usage": "Build with `npx eas-cli@latest build`, submit with `eas submit` and ship updates with `eas update`. Profiles are in `eas.json`.",
     "skills": [
       "expo/skills@eas-workflows",
-      "expo/skills@eas-update"
+      "expo/skills@eas-update",
+      "expo/skills@eas-app-stores"
     ],
     "writeFiles": [
       {
@@ -1587,7 +1656,9 @@
       "github.com/getsentry/sentry-go/http"
     ],
     "skills": [
-      "getsentry/sentry-agent-skills@sentry-go-sdk"
+      "getsentry/sentry-for-ai@sentry-go-sdk",
+      "getsentry/sentry-for-ai@sentry-fix-issues",
+      "getsentry/sentry-for-ai@sentry-setup-releases"
     ],
     "env": {
       "SENTRY_DSN": ""
@@ -1628,7 +1699,9 @@
       "sentry-sdk"
     ],
     "skills": [
-      "getsentry/sentry-agent-skills@sentry-python-sdk"
+      "getsentry/sentry-for-ai@sentry-python-sdk",
+      "getsentry/sentry-for-ai@sentry-fix-issues",
+      "getsentry/sentry-for-ai@sentry-setup-releases"
     ],
     "env": {
       "SENTRY_DSN": ""
@@ -1663,6 +1736,12 @@
         "path": ".github/workflows/ci.yml",
         "content": "name: CI\n\non:\n  push:\n    branches: [main]\n  pull_request:\n\njobs:\n  ci:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - uses: actions/setup-go@v5\n        with:\n          go-version-file: go.mod\n      - run: go vet ./...\n      - run: go build ./...\n      - run: go test ./...\n"
       }
+    ],
+    "skills": [
+      "github/awesome-copilot@github-actions-hardening",
+      "github/awesome-copilot@github-actions-efficiency",
+      "wshobson/agents@github-actions-templates",
+      "samber/cc-skills-golang@golang-continuous-integration"
     ]
   },
   {
@@ -1680,6 +1759,11 @@
         "path": ".github/workflows/ci.yml",
         "content": "name: CI\n\non:\n  push:\n    branches: [main]\n  pull_request:\n\njobs:\n  ci:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - uses: actions/setup-python@v5\n        with:\n          python-version: \"3.12\"\n      - run: pip install -r requirements.txt\n      - run: python -m pytest -q\n"
       }
+    ],
+    "skills": [
+      "github/awesome-copilot@github-actions-hardening",
+      "github/awesome-copilot@github-actions-efficiency",
+      "wshobson/agents@github-actions-templates"
     ]
   },
   {
@@ -1701,6 +1785,9 @@
         "mode": "prepend",
         "content": "@import \"tailwindcss\";"
       }
+    ],
+    "skills": [
+      "wshobson/agents@tailwind-design-system"
     ]
   },
   {
@@ -1715,6 +1802,9 @@
     "usage": "Style with Tailwind classes in `.svelte` components. Design tokens go in `@theme` inside `src/app.css`.",
     "postInstall": [
       "npx sv@latest add tailwindcss --install {{pm}}"
+    ],
+    "skills": [
+      "wshobson/agents@tailwind-design-system"
     ]
   },
   {
@@ -1747,6 +1837,9 @@
         "anchor": "  devtools:",
         "content": "  css: [\"~/assets/css/main.css\"],\n  vite: { plugins: [tailwindcss()] },\n"
       }
+    ],
+    "skills": [
+      "wshobson/agents@tailwind-design-system"
     ]
   },
   {
@@ -1770,6 +1863,9 @@
         "path": "src/stores/counter.ts",
         "content": "import { create } from \"zustand\";\n\ninterface CounterState {\n  count: number;\n  increment: () => void;\n}\n\nexport const useCounter = create<CounterState>()((set) => ({\n  count: 0,\n  increment: () => set((s) => ({ count: s.count + 1 })),\n}));\n"
       }
+    ],
+    "skills": [
+      "wshobson/agents@react-state-management"
     ]
   },
   {
@@ -1791,6 +1887,9 @@
         "path": "src/atoms/theme.ts",
         "content": "import { atom } from \"jotai\";\n\nexport const themeAtom = atom<\"light\" | \"dark\">(\"light\");\n"
       }
+    ],
+    "skills": [
+      "wshobson/agents@react-state-management"
     ]
   },
   {
@@ -1807,7 +1906,8 @@
       "npx nuxi@latest module add pinia"
     ],
     "skills": [
-      "vuejs-ai/skills@vue-pinia-best-practices"
+      "vuejs-ai/skills@vue-pinia-best-practices",
+      "antfu/skills@pinia"
     ]
   },
   {
@@ -1834,6 +1934,9 @@
     ],
     "setupTasks": [
       "TanStack Query: wrap the app root with `<QueryClientProvider client={queryClient}>` (from `src/lib/query-client.ts`)."
+    ],
+    "skills": [
+      "deckardger/tanstack-agent-skills@tanstack-query-best-practices"
     ]
   },
   {
@@ -1911,6 +2014,9 @@
       "react-hook-form",
       "zod",
       "@hookform/resolvers"
+    ],
+    "skills": [
+      "pproenca/dot-skills@react-hook-form"
     ]
   },
   {
@@ -1935,6 +2041,9 @@
     "usage": "Validate every piece of outside data (forms, APIs, environment variables) with a Zod schema and infer the types with `z.infer`.",
     "dependencies": [
       "zod"
+    ],
+    "skills": [
+      "pproenca/dot-skills@zod"
     ]
   },
   {
@@ -1958,6 +2067,9 @@
         "path": "app/db.py",
         "content": "import os\nfrom collections.abc import Iterator\n\nfrom sqlmodel import Session, SQLModel, create_engine\n\nengine = create_engine(os.environ.get(\"DATABASE_URL\", \"sqlite:///./app.db\"))\n\n\ndef create_tables() -> None:\n    SQLModel.metadata.create_all(engine)\n\n\ndef get_session() -> Iterator[Session]:\n    with Session(engine) as session:\n        yield session\n"
       }
+    ],
+    "skills": [
+      "wshobson/agents@postgresql-table-design"
     ]
   },
   {
@@ -2005,6 +2117,9 @@
         "mode": "append",
         "content": "\n# Database from DATABASE_URL (Postgres in production); SQLite when it isn't set.\nimport dj_database_url  # noqa: E402\n\nDATABASES = {\"default\": dj_database_url.config(default=f\"sqlite:///{BASE_DIR / 'db.sqlite3'}\", conn_max_age=600)}\n"
       }
+    ],
+    "skills": [
+      "supabase/agent-skills@supabase-postgres-best-practices"
     ]
   },
   {
@@ -2034,6 +2149,10 @@
         "path": "tests/__init__.py",
         "content": ""
       }
+    ],
+    "skills": [
+      "affaan-m/ecc@django-tdd",
+      "github/awesome-copilot@pytest-coverage"
     ]
   },
   {
@@ -2051,6 +2170,11 @@
         "path": ".github/workflows/ci.yml",
         "content": "name: CI\n\non:\n  push:\n    branches: [main]\n  pull_request:\n\njobs:\n  ci:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - uses: actions/setup-python@v5\n        with:\n          python-version: \"3.12\"\n      - run: pip install -r requirements.txt\n      - run: python manage.py check\n      - run: python manage.py test\n"
       }
+    ],
+    "skills": [
+      "github/awesome-copilot@github-actions-hardening",
+      "github/awesome-copilot@github-actions-efficiency",
+      "wshobson/agents@github-actions-templates"
     ]
   },
   {
@@ -2074,6 +2198,10 @@
         "path": "db.go",
         "content": "package main\n\nimport (\n\t\"context\"\n\t\"os\"\n\n\t\"github.com/jackc/pgx/v5/pgxpool\"\n)\n\n// connectDB opens the connection pool from DATABASE_URL. Call it once at startup.\nfunc connectDB(ctx context.Context) (*pgxpool.Pool, error) {\n\treturn pgxpool.New(ctx, os.Getenv(\"DATABASE_URL\"))\n}\n"
       }
+    ],
+    "skills": [
+      "samber/cc-skills-golang@golang-database",
+      "supabase/agent-skills@supabase-postgres-best-practices"
     ]
   },
   {
@@ -2094,6 +2222,9 @@
         "path": "json_test.go",
         "content": "package main\n\nimport (\n\t\"net/http\"\n\t\"net/http/httptest\"\n\t\"testing\"\n\n\t\"github.com/stretchr/testify/assert\"\n)\n\nfunc TestWriteJSON(t *testing.T) {\n\trec := httptest.NewRecorder()\n\twriteJSON(rec, http.StatusCreated, map[string]string{\"ok\": \"yes\"})\n\tassert.Equal(t, http.StatusCreated, rec.Code)\n\tassert.JSONEq(t, `{\"ok\":\"yes\"}`, rec.Body.String())\n}\n"
       }
+    ],
+    "skills": [
+      "samber/cc-skills-golang@golang-stretchr-testify"
     ]
   },
   {
@@ -2114,6 +2245,9 @@
     ],
     "setupTasks": [
       "golangci-lint: install it with `brew install golangci-lint` (or the binary from golangci-lint.run)."
+    ],
+    "skills": [
+      "samber/cc-skills-golang@golang-lint"
     ]
   },
   {
@@ -2135,6 +2269,10 @@
         "path": ".dockerignore",
         "content": ".git\n.env\nbin\n"
       }
+    ],
+    "skills": [
+      "github/awesome-copilot@multi-stage-dockerfile",
+      "affaan-m/ecc@docker-patterns"
     ]
   },
   {
@@ -2181,6 +2319,9 @@
     "postInstall": [
       "composer require pestphp/pest pestphp/pest-plugin-laravel --dev --with-all-dependencies --no-interaction --quiet",
       "./vendor/bin/pest --init"
+    ],
+    "skills": [
+      "affaan-m/ecc@laravel-tdd"
     ]
   },
   {
@@ -2195,6 +2336,9 @@
     "usage": "API routes are in `routes/api.php`; protect them with the `auth:sanctum` middleware. Create tokens with `$user->createToken()`.",
     "postInstall": [
       "php artisan install:api --no-interaction"
+    ],
+    "skills": [
+      "affaan-m/ecc@laravel-security"
     ]
   },
   {
@@ -2214,6 +2358,10 @@
         "anchor": "\t</dependencies>",
         "content": "\t\t<dependency>\n\t\t\t<groupId>org.springframework.boot</groupId>\n\t\t\t<artifactId>spring-boot-starter-data-jpa</artifactId>\n\t\t</dependency>\n\t\t<dependency>\n\t\t\t<groupId>com.h2database</groupId>\n\t\t\t<artifactId>h2</artifactId>\n\t\t\t<scope>runtime</scope>\n\t\t</dependency>\n"
       }
+    ],
+    "skills": [
+      "github/awesome-copilot@java-hibernate-jpa",
+      "giuseppe-trisciuoglio/developer-kit@spring-data-jpa"
     ]
   },
   {
@@ -2233,6 +2381,10 @@
         "anchor": "\t</dependencies>",
         "content": "\t\t<dependency>\n\t\t\t<groupId>org.springframework.boot</groupId>\n\t\t\t<artifactId>spring-boot-starter-security</artifactId>\n\t\t</dependency>\n"
       }
+    ],
+    "skills": [
+      "github/awesome-copilot@spring-security",
+      "affaan-m/ecc@springboot-security"
     ]
   },
   {
@@ -2280,7 +2432,10 @@
       "drizzle-kit"
     ],
     "skills": [
-      "neondatabase/agent-skills@neon-postgres"
+      "neondatabase/agent-skills@neon",
+      "neondatabase/agent-skills@neon-postgres",
+      "giuseppe-trisciuoglio/developer-kit@drizzle-orm-patterns",
+      "wshobson/agents@postgresql-table-design"
     ],
     "env": {
       "DATABASE_URL": ""
@@ -2350,6 +2505,12 @@
     ],
     "setupTasks": [
       "Turso: locally you need nothing (it uses local.db). For production, create a database at turso.tech and set `DATABASE_URL` and `DATABASE_AUTH_TOKEN`."
+    ],
+    "skills": [
+      "tursodatabase/agent-skills@turso-db",
+      "tursodatabase/agent-skills@turso-cloud",
+      "pproenca/dot-skills@drizzle-sqlite",
+      "giuseppe-trisciuoglio/developer-kit@drizzle-orm-patterns"
     ]
   },
   {
@@ -2369,7 +2530,9 @@
       "MONGODB_URI": ""
     },
     "skills": [
-      "mongodb/agent-skills@mongodb-schema-design"
+      "mongodb/agent-skills@mongodb-schema-design",
+      "mongodb/agent-skills@mongodb-connection",
+      "mongodb/agent-skills@mongodb-query-optimizer"
     ],
     "writeFiles": [
       {
@@ -2464,6 +2627,17 @@
     ],
     "setupTasks": [
       "Paddle: create a sandbox account, generate an API key and put it in `PADDLE_API_KEY`."
+    ],
+    "skills": [
+      "paddlehq/paddle-agent-skills@paddle-onboarding",
+      "paddlehq/paddle-agent-skills@paddle-catalog-setup",
+      "paddlehq/paddle-agent-skills@paddle-checkout-web",
+      "paddlehq/paddle-agent-skills@paddle-webhooks",
+      "paddlehq/paddle-agent-skills@paddle-subscription-sync",
+      "paddlehq/paddle-agent-skills@paddle-subscription-update",
+      "paddlehq/paddle-agent-skills@paddle-subscription-cancel",
+      "paddlehq/paddle-agent-skills@paddle-customer-portal",
+      "paddlehq/paddle-agent-skills@paddle-sandbox-testing"
     ]
   },
   {
@@ -2511,6 +2685,13 @@
     ],
     "setupTasks": [
       "Netlify: import the repository at app.netlify.com and copy the variables from `.env.example` there."
+    ],
+    "skills": [
+      "netlify/context-and-tools@netlify-deploy",
+      "netlify/context-and-tools@netlify-config",
+      "netlify/context-and-tools@netlify-frameworks",
+      "netlify/context-and-tools@netlify-functions",
+      "netlify/context-and-tools@netlify-caching"
     ]
   },
   {

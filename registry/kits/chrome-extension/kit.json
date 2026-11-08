@@ -1,7 +1,7 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "chrome-extension",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "title": "Browser extension with WXT",
   "description": "An extension for Chrome, Firefox and Edge with WXT (Manifest V3, hot reload) and the UI framework you prefer.",
   "category": "extension",
@@ -44,7 +44,8 @@
   },
   "skills": [
     "googlechrome/modern-web-guidance@chrome-extensions",
-    "pproenca/dot-skills@wxt-browser-extensions"
+    "pproenca/dot-skills@wxt-browser-extensions",
+    "wshobson/agents@typescript-advanced-types"
   ],
   "options": [
     {
@@ -56,14 +57,23 @@
           "id": "react",
           "label": "React",
           "skills": [
-            "vercel-labs/agent-skills@vercel-react-best-practices"
+            "vercel-labs/agent-skills@vercel-react-best-practices",
+            "vercel-labs/agent-skills@vercel-composition-patterns",
+            "wshobson/agents@typescript-advanced-types"
           ]
         },
         {
           "id": "vue",
           "label": "Vue",
           "skills": [
-            "vuejs-ai/skills@vue-best-practices"
+            "vuejs-ai/skills@vue-best-practices",
+            "vuejs-ai/skills@vue-router-best-practices",
+            "vuejs-ai/skills@vue-pinia-best-practices",
+            "vuejs-ai/skills@vue-testing-best-practices",
+            "vuejs-ai/skills@vue-debug-guides",
+            "vuejs-ai/skills@create-adaptable-composable",
+            "antfu/skills@vue",
+            "wshobson/agents@typescript-advanced-types"
           ]
         },
         {
@@ -71,7 +81,12 @@
           "label": "Svelte",
           "skills": [
             "sveltejs/ai-tools@svelte-code-writer",
-            "sveltejs/ai-tools@svelte-core-bestpractices"
+            "sveltejs/ai-tools@svelte-core-bestpractices",
+            "ejirocodes/agent-skills@svelte5-best-practices",
+            "spences10/svelte-skills-kit@svelte-runes",
+            "spences10/svelte-skills-kit@svelte-components",
+            "spences10/svelte-skills-kit@svelte-styling",
+            "wshobson/agents@typescript-advanced-types"
           ]
         },
         {

@@ -1,7 +1,7 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "ios-swiftui",
-  "version": "1.2.1",
+  "version": "1.3.0",
   "title": "iOS app with SwiftUI",
   "description": "A native iOS app with SwiftUI and Swift Testing. The Xcode project is generated from project.yml with XcodeGen, so your agent edits YAML instead of the .xcodeproj.",
   "category": "mobile",
@@ -31,7 +31,8 @@
   ],
   "skills": [
     "twostraws/swiftui-agent-skill@swiftui-pro",
-    "avdlee/swiftui-agent-skill@swiftui-expert-skill"
+    "avdlee/swiftui-agent-skill@swiftui-expert-skill",
+    "emilkowalski/skills@write-swift"
   ],
   "verify": {
     "command": "xcodegen generate && xcodebuild build-for-testing -project {{name}}.xcodeproj -scheme {{name}} -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO -quiet"

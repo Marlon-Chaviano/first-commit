@@ -1,6 +1,6 @@
 {
   "$schema": "../../kit.schema.json",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": "Marlon Chaviano",
   "name": "monorepo-packages",
   "title": "npm libraries monorepo",
@@ -84,5 +84,10 @@
   "verify": {
     "command": "pnpm build && pnpm test && pnpm typecheck"
   },
-  "instructions": "## How to work here\n\n- Each library is a folder in `packages/` with its own `package.json`; whatever `src/index.ts` exports is its public API.\n- One library uses another with `\"workspace:*\"`; pnpm turns it into the real version when publishing.\n- Every change that should be published gets a changeset: `pnpm changeset` (pick packages and version bump). Publish with `pnpm release`.\n- Before finishing: `pnpm build && pnpm test && pnpm typecheck`.\n"
+  "instructions": "## How to work here\n\n- Each library is a folder in `packages/` with its own `package.json`; whatever `src/index.ts` exports is its public API.\n- One library uses another with `\"workspace:*\"`; pnpm turns it into the real version when publishing.\n- Every change that should be published gets a changeset: `pnpm changeset` (pick packages and version bump). Publish with `pnpm release`.\n- Before finishing: `pnpm build && pnpm test && pnpm typecheck`.\n",
+  "skills": [
+    "antfu/skills@pnpm",
+    "wshobson/agents@typescript-advanced-types",
+    "antfu/skills@vitest"
+  ]
 }

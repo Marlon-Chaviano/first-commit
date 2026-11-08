@@ -1,6 +1,6 @@
 {
   "$schema": "../../kit.schema.json",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": "Marlon Chaviano",
   "name": "monorepo-django-react",
   "title": "Django + React in one repo",
@@ -23,7 +23,20 @@
   ],
   "skills": [
     "affaan-m/ecc@django-patterns",
-    "vercel-labs/agent-skills@vercel-react-best-practices"
+    "affaan-m/ecc@django-security",
+    "affaan-m/ecc@django-tdd",
+    "getsentry/skills@django-perf-review",
+    "getsentry/skills@django-access-review",
+    "trailofbits/skills@modern-python",
+    "wshobson/agents@python-code-style",
+    "wshobson/agents@python-type-safety",
+    "wshobson/agents@python-error-handling",
+    "wshobson/agents@python-testing-patterns",
+    "wshobson/agents@python-project-structure",
+    "vercel-labs/agent-skills@vercel-react-best-practices",
+    "vercel-labs/agent-skills@vercel-composition-patterns",
+    "wshobson/agents@typescript-advanced-types",
+    "antfu/skills@vite"
   ],
   "writeFiles": [
     {

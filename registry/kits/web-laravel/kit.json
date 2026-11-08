@@ -1,7 +1,7 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "web-laravel",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "author": "Marlon Chaviano",
   "title": "Web app with Laravel",
   "category": "web",
@@ -19,7 +19,12 @@
     "composer"
   ],
   "skills": [
-    "jeffallan/claude-skills@laravel-specialist"
+    "laravel/boost@laravel-best-practices",
+    "jeffallan/claude-skills@laravel-specialist",
+    "jeffallan/claude-skills@php-pro",
+    "affaan-m/ecc@laravel-patterns",
+    "affaan-m/ecc@laravel-security",
+    "affaan-m/ecc@laravel-tdd"
   ],
   "verify": {
     "command": "php artisan test",

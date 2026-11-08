@@ -1,0 +1,62 @@
+{
+  "$schema": "../../kit.schema.json",
+  "name": "api-aspnet",
+  "version": "1.0.0",
+  "author": "Marlon Chaviano",
+  "title": "API with ASP.NET Core",
+  "description": "A minimal API with ASP.NET Core and C# (.NET 10): OpenAPI, a solution with a test project and integration tests with WebApplicationFactory.",
+  "category": "api",
+  "language": "csharp",
+  "tags": [
+    "csharp",
+    "dotnet",
+    "aspnet",
+    "api",
+    "xunit"
+  ],
+  "base": {
+    "command": "mkdir {{name}} && cd {{name}} && dotnet new gitignore && dotnet new sln -n Api && dotnet new webapi -o src/Api -n Api && dotnet new xunit -o tests/Api.Tests -n Api.Tests && dotnet sln add src/Api tests/Api.Tests && dotnet add tests/Api.Tests reference src/Api && dotnet add tests/Api.Tests package Microsoft.AspNetCore.Mvc.Testing"
+  },
+  "packageManagers": [
+    "dotnet"
+  ],
+  "writeFiles": [
+    {
+      "path": "src/Api/Program.cs",
+      "content": "app.MapGet(\"/health\", () => Results.Ok(new { status = \"ok\" }));\n\n",
+      "mode": "insert-before",
+      "anchor": "app.Run();"
+    },
+    {
+      "path": "src/Api/Program.cs",
+      "content": "\n// Lets the test project reference Program in WebApplicationFactory<Program>.\npublic partial class Program;\n",
+      "mode": "append"
+    },
+    {
+      "path": "tests/Api.Tests/HealthTests.cs",
+      "content": "using System.Net;\nusing Microsoft.AspNetCore.Mvc.Testing;\n\nnamespace Api.Tests;\n\npublic class HealthTests(WebApplicationFactory<Program> factory) : IClassFixture<WebApplicationFactory<Program>>\n{\n    [Fact]\n    public async Task Health_returns_ok()\n    {\n        var client = factory.CreateClient();\n        var response = await client.GetAsync(\"/health\");\n        Assert.Equal(HttpStatusCode.OK, response.StatusCode);\n    }\n}\n",
+      "mode": "create"
+    }
+  ],
+  "skills": [
+    "dotnet/skills@dotnet-webapi",
+    "dotnet/skills@csharp-expert",
+    "dotnet/skills@code-testing",
+    "dotnet/skills@run-tests",
+    "github/awesome-copilot@dotnet-best-practices",
+    "github/awesome-copilot@aspnet-minimal-api-openapi",
+    "github/awesome-copilot@csharp-async",
+    "github/awesome-copilot@csharp-xunit",
+    "wshobson/agents@dotnet-backend-patterns"
+  ],
+  "libraries": {
+    "framework": "dotnet",
+    "workflow": [
+      "essentials"
+    ]
+  },
+  "verify": {
+    "command": "dotnet build && dotnet test"
+  },
+  "instructions": "## How to work here\n\n- Endpoints in `src/Api/`. Group them per resource in extension methods (`app.MapUsers()`) using `MapGroup`, and return `TypedResults` so OpenAPI knows every response.\n- Configuration through `appsettings.json` and the options pattern; secrets with `dotnet user-secrets` locally, never in the repo.\n- Register services in `Program.cs` with the right lifetime (scoped for anything holding a DB context).\n- Integration tests in `tests/Api.Tests/` with `WebApplicationFactory<Program>` (see `HealthTests.cs`).\n- Add packages from the project folder: `cd src/Api && dotnet add package <name>`. Run with `dotnet run --project src/Api`.\n- Before finishing: `dotnet build` and `dotnet test`. Needs the .NET 10 SDK."
+}

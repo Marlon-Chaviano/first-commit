@@ -1,7 +1,7 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "web-sveltekit",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "author": "Marlon Chaviano",
   "title": "Web app with SvelteKit",
   "category": "web",
@@ -18,7 +18,16 @@
   },
   "skills": [
     "sveltejs/ai-tools@svelte-code-writer",
-    "sveltejs/ai-tools@svelte-core-bestpractices"
+    "sveltejs/ai-tools@svelte-core-bestpractices",
+    "ejirocodes/agent-skills@svelte5-best-practices",
+    "spences10/svelte-skills-kit@svelte-runes",
+    "spences10/svelte-skills-kit@svelte-components",
+    "spences10/svelte-skills-kit@svelte-styling",
+    "wshobson/agents@typescript-advanced-types",
+    "spences10/svelte-skills-kit@sveltekit-structure",
+    "spences10/svelte-skills-kit@sveltekit-data-flow",
+    "spences10/svelte-skills-kit@sveltekit-remote-functions",
+    "spences10/svelte-skills-kit@svelte-deployment"
   ],
   "verify": {
     "command": "{{pm}} run build",

@@ -53,6 +53,7 @@ const PROFILES = {
   maven: { language: "java", exec: "./mvnw", add: manual("<dependencies> in pom.xml"), lockfiles: [] },
   cargo: { language: "rust", exec: "cargo run", add: { deps: "cargo add {{packages}}", dev: "cargo add --dev {{packages}}" }, lockfiles: ["Cargo.lock"] },
   gradle: { language: "kotlin", exec: "./gradlew", add: manual("gradle/libs.versions.toml and the module's build.gradle.kts"), lockfiles: [] },
+  dotnet: { language: "csharp", exec: "dotnet", add: { deps: "dotnet add package {{packages}}", dev: "dotnet add package {{packages}}" }, lockfiles: ["packages.lock.json"] },
   flutter: { language: "dart", exec: "dart run", add: { deps: "flutter pub add {{packages}}", dev: "flutter pub add --dev {{packages}}" }, lockfiles: ["pubspec.lock"] },
 } satisfies Record<string, PackageManagerProfile>;
 

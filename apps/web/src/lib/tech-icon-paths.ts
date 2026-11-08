@@ -50,6 +50,7 @@ export const TECH_ICON_KEYS: Record<string, string> = {
   "cargo": "rust",
   "gradle": "gradle",
   "flutter": "flutter",
+  "dotnet": "dotnet",
   "claude-code": "claude",
   "cursor": "cursor",
   "gemini-cli": "googlegemini",

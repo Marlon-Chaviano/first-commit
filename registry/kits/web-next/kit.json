@@ -1,0 +1,90 @@
+{
+  "$schema": "../../kit.schema.json",
+  "name": "web-next",
+  "version": "1.0.0",
+  "author": "Marlon Chaviano",
+  "title": "Web app with Next.js",
+  "description": "A full Next.js app (App Router, TypeScript, Tailwind and shadcn/ui) ready to grow: add auth, a database, payments, email or AI from the catalog.",
+  "category": "web",
+  "language": "typescript",
+  "tags": [
+    "nextjs",
+    "react",
+    "tailwind",
+    "shadcn",
+    "typescript"
+  ],
+  "base": {
+    "command": "npx create-next-app@latest {{name}} --ts --tailwind --eslint --app --src-dir --import-alias \"@/*\" --use-{{pm}} --disable-git --no-agent-feedback --yes"
+  },
+  "skills": [
+    "vercel-labs/agent-skills@vercel-react-best-practices",
+    "vercel-labs/agent-skills@vercel-composition-patterns",
+    "wshobson/agents@typescript-advanced-types",
+    "vercel/next.js@next-dev-loop",
+    "vercel/next.js@next-bundle-optimizer",
+    "wshobson/agents@nextjs-app-router-patterns"
+  ],
+  "libraries": {
+    "framework": [
+      "react",
+      "nextjs"
+    ],
+    "components": "shadcn",
+    "addons": [],
+    "animation": [],
+    "auth": "none",
+    "database": "none",
+    "payments": "none",
+    "email": "none",
+    "i18n": "none",
+    "ai": [],
+    "observability": [],
+    "testing": [],
+    "quality": [],
+    "ci": [],
+    "deploy": "vercel",
+    "design": [
+      "design-pack"
+    ],
+    "state": "none",
+    "data": "none",
+    "forms": [],
+    "workflow": [
+      "essentials"
+    ]
+  },
+  "verify": {
+    "command": "{{pm}} run build && npm run --if-present test",
+    "matrix": [
+      {
+        "testing": [
+          "vitest"
+        ],
+        "forms": [
+          "react-hook-form",
+          "zod"
+        ],
+        "data": [
+          "tanstack-query"
+        ],
+        "state": [
+          "zustand"
+        ]
+      },
+      {
+        "observability": [
+          "sentry-nextjs",
+          "posthog-nextjs"
+        ],
+        "quality": [
+          "husky-lint-staged"
+        ],
+        "ci": [
+          "github-actions"
+        ]
+      }
+    ]
+  },
+  "instructions": "## How to work here\n\n- App Router: routes, layouts and route handlers live in `src/app/`. Components are Server Components by default; add `\"use client\"` only where you need state, effects or browser APIs, and keep those components small.\n- Read data in Server Components and change it with Server Actions; validate every input on the server.\n- UI comes from shadcn/ui (`src/components/ui/`); shared pieces go in `src/components/` and pure helpers in `src/lib/`.\n- Secrets only in `.env.local` and only on the server: never prefix them with `NEXT_PUBLIC_`.\n- Before finishing a task: `npm run lint` and `npm run build`."
+}

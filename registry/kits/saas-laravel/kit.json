@@ -1,6 +1,6 @@
 {
   "$schema": "../../kit.schema.json",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": "Marlon Chaviano",
   "name": "saas-laravel",
   "title": "SaaS with Laravel and React",
@@ -22,8 +22,16 @@
     "composer"
   ],
   "skills": [
+    "laravel/boost@laravel-best-practices",
     "jeffallan/claude-skills@laravel-specialist",
-    "vercel-labs/agent-skills@vercel-react-best-practices"
+    "jeffallan/claude-skills@php-pro",
+    "affaan-m/ecc@laravel-patterns",
+    "affaan-m/ecc@laravel-security",
+    "affaan-m/ecc@laravel-tdd",
+    "vercel-labs/agent-skills@vercel-react-best-practices",
+    "vercel-labs/agent-skills@vercel-composition-patterns",
+    "wshobson/agents@typescript-advanced-types",
+    "laravel/boost@tailwindcss-development"
   ],
   "libraries": {
     "framework": [

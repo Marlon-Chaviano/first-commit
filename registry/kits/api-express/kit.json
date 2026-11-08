@@ -1,0 +1,124 @@
+{
+  "$schema": "../../kit.schema.json",
+  "name": "api-express",
+  "version": "1.0.0",
+  "author": "Marlon Chaviano",
+  "title": "API with Express",
+  "description": "A REST API with Express 5 and TypeScript: input validation with Zod, security headers, centralized error handling and tests with Vitest and Supertest.",
+  "category": "api",
+  "language": "typescript",
+  "tags": [
+    "express",
+    "api",
+    "node",
+    "typescript",
+    "zod"
+  ],
+  "base": {
+    "command": "mkdir {{name}}"
+  },
+  "packageManagers": [
+    "npm",
+    "pnpm",
+    "bun"
+  ],
+  "dependencies": [
+    "express@^5",
+    "helmet",
+    "zod"
+  ],
+  "devDependencies": [
+    "typescript",
+    "tsx",
+    "vitest",
+    "supertest",
+    "@types/express",
+    "@types/supertest",
+    "@types/node"
+  ],
+  "writeFiles": [
+    {
+      "path": "package.json",
+      "content": "{\n  \"name\": \"{{name}}\",\n  \"version\": \"0.1.0\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"engines\": {\n    \"node\": \">=20\"\n  },\n  \"scripts\": {\n    \"dev\": \"tsx watch src/server.ts\",\n    \"build\": \"tsc -p tsconfig.build.json\",\n    \"start\": \"node dist/server.js\",\n    \"typecheck\": \"tsc --noEmit\",\n    \"test\": \"vitest run\"\n  }\n}\n",
+      "mode": "json-merge"
+    },
+    {
+      "path": "tsconfig.json",
+      "content": "{\n  \"compilerOptions\": {\n    \"target\": \"ES2022\",\n    \"module\": \"NodeNext\",\n    \"moduleResolution\": \"NodeNext\",\n    \"strict\": true,\n    \"noUncheckedIndexedAccess\": true,\n    \"esModuleInterop\": true,\n    \"skipLibCheck\": true,\n    \"types\": [\n      \"node\"\n    ],\n    \"outDir\": \"dist\",\n    \"rootDir\": \"src\"\n  },\n  \"include\": [\n    \"src\"\n  ]\n}\n",
+      "mode": "create"
+    },
+    {
+      "path": "tsconfig.build.json",
+      "content": "{\n  \"extends\": \"./tsconfig.json\",\n  \"exclude\": [\n    \"src/**/*.test.ts\"\n  ]\n}\n",
+      "mode": "create"
+    },
+    {
+      "path": "src/app.ts",
+      "content": "import express, { type ErrorRequestHandler } from \"express\";\nimport helmet from \"helmet\";\nimport { ZodError } from \"zod\";\n\nimport { users } from \"./routes/users.js\";\n\n/** The app without listening, so tests can drive it with Supertest. */\nexport function createApp() {\n  const app = express();\n  app.use(helmet());\n  app.use(express.json({ limit: \"1mb\" }));\n\n  app.get(\"/health\", (_req, res) => {\n    res.json({ status: \"ok\" });\n  });\n  app.use(\"/users\", users);\n\n  app.use((_req, res) => {\n    res.status(404).json({ error: \"Not found\" });\n  });\n  app.use(errorHandler);\n  return app;\n}\n\n/** One place turns errors into responses: validation → 400, the rest → 500 without internals. */\nconst errorHandler: ErrorRequestHandler = (error, _req, res, _next) => {\n  if (error instanceof ZodError) {\n    res.status(400).json({ error: \"Invalid request\", issues: error.issues });\n    return;\n  }\n  console.error(error);\n  res.status(500).json({ error: \"Internal server error\" });\n};\n",
+      "mode": "create"
+    },
+    {
+      "path": "src/routes/users.ts",
+      "content": "import { Router } from \"express\";\nimport { z } from \"zod\";\n\nconst newUser = z.object({ name: z.string().min(1), email: z.email() });\n\nexport const users = Router();\n\n// Express 5 forwards rejected promises and thrown errors to the error handler.\nusers.post(\"/\", async (req, res) => {\n  const input = newUser.parse(req.body);\n  res.status(201).json({ id: crypto.randomUUID(), ...input });\n});\n",
+      "mode": "create"
+    },
+    {
+      "path": "src/server.ts",
+      "content": "import { createApp } from \"./app.js\";\n\nconst port = Number(process.env.PORT ?? 3000);\ncreateApp().listen(port, () => {\n  console.log(`Listening on http://localhost:${port}`);\n});\n",
+      "mode": "create"
+    },
+    {
+      "path": "src/app.test.ts",
+      "content": "import request from \"supertest\";\nimport { describe, expect, it } from \"vitest\";\n\nimport { createApp } from \"./app.js\";\n\nconst app = createApp();\n\ndescribe(\"api\", () => {\n  it(\"answers the health check\", async () => {\n    const res = await request(app).get(\"/health\");\n    expect(res.status).toBe(200);\n    expect(res.body).toEqual({ status: \"ok\" });\n  });\n\n  it(\"creates a user from valid input\", async () => {\n    const res = await request(app).post(\"/users\").send({ name: \"Ada\", email: \"ada@example.com\" });\n    expect(res.status).toBe(201);\n    expect(res.body).toMatchObject({ name: \"Ada\", email: \"ada@example.com\" });\n  });\n\n  it(\"rejects invalid input with 400\", async () => {\n    const res = await request(app).post(\"/users\").send({ name: \"\" });\n    expect(res.status).toBe(400);\n  });\n});\n",
+      "mode": "create"
+    },
+    {
+      "path": ".gitignore",
+      "content": "node_modules\ndist\n.env\n",
+      "mode": "create"
+    }
+  ],
+  "skills": [
+    "mcollina/skills@node",
+    "wshobson/agents@nodejs-backend-patterns",
+    "wshobson/agents@typescript-advanced-types",
+    "wshobson/agents@api-design-principles"
+  ],
+  "libraries": {
+    "framework": "nodejs",
+    "email": "none",
+    "ai": [],
+    "observability": [],
+    "ci": [],
+    "deploy": "none",
+    "workflow": [
+      "essentials"
+    ]
+  },
+  "verify": {
+    "command": "{{pm}} run typecheck && {{pm}} run test && {{pm}} run build",
+    "matrix": [
+      {
+        "email": [
+          "resend"
+        ],
+        "ai": [
+          "claude-api"
+        ],
+        "ci": [
+          "github-actions"
+        ],
+        "deploy": [
+          "docker"
+        ]
+      },
+      {
+        "observability": [
+          "sentry-node",
+          "posthog-node"
+        ]
+      }
+    ]
+  },
+  "instructions": "## How to work here\n\n- One router per resource in `src/routes/`, mounted in `src/app.ts`. `createApp()` never listens, so tests use it directly with Supertest.\n- Validate every body, query and param with a Zod schema (`schema.parse`): a `ZodError` becomes a 400 in the central error handler.\n- Express 5 forwards thrown errors and rejected promises to the error handler: don't wrap handlers in try/catch just to call `next`.\n- Never return stack traces or internal messages to clients; log them on the server.\n- Start with `npm run dev`. Before finishing: `npm run typecheck && npm test && npm run build`."
+}

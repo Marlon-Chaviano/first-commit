@@ -1,7 +1,9 @@
 import { BRAND } from "./brand";
 import { importAgentsMd, INSTRUCTION_STUBS, MCP_TARGETS, mergeEnv, upsertKitSection, type Merge } from "./agents";
+import { LANGUAGE_CONVENTIONS } from "./conventions";
+import { kitLanguage, languageLabel } from "./languages";
 import { nodeRunner, packageManager, type PackageManager } from "./package-managers";
-import { parseSkillRef, resolve, type Selections } from "./resolve";
+import { parseSkillRef, resolve, type Resolved, type Selections } from "./resolve";
 import type { Kit, McpServer, WriteFile } from "./schema";
 import { BRAND_ASSETS, brandLogo, type BrandAssetKind, type BrandProfile } from "./brand-profile";
 
@@ -210,7 +212,7 @@ export function buildPlan({ kit, kitDir, sel, parentDir, name, git, brand, kitRe
     kind: "write",
     title: "Agent instructions",
     path: join(projectDir, "AGENTS.md"),
-    merge: upsertKitSection(agentsSection(kit, r), kit.title),
+    merge: upsertKitSection(agentsSection(kit, r, sel.pm), kit.title),
   });
   for (const agent of sel.agents) {
     const stub = INSTRUCTION_STUBS[agent];
@@ -226,20 +228,29 @@ export function buildPlan({ kit, kitDir, sel, parentDir, name, git, brand, kitRe
   return steps;
 }
 
-/** The kit section of AGENTS.md (stack, skills, MCP, setup tasks, rules). */
-export function agentsSection(kit: Kit, r: ReturnType<typeof resolve>): string {
+/**
+ * The kit section of AGENTS.md, written for the stack actually chosen: the language's conventions and
+ * package manager, the skills grouped by the part of the stack they cover, MCP, setup tasks and the
+ * rules of every chosen library.
+ */
+export function agentsSection(kit: Kit, r: Resolved, pm: PackageManager = kit.packageManagers[0] ?? "npm"): string {
+  // Only what was picked: a list of "none" lines tells the agent nothing.
   const chosen = r.chosen
-    .map(({ optionId, choices }) => {
-      const option = kit.options.find((o) => o.id === optionId)!;
-      return `- ${option.label}: ${choices.map((c) => c.label).join(", ") || "none"}`;
+    .flatMap(({ optionId, choices }) => {
+      const picked = choices.filter((c) => c.id !== "none");
+      return picked.length ? [`- ${kit.options.find((o) => o.id === optionId)!.label}: ${picked.map((c) => c.label).join(", ")}`] : [];
     })
     .join("\n");
+  const groups = skillGroups(kit, r);
   const parts = [
     `## Workspace kit: ${kit.name}`,
     `Project created with the \`${kit.name}\` kit from ${BRAND.name}. ${kit.description}`,
     chosen && `### Chosen stack\n\n${chosen}`,
-    r.skills.length &&
-      `### Installed skills\n\nUse these skills when the task fits them:\n\n${r.skills.map((s) => `- \`${s}\``).join("\n")}`,
+    workingSection(kit, pm),
+    groups.length &&
+      `### Skills for this stack\n\nThe installed skills, grouped by the part of the stack they cover. Before working on one of these areas, read its skills: they hold the current, recommended way to do it.\n\n${groups
+        .map((g) => `- **${g.title}**: ${g.skills.map((s) => `\`${parseSkillRef(s).skill}\``).join(", ")}`)
+        .join("\n")}`,
     Object.keys(r.mcp).length &&
       `### MCP servers\n\n${Object.entries(r.mcp)
         .map(([name, s]) => `- \`${name}\`: ${"url" in s ? s.url : [s.command, ...s.args].join(" ")}`)
@@ -250,6 +261,45 @@ export function agentsSection(kit: Kit, r: ReturnType<typeof resolve>): string {
     ...r.instructions,
   ];
   return parts.filter(Boolean).join("\n\n");
+}
+
+/** Language, package manager and the language's conventions. */
+function workingSection(kit: Kit, pm: PackageManager): string {
+  const language = kitLanguage(kit);
+  const add = packageManager(pm).add;
+  // Managers without an "add" command (Maven, Gradle, Xcode) say where dependencies go instead.
+  const manual = add.deps.match(/^echo 'Add \{\{packages\}\} to (.+?)' >&2/);
+  const deps = manual
+    ? `dependencies go in ${manual[1]}`
+    : `add a dependency with \`${fillTemplate(add.deps, { packages: "<package>" })}\` (development only: \`${fillTemplate(add.dev, { packages: "<package>" })}\`)`;
+  const rules = [`${languageLabel(language)} with ${pm}: ${deps}.`, ...LANGUAGE_CONVENTIONS[language]];
+  return `### Working in this stack\n\n${rules.map((rule) => `- ${rule}`).join("\n")}`;
+}
+
+/**
+ * The installed skills by where they came from: the kit itself (framework and language), then each
+ * chosen library or option, then the rest (added by hand, the first-commit skill).
+ */
+export function skillGroups(kit: Kit, r: Resolved): { title: string; skills: string[] }[] {
+  const installed = new Set(r.skills);
+  const placed = new Set<string>();
+  const take = (refs: string[]) =>
+    refs.filter((ref) => {
+      if (!installed.has(ref) || placed.has(ref)) return false;
+      placed.add(ref);
+      return true;
+    });
+  const groups = [{ title: `${kit.title} (framework and language)`, skills: take(kit.skills) }];
+  for (const { optionId, choices } of r.chosen) {
+    const option = kit.options.find((o) => o.id === optionId)!;
+    for (const choice of choices) {
+      // "Design pack: Design pack" → "Design pack".
+      const title = choice.label.toLowerCase().includes(option.label.toLowerCase()) ? choice.label : `${option.label}: ${choice.label}`;
+      groups.push({ title, skills: take(choice.skills) });
+    }
+  }
+  groups.push({ title: "Other", skills: take(r.skills) });
+  return groups.filter((g) => g.skills.length);
 }
 
 /** Quote package specs like `tailwindcss@^3.4.17` so the shell leaves them alone. */

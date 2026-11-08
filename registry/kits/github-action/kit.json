@@ -1,6 +1,6 @@
 {
   "$schema": "../../kit.schema.json",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": "Marlon Chaviano",
   "name": "github-action",
   "title": "GitHub Action with TypeScript",
@@ -20,7 +20,12 @@
     "npm"
   ],
   "skills": [
-    "github/awesome-copilot@github-actions-hardening"
+    "github/awesome-copilot@github-actions-hardening",
+    "github/awesome-copilot@github-actions-efficiency",
+    "wshobson/agents@github-actions-templates",
+    "mcollina/skills@node",
+    "wshobson/agents@nodejs-backend-patterns",
+    "wshobson/agents@typescript-advanced-types"
   ],
   "libraries": {
     "framework": "nodejs",

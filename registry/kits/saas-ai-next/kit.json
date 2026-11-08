@@ -1,6 +1,6 @@
 {
   "$schema": "../../kit.schema.json",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "author": "Marlon Chaviano",
   "name": "saas-ai-next",
   "title": "AI app with Next.js",
@@ -19,7 +19,12 @@
     "command": "npx create-next-app@latest {{name}} --ts --tailwind --eslint --app --src-dir --import-alias \"@/*\" --use-{{pm}} --disable-git --no-agent-feedback --yes"
   },
   "skills": [
-    "vercel-labs/agent-skills@vercel-react-best-practices"
+    "vercel-labs/agent-skills@vercel-react-best-practices",
+    "vercel-labs/agent-skills@vercel-composition-patterns",
+    "wshobson/agents@typescript-advanced-types",
+    "vercel/next.js@next-dev-loop",
+    "vercel/next.js@next-bundle-optimizer",
+    "wshobson/agents@nextjs-app-router-patterns"
   ],
   "libraries": {
     "framework": [

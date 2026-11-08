@@ -1,6 +1,6 @@
 {
   "$schema": "../../kit.schema.json",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "author": "Marlon Chaviano",
   "name": "saas-rails",
   "title": "SaaS with Rails",
@@ -22,7 +22,8 @@
     "bundler"
   ],
   "skills": [
-    "affaan-m/ecc@rails-patterns"
+    "affaan-m/ecc@rails-patterns",
+    "jeffallan/claude-skills@rails-expert"
   ],
   "libraries": {
     "framework": [

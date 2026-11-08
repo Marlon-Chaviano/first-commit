@@ -1,6 +1,6 @@
 {
   "$schema": "../../kit.schema.json",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "author": "Marlon Chaviano",
   "name": "api-laravel",
   "title": "API with Laravel",
@@ -21,7 +21,12 @@
     "composer"
   ],
   "skills": [
-    "jeffallan/claude-skills@laravel-specialist"
+    "laravel/boost@laravel-best-practices",
+    "jeffallan/claude-skills@laravel-specialist",
+    "jeffallan/claude-skills@php-pro",
+    "affaan-m/ecc@laravel-patterns",
+    "affaan-m/ecc@laravel-security",
+    "affaan-m/ecc@laravel-tdd"
   ],
   "libraries": {
     "framework": [

@@ -1,7 +1,7 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "api-go",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "title": "API with Go and chi",
   "description": "An HTTP API in Go with the chi router: standard middlewares, JSON and tests with httptest. No heavy frameworks.",
   "category": "api",
@@ -26,8 +26,19 @@
   ],
   "skills": [
     "samber/cc-skills-golang@golang-code-style",
+    "samber/cc-skills-golang@golang-naming",
     "samber/cc-skills-golang@golang-error-handling",
-    "samber/cc-skills-golang@golang-testing"
+    "samber/cc-skills-golang@golang-testing",
+    "samber/cc-skills-golang@golang-concurrency",
+    "samber/cc-skills-golang@golang-context",
+    "samber/cc-skills-golang@golang-project-layout",
+    "samber/cc-skills-golang@golang-structs-interfaces",
+    "samber/cc-skills-golang@golang-design-patterns",
+    "samber/cc-skills-golang@golang-security",
+    "samber/cc-skills-golang@golang-lint",
+    "samber/cc-skills-golang@golang-modernize",
+    "samber/cc-skills-golang@golang-observability",
+    "wshobson/agents@api-design-principles"
   ],
   "verify": {
     "command": "go mod tidy && go vet ./... && go build ./... && go test ./...",

@@ -1,0 +1,67 @@
+{
+  "$schema": "../../kit.schema.json",
+  "name": "api-axum",
+  "version": "1.0.0",
+  "author": "Marlon Chaviano",
+  "title": "API with Rust and Axum",
+  "description": "A fast, type-safe HTTP API in Rust with Axum and Tokio: JSON with Serde, structured logs with tracing and in-process tests with no open ports.",
+  "category": "api",
+  "language": "rust",
+  "tags": [
+    "rust",
+    "axum",
+    "tokio",
+    "api"
+  ],
+  "base": {
+    "command": "mkdir -p {{name}}/src {{name}}/tests"
+  },
+  "packageManagers": [
+    "cargo"
+  ],
+  "writeFiles": [
+    {
+      "path": "Cargo.toml",
+      "content": "[package]\nname = \"{{name}}\"\nversion = \"0.1.0\"\nedition = \"2024\"\n\n[lib]\nname = \"api\"\npath = \"src/lib.rs\"\n\n[dependencies]\naxum = \"0.8\"\nserde = { version = \"1\", features = [\"derive\"] }\nserde_json = \"1\"\ntokio = { version = \"1\", features = [\"full\"] }\ntower-http = { version = \"0.6\", features = [\"trace\"] }\ntracing = \"0.1\"\ntracing-subscriber = { version = \"0.3\", features = [\"env-filter\"] }\n\n[dev-dependencies]\nhttp-body-util = \"0.1\"\ntower = { version = \"0.5\", features = [\"util\"] }\n",
+      "mode": "create"
+    },
+    {
+      "path": "src/lib.rs",
+      "content": "//! The HTTP API: `router()` builds the whole app, so tests can call it without a socket.\n\nuse axum::{Json, Router, routing::get};\nuse serde::Serialize;\nuse tower_http::trace::TraceLayer;\n\n#[derive(Serialize)]\npub struct Health {\n    pub status: &'static str,\n}\n\nasync fn health() -> Json<Health> {\n    Json(Health { status: \"ok\" })\n}\n\npub fn router() -> Router {\n    Router::new()\n        .route(\"/health\", get(health))\n        .layer(TraceLayer::new_for_http())\n}\n",
+      "mode": "create"
+    },
+    {
+      "path": "src/main.rs",
+      "content": "use tracing_subscriber::EnvFilter;\n\n#[tokio::main]\nasync fn main() -> Result<(), Box<dyn std::error::Error>> {\n    tracing_subscriber::fmt()\n        .with_env_filter(EnvFilter::try_from_default_env().unwrap_or_else(|_| EnvFilter::new(\"info,tower_http=debug\")))\n        .init();\n\n    let port = std::env::var(\"PORT\").unwrap_or_else(|_| \"3000\".into());\n    let listener = tokio::net::TcpListener::bind(format!(\"0.0.0.0:{port}\")).await?;\n    tracing::info!(\"listening on {}\", listener.local_addr()?);\n    axum::serve(listener, api::router()).await?;\n    Ok(())\n}\n",
+      "mode": "create"
+    },
+    {
+      "path": "tests/health.rs",
+      "content": "use axum::{\n    body::Body,\n    http::{Request, StatusCode},\n};\nuse http_body_util::BodyExt;\nuse tower::ServiceExt;\n\n#[tokio::test]\nasync fn health_returns_ok() {\n    let response = api::router()\n        .oneshot(Request::get(\"/health\").body(Body::empty()).unwrap())\n        .await\n        .unwrap();\n    assert_eq!(response.status(), StatusCode::OK);\n    let body = response.into_body().collect().await.unwrap().to_bytes();\n    assert_eq!(&body[..], br#\"{\"status\":\"ok\"}\"#);\n}\n",
+      "mode": "create"
+    },
+    {
+      "path": ".gitignore",
+      "content": "/target\n.env\n",
+      "mode": "create"
+    }
+  ],
+  "skills": [
+    "apollographql/skills@rust-best-practices",
+    "wshobson/agents@rust-async-patterns",
+    "affaan-m/ecc@rust-patterns",
+    "affaan-m/ecc@rust-testing",
+    "actionbook/rust-skills@domain-web",
+    "wshobson/agents@api-design-principles"
+  ],
+  "libraries": {
+    "framework": "rust",
+    "workflow": [
+      "essentials"
+    ]
+  },
+  "verify": {
+    "command": "cargo build && cargo test"
+  },
+  "instructions": "## How to work here\n\n- Routes in `src/lib.rs` (`router()`); split them into modules per resource (`src/routes/users.rs`) and merge with `Router::merge` or `nest`.\n- Handlers take extractors (`Json<T>`, `Path<T>`, `State<AppState>`) and return `impl IntoResponse`. Shared state (DB pool, config) goes in an `AppState` passed with `.with_state()`.\n- Errors: define an `AppError` that implements `IntoResponse` and use `?` in handlers; no `unwrap()` outside tests.\n- Tests call `router().oneshot(request)` (see `tests/health.rs`): no server, no ports.\n- Run with `cargo run` (`RUST_LOG=debug` for more logs). Before finishing: `cargo fmt`, `cargo clippy` and `cargo test`."
+}

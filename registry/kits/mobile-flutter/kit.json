@@ -1,6 +1,6 @@
 {
   "$schema": "../../kit.schema.json",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "author": "Marlon Chaviano",
   "name": "mobile-flutter",
   "title": "Cross-platform app with Flutter",
@@ -23,8 +23,19 @@
   "skills": [
     "flutter/agent-plugins@flutter-apply-architecture-best-practices",
     "flutter/agent-plugins@flutter-build-responsive-layout",
+    "flutter/agent-plugins@flutter-fix-layout-issues",
     "flutter/agent-plugins@flutter-add-widget-test",
-    "flutter/agent-plugins@flutter-setup-declarative-routing"
+    "flutter/agent-plugins@flutter-add-integration-test",
+    "flutter/agent-plugins@flutter-add-widget-preview",
+    "flutter/agent-plugins@flutter-setup-declarative-routing",
+    "flutter/agent-plugins@flutter-setup-localization",
+    "flutter/agent-plugins@flutter-implement-json-serialization",
+    "flutter/agent-plugins@flutter-use-http-package",
+    "flutter/agent-plugins@dart-add-unit-test",
+    "flutter/agent-plugins@dart-run-static-analysis",
+    "flutter/agent-plugins@dart-fix-runtime-errors",
+    "flutter/agent-plugins@dart-use-pattern-matching",
+    "flutter/agent-plugins@dart-resolve-package-conflicts"
   ],
   "libraries": {
     "framework": [

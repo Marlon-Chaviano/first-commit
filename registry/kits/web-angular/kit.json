@@ -1,6 +1,6 @@
 {
   "$schema": "../../kit.schema.json",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": "Marlon Chaviano",
   "name": "web-angular",
   "title": "Web app with Angular",
@@ -22,7 +22,16 @@
     "bun"
   ],
   "skills": [
-    "angular/angular@angular-developer"
+    "angular/angular@angular-developer",
+    "analogjs/angular-skills@angular-component",
+    "analogjs/angular-skills@angular-signals",
+    "analogjs/angular-skills@angular-forms",
+    "analogjs/angular-skills@angular-routing",
+    "analogjs/angular-skills@angular-http",
+    "analogjs/angular-skills@angular-di",
+    "analogjs/angular-skills@angular-testing",
+    "analogjs/angular-skills@angular-tooling",
+    "wshobson/agents@typescript-advanced-types"
   ],
   "libraries": {
     "framework": [

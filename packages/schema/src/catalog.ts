@@ -4,7 +4,7 @@
  * doesn't download the schemas.
  */
 
-export const KIT_CATEGORIES = ["mobile", "web", "landing", "saas", "api", "extension", "monorepo", "other"] as const;
+export const KIT_CATEGORIES = ["mobile", "web", "landing", "saas", "api", "desktop", "extension", "monorepo", "other"] as const;
 export type KitCategory = (typeof KIT_CATEGORIES)[number];
 
 /** How each kit type is shown (website and CLI). */
@@ -14,6 +14,7 @@ export const CATEGORY_LABELS: Record<KitCategory, string> = {
   saas: "SaaS",
   web: "Web",
   api: "API",
+  desktop: "Desktop",
   extension: "Extensions",
   monorepo: "Monorepo",
   other: "Other",

@@ -1,6 +1,6 @@
 {
   "$schema": "../../kit.schema.json",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": "Marlon Chaviano",
   "name": "api-fastify",
   "title": "API with Fastify",
@@ -25,7 +25,11 @@
     "typescript@~5.9.0"
   ],
   "skills": [
-    "mcollina/skills@fastify-best-practices"
+    "mcollina/skills@fastify-best-practices",
+    "mcollina/skills@node",
+    "wshobson/agents@nodejs-backend-patterns",
+    "wshobson/agents@typescript-advanced-types",
+    "wshobson/agents@api-design-principles"
   ],
   "libraries": {
     "framework": "nodejs",

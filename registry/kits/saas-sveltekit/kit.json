@@ -1,6 +1,6 @@
 {
   "$schema": "../../kit.schema.json",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "author": "Marlon Chaviano",
   "name": "saas-sveltekit",
   "title": "SaaS with SvelteKit",
@@ -21,7 +21,22 @@
   "skills": [
     "sveltejs/ai-tools@svelte-code-writer",
     "sveltejs/ai-tools@svelte-core-bestpractices",
-    "better-auth/skills@better-auth-best-practices"
+    "ejirocodes/agent-skills@svelte5-best-practices",
+    "spences10/svelte-skills-kit@svelte-runes",
+    "spences10/svelte-skills-kit@svelte-components",
+    "spences10/svelte-skills-kit@svelte-styling",
+    "wshobson/agents@typescript-advanced-types",
+    "spences10/svelte-skills-kit@sveltekit-structure",
+    "spences10/svelte-skills-kit@sveltekit-data-flow",
+    "spences10/svelte-skills-kit@sveltekit-remote-functions",
+    "spences10/svelte-skills-kit@svelte-deployment",
+    "better-auth/skills@better-auth-best-practices",
+    "better-auth/skills@better-auth-security-best-practices",
+    "better-auth/skills@create-auth",
+    "better-auth/skills@email-and-password-best-practices",
+    "better-auth/skills@organization-best-practices",
+    "better-auth/skills@two-factor-authentication-best-practices",
+    "giuseppe-trisciuoglio/developer-kit@drizzle-orm-patterns"
   ],
   "libraries": {
     "framework": [

@@ -1,6 +1,6 @@
 {
   "$schema": "../../kit.schema.json",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": "Marlon Chaviano",
   "name": "web-react-router",
   "title": "Web app with React Router",
@@ -24,8 +24,11 @@
     "bun"
   ],
   "skills": [
+    "vercel-labs/agent-skills@vercel-react-best-practices",
+    "vercel-labs/agent-skills@vercel-composition-patterns",
+    "wshobson/agents@typescript-advanced-types",
     "remix-run/agent-skills@react-router-framework-mode",
-    "vercel-labs/agent-skills@vercel-react-best-practices"
+    "antfu/skills@vite"
   ],
   "libraries": {
     "framework": [

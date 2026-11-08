@@ -1,6 +1,6 @@
 {
   "$schema": "../../kit.schema.json",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": "Marlon Chaviano",
   "name": "mcp-server-python",
   "title": "MCP server with Python",
@@ -22,7 +22,14 @@
     "mcp"
   ],
   "skills": [
-    "anthropics/skills@mcp-builder"
+    "anthropics/skills@mcp-builder",
+    "github/awesome-copilot@python-mcp-server-generator",
+    "trailofbits/skills@modern-python",
+    "wshobson/agents@python-code-style",
+    "wshobson/agents@python-type-safety",
+    "wshobson/agents@python-error-handling",
+    "wshobson/agents@python-testing-patterns",
+    "wshobson/agents@python-project-structure"
   ],
   "writeFiles": [
     {

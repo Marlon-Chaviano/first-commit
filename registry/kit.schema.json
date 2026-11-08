@@ -30,6 +30,7 @@
         "landing",
         "saas",
         "api",
+        "desktop",
         "extension",
         "monorepo",
         "other"
@@ -100,6 +101,7 @@
           "maven",
           "cargo",
           "gradle",
+          "dotnet",
           "flutter"
         ]
       }

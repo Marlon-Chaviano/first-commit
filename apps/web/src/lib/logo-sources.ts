@@ -26,9 +26,11 @@ import {
   siDocker,
   siDotnet,
   siDrizzle,
+  siElectron,
   siElixir,
   siEslint,
   siExpo,
+  siExpress,
   siFastapi,
   siFirebase,
   siFlutter,
@@ -54,6 +56,7 @@ import {
   siJest,
   siJunit5,
   siKotlin,
+  siLangchain,
   siLaravel,
   siLemonsqueezy,
   siLiquibase,
@@ -112,6 +115,7 @@ import {
   siSwr,
   siTailwindcss,
   siTanstack,
+  siTauri,
   siTestinglibrary,
   siThreedotjs,
   siTurso,
@@ -136,6 +140,7 @@ export const LOGOS: Record<string, SimpleIcon> = {
   "vanilla": siJavascript,
   "solid": siSolid,
   "cargo": siRust,
+  "dotnet": siDotnet,
   // Composer's own logo is a 39 KB illustration; PHP's reads the same at icon size.
   "composer": siPhp,
   "bundler": siRubygems,
@@ -261,6 +266,14 @@ export const LOGOS: Record<string, SimpleIcon> = {
   "laravel": siLaravel,
   "spring": siSpring,
   "spring-boot": siSpringboot,
+  "electron": siElectron,
+  "tauri": siTauri,
+  "express": siExpress,
+  "langchain": siLangchain,
+  "langgraph": siLangchain,
+  "rust": siRust,
+  "axum": siRust,
+  "aspnet": siDotnet,
   "maven": siApachemaven,
   "xcode": siXcode,
   "sqlite": siSqlite,
@@ -283,7 +296,7 @@ export const LOGOS: Record<string, SimpleIcon> = {
 };
 
 /** Agents and languages (TechIcon looks here first). */
-const PACKAGE_MANAGERS = ["npm", "pnpm", "bun", "deno", "uv", "pip", "bundler", "composer", "maven", "cargo", "gradle", "flutter"];
+const PACKAGE_MANAGERS = ["npm", "pnpm", "bun", "deno", "uv", "pip", "bundler", "composer", "maven", "cargo", "gradle", "flutter", "dotnet"];
 
 export const TECH_ICONS: Record<string, SimpleIcon> = {
   // Package managers (configurator, stacks), from the library logos.

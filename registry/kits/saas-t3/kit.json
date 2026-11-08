@@ -1,6 +1,6 @@
 {
   "$schema": "../../kit.schema.json",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "author": "Marlon Chaviano",
   "name": "saas-t3",
   "title": "SaaS with the T3 stack",
@@ -16,7 +16,7 @@
     "tailwind"
   ],
   "base": {
-    "command": "npx -y create-t3-app@latest {{name}} --CI --tailwind --trpc --drizzle --betterAuth --appRouter --dbProvider postgres --noGit --noInstall && cd {{name}} && npm pkg set devDependencies.drizzle-kit=^0.31.4 dependencies.drizzle-orm=^0.45.2 \u0026\u0026 npm pkg delete packageManager",
+    "command": "npx -y create-t3-app@latest {{name}} --CI --tailwind --trpc --drizzle --betterAuth --appRouter --dbProvider postgres --noGit --noInstall && cd {{name}} && npm pkg set devDependencies.drizzle-kit=^0.31.4 dependencies.drizzle-orm=^0.45.2 && npm pkg delete packageManager",
     "install": "{{pm}} install"
   },
   "packageManagers": [
@@ -26,7 +26,18 @@
   ],
   "skills": [
     "vercel-labs/agent-skills@vercel-react-best-practices",
-    "better-auth/skills@better-auth-best-practices"
+    "vercel-labs/agent-skills@vercel-composition-patterns",
+    "wshobson/agents@typescript-advanced-types",
+    "vercel/next.js@next-dev-loop",
+    "vercel/next.js@next-bundle-optimizer",
+    "wshobson/agents@nextjs-app-router-patterns",
+    "better-auth/skills@better-auth-best-practices",
+    "better-auth/skills@better-auth-security-best-practices",
+    "better-auth/skills@create-auth",
+    "better-auth/skills@email-and-password-best-practices",
+    "better-auth/skills@organization-best-practices",
+    "better-auth/skills@two-factor-authentication-best-practices",
+    "giuseppe-trisciuoglio/developer-kit@drizzle-orm-patterns"
   ],
   "libraries": {
     "framework": [

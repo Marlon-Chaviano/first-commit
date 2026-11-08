@@ -1,6 +1,6 @@
 {
   "$schema": "../../kit.schema.json",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": "Marlon Chaviano",
   "name": "api-nestjs",
   "title": "API with NestJS",
@@ -51,5 +51,13 @@
       }
     ]
   },
-  "instructions": "## How to work here\n\n- Organize by domain modules (`src/<domain>/`), each with its module, controller and service. Generate pieces with `npx nest g resource <name>`.\n- Logic lives in services; controllers only translate HTTP. Inject dependencies through the constructor.\n- Validate input with DTOs and `ValidationPipe`.\n- Before finishing: `npm run build && npm test`."
+  "instructions": "## How to work here\n\n- Organize by domain modules (`src/<domain>/`), each with its module, controller and service. Generate pieces with `npx nest g resource <name>`.\n- Logic lives in services; controllers only translate HTTP. Inject dependencies through the constructor.\n- Validate input with DTOs and `ValidationPipe`.\n- Before finishing: `npm run build && npm test`.",
+  "skills": [
+    "kadajett/agent-nestjs-skills@nestjs-best-practices",
+    "jeffallan/claude-skills@nestjs-expert",
+    "mcollina/skills@node",
+    "wshobson/agents@nodejs-backend-patterns",
+    "wshobson/agents@typescript-advanced-types",
+    "wshobson/agents@api-design-principles"
+  ]
 }

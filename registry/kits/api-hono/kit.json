@@ -1,7 +1,7 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "api-hono",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "title": "API with Hono",
   "description": "Typed REST API with Hono on Node, Bun or Cloudflare Workers. Validation with Zod and an optional Drizzle database.",
   "category": "api",
@@ -56,7 +56,9 @@
     ]
   },
   "skills": [
-    "honojs/skills@hono"
+    "honojs/skills@hono",
+    "wshobson/agents@typescript-advanced-types",
+    "wshobson/agents@api-design-principles"
   ],
   "options": [
     {
@@ -66,15 +68,28 @@
       "choices": [
         {
           "id": "nodejs",
-          "label": "Node.js"
+          "label": "Node.js",
+          "skills": [
+            "mcollina/skills@node",
+            "wshobson/agents@nodejs-backend-patterns",
+            "wshobson/agents@typescript-advanced-types"
+          ]
         },
         {
           "id": "bun",
-          "label": "Bun"
+          "label": "Bun",
+          "skills": [
+            "affaan-m/ecc@bun-runtime"
+          ]
         },
         {
           "id": "cloudflare-workers",
-          "label": "Cloudflare Workers"
+          "label": "Cloudflare Workers",
+          "skills": [
+            "cloudflare/skills@cloudflare",
+            "cloudflare/skills@workers-best-practices",
+            "cloudflare/skills@wrangler"
+          ]
         }
       ]
     },
@@ -121,7 +136,11 @@
             "DATABASE_URL": "postgres://postgres:postgres@localhost:5432/app"
           },
           "files": "files/drizzle",
-          "instructions": "## Database\n\nSchema in `src/db/schema.ts`, client in `src/db/index.ts`. After changing the schema: `npx drizzle-kit generate` and `npx drizzle-kit migrate`. Never edit migrations that were already applied."
+          "instructions": "## Database\n\nSchema in `src/db/schema.ts`, client in `src/db/index.ts`. After changing the schema: `npx drizzle-kit generate` and `npx drizzle-kit migrate`. Never edit migrations that were already applied.",
+          "skills": [
+            "giuseppe-trisciuoglio/developer-kit@drizzle-orm-patterns",
+            "supabase/agent-skills@supabase-postgres-best-practices"
+          ]
         }
       ]
     }

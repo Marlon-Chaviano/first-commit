@@ -1,6 +1,6 @@
 {
   "$schema": "../../kit.schema.json",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": "Marlon Chaviano",
   "name": "slack-app",
   "title": "Slack app with Bolt",
@@ -22,7 +22,12 @@
   ],
   "skills": [
     "slackapi/slack-skills-plugin@slack-api",
-    "slackapi/slack-skills-plugin@block-kit"
+    "slackapi/slack-skills-plugin@block-kit",
+    "slackapi/slack-skills-plugin@slack-docs",
+    "slackapi/slack-skills-plugin@test-slack-app",
+    "mcollina/skills@node",
+    "wshobson/agents@nodejs-backend-patterns",
+    "wshobson/agents@typescript-advanced-types"
   ],
   "env": {
     "SLACK_BOT_TOKEN": "",

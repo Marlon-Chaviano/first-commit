@@ -1,6 +1,6 @@
 {
   "$schema": "../../kit.schema.json",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": "Marlon Chaviano",
   "name": "monorepo-nx",
   "title": "Monorepo with Nx",
@@ -24,7 +24,13 @@
   "skills": [
     "nrwl/nx-ai-agents-config@nx-workspace",
     "nrwl/nx-ai-agents-config@nx-run-tasks",
-    "vercel-labs/agent-skills@vercel-react-best-practices"
+    "nrwl/nx-ai-agents-config@nx-generate",
+    "nrwl/nx-ai-agents-config@nx-plugins",
+    "nrwl/nx-ai-agents-config@link-workspace-packages",
+    "vercel-labs/agent-skills@vercel-react-best-practices",
+    "vercel-labs/agent-skills@vercel-composition-patterns",
+    "wshobson/agents@typescript-advanced-types",
+    "antfu/skills@vite"
   ],
   "libraries": {
     "framework": [

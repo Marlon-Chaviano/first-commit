@@ -1,0 +1,44 @@
+{
+  "$schema": "../../kit.schema.json",
+  "name": "desktop-electron",
+  "version": "1.0.0",
+  "author": "Marlon Chaviano",
+  "title": "Desktop app with Electron",
+  "description": "A cross-platform desktop app with Electron Forge, Vite and TypeScript: secure preload, hot reload and installers for macOS, Windows and Linux.",
+  "category": "desktop",
+  "language": "typescript",
+  "tags": [
+    "electron",
+    "desktop",
+    "vite",
+    "typescript",
+    "macos",
+    "windows",
+    "linux"
+  ],
+  "base": {
+    "command": "npx -y create-electron-app@latest {{name}} --template=vite --typescript"
+  },
+  "packageManagers": [
+    "npm"
+  ],
+  "skills": [
+    "wshobson/agents@typescript-advanced-types",
+    "antfu/skills@vite"
+  ],
+  "libraries": {
+    "framework": [
+      "vanilla"
+    ],
+    "design": [
+      "design-pack"
+    ],
+    "workflow": [
+      "essentials"
+    ]
+  },
+  "verify": {
+    "command": "npm run typecheck && npm run lint"
+  },
+  "instructions": "## How to work here\n\n- Three processes, three files: `src/main.ts` (Node: windows, menus, the file system), `src/preload.ts` (the only bridge) and `src/renderer.ts` (the UI, a web page).\n- Security: keep `contextIsolation` on and `nodeIntegration` off. Expose only small, typed functions from the preload with `contextBridge.exposeInMainWorld`, and handle them in main with `ipcMain.handle`. Never expose `ipcRenderer` itself.\n- Validate every IPC message in the main process: the renderer is untrusted, like a browser.\n- Start with `npm start` (hot reload). Build installers with `npm run make`.\n- Before finishing: `npm run typecheck && npm run lint`."
+}

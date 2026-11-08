@@ -1,6 +1,6 @@
 {
   "$schema": "../../kit.schema.json",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": "Marlon Chaviano",
   "name": "mcp-server-ts",
   "title": "MCP server with TypeScript",
@@ -31,7 +31,11 @@
     "tsx"
   ],
   "skills": [
-    "anthropics/skills@mcp-builder"
+    "anthropics/skills@mcp-builder",
+    "github/awesome-copilot@typescript-mcp-server-generator",
+    "mcollina/skills@node",
+    "wshobson/agents@nodejs-backend-patterns",
+    "wshobson/agents@typescript-advanced-types"
   ],
   "writeFiles": [
     {

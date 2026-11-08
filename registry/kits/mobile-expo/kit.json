@@ -1,7 +1,7 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "mobile-expo",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "title": "Mobile app with Expo",
   "description": "React Native + Expo Router ready for iOS, Android and web, with Expo's official skills so your agent doesn't reach for outdated APIs.",
   "category": "mobile",
@@ -59,10 +59,17 @@
     "expo/skills@expo-overview",
     "expo/skills@expo-router",
     "expo/skills@expo-native-ui",
+    "expo/skills@expo-ui",
     "expo/skills@expo-project-structure",
     "expo/skills@expo-design-system",
     "expo/skills@expo-data-fetching",
-    "vercel-labs/agent-skills@vercel-react-native-skills"
+    "expo/skills@expo-animation",
+    "expo/skills@expo-dev-client",
+    "expo/skills@expo-upgrade",
+    "vercel-labs/agent-skills@vercel-react-native-skills",
+    "callstackincubator/agent-skills@react-native-best-practices",
+    "callstackincubator/agent-skills@upgrading-react-native",
+    "wshobson/agents@typescript-advanced-types"
   ],
   "options": [
     {

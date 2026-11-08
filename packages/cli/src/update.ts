@@ -101,7 +101,7 @@ export async function update(args: ParsedArgs, guard: <T>(v: T) => Exclude<T, sy
     ...skillSteps({ skills: skills.added, agents: sel.agents, pm: sel.pm, cwd: dir }),
     ...mcpSteps({ mcp: r.mcp, agents: sel.agents, projectDir: dir, join }),
     ...(Object.keys(r.env).length ? [{ kind: "write" as const, title: "Environment variables", path: join(dir, ".env.example"), merge: mergeEnv(r.env) }] : []),
-    { kind: "write", title: "Agent instructions", path: join(dir, "AGENTS.md"), merge: upsertKitSection(agentsSection(kit, r), kit.title) },
+    { kind: "write", title: "Agent instructions", path: join(dir, "AGENTS.md"), merge: upsertKitSection(agentsSection(kit, r, sel.pm), kit.title) },
     ...sel.agents.flatMap((a) =>
       INSTRUCTION_STUBS[a] ? [{ kind: "write" as const, title: `Link ${INSTRUCTION_STUBS[a]} to AGENTS.md`, path: join(dir, INSTRUCTION_STUBS[a]!), merge: importAgentsMd }] : [],
     ),

@@ -1,0 +1,114 @@
+{
+  "$schema": "../../kit.schema.json",
+  "name": "ai-agent-python",
+  "version": "1.0.0",
+  "author": "Marlon Chaviano",
+  "title": "AI agent with Python and LangGraph",
+  "description": "A tool-using AI agent in Python with LangChain v1 and LangGraph: typed tools, any model provider, the LangGraph dev server and tests that don't spend tokens.",
+  "category": "other",
+  "language": "python",
+  "tags": [
+    "ai",
+    "agents",
+    "langgraph",
+    "langchain",
+    "python",
+    "claude"
+  ],
+  "base": {
+    "command": "mkdir {{name}} && cd {{name}} && python3 -m venv .venv"
+  },
+  "packageManagers": [
+    "pip"
+  ],
+  "dependencies": [
+    "langchain",
+    "langgraph",
+    "langchain-anthropic",
+    "python-dotenv"
+  ],
+  "devDependencies": [
+    "pytest",
+    "langgraph-cli[inmem]"
+  ],
+  "writeFiles": [
+    {
+      "path": "agent.py",
+      "content": "\"\"\"The agent: a model, a system prompt and the tools it can call (LangChain v1 + LangGraph).\"\"\"\n\nimport os\n\nfrom langchain.agents import create_agent\n\nfrom tools import TOOLS\n\nSYSTEM_PROMPT = (\n    \"You are a helpful assistant. Use the tools when they help, and say so when you don't know.\"\n)\n\n# Any \"provider:model\" LangChain supports; its key comes from the provider's env variable.\nMODEL = os.environ.get(\"AGENT_MODEL\", \"anthropic:claude-sonnet-5-5\")\n\nagent = create_agent(model=MODEL, tools=TOOLS, system_prompt=SYSTEM_PROMPT)\n\n\nif __name__ == \"__main__\":\n    import sys\n\n    question = \" \".join(sys.argv[1:]) or \"What is 21 times 2?\"\n    result = agent.invoke({\"messages\": [{\"role\": \"user\", \"content\": question}]})\n    print(result[\"messages\"][-1].content)\n",
+      "mode": "create"
+    },
+    {
+      "path": "tools.py",
+      "content": "\"\"\"Tools the agent can call. The docstring and type hints are what the model reads.\"\"\"\n\nfrom langchain.tools import tool\n\n\n@tool\ndef multiply(a: float, b: float) -> float:\n    \"\"\"Multiply two numbers.\"\"\"\n    return a * b\n\n\nTOOLS = [multiply]\n",
+      "mode": "create"
+    },
+    {
+      "path": "test_agent.py",
+      "content": "\"\"\"Tests that don't call the model: the tools and the graph's shape.\"\"\"\n\nfrom agent import agent\nfrom tools import multiply\n\n\ndef test_multiply():\n    assert multiply.invoke({\"a\": 21, \"b\": 2}) == 42\n\n\ndef test_agent_builds_with_the_tools():\n    nodes = agent.get_graph().nodes\n    assert \"model\" in nodes\n    assert \"tools\" in nodes\n",
+      "mode": "create"
+    },
+    {
+      "path": "langgraph.json",
+      "content": "{\n  \"dependencies\": [\n    \".\"\n  ],\n  \"graphs\": {\n    \"agent\": \"./agent.py:agent\"\n  },\n  \"env\": \".env\"\n}\n",
+      "mode": "create"
+    },
+    {
+      "path": ".gitignore",
+      "content": ".venv\n__pycache__\n.env\n.langgraph_api\n",
+      "mode": "create"
+    }
+  ],
+  "env": {
+    "ANTHROPIC_API_KEY": ""
+  },
+  "postInstall": [
+    ".venv/bin/pip freeze > requirements.txt"
+  ],
+  "skills": [
+    "langchain-ai/langchain-skills@langchain-fundamentals",
+    "langchain-ai/langchain-skills@langchain-dependencies",
+    "langchain-ai/langchain-skills@langchain-middleware",
+    "langchain-ai/langchain-skills@langchain-rag",
+    "langchain-ai/langchain-skills@langgraph-fundamentals",
+    "langchain-ai/langchain-skills@langgraph-persistence",
+    "langchain-ai/langchain-skills@langgraph-human-in-the-loop",
+    "langchain-ai/langchain-skills@langgraph-cli",
+    "langchain-ai/langchain-skills@langgraph-python-quickstart",
+    "anthropics/skills@claude-api",
+    "trailofbits/skills@modern-python",
+    "wshobson/agents@python-code-style",
+    "wshobson/agents@python-type-safety",
+    "wshobson/agents@python-error-handling",
+    "wshobson/agents@python-testing-patterns",
+    "wshobson/agents@python-project-structure"
+  ],
+  "libraries": {
+    "framework": "python",
+    "observability": [],
+    "quality": [],
+    "ci": [],
+    "workflow": [
+      "essentials"
+    ]
+  },
+  "verify": {
+    "command": ".venv/bin/python -m pytest -q && (test ! -x .venv/bin/ruff || .venv/bin/ruff check .)",
+    "matrix": [
+      {
+        "observability": [
+          "sentry-python"
+        ],
+        "quality": [
+          "ruff"
+        ],
+        "ci": [
+          "github-actions-python"
+        ]
+      }
+    ]
+  },
+  "setupTasks": [
+    "Create an Anthropic API key at console.anthropic.com and put it in `.env` as ANTHROPIC_API_KEY."
+  ],
+  "instructions": "## How to work here\n\n- Activate the environment with `source .venv/bin/activate`. Ask it something with `python agent.py \"your question\"`, or open the LangGraph Studio with `langgraph dev`.\n- Tools live in `tools.py`: plain typed functions with `@tool` and a docstring that tells the model when to use them. Add them to `TOOLS`.\n- Need more than a tool loop (branches, human approval, memory)? Build a `StateGraph` with LangGraph and keep `agent` as the exported graph in `langgraph.json`.\n- Tests never call the model: test tools directly and the graph's structure. Put evals that spend tokens in a separate folder.\n- After installing a package with pip, update `requirements.txt` (`pip freeze > requirements.txt`). Before finishing: `python -m pytest`."
+}

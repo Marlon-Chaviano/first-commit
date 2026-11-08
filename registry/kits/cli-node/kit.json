@@ -1,0 +1,97 @@
+{
+  "$schema": "../../kit.schema.json",
+  "name": "cli-node",
+  "version": "1.0.0",
+  "author": "Marlon Chaviano",
+  "title": "Command-line tool with Node.js",
+  "description": "A TypeScript CLI ready to publish to npm: commands with Commander, bundled with tsup, tests with Vitest and `npx` support from day one.",
+  "category": "other",
+  "language": "typescript",
+  "tags": [
+    "cli",
+    "node",
+    "typescript",
+    "commander",
+    "npm"
+  ],
+  "base": {
+    "command": "mkdir {{name}}"
+  },
+  "packageManagers": [
+    "npm",
+    "pnpm",
+    "bun"
+  ],
+  "dependencies": [
+    "commander",
+    "picocolors"
+  ],
+  "devDependencies": [
+    "typescript",
+    "tsup",
+    "tsx",
+    "vitest",
+    "@types/node"
+  ],
+  "writeFiles": [
+    {
+      "path": "package.json",
+      "content": "{\n  \"name\": \"{{name}}\",\n  \"version\": \"0.1.0\",\n  \"description\": \"\",\n  \"type\": \"module\",\n  \"bin\": {\n    \"{{name}}\": \"./dist/index.js\"\n  },\n  \"files\": [\n    \"dist\"\n  ],\n  \"engines\": {\n    \"node\": \">=20\"\n  },\n  \"scripts\": {\n    \"dev\": \"tsx src/index.ts\",\n    \"build\": \"tsup src/index.ts --format esm --target node20 --clean\",\n    \"typecheck\": \"tsc --noEmit\",\n    \"test\": \"vitest run\",\n    \"prepublishOnly\": \"npm run build\"\n  }\n}\n",
+      "mode": "json-merge"
+    },
+    {
+      "path": "tsconfig.json",
+      "content": "{\n  \"compilerOptions\": {\n    \"target\": \"ES2022\",\n    \"module\": \"NodeNext\",\n    \"moduleResolution\": \"NodeNext\",\n    \"strict\": true,\n    \"noUncheckedIndexedAccess\": true,\n    \"skipLibCheck\": true,\n    \"types\": [\n      \"node\"\n    ],\n    \"noEmit\": true\n  },\n  \"include\": [\n    \"src\"\n  ]\n}\n",
+      "mode": "create"
+    },
+    {
+      "path": "src/index.ts",
+      "content": "#!/usr/bin/env node\nimport { Command } from \"commander\";\nimport pc from \"picocolors\";\n\nimport { greet } from \"./greet.js\";\n\nconst program = new Command()\n  .name(\"{{name}}\")\n  .description(\"What {{name}} does, in one line.\")\n  .version(\"0.1.0\");\n\nprogram\n  .command(\"hello\")\n  .description(\"Say hello\")\n  .argument(\"[name]\", \"who to greet\", \"world\")\n  .option(\"-l, --loud\", \"shout it\")\n  .action((name: string, options: { loud?: boolean }) => {\n    console.log(pc.green(greet(name, options)));\n  });\n\nprogram.parseAsync().catch((error: unknown) => {\n  console.error(pc.red(error instanceof Error ? error.message : String(error)));\n  process.exit(1);\n});\n",
+      "mode": "create"
+    },
+    {
+      "path": "src/greet.ts",
+      "content": "/** Pure logic lives apart from the commands, so it can be tested without spawning the CLI. */\nexport function greet(name: string, options: { loud?: boolean } = {}): string {\n  const message = `Hello, ${name}!`;\n  return options.loud ? message.toUpperCase() : message;\n}\n",
+      "mode": "create"
+    },
+    {
+      "path": "src/greet.test.ts",
+      "content": "import { describe, expect, it } from \"vitest\";\n\nimport { greet } from \"./greet.js\";\n\ndescribe(\"greet\", () => {\n  it(\"greets by name\", () => {\n    expect(greet(\"Ada\")).toBe(\"Hello, Ada!\");\n  });\n\n  it(\"shouts with --loud\", () => {\n    expect(greet(\"Ada\", { loud: true })).toBe(\"HELLO, ADA!\");\n  });\n});\n",
+      "mode": "create"
+    },
+    {
+      "path": ".gitignore",
+      "content": "node_modules\ndist\n.env\n",
+      "mode": "create"
+    }
+  ],
+  "skills": [
+    "jeffallan/claude-skills@cli-developer",
+    "mcollina/skills@node",
+    "wshobson/agents@nodejs-backend-patterns",
+    "wshobson/agents@typescript-advanced-types",
+    "antfu/skills@vitest"
+  ],
+  "libraries": {
+    "framework": "nodejs",
+    "quality": [],
+    "ci": [],
+    "workflow": [
+      "essentials"
+    ]
+  },
+  "verify": {
+    "command": "{{pm}} run typecheck && {{pm}} run test && {{pm}} run build && node dist/index.js hello Ada",
+    "matrix": [
+      {
+        "quality": [
+          "biome"
+        ],
+        "ci": [
+          "github-actions"
+        ]
+      }
+    ]
+  },
+  "instructions": "## How to work here\n\n- One file per command in `src/commands/` once there is more than one; `src/index.ts` only wires them into Commander.\n- Keep logic in pure functions (like `src/greet.ts`) and test them with Vitest; commands only parse arguments and print.\n- Errors: throw with a clear message; `src/index.ts` prints it in red and exits with code 1. Never print stack traces to users.\n- Respect `NO_COLOR` and keep stdout for output that other programs might pipe; progress and logs go to stderr.\n- Try it with `npm run dev -- hello Ada`. Publish with `npm publish` (it builds first).\n- Before finishing: `npm run typecheck && npm test && npm run build`."
+}

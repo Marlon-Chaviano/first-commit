@@ -1,6 +1,6 @@
 {
   "$schema": "../../kit.schema.json",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": "Marlon Chaviano",
   "name": "vscode-extension",
   "title": "VS Code extension",
@@ -28,7 +28,11 @@
     "@vscode/vsce"
   ],
   "skills": [
-    "github/awesome-copilot@vscode-ext-commands"
+    "github/awesome-copilot@vscode-ext-commands",
+    "github/awesome-copilot@vscode-ext-localization",
+    "mcollina/skills@node",
+    "wshobson/agents@nodejs-backend-patterns",
+    "wshobson/agents@typescript-advanced-types"
   ],
   "writeFiles": [
     {

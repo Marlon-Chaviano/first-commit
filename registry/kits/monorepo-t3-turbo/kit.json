@@ -1,6 +1,6 @@
 {
   "$schema": "../../kit.schema.json",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "author": "Marlon Chaviano",
   "name": "monorepo-t3-turbo",
   "title": "T3 monorepo with Turborepo",
@@ -24,8 +24,22 @@
   ],
   "skills": [
     "vercel/turborepo@turborepo",
+    "antfu/skills@pnpm",
+    "vercel-labs/agent-skills@vercel-react-best-practices",
+    "vercel-labs/agent-skills@vercel-composition-patterns",
+    "wshobson/agents@typescript-advanced-types",
+    "vercel/next.js@next-dev-loop",
+    "vercel/next.js@next-bundle-optimizer",
+    "wshobson/agents@nextjs-app-router-patterns",
     "better-auth/skills@better-auth-best-practices",
-    "expo/skills@expo-overview"
+    "better-auth/skills@better-auth-security-best-practices",
+    "better-auth/skills@create-auth",
+    "better-auth/skills@email-and-password-best-practices",
+    "better-auth/skills@organization-best-practices",
+    "better-auth/skills@two-factor-authentication-best-practices",
+    "giuseppe-trisciuoglio/developer-kit@drizzle-orm-patterns",
+    "expo/skills@expo-overview",
+    "expo/skills@expo-router"
   ],
   "libraries": {
     "framework": [

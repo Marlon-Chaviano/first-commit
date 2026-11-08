@@ -84,15 +84,16 @@ Run `npx create-first-commit --help` for every command and option.
 
 | Category | Kits |
 | :--- | :--- |
-| **Landing & docs** | `landing-next` `landing-astro` `landing-nuxt` `landing-sveltekit` `waitlist-next` `portfolio-astro` `blog-astro` `docs-fumadocs` `docs-starlight` `docs-vitepress` |
-| **Web apps** | `spa-vite-react` `web-react-router` `web-tanstack-start` `web-sveltekit` `web-nuxt` `web-vue-vite` `web-astro` `web-angular` `web-rails` `web-laravel` |
+| **Landing & docs** | `landing-next` `landing-astro` `landing-nuxt` `landing-sveltekit` `portfolio-astro` `blog-astro` `docs-fumadocs` `docs-starlight` `docs-vitepress` |
+| **Web apps** | `web-next` `spa-vite-react` `web-react-router` `web-tanstack-start` `web-sveltekit` `web-nuxt` `web-vue-vite` `web-astro` `web-angular` `web-rails` `web-laravel` |
 | **SaaS** | `saas-next-supabase` `saas-next-better-auth` `saas-ai-next` `saas-t3` `saas-tanstack-start` `saas-sveltekit` `saas-nuxt` `saas-django` `saas-rails` `saas-laravel` |
-| **APIs** | `api-hono` `api-fastify` `api-nestjs` `api-elysia` `api-fastapi` `api-django` `api-go` `api-rails` `api-laravel` `api-spring-boot` |
-| **Mobile** | `mobile-expo` `mobile-expo-supabase` `mobile-ignite` `mobile-flutter` `mobile-kmp` `mobile-lynx` `mobile-ionic-react` `mobile-ionic-angular` `ios-swiftui` `android-compose` |
-| **Monorepos** | `monorepo-turbo` `monorepo-t3-turbo` `monorepo-nx` `monorepo-bun` `monorepo-packages` `monorepo-go` `monorepo-uv` `monorepo-django-react` `monorepo-rails-react` `monorepo-spring-react` |
-| **Extensions & bots** | `chrome-extension` `vscode-extension` `raycast-extension` `obsidian-plugin` `figma-plugin` `github-action` `discord-bot` `slack-app` `mcp-server-ts` `mcp-server-python` |
+| **APIs** | `api-hono` `api-fastify` `api-nestjs` `api-elysia` `api-fastapi` `api-django` `api-go` `api-rails` `api-laravel` `api-spring-boot` `api-express` `api-axum` `api-aspnet` |
+| **Mobile** | `mobile-expo` `mobile-expo-supabase` `mobile-ignite` `mobile-flutter` `mobile-kmp` `mobile-ionic-react` `ios-swiftui` `android-compose` |
+| **Monorepos** | `monorepo-turbo` `monorepo-t3-turbo` `monorepo-nx` `monorepo-packages` `monorepo-go` `monorepo-django-react` `monorepo-rails-react` `monorepo-spring-react` |
+| **Desktop, CLI & AI** | `desktop-electron` `desktop-tauri` `cli-node` `ai-agent-python` |
+| **Extensions & bots** | `chrome-extension` `vscode-extension` `github-action` `discord-bot` `slack-app` `mcp-server-ts` `mcp-server-python` |
 
-Every kit can pull from a shared catalog of 100+ libraries (UI, animation, auth, databases, payments, email, i18n, AI, observability, testing, CI and deployment), each with its official skill when it has one.
+Every kit can pull from a shared catalog of 100+ libraries (UI, animation, auth, databases, payments, email, i18n, AI, observability, testing, CI and deployment), each with its full pack of official skills (community ones where the vendor has none). AGENTS.md is written for the stack you pick: language conventions, skills grouped by area and every library's rules.
 
 ## Make your own kit
 

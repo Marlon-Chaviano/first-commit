@@ -1,6 +1,6 @@
 {
   "$schema": "../../kit.schema.json",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": "Marlon Chaviano",
   "name": "monorepo-spring-react",
   "title": "Spring Boot + React in one repo",
@@ -24,7 +24,15 @@
   ],
   "skills": [
     "github/awesome-copilot@java-springboot",
-    "vercel-labs/agent-skills@vercel-react-best-practices"
+    "github/awesome-copilot@spring-boot-testing",
+    "github/awesome-copilot@java-junit",
+    "affaan-m/ecc@springboot-patterns",
+    "affaan-m/ecc@springboot-tdd",
+    "giuseppe-trisciuoglio/developer-kit@spring-boot-rest-api-standards",
+    "vercel-labs/agent-skills@vercel-react-best-practices",
+    "vercel-labs/agent-skills@vercel-composition-patterns",
+    "wshobson/agents@typescript-advanced-types",
+    "antfu/skills@vite"
   ],
   "libraries": {
     "framework": [

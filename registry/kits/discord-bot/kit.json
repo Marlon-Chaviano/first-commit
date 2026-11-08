@@ -1,6 +1,6 @@
 {
   "$schema": "../../kit.schema.json",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": "Marlon Chaviano",
   "name": "discord-bot",
   "title": "Discord bot",
@@ -92,5 +92,10 @@
   "setupTasks": [
     "Discord: create the application at discord.com/developers, copy the bot token into `DISCORD_TOKEN` and the Application ID into `DISCORD_CLIENT_ID`; then `npm run deploy-commands`."
   ],
-  "instructions": "## How to work here\n\n- Each slash command is an entry in `src/commands.ts` (`data` with `SlashCommandBuilder` and `execute`). After adding or changing one: `npm run deploy-commands`.\n- Request only the *intents* you need in `src/index.ts`; privileged ones (messages, members) must be enabled in the portal.\n- Respond to every interaction within 3 seconds or use `deferReply()`.\n- Develop with `npm run dev`. Before finishing: `npm run build`."
+  "instructions": "## How to work here\n\n- Each slash command is an entry in `src/commands.ts` (`data` with `SlashCommandBuilder` and `execute`). After adding or changing one: `npm run deploy-commands`.\n- Request only the *intents* you need in `src/index.ts`; privileged ones (messages, members) must be enabled in the portal.\n- Respond to every interaction within 3 seconds or use `deferReply()`.\n- Develop with `npm run dev`. Before finishing: `npm run build`.",
+  "skills": [
+    "mcollina/skills@node",
+    "wshobson/agents@nodejs-backend-patterns",
+    "wshobson/agents@typescript-advanced-types"
+  ]
 }

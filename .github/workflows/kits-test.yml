@@ -92,6 +92,12 @@ jobs:
           python-version: "3.12"
       - if: contains(steps.kit.outputs.pms, ' uv ')
         uses: astral-sh/setup-uv@v6
+      - if: contains(steps.kit.outputs.pms, ' dotnet ')
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.0.x"
+      - if: contains(steps.kit.outputs.pms, ' cargo ')
+        uses: dtolnay/rust-toolchain@stable
       - if: contains(steps.kit.outputs.pms, ' bundler ')
         uses: ruby/setup-ruby@v1
         with:
