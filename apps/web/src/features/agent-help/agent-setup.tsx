@@ -1,6 +1,6 @@
 "use client";
 
-import { BotIcon, CheckIcon, CopyIcon, FolderPlusIcon, PackageIcon, PaletteIcon, type LucideIcon } from "lucide-react";
+import { CheckIcon, CopyIcon, FolderPlusIcon, PackageIcon, PaletteIcon, type LucideIcon } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -52,7 +52,7 @@ export function AgentSetup({
   return (
     <Dialog>
       <DialogTrigger render={<Button variant={variant} className={className} />}>
-        <BotIcon data-icon="inline-start" />
+        <AgentStack />
         {label}
       </DialogTrigger>
       <DialogContent className="gap-5 sm:max-w-lg">
@@ -75,6 +75,19 @@ export function AgentSetup({
         </div>
       </DialogContent>
     </Dialog>
+  );
+}
+
+/** Claude Code, Codex and Cursor overlapping like an avatar group: "works with your agent" at a glance. */
+function AgentStack() {
+  return (
+    <span className="mr-0.5 flex items-center" aria-hidden>
+      {(["claude-code", "codex", "cursor"] as const).map((id, i) => (
+        <span key={id} className={cn("grid size-6 place-items-center rounded-full border bg-background text-foreground ring-2 ring-background", i > 0 && "-ml-1.5")}>
+          <TechIcon id={id} label="" className="size-3.5" />
+        </span>
+      ))}
+    </span>
   );
 }
 
