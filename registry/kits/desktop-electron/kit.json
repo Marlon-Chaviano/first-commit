@@ -1,7 +1,7 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "desktop-electron",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Marlon Chaviano",
   "title": "Desktop app with Electron",
   "description": "A cross-platform desktop app with Electron Forge, Vite and TypeScript: secure preload, hot reload and installers for macOS, Windows and Linux.",
@@ -38,7 +38,7 @@
     ]
   },
   "verify": {
-    "command": "npm run typecheck && npm run lint"
+    "command": "npm run typecheck && npx oxlint && npx oxfmt --check src"
   },
-  "instructions": "## How to work here\n\n- Three processes, three files: `src/main.ts` (Node: windows, menus, the file system), `src/preload.ts` (the only bridge) and `src/renderer.ts` (the UI, a web page).\n- Security: keep `contextIsolation` on and `nodeIntegration` off. Expose only small, typed functions from the preload with `contextBridge.exposeInMainWorld`, and handle them in main with `ipcMain.handle`. Never expose `ipcRenderer` itself.\n- Validate every IPC message in the main process: the renderer is untrusted, like a browser.\n- Start with `npm start` (hot reload). Build installers with `npm run make`.\n- Before finishing: `npm run typecheck && npm run lint`."
+  "instructions": "## How to work here\n\n- Three processes, three files: `src/main.ts` (Node: windows, menus, the file system), `src/preload.ts` (the only bridge) and `src/renderer.ts` (the UI, a web page).\n- Security: keep `contextIsolation` on and `nodeIntegration` off. Expose only small, typed functions from the preload with `contextBridge.exposeInMainWorld`, and handle them in main with `ipcMain.handle`. Never expose `ipcRenderer` itself.\n- Validate every IPC message in the main process: the renderer is untrusted, like a browser.\n- Start with `npm start` (hot reload). Build installers with `npm run make`.\n- Format the code with `npx oxfmt src` (`npm run lint` also checks Markdown such as AGENTS.md).\n- Before finishing: `npm run typecheck`, `npx oxlint` and `npx oxfmt --check src`."
 }

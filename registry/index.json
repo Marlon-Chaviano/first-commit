@@ -558,7 +558,7 @@
   },
   {
     "name": "desktop-electron",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "title": "Desktop app with Electron",
     "description": "A cross-platform desktop app with Electron Forge, Vite and TypeScript: secure preload, hot reload and installers for macOS, Windows and Linux.",
     "category": "desktop",

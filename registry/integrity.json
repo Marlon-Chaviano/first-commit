@@ -346,7 +346,8 @@
     "1.0.0": "sha256-rX69qnMFaZfk+oJ+UqB2tUwKeLBdqcFUz09NpxmuEyo="
   },
   "desktop-electron": {
-    "1.0.0": "sha256-dqIMZQ1/ibl6HIdg3EpplBCuYFyCX16V6GgaERM9qWM="
+    "1.0.0": "sha256-dqIMZQ1/ibl6HIdg3EpplBCuYFyCX16V6GgaERM9qWM=",
+    "1.0.1": "sha256-PSZRxsBaDbP3QafbYBzvcpAIGpI3veRjBjjLmZ9C0gM="
   },
   "desktop-tauri": {
     "1.0.0": "sha256-I8Eu560wx5VLs98TbdGLfv1kLNTGQJ/MC29FMPzKa6w="
