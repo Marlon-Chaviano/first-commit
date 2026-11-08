@@ -14,6 +14,7 @@ import { getViewer } from "@/server/session";
 import { BrandName } from "@/components/shared/brand-name";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/changelog" },
   title: "Changelog",
   description: `What's new in ${BRAND.name}: catalog, official kits, CLI and website. Plus the weekly newsletter.`,
   alternates: { types: { "application/rss+xml": "/changelog/rss.xml" } },
@@ -39,15 +40,11 @@ export default async function ChangelogPage() {
         </Button>
       </header>
 
-      <section aria-labelledby="newsletter" className="mt-10 grid grid-cols-1 gap-4 rounded-xl border p-5 sm:p-6 md:grid-cols-[minmax(0,1fr)_minmax(0,28rem)] md:items-center md:gap-10">
-        <div className="flex flex-col gap-1.5">
-          <h2 id="newsletter" className="font-medium">Get it in your inbox</h2>
-          <p className="text-sm text-pretty text-muted-foreground">A short weekly email with what changed here and the community&apos;s best new kits.</p>
-        </div>
+      <div className="mt-10">
         <Suspense fallback={<SubscribeForm />}>
           <Newsletter />
         </Suspense>
-      </section>
+      </div>
 
       {days.length === 0 && (
         <Empty className="mt-16 border">
