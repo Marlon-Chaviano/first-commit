@@ -95,18 +95,16 @@ function CopyItem({ item }: { item: Item }) {
         }
       }}
       className={cn(
-        "group flex w-full items-start gap-3 rounded-lg border p-3 text-left transition-colors outline-none hover:bg-muted/50 focus-visible:ring-3 focus-visible:ring-ring/50",
+        "group flex w-full items-center gap-4 rounded-lg border p-4 text-left transition-colors outline-none hover:bg-muted/50 focus-visible:ring-3 focus-visible:ring-ring/50",
         copied && "border-foreground/40",
       )}
     >
-      <span className="grid size-9 shrink-0 place-items-center rounded-md border bg-background">
-        <Icon className="size-4" />
-      </span>
+      <Icon className="size-6 shrink-0" aria-hidden />
       <span className="flex min-w-0 flex-1 flex-col gap-0.5">
         <span className="text-sm font-medium">{item.title}</span>
         <span className="text-xs text-pretty text-muted-foreground">{item.hint}</span>
       </span>
-      <span className="flex shrink-0 items-center gap-1 self-center font-mono text-xs text-muted-foreground group-hover:text-foreground">
+      <span className="flex shrink-0 items-center gap-1 font-mono text-xs text-muted-foreground group-hover:text-foreground">
         {copied ? <CheckIcon className="size-3.5" /> : <CopyIcon className="size-3.5" />}
         {copied ? "Copied" : "Copy"}
       </span>

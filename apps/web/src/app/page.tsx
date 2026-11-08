@@ -27,31 +27,28 @@ export default async function Home() {
   return (
     <div className="mx-auto flex max-w-5xl flex-col gap-20 px-4 pt-8 sm:px-6 sm:pt-12">
       <section className="flex flex-col gap-12">
-        <div className="flex flex-col gap-5">
+        <div className="flex flex-col items-center gap-5 text-center">
           <h1 className="sr-only">{BRAND.name}: from empty folder to first commit</h1>
           <PixelWordmark text={BRAND.name} layout="inline" animated className="hidden w-full md:block" />
-          <PixelWordmark text={BRAND.name} layout="stacked" animated className="w-full max-w-[420px] md:hidden" />
+          <PixelWordmark text={BRAND.name} layout="stacked" animated className="mx-auto w-full max-w-[420px] md:hidden" />
           <p className="font-mono text-sm tracking-wider text-muted-foreground uppercase">From empty folder to first commit</p>
         </div>
 
-        <div className="grid grid-cols-[minmax(0,1fr)] gap-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:items-center lg:gap-12">
-          {/* Left: what it does and how to try it, right under the title. */}
-          <div className="flex flex-col gap-8">
-            <p className="text-2xl leading-snug text-balance sm:text-[28px]">
+        <div className="flex flex-col items-center gap-12">
+          {/* What it does and how to try it, centered over the demo. */}
+          <div className="flex flex-col items-center gap-7 text-center">
+            <p className="max-w-2xl text-2xl leading-snug text-balance sm:text-[28px]">
               One command and your project starts with dependencies, skills and MCP ready for your agent.
             </p>
-            <div className="flex flex-col gap-3">
-              {/* As wide as the command plus its copy button, not the whole column. */}
-              <Command command={cliCommand().trim()} className="w-fit max-w-full self-start" />
-              <div className="flex flex-wrap items-center gap-3">
-                <AgentSetup />
-                <span className="text-sm text-muted-foreground">No terminal? Your agent runs it for you.</span>
-              </div>
+            <div className="flex max-w-full flex-wrap items-center justify-center gap-3">
+              {/* As wide as the command plus its copy button, not the whole row. */}
+              <Command command={cliCommand().trim()} className="w-fit max-w-full" />
+              <AgentSetup className="h-11" />
             </div>
           </div>
 
-          {/* Right: the 15-second demo, from the command to an agent that already knows the stack. */}
-          <TerminalDemo />
+          {/* The 15-second demo: from the command to an agent that already knows the stack. */}
+          <TerminalDemo className="w-full max-w-3xl" />
         </div>
 
         <div className="grid grid-cols-[minmax(0,1fr)] gap-8 md:grid-cols-2 md:gap-14">
