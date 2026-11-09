@@ -1,1 +1,13 @@
-[]
+[
+  {
+    "date": "2026-11-07",
+    "title": "first-commit is live",
+    "items": [
+      "Launch day: first-commit.dev is open, and create-first-commit 1.0.0 is the first stable release of the CLI on npm.",
+      "One command takes an empty folder to a first commit: the framework's official setup, the libraries you pick, skills and MCP servers for your agent, and an AGENTS.md written for your stack.",
+      "70 official kits to start from (landing pages, web apps, SaaS, APIs, mobile apps, monorepos and extensions), each tested in CI on Linux and macOS.",
+      "A shared catalog of 100+ libraries (UI, auth, databases, payments, email, AI, observability, testing and deployment) you can add to any kit from the configurator.",
+      "Works with Claude Code, Cursor, Codex, Gemini CLI, GitHub Copilot, Windsurf and OpenCode. Free, with no account needed to create a project."
+    ]
+  }
+]
