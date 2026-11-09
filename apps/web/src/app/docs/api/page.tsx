@@ -31,7 +31,7 @@ export default function ApiDocs() {
       <CodeBlock code={`curl "${BASE}/kits?q=stripe&official=1"`} />
 
       <H2 id="recommend">Recommend a kit</H2>
-      <Fields rows={[["POST /recommend", <>Body <Code>{"{ \"description\": \"…\" }"}</Code>. Returns the kit, the options and the reasons. Limit: 20 per hour per IP.</>]]} />
+      <Fields rows={[["POST /recommend", <>Body <Code>{"{ \"description\": \"…\" }"}</Code>. Returns the kit, the options and the reasons. Limit: 24 per day per IP, shared with the <Code>recommend_kit</Code> tool of the remote MCP server.</>]]} />
       <CodeBlock
         code={`curl -X POST ${BASE}/recommend \\
   -H "content-type: application/json" \\

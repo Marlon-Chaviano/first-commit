@@ -101,7 +101,7 @@ Es un proyecto personal, así que la arquitectura está pensada para no pagar na
 | Sentry | Errores de la web | Plan Developer. |
 | Stripe (opcional) | Planes Pro y Equipos, kits de pago (Connect) | Sin cuota fija: comisión por cobro. **Cobrar exige salir de Vercel Hobby** (no admite uso comercial): Vercel Pro u otro proveedor. Desactivado sin `STRIPE_SECRET_KEY`. |
 | Resend | Confirmaciones y newsletter semanal | Plan gratuito con límite diario: con muchos suscriptores, enviar por tandas o pasar de plan. |
-| xAI API (opcional) | "Describe tu proyecto" y `recommend_kit` | **Lo único que puede costar dinero.** Sin `XAI_API_KEY` responde el recomendador por palabras clave (gratis). Con clave: Grok (`RECOMMEND_MODEL`), temperatura 0, `max_tokens` 600, timeout de 15 s, el catálogo primero y siempre igual para que lo sirva la caché de prompts de xAI, respuesta cacheada por descripción normalizada (`"use cache"`, días) y 20 peticiones/hora por IP. |
+| xAI API (opcional) | "Describe tu proyecto" y `recommend_kit` | **Lo único que puede costar dinero.** Sin `XAI_API_KEY` responde el recomendador por palabras clave (gratis). Con clave: Grok (`RECOMMEND_MODEL`), temperatura 0, `max_tokens` 600, timeout de 15 s, el catálogo primero y siempre igual para que lo sirva la caché de prompts de xAI, respuesta cacheada por descripción normalizada (`"use cache"`, días) y 24 peticiones al día por IP, compartidas entre la web y `recommend_kit` del MCP remoto. |
 
 ## Agentes (fase 6)
 

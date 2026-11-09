@@ -4,8 +4,17 @@ import { recommendHeuristic, resolveRecommendation, type Kit, type ResolvedRecom
 import { cacheLife } from "next/cache";
 
 import { env } from "../env";
+import { rateLimit } from "../rate-limit";
 import { getIndex, getKit } from "../registry";
 import { askModel } from "./ai";
+
+/**
+ * Recommendations per IP and day, shared by the website and the remote MCP server: each new
+ * description can be a paid model call, so nobody can spend the tokens by spamming searches.
+ */
+export const RECOMMEND_DAILY_LIMIT = 24;
+export const recommendLimit = rateLimit("recommend", RECOMMEND_DAILY_LIMIT, "1 d");
+export const RECOMMEND_LIMIT_MESSAGE = `You've reached today's limit of ${RECOMMEND_DAILY_LIMIT} recommendations. Try again tomorrow, or browse the kits.`;
 
 export type RecommendResult = Omit<ResolvedRecommendation, "selections">;
 
