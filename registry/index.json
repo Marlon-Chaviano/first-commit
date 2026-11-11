@@ -14,7 +14,7 @@
       "claude"
     ],
     "author": "marlon-chaviano",
-    "skills": 36,
+    "skills": 37,
     "options": [
       "Observability",
       "Code quality",
@@ -43,7 +43,7 @@
       "room"
     ],
     "author": "marlon-chaviano",
-    "skills": 29,
+    "skills": 30,
     "options": [
       "Design pack",
       "Pack first-commit"
@@ -68,7 +68,7 @@
       "xunit"
     ],
     "author": "marlon-chaviano",
-    "skills": 23,
+    "skills": 24,
     "options": [
       "Pack first-commit"
     ],
@@ -90,7 +90,7 @@
       "api"
     ],
     "author": "marlon-chaviano",
-    "skills": 20,
+    "skills": 21,
     "options": [
       "Pack first-commit"
     ],
@@ -112,7 +112,7 @@
       "admin"
     ],
     "author": "marlon-chaviano",
-    "skills": 30,
+    "skills": 31,
     "options": [
       "Database",
       "Tests",
@@ -142,7 +142,7 @@
       "typescript"
     ],
     "author": "marlon-chaviano",
-    "skills": 18,
+    "skills": 19,
     "options": [
       "Pack first-commit"
     ],
@@ -165,7 +165,7 @@
       "zod"
     ],
     "author": "marlon-chaviano",
-    "skills": 32,
+    "skills": 33,
     "options": [
       "Transactional email",
       "AI",
@@ -201,7 +201,7 @@
       "pytest"
     ],
     "author": "marlon-chaviano",
-    "skills": 31,
+    "skills": 32,
     "options": [
       "Database",
       "Observability",
@@ -231,7 +231,7 @@
       "node"
     ],
     "author": "marlon-chaviano",
-    "skills": 27,
+    "skills": 28,
     "options": [
       "Transactional email",
       "AI",
@@ -263,7 +263,7 @@
       "api"
     ],
     "author": "marlon-chaviano",
-    "skills": 40,
+    "skills": 41,
     "options": [
       "Database",
       "Observability",
@@ -298,7 +298,7 @@
       "drizzle"
     ],
     "author": "marlon-chaviano",
-    "skills": 41,
+    "skills": 42,
     "options": [
       "Runtime",
       "Validation",
@@ -345,7 +345,7 @@
       "eloquent"
     ],
     "author": "marlon-chaviano",
-    "skills": 20,
+    "skills": 21,
     "options": [
       "Authentication",
       "Tests",
@@ -371,7 +371,7 @@
       "node"
     ],
     "author": "marlon-chaviano",
-    "skills": 28,
+    "skills": 29,
     "options": [
       "Transactional email",
       "AI",
@@ -404,7 +404,7 @@
       "sqlite"
     ],
     "author": "marlon-chaviano",
-    "skills": 16,
+    "skills": 17,
     "options": [
       "Tests",
       "Pack first-commit"
@@ -428,7 +428,7 @@
       "maven"
     ],
     "author": "marlon-chaviano",
-    "skills": 24,
+    "skills": 25,
     "options": [
       "Authentication",
       "Database",
@@ -454,7 +454,7 @@
       "rss"
     ],
     "author": "marlon-chaviano",
-    "skills": 22,
+    "skills": 36,
     "options": [
       "Design pack",
       "Pack first-commit"
@@ -477,7 +477,7 @@
       "manifest-v3"
     ],
     "author": "marlon-chaviano",
-    "skills": 73,
+    "skills": 87,
     "options": [
       "UI framework",
       "UI components",
@@ -542,7 +542,7 @@
       "npm"
     ],
     "author": "marlon-chaviano",
-    "skills": 22,
+    "skills": 23,
     "options": [
       "Code quality",
       "Continuous integration",
@@ -572,7 +572,7 @@
       "linux"
     ],
     "author": "marlon-chaviano",
-    "skills": 22,
+    "skills": 36,
     "options": [
       "Design pack",
       "Pack first-commit"
@@ -597,7 +597,7 @@
       "desktop"
     ],
     "author": "marlon-chaviano",
-    "skills": 59,
+    "skills": 73,
     "options": [
       "UI components",
       "Animation",
@@ -645,7 +645,7 @@
       "typescript"
     ],
     "author": "marlon-chaviano",
-    "skills": 27,
+    "skills": 28,
     "options": [
       "Observability",
       "Tests",
@@ -677,7 +677,7 @@
       "mdx"
     ],
     "author": "marlon-chaviano",
-    "skills": 35,
+    "skills": 49,
     "options": [
       "Deployment",
       "Design pack",
@@ -708,7 +708,7 @@
       "markdown"
     ],
     "author": "marlon-chaviano",
-    "skills": 22,
+    "skills": 36,
     "options": [
       "Design pack",
       "Pack first-commit"
@@ -732,7 +732,7 @@
       "markdown"
     ],
     "author": "marlon-chaviano",
-    "skills": 29,
+    "skills": 43,
     "options": [
       "Design pack",
       "Pack first-commit"
@@ -755,7 +755,7 @@
       "typescript"
     ],
     "author": "marlon-chaviano",
-    "skills": 20,
+    "skills": 21,
     "options": [
       "Pack first-commit"
     ],
@@ -778,7 +778,7 @@
       "xcodegen"
     ],
     "author": "marlon-chaviano",
-    "skills": 21,
+    "skills": 22,
     "options": [
       "Design pack",
       "Pack first-commit"
@@ -802,7 +802,7 @@
       "seo"
     ],
     "author": "marlon-chaviano",
-    "skills": 31,
+    "skills": 45,
     "options": [
       "Animation",
       "Styling",
@@ -833,7 +833,7 @@
       "vercel"
     ],
     "author": "marlon-chaviano",
-    "skills": 80,
+    "skills": 94,
     "options": [
       "Extras",
       "UI components",
@@ -908,7 +908,7 @@
       "tailwind"
     ],
     "author": "marlon-chaviano",
-    "skills": 32,
+    "skills": 46,
     "options": [
       "Design pack",
       "Pack first-commit"
@@ -932,7 +932,7 @@
       "tailwind"
     ],
     "author": "marlon-chaviano",
-    "skills": 40,
+    "skills": 54,
     "options": [
       "Animation",
       "Styling",
@@ -962,7 +962,7 @@
       "python"
     ],
     "author": "marlon-chaviano",
-    "skills": 25,
+    "skills": 26,
     "options": [
       "Code quality",
       "Continuous integration",
@@ -988,7 +988,7 @@
       "zod"
     ],
     "author": "marlon-chaviano",
-    "skills": 29,
+    "skills": 30,
     "options": [
       "Observability",
       "Tests",
@@ -1020,7 +1020,7 @@
       "typescript"
     ],
     "author": "marlon-chaviano",
-    "skills": 51,
+    "skills": 52,
     "options": [
       "Styling",
       "Backend",
@@ -1074,7 +1074,7 @@
       "auth"
     ],
     "author": "marlon-chaviano",
-    "skills": 51,
+    "skills": 52,
     "options": [
       "Styling",
       "Backend",
@@ -1125,7 +1125,7 @@
       "mobile"
     ],
     "author": "marlon-chaviano",
-    "skills": 33,
+    "skills": 34,
     "options": [
       "Design pack",
       "Pack first-commit"
@@ -1149,7 +1149,7 @@
       "mobile"
     ],
     "author": "marlon-chaviano",
-    "skills": 32,
+    "skills": 33,
     "options": [
       "Design pack",
       "Pack first-commit"
@@ -1174,7 +1174,7 @@
       "mobile"
     ],
     "author": "marlon-chaviano",
-    "skills": 28,
+    "skills": 42,
     "options": [
       "Global state",
       "Server data",
@@ -1208,7 +1208,7 @@
       "ios"
     ],
     "author": "marlon-chaviano",
-    "skills": 23,
+    "skills": 24,
     "options": [
       "Design pack",
       "Pack first-commit"
@@ -1233,7 +1233,7 @@
       "fullstack"
     ],
     "author": "marlon-chaviano",
-    "skills": 35,
+    "skills": 49,
     "options": [
       "Design pack",
       "Pack first-commit"
@@ -1257,7 +1257,7 @@
       "monorepo"
     ],
     "author": "marlon-chaviano",
-    "skills": 26,
+    "skills": 27,
     "options": [
       "Pack first-commit"
     ],
@@ -1280,7 +1280,7 @@
       "vitest"
     ],
     "author": "marlon-chaviano",
-    "skills": 29,
+    "skills": 43,
     "options": [
       "Design pack",
       "Pack first-commit"
@@ -1306,7 +1306,7 @@
       "vitest"
     ],
     "author": "marlon-chaviano",
-    "skills": 20,
+    "skills": 21,
     "options": [
       "Continuous integration",
       "Pack first-commit"
@@ -1332,7 +1332,7 @@
       "fullstack"
     ],
     "author": "marlon-chaviano",
-    "skills": 26,
+    "skills": 40,
     "options": [
       "Design pack",
       "Pack first-commit"
@@ -1358,7 +1358,7 @@
       "fullstack"
     ],
     "author": "marlon-chaviano",
-    "skills": 30,
+    "skills": 44,
     "options": [
       "Design pack",
       "Pack first-commit"
@@ -1384,7 +1384,7 @@
       "drizzle"
     ],
     "author": "marlon-chaviano",
-    "skills": 37,
+    "skills": 51,
     "options": [
       "Design pack",
       "Pack first-commit"
@@ -1410,7 +1410,7 @@
       "typescript"
     ],
     "author": "marlon-chaviano",
-    "skills": 45,
+    "skills": 59,
     "options": [
       "Web app",
       "More apps",
@@ -1435,7 +1435,7 @@
       "personal"
     ],
     "author": "marlon-chaviano",
-    "skills": 22,
+    "skills": 36,
     "options": [
       "Design pack",
       "Pack first-commit"
@@ -1461,7 +1461,7 @@
       "streaming"
     ],
     "author": "marlon-chaviano",
-    "skills": 124,
+    "skills": 138,
     "options": [
       "UI components",
       "Add-on libraries",
@@ -1560,7 +1560,7 @@
       "saas"
     ],
     "author": "marlon-chaviano",
-    "skills": 36,
+    "skills": 50,
     "options": [
       "Database",
       "Tests",
@@ -1593,7 +1593,7 @@
       "shadcn"
     ],
     "author": "marlon-chaviano",
-    "skills": 30,
+    "skills": 44,
     "options": [
       "Design pack",
       "Pack first-commit"
@@ -1619,7 +1619,7 @@
       "shadcn"
     ],
     "author": "marlon-chaviano",
-    "skills": 124,
+    "skills": 138,
     "options": [
       "UI components",
       "Add-on libraries",
@@ -1719,7 +1719,7 @@
       "postgres"
     ],
     "author": "marlon-chaviano",
-    "skills": 125,
+    "skills": 139,
     "options": [
       "UI components",
       "Add-on libraries",
@@ -1819,7 +1819,7 @@
       "tailwind"
     ],
     "author": "marlon-chaviano",
-    "skills": 32,
+    "skills": 46,
     "options": [
       "Design pack",
       "Pack first-commit"
@@ -1844,7 +1844,7 @@
       "saas"
     ],
     "author": "marlon-chaviano",
-    "skills": 22,
+    "skills": 36,
     "options": [
       "Authentication",
       "Tests",
@@ -1873,7 +1873,7 @@
       "tailwind"
     ],
     "author": "marlon-chaviano",
-    "skills": 48,
+    "skills": 62,
     "options": [
       "UI components",
       "Animation",
@@ -1910,7 +1910,7 @@
       "tailwind"
     ],
     "author": "marlon-chaviano",
-    "skills": 67,
+    "skills": 81,
     "options": [
       "Payments",
       "Transactional email",
@@ -1957,7 +1957,7 @@
       "shadcn"
     ],
     "author": "marlon-chaviano",
-    "skills": 51,
+    "skills": 65,
     "options": [
       "Animation",
       "Design pack",
@@ -1989,7 +1989,7 @@
       "typescript"
     ],
     "author": "marlon-chaviano",
-    "skills": 21,
+    "skills": 22,
     "options": [
       "Pack first-commit"
     ],
@@ -2012,7 +2012,7 @@
       "typescript"
     ],
     "author": "marlon-chaviano",
-    "skills": 57,
+    "skills": 71,
     "options": [
       "UI components",
       "Animation",
@@ -2060,7 +2060,7 @@
       "typescript"
     ],
     "author": "marlon-chaviano",
-    "skills": 22,
+    "skills": 23,
     "options": [
       "Code quality",
       "Continuous integration",
@@ -2086,7 +2086,7 @@
       "signals"
     ],
     "author": "marlon-chaviano",
-    "skills": 30,
+    "skills": 44,
     "options": [
       "Design pack",
       "Pack first-commit"
@@ -2110,7 +2110,7 @@
       "typescript"
     ],
     "author": "marlon-chaviano",
-    "skills": 32,
+    "skills": 46,
     "options": [
       "Animation",
       "Styling",
@@ -2142,7 +2142,7 @@
       "eloquent"
     ],
     "author": "marlon-chaviano",
-    "skills": 26,
+    "skills": 40,
     "options": [
       "Authentication",
       "Tests",
@@ -2171,7 +2171,7 @@
       "typescript"
     ],
     "author": "marlon-chaviano",
-    "skills": 124,
+    "skills": 138,
     "options": [
       "UI components",
       "Add-on libraries",
@@ -2270,7 +2270,7 @@
       "typescript"
     ],
     "author": "marlon-chaviano",
-    "skills": 43,
+    "skills": 57,
     "options": [
       "UI components",
       "Animation",
@@ -2312,7 +2312,7 @@
       "sqlite"
     ],
     "author": "marlon-chaviano",
-    "skills": 22,
+    "skills": 36,
     "options": [
       "Authentication",
       "Tests",
@@ -2341,7 +2341,7 @@
       "tailwind"
     ],
     "author": "marlon-chaviano",
-    "skills": 61,
+    "skills": 75,
     "options": [
       "UI components",
       "Animation",
@@ -2393,7 +2393,7 @@
       "typescript"
     ],
     "author": "marlon-chaviano",
-    "skills": 41,
+    "skills": 55,
     "options": [
       "Animation",
       "Styling",
@@ -2429,7 +2429,7 @@
       "tailwind"
     ],
     "author": "marlon-chaviano",
-    "skills": 62,
+    "skills": 76,
     "options": [
       "UI components",
       "Animation",
@@ -2483,7 +2483,7 @@
       "typescript"
     ],
     "author": "marlon-chaviano",
-    "skills": 37,
+    "skills": 51,
     "options": [
       "Animation",
       "Design pack",

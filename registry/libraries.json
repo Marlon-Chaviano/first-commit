@@ -2396,7 +2396,7 @@
     ],
     "url": "https://github.com/obra/superpowers",
     "description": "Plan before coding, debug methodically, verify before calling anything done, review the code, keep it secure and improve the architecture. Works in any project.",
-    "usage": "Before writing anything non-trivial, clarify what's wanted (`brainstorming`, or `grill-me` when the request is ambiguous), write a plan (`writing-plans`) and follow it (`executing-plans`). When something fails, use `systematic-debugging` before touching code. Never say something works without checking it (`verification-before-completion`). Ask for a review when a piece is done (`requesting-code-review`), weigh each comment before applying it (`receiving-code-review`) and close the work with `finishing-a-development-branch`. Anything that handles user input, auth, secrets or external data follows `security-and-hardening`. When code gets hard to change, propose improvements with `improve-codebase-architecture`. If you need a skill you don't have, look for it with `find-skills`.",
+    "usage": "Before writing anything non-trivial, clarify what's wanted (`brainstorming`, or `grill-me` when the request is ambiguous), write a plan (`writing-plans`) and follow it (`executing-plans`). When something fails, use `systematic-debugging` before touching code. Never say something works without checking it (`verification-before-completion`). Ask for a review when a piece is done (`requesting-code-review`), weigh each comment before applying it (`receiving-code-review`) and close the work with `finishing-a-development-branch`. Anything that handles user input, auth, secrets or external data follows `security-and-hardening`. When code gets hard to change, propose improvements with `improve-codebase-architecture`. For any HTML, CSS or client-side JavaScript, search `modern-web-guidance` first so you use current web platform features instead of legacy patterns. If you need a skill you don't have, look for it with `find-skills`.",
     "skills": [
       "obra/superpowers@using-superpowers",
       "obra/superpowers@brainstorming",
@@ -2411,7 +2411,8 @@
       "addyosmani/agent-skills@security-and-hardening",
       "mattpocock/skills@grill-me",
       "mattpocock/skills@improve-codebase-architecture",
-      "vercel-labs/skills@find-skills"
+      "vercel-labs/skills@find-skills",
+      "GoogleChrome/modern-web-guidance@modern-web-guidance"
     ]
   },
   {
@@ -2786,14 +2787,27 @@
     ],
     "url": "https://github.com/pbakaus/impeccable",
     "description": "A visual direction with character, polished details, accessibility and purposeful animation. The most-used design skills right now.",
-    "usage": "Before designing a screen, pick a clear visual direction with `frontend-design` (avoid the generic look). To polish and audit what's built, use `impeccable`. Review interface details with `web-design-guidelines` and make every screen usable with a keyboard and a screen reader, with enough contrast, following `accessibility` (WCAG 2.2). For palettes, typography and UI patterns, consult `ui-ux-pro-max`, and for animation and interaction, follow `emil-design-eng`.",
+    "usage": "Before designing a screen, pick a clear visual direction with `frontend-design` (avoid the generic look). To polish and audit what's built, use `impeccable`. Review interface details with `web-design-guidelines` and make every screen usable with a keyboard and a screen reader, with enough contrast, following `accessibility` (WCAG 2.2). For palettes, typography and UI patterns, consult `ui-ux-pro-max`, and for animation and interaction, follow `emil-design-eng`. For a ranked review of a screen across accessibility, layout, writing, typography, color and polish, run `better-interface` (or one of `better-accessibility`, `better-colors`, `better-layout`, `better-typography`, `better-ui`, `better-writing` for one area), and before merging, `interface-review` on the diff. Build from a Figma file or image with `build-design`, explore options with `variant`, work on every state of a component with `state-machine`, stress test it with `break`, and learn how a site or effect was built with `explain-interface`.",
     "skills": [
       "anthropics/skills@frontend-design",
       "pbakaus/impeccable@impeccable",
       "vercel-labs/agent-skills@web-design-guidelines",
       "nextlevelbuilder/ui-ux-pro-max-skill@ui-ux-pro-max",
       "emilkowalski/skills@emil-design-eng",
-      "addyosmani/web-quality-skills@accessibility"
+      "addyosmani/web-quality-skills@accessibility",
+      "jakubkrehel/skills@better-interface",
+      "jakubkrehel/skills@better-accessibility",
+      "jakubkrehel/skills@better-colors",
+      "jakubkrehel/skills@better-layout",
+      "jakubkrehel/skills@better-typography",
+      "jakubkrehel/skills@better-ui",
+      "jakubkrehel/skills@better-writing",
+      "jakubkrehel/skills@build-design",
+      "jakubkrehel/skills@interface-review",
+      "jakubkrehel/skills@variant",
+      "jakubkrehel/skills@state-machine",
+      "jakubkrehel/skills@break",
+      "jakubkrehel/skills@explain-interface"
     ]
   },
   {
