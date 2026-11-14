@@ -1,7 +1,7 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "api-elysia",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "author": "marlon-chaviano",
   "title": "API with Elysia on Bun",
   "category": "api",
@@ -35,6 +35,9 @@
     ],
     "workflow": [
       "essentials"
+    ],
+    "security": [
+      "security-pack"
     ]
   },
   "instructions": "## How to work here\n\n- Routes in `src/`, grouped with `new Elysia({ prefix: '/resource' })` and mounted with `.use()`.\n- Validate params, query and body with `t` (TypeBox) on every route; types are inferred.\n- Start with `bun dev`. Before finishing: `bunx tsc --noEmit`."

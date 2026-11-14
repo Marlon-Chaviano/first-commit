@@ -1,7 +1,7 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "web-rails",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "author": "marlon-chaviano",
   "title": "Web app with Ruby on Rails",
   "category": "web",
@@ -50,7 +50,10 @@
       "essentials"
     ],
     "auth": "none",
-    "testing": []
+    "testing": [],
+    "security": [
+      "security-pack"
+    ]
   },
   "instructions": "## How to work here\n\n- Follow Rails conventions: generate with `bin/rails generate` (models, controllers, migrations) instead of creating files by hand.\n- Interactivity with Hotwire (Turbo and Stimulus) before reaching for a JavaScript framework.\n- After changing the schema: `bin/rails db:migrate`. Before finishing: `bin/rails test`."
 }

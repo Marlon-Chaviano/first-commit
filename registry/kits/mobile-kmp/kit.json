@@ -1,6 +1,6 @@
 {
   "$schema": "../../kit.schema.json",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "author": "marlon-chaviano",
   "name": "mobile-kmp",
   "title": "App with Kotlin Multiplatform",
@@ -36,6 +36,9 @@
     ],
     "workflow": [
       "essentials"
+    ],
+    "security": [
+      "security-pack"
     ]
   },
   "verify": {

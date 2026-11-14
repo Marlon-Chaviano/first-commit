@@ -496,6 +496,12 @@
             "type": "string"
           }
         },
+        "security": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
         "workflow": {
           "type": "array",
           "items": {

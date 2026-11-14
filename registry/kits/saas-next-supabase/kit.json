@@ -1,7 +1,7 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "saas-next-supabase",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "title": "SaaS with Next.js + Supabase",
   "description": "Next.js with Supabase (auth and Postgres) and pieces from the catalog: Better Auth or Clerk, Drizzle, Stripe, Resend, i18n, AI, tests, CI and deployment, with their MCP servers and rules for your agent.",
   "category": "saas",
@@ -178,7 +178,10 @@
     ],
     "state": "none",
     "data": "none",
-    "forms": []
+    "forms": [],
+    "security": [
+      "security-pack"
+    ]
   },
   "instructions": "## How to work here\n\n- Supabase clients in `src/lib/supabase/`: `client.ts` in client components, `server.ts` in Server Components, Route Handlers and Server Actions.\n- Every new table gets RLS. Use the Supabase MCP to look at the schema before writing queries.\n- To refresh the session on every request, follow the current `@supabase/ssr` guide for Next.js (the `supabase` skill has it).",
   "language": "typescript"

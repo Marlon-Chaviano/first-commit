@@ -1,6 +1,6 @@
 {
   "$schema": "../../kit.schema.json",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "author": "marlon-chaviano",
   "name": "saas-next-better-auth",
   "title": "SaaS with Next.js and Better Auth",
@@ -53,7 +53,10 @@
     ],
     "state": "none",
     "data": "none",
-    "forms": []
+    "forms": [],
+    "security": [
+      "security-pack"
+    ]
   },
   "verify": {
     "command": "{{pm}} run build && npm run --if-present test",

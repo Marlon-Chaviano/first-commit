@@ -21,3 +21,32 @@ test("a choice whose framework requirement isn't met is disabled until it is", a
   await expect(reusables).toBeEnabled();
   await expect(command(page)).toContainText("--styling nativewind");
 });
+
+test("security packs preserve valid selections when toggled", async ({ page }) => {
+  await page.goto("/kits/web-next");
+  const base = page.getByRole("switch", { name: "Include Security pack", exact: true });
+  const ai = page.getByRole("switch", { name: "Include AI security pack", exact: true });
+  await expect(base).toBeChecked();
+  await expect(ai).not.toBeChecked();
+
+  await base.uncheck();
+  await expect(command(page)).toContainText("--security none");
+  await ai.check();
+  await expect(base).toBeChecked();
+  await expect(ai).toBeChecked();
+  await expect(command(page)).toContainText("--security security-ai-pack,security-pack");
+
+  await base.uncheck();
+  await expect(ai).not.toBeChecked();
+  await expect(command(page)).toContainText("--security none");
+});
+
+test("individual security skills can be excluded from the install command", async ({ page }) => {
+  await page.goto("/kits/web-next");
+  const review = page.getByRole("checkbox", { name: /^code-review-security\b/ });
+  await expect(review).toBeChecked();
+  await review.uncheck();
+  await expect(command(page)).toContainText("--no-skill OWASP/secure-agent-playbook@code-review-security");
+  await review.check();
+  await expect(command(page)).not.toContainText("--no-skill");
+});

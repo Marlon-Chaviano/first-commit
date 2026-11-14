@@ -1,6 +1,6 @@
 {
   "$schema": "../../kit.schema.json",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "author": "marlon-chaviano",
   "name": "landing-sveltekit",
   "title": "Landing page with SvelteKit",
@@ -52,6 +52,9 @@
     ],
     "workflow": [
       "essentials"
+    ],
+    "security": [
+      "security-pack"
     ]
   },
   "verify": {

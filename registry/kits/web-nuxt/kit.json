@@ -1,7 +1,7 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "web-nuxt",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "author": "marlon-chaviano",
   "title": "Web app with Nuxt",
   "category": "web",
@@ -64,7 +64,10 @@
     "styling": "none",
     "state": "none",
     "data": "none",
-    "forms": []
+    "forms": [],
+    "security": [
+      "security-pack"
+    ]
   },
   "instructions": "## How to work here\n\n- Pages in `app/pages/`, components in `app/components/` (auto-imported) and reusable logic in `app/composables/`.\n- Data with `useFetch` / `useAsyncData`, not with `fetch` inside `onMounted`.\n- Your own API in `server/api/`.\n- Before finishing: `npm run build`."
 }

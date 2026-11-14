@@ -81,6 +81,20 @@ describe("framework chosen by an option", () => {
     sel.options.framework = ["vue"];
     expect(() => validateSelections(kit, sel)).not.toThrow();
   });
+
+  it("keeps universal packs available when the framework is chosen by an option", () => {
+    const universal = { ...catalog[0]!, id: "security-pack", kind: "security" as const, frameworks: ["any"] as const };
+    const kit = expandKit(parseKit({
+      ...base, name: "universal",
+      options: [{ id: "runtime", label: "Runtime", default: "nodejs", choices: [{ id: "nodejs", label: "Node" }, { id: "bun", label: "Bun" }] }],
+      libraries: { framework: { option: "runtime" }, security: ["security-pack"] },
+    }), [{ ...universal, frameworks: [...universal.frameworks] }]);
+    for (const runtime of ["nodejs", "bun"]) {
+      const selected = { ...defaultSelections(kit), options: { runtime: [runtime], security: ["security-pack"] } };
+      expect(() => validateSelections(kit, selected)).not.toThrow();
+      expect(pruneSelections(kit, selected).options.security).toEqual(["security-pack"]);
+    }
+  });
 });
 
 describe("buildInitCommand", () => {

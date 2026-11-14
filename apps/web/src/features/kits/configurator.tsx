@@ -1,7 +1,7 @@
 "use client";
 
-import { AGENTS, buildInitCommand, defaultSelections, LIBRARY_OPTION_IDS, pruneSelections, requirementsMet, requirementText, resolve, selectionsFrom, type Choice, type Kit, type Selections, isProjectName } from "@kits/schema";
-import { BanIcon, PackageIcon, PaletteIcon, PlusIcon, SearchIcon, SparklesIcon, XIcon, type LucideIcon } from "lucide-react";
+import { AGENTS, buildInitCommand, defaultSelections, LIBRARY_OPTION_IDS, pruneSelections, requirementsMet, requirementText, resolve, selectionsFrom, type Choice, type Kit, type Selections, isProjectName } from "@kits/schema/light";
+import { BanIcon, PackageIcon, PaletteIcon, PlusIcon, SearchIcon, ShieldCheckIcon, SparklesIcon, XIcon, type LucideIcon } from "lucide-react";
 import { toast } from "sonner";
 import { useEffect, useRef, useState } from "react";
 
@@ -32,6 +32,12 @@ import type { BrandChoice } from "../brands/actions";
 import { BrandPicker } from "./brand-picker";
 import { PlanPreview } from "./plan-preview";
 import { AuditBadge } from "./audit-badge";
+
+const PACK_ICONS: Record<string, LucideIcon> = {
+  [LIBRARY_OPTION_IDS.design]: PaletteIcon,
+  [LIBRARY_OPTION_IDS.security]: ShieldCheckIcon,
+  [LIBRARY_OPTION_IDS.workflow]: PackageIcon,
+};
 
 export function Configurator({
   kit,
@@ -88,7 +94,7 @@ export function Configurator({
   useEffect(() => markStep("pick"), []);
 
   // Curated skill packs get their own cards; their skills aren't repeated in the list below.
-  const packs = kit.options.filter((o) => o.id === LIBRARY_OPTION_IDS.design || o.id === LIBRARY_OPTION_IDS.workflow);
+  const packs = kit.options.filter((o) => Object.hasOwn(PACK_ICONS, o.id));
   const stackOptions = kit.options.filter((o) => !packs.includes(o));
   const packSkills = new Set(packs.flatMap((o) => o.choices.flatMap((c) => c.skills)));
   const toggleSkill = (ref: string, on: boolean) =>
@@ -280,11 +286,14 @@ export function Configurator({
                       choice={choice}
                       // One pack per category: the category title reads better than the library name.
                       title={option.choices.filter((c) => c.id !== "none").length === 1 ? option.label : choice.label}
-                      icon={option.id === LIBRARY_OPTION_IDS.design ? PaletteIcon : PackageIcon}
+                      icon={PACK_ICONS[option.id]!}
                       on={(sel.options[option.id] ?? []).includes(choice.id)}
                       onToggle={(on) => {
                         const current = sel.options[option.id] ?? [];
-                        update({ options: { ...sel.options, [option.id]: on ? [...current, choice.id] : current.filter((id) => id !== choice.id) } });
+                        const values = on ? [...current, choice.id] : current.filter((id) => id !== choice.id);
+                        const { selections, added } = selectionsFrom(kit, { base: sel, options: { [option.id]: values } }, { requirements: on ? "autofill" : "prune" });
+                        if (added.length) toast.info(`Also added: ${added.map((a) => a.label).join(", ")}`);
+                        update({ options: selections.options });
                       }}
                       isRemoved={(ref) => sel.removeSkills.includes(ref)}
                       onSkill={toggleSkill}

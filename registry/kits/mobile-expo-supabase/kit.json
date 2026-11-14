@@ -1,6 +1,6 @@
 {
   "$schema": "../../kit.schema.json",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "author": "marlon-chaviano",
   "name": "mobile-expo-supabase",
   "extends": "mobile-expo",
@@ -28,6 +28,9 @@
     "data": "tanstack-query",
     "forms": [
       "react-hook-form"
+    ],
+    "security": [
+      "security-pack"
     ]
   },
   "verify": {

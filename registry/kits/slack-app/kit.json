@@ -1,6 +1,6 @@
 {
   "$schema": "../../kit.schema.json",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "author": "marlon-chaviano",
   "name": "slack-app",
   "title": "Slack app with Bolt",
@@ -37,6 +37,9 @@
     "framework": "nodejs",
     "workflow": [
       "essentials"
+    ],
+    "security": [
+      "security-pack"
     ]
   },
   "verify": {

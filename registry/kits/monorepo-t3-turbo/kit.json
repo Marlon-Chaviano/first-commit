@@ -1,6 +1,6 @@
 {
   "$schema": "../../kit.schema.json",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "author": "marlon-chaviano",
   "name": "monorepo-t3-turbo",
   "title": "T3 monorepo with Turborepo",
@@ -51,6 +51,9 @@
     ],
     "workflow": [
       "essentials"
+    ],
+    "security": [
+      "security-pack"
     ]
   },
   "verify": {

@@ -128,7 +128,7 @@ export function expandKit(kit: Kit, catalog: Catalog): Kit {
 
   const toChoice = (lib: Library): Choice => {
     const requires = { ...lib.requires };
-    if (frameworkOption) requires[frameworkOption] = lib.frameworks.filter((f) => frameworks.includes(f));
+    if (frameworkOption && !lib.frameworks.includes("any")) requires[frameworkOption] = lib.frameworks.filter((f) => frameworks.includes(f));
     return {
       id: lib.id,
       label: label(lib),

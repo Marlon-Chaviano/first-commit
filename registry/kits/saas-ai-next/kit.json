@@ -1,6 +1,6 @@
 {
   "$schema": "../../kit.schema.json",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "author": "marlon-chaviano",
   "name": "saas-ai-next",
   "title": "AI app with Next.js",
@@ -55,7 +55,11 @@
     ],
     "state": "none",
     "data": "none",
-    "forms": []
+    "forms": [],
+    "security": [
+      "security-pack",
+      "security-ai-pack"
+    ]
   },
   "writeFiles": [
     {

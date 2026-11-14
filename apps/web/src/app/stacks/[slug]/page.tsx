@@ -1,5 +1,5 @@
 import { BRAND, buildInitCommand, kitLanguage, LANGUAGES, LIBRARY_OPTION_IDS, REPO_URL, resolve } from "@kits/schema";
-import { ArrowUpRightIcon, BoxIcon, FileTextIcon, KeyRoundIcon, PackageIcon, PaletteIcon, PlugIcon, SlidersHorizontalIcon, type LucideIcon } from "lucide-react";
+import { ArrowUpRightIcon, BoxIcon, FileTextIcon, KeyRoundIcon, PackageIcon, PaletteIcon, PlugIcon, ShieldCheckIcon, SlidersHorizontalIcon, type LucideIcon } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -248,7 +248,7 @@ async function StackContent({ slug }: { slug: Promise<string> }) {
 }
 
 /** Curated skill packs have no logo: the same icons as in the configurator. */
-const PACK_ICONS: Record<string, LucideIcon> = { [LIBRARY_OPTION_IDS.design]: PaletteIcon, [LIBRARY_OPTION_IDS.workflow]: PackageIcon };
+const PACK_ICONS: Record<string, LucideIcon> = { [LIBRARY_OPTION_IDS.design]: PaletteIcon, [LIBRARY_OPTION_IDS.security]: ShieldCheckIcon, [LIBRARY_OPTION_IDS.workflow]: PackageIcon };
 
 function Stat({ label, children }: { label: string; children: React.ReactNode }) {
   return (

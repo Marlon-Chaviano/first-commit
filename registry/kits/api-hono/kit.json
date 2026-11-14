@@ -1,7 +1,7 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "api-hono",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "title": "API with Hono",
   "description": "Typed REST API with Hono on Node, Bun or Cloudflare Workers. Validation with Zod and an optional Drizzle database.",
   "category": "api",
@@ -159,6 +159,9 @@
     "deploy": "none",
     "workflow": [
       "essentials"
+    ],
+    "security": [
+      "security-pack"
     ]
   },
   "language": "typescript"

@@ -1,7 +1,7 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "landing-next",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "title": "Landing page with Next.js",
   "description": "Next.js + Tailwind with design skills, React best practices and deployment on Vercel. For landing pages that don't look AI-made.",
   "category": "landing",
@@ -101,7 +101,10 @@
     "workflow": [
       "essentials"
     ],
-    "forms": []
+    "forms": [],
+    "security": [
+      "security-pack"
+    ]
   },
   "instructions": "## How to work here\n\n- Landing sections as components in `src/components/sections/`.\n- Before writing UI, read the `frontend-design` skill and set a visual direction (typography, color, rhythm).\n- Review the result with `web-design-guidelines` before calling anything done.",
   "language": "typescript"

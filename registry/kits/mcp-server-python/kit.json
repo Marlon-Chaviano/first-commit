@@ -1,6 +1,6 @@
 {
   "$schema": "../../kit.schema.json",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "author": "marlon-chaviano",
   "name": "mcp-server-python",
   "title": "MCP server with Python",
@@ -51,6 +51,10 @@
     "ci": [],
     "workflow": [
       "essentials"
+    ],
+    "security": [
+      "security-pack",
+      "security-ai-pack"
     ]
   },
   "verify": {

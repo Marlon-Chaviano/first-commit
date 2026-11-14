@@ -27,7 +27,7 @@ El catálogo (`registry/libraries.json`) es compartido: una biblioteca aparece e
 
    | Campo | Para qué |
    | --- | --- |
-   | `kind` | Categoría: `components`, `addon`, `animation`, `auth`, `database`, `payments`, `email`, `i18n`, `ai`, `observability`, `testing`, `quality`, `ci`, `deploy`. |
+   | `kind` | Categoría de `packages/schema/src/categories.ts`, incluidos los packs `design`, `security` y `workflow`. |
    | `frameworks` | Dónde funciona. Si la configuración cambia por plataforma (Sentry en Next.js y en Node), crea una entrada por variante. |
    | `usage` | Regla para el agente en `AGENTS.md`: cómo se usa y qué no hacer. |
    | `dependencies`, `devDependencies` | Paquetes. |
@@ -40,6 +40,8 @@ El catálogo (`registry/libraries.json`) es compartido: una biblioteca aparece e
 4. **Que compile sin claves.** El proyecto recién creado no tiene `.env`: un cliente que lanza un error al importarse sin su API key rompe el build. Créalo al usarlo (mira `resend` o `stripe` en el catálogo).
 5. **Pruébala.** Añádela a `verify.matrix` de un kit que la ofrezca y ejecuta `create-first-commit test <kit>`. Una biblioteca entra en el catálogo solo si pasa en al menos un kit.
 6. `pnpm registry:check` valida el esquema y que cada skill exista.
+
+Los packs de skills siguen este mismo catálogo, sin añadir paquetes de ejecución ni claves. Los de seguridad se documentan en [docs/security-packs.md](docs/security-packs.md): comprueba la procedencia y los archivos auxiliares, además de que exista el nombre de la skill. Activa el pack en los valores por defecto de un kit para verificarlo con `create-first-commit test`.
 
 ## Cambiar un kit oficial
 

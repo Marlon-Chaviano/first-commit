@@ -1,6 +1,6 @@
 {
   "$schema": "../../kit.schema.json",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "author": "marlon-chaviano",
   "name": "docs-fumadocs",
   "title": "Docs with Fumadocs",
@@ -36,7 +36,10 @@
     "workflow": [
       "essentials"
     ],
-    "deploy": "vercel"
+    "deploy": "vercel",
+    "security": [
+      "security-pack"
+    ]
   },
   "verify": {
     "command": "{{pm}} run build"

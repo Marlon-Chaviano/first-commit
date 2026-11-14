@@ -58,6 +58,8 @@ Si algún día se pasa del gratuito: Redis pay-as-you-go cuesta 0,20 $ por 100.0
 
 ## Confianza: verificaciones, integridad y auditorías
 
+Los kits oficiales declaran `libraries.security`: `security-pack` por defecto y también `security-ai-pack` en los kits de IA y MCP. Son contribuciones ordinarias del catálogo: `expandKit` genera la opción compartida por CLI, web y MCP; `resolve` elimina skills duplicadas con el pack de flujo de trabajo, y `agentsSection` escribe las reglas de seguridad en el bloque gestionado. No añaden servicios ni dependencias de ejecución. Las fuentes, la comprobación de archivos auxiliares de OWASP y los límites están en [security-packs.md](security-packs.md).
+
 | Pieza | Cómo funciona |
 | --- | --- |
 | `create-first-commit test` | Instala el kit con cada combinación de `testCombinations()` (valores por defecto + `verify.matrix` o una variante por opción) en carpetas temporales, ejecuta `verify.command` y escribe un informe (`verificationReportSchema`). Los skills se comprueban una vez, aparte. |

@@ -2830,5 +2830,45 @@
       "emilkowalski/skills@apple-design",
       "emilkowalski/skills@emil-design-eng"
     ]
+  },
+  {
+    "id": "security-pack",
+    "name": "Security pack",
+    "kind": "security",
+    "frameworks": [
+      "any"
+    ],
+    "url": "https://github.com/OWASP/secure-agent-playbook",
+    "description": "Secure coding, OWASP code and API reviews, secrets, vulnerable dependencies and security regressions. Guidance backed by tests and evidence, not a security guarantee.",
+    "usage": "Before planning or changing code that handles untrusted input, authentication, authorization, secrets, files or network access, read `security-and-hardening` and map the assets and trust boundaries. Apply the relevant OWASP ASVS requirements and Cheat Sheet guidance; enforce server-side authorization for every resource, validate inputs, parameterize queries, protect secrets and use safe defaults. Use `sharp-edges` when designing APIs or configuration.\n\nBefore completing a security-sensitive change, use `code-review-security` and `differential-review`; for HTTP APIs also use `api-security-review` (OWASP API Security Top 10). Test denied access, cross-user/cross-tenant access and malformed input, plus abuse, replay and resource limits where relevant. Run `secrets-scan` before commit and `sca-audit` on resolved lockfiles before release or after dependency changes. Never print secret values or validate live credentials; redact findings and recommend revocation/rotation if exposed. Run scanners and attack probes only against the authorized local/test scope; do not upload code or secrets to external services.\n\nOWASP skills may reference plugin files that the skills CLI does not copy. Read missing `plays/<name>.md` at https://github.com/OWASP/secure-agent-playbook/tree/main/plugins/code-security-skills/plays and `templates/finding.md` at https://github.com/OWASP/secure-agent-playbook/blob/main/plugins/code-security-skills/templates/finding.md. Their full ASVS reference data is at https://github.com/OWASP/secure-agent-playbook/tree/main/data/asvs; current standards and prevention guidance are at https://owasp.org/ASVS/ and https://cheatsheetseries.owasp.org/. Check the cited edition: some plays use Top 10:2021 category numbers; do not relabel those as Top 10:2025.\n\nReport reviewed scope, file:line evidence, severity, fixes, tests and scanner results, and anything not checked. If a skill, reference or scanner is unavailable, say so explicitly and do not claim that check passed. Skills guide the agent; installation, a clean scan or this pack is not proof of security, ASVS compliance or certification.",
+    "skills": [
+      "addyosmani/agent-skills@security-and-hardening",
+      "OWASP/secure-agent-playbook@code-review-security",
+      "OWASP/secure-agent-playbook@api-security-review",
+      "OWASP/secure-agent-playbook@secrets-scan",
+      "OWASP/secure-agent-playbook@sca-audit",
+      "trailofbits/skills@sharp-edges",
+      "trailofbits/skills@differential-review"
+    ]
+  },
+  {
+    "id": "security-ai-pack",
+    "name": "AI security pack",
+    "kind": "security",
+    "frameworks": [
+      "any"
+    ],
+    "url": "https://github.com/OWASP/secure-agent-playbook",
+    "description": "OWASP LLM and MCP reviews for prompt injection, data exposure, excessive tool permissions and unbounded consumption.",
+    "requires": {
+      "security": [
+        "security-pack"
+      ]
+    },
+    "usage": "Before building or changing LLM, RAG, agent or MCP functionality, use `llm-risk-assess` and `mcp-server-review` as applicable. Treat prompts, retrieved documents, model output and tool output as untrusted data. Keep secrets out of prompts, enforce authorization outside the model, validate outputs before execution, minimize tool capabilities and bound tokens, time, costs and resource usage. Test prompt injection and unauthorized tool calls in an authorized local/test environment. Follow the base security pack's review and evidence requirements.\n\nIf plugin references are absent locally, read `plays/<name>.md` at https://github.com/OWASP/secure-agent-playbook/tree/main/plugins/ai-security-skills/plays and `templates/finding.md` at https://github.com/OWASP/secure-agent-playbook/blob/main/plugins/ai-security-skills/templates/finding.md. Read the official LLM guidance at https://genai.owasp.org/llm-top-10/. Report unavailable references/tools and untested risks; do not equate installing these skills with a completed security assessment.",
+    "skills": [
+      "OWASP/secure-agent-playbook@llm-risk-assess",
+      "OWASP/secure-agent-playbook@mcp-server-review"
+    ]
   }
 ]

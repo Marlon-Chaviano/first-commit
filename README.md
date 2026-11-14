@@ -95,6 +95,8 @@ Run `npx create-first-commit --help` for every command and option.
 
 Every kit can pull from a shared catalog of 100+ libraries (UI, animation, auth, databases, payments, email, i18n, AI, observability, testing, CI and deployment), each with its full pack of official skills (community ones where the vendor has none). AGENTS.md is written for the stack you pick: language conventions, skills grouped by area and every library's rules.
 
+Official kits include a security pack by default: OWASP code/API reviews, secrets and dependency checks, plus Trail of Bits reviews of changes and unsafe defaults. AI and MCP kits also include OWASP LLM/MCP reviews. Both packs can be configured in the website or with `--security` in the CLI; `--security none` disables them. The generated AGENTS.md requires evidence, relevant tests and disclosure of checks that could not run. Skills provide guidance; they do not guarantee secure code. See [security packs](docs/security-packs.md) for sources and limitations.
+
 ## Make your own kit
 
 Turn any repo into a kit. `create` detects the framework, libraries, skills and MCP servers and writes the `kit.json` for you:

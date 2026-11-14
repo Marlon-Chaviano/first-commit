@@ -1,7 +1,7 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "api-spring-boot",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "author": "marlon-chaviano",
   "title": "API with Spring Boot",
   "category": "api",
@@ -48,7 +48,10 @@
       "essentials"
     ],
     "database": "none",
-    "auth": "none"
+    "auth": "none",
+    "security": [
+      "security-pack"
+    ]
   },
   "instructions": "## How to work here\n\n- Code in `src/main/java`, in layers: `controller` (HTTP), `service` (logic) and `repository` (data).\n- Validate input with `@Valid` and Bean Validation; return DTOs, never entities.\n- Configuration in `src/main/resources/application.properties`; secrets through environment variables.\n- Start with `./mvnw spring-boot:run`. Before finishing: `./mvnw test`."
 }

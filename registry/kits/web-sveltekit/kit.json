@@ -1,7 +1,7 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "web-sveltekit",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "author": "marlon-chaviano",
   "title": "Web app with SvelteKit",
   "category": "web",
@@ -59,7 +59,10 @@
     ],
     "styling": "none",
     "data": "none",
-    "forms": []
+    "forms": [],
+    "security": [
+      "security-pack"
+    ]
   },
   "instructions": "## How to work here\n\n- Routes in `src/routes/` (`+page.svelte`, `+page.server.ts` to load data on the server).\n- Svelte 5: use runes (`$state`, `$derived`, `$props`), not the old syntax (`export let`, `$:`).\n- Before finishing: `npm run check` and `npm run build`."
 }

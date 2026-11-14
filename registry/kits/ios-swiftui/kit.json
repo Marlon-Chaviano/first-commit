@@ -1,7 +1,7 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "ios-swiftui",
-  "version": "1.3.1",
+  "version": "1.3.2",
   "title": "iOS app with SwiftUI",
   "description": "A native iOS app with SwiftUI and Swift Testing. The Xcode project is generated from project.yml with XcodeGen, so your agent edits YAML instead of the .xcodeproj.",
   "category": "mobile",
@@ -50,6 +50,9 @@
     ],
     "workflow": [
       "essentials"
+    ],
+    "security": [
+      "security-pack"
     ]
   }
 }
