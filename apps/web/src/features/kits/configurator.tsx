@@ -9,6 +9,7 @@ import { BrandName } from "@/components/shared/brand-name";
 import { Command } from "@/components/shared/command";
 import { TechIcon } from "@/components/shared/tech-icon";
 import { TechLogo } from "@/components/shared/tech-logo";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -400,8 +401,7 @@ function useStickyColumn() {
 const lowerFirst = (text: string) => (/^[A-Z]{2}/.test(text) ? text : text.charAt(0).toLowerCase() + text.slice(1));
 
 /**
- * A curated skill pack: what it is, an on/off switch, and each skill with what
- * it does (each one can still be left out).
+ * A compact skill pack with independent controls for inclusion and disclosure.
  */
 function PackCard({
   choice,
@@ -420,42 +420,47 @@ function PackCard({
   isRemoved: (ref: string) => boolean;
   onSkill: (ref: string, on: boolean) => void;
 }) {
+  const [expanded, setExpanded] = useState(false);
   const kept = choice.skills.filter((ref) => !isRemoved(ref)).length;
   return (
-    <div data-on={on} className="flex flex-col rounded-lg border transition-colors data-[on=true]:border-foreground/30">
-      <label className="flex cursor-pointer items-start gap-3 p-4">
-        <span className="grid shrink-0 place-items-center self-center">
-          <Icon className="size-6" />
-        </span>
-        <span className="flex min-w-0 flex-1 flex-col gap-1">
-          <span className="flex flex-wrap items-center gap-2">
-            <span className="font-medium">{title}</span>
-            <Badge variant="outline" className="font-mono tabular-nums">
-              {on ? `${kept}/${choice.skills.length}` : choice.skills.length} skills
-            </Badge>
+    <Accordion value={expanded ? [choice.id] : []} onValueChange={(value) => setExpanded(value.includes(choice.id))}>
+      <AccordionItem value={choice.id} data-on={on} className="rounded-lg border transition-colors data-[on=true]:border-foreground/30">
+        <div className="flex items-center gap-3 px-4 py-3">
+          <span className="grid shrink-0 place-items-center self-center">
+            <Icon className="size-6" aria-hidden />
           </span>
-          {choice.description && <span className="text-sm text-pretty text-muted-foreground">{choice.description}</span>}
-        </span>
-        <Switch checked={on} onCheckedChange={onToggle} aria-label={`Include ${title}`} />
-      </label>
-      {on && (
-        <ul className="grid grid-cols-[minmax(0,1fr)] gap-px overflow-hidden rounded-b-lg border-t bg-border sm:grid-cols-2">
-          {choice.skills.map((ref) => {
-            const name = ref.slice(ref.lastIndexOf("@") + 1);
-            const id = `pack-${choice.id}-${name}`;
-            return (
-              <li key={ref} className="flex items-start gap-2.5 bg-background px-4 py-3">
-                <Checkbox id={id} checked={!isRemoved(ref)} onCheckedChange={(v) => onSkill(ref, v)} className="mt-0.5" />
-                <label htmlFor={id} className="flex min-w-0 flex-1 cursor-pointer flex-col gap-0.5">
-                  <span className="truncate font-mono text-sm">{name}</span>
-                  <span className="text-xs text-pretty text-muted-foreground">{SKILL_BLURBS[name] ?? ref.slice(0, ref.lastIndexOf("@"))}</span>
-                </label>
-              </li>
-            );
-          })}
-        </ul>
-      )}
-    </div>
+          <div className="min-w-0 flex-1">
+            <AccordionTrigger className="min-h-11 items-center gap-2 p-0" aria-label={`${expanded ? "Hide" : "Show"} ${title} skills`}>
+              <span className="flex min-w-0 flex-1 flex-wrap items-center gap-2">
+                <span className="font-medium">{title}</span>
+                <Badge variant="outline" className="font-mono tabular-nums">
+                  {on ? `${kept}/${choice.skills.length}` : choice.skills.length} skills
+                </Badge>
+              </span>
+            </AccordionTrigger>
+          </div>
+          <Switch checked={on} onCheckedChange={onToggle} aria-label={`Include ${title}`} />
+        </div>
+        <AccordionContent className="h-auto pb-0">
+          {choice.description && <p className="border-t px-4 py-3 text-sm text-pretty text-muted-foreground">{choice.description}</p>}
+          <ul className="grid grid-cols-[minmax(0,1fr)] gap-px overflow-hidden rounded-b-lg border-t bg-border sm:grid-cols-2">
+            {choice.skills.map((ref) => {
+              const name = ref.slice(ref.lastIndexOf("@") + 1);
+              const id = `pack-${choice.id}-${name}`;
+              return (
+                <li key={ref} className="flex items-start gap-2.5 bg-background px-4 py-3">
+                  <Checkbox id={id} checked={!isRemoved(ref)} disabled={!on} onCheckedChange={(v) => onSkill(ref, v)} className="mt-0.5" />
+                  <label htmlFor={id} className="flex min-w-0 flex-1 cursor-pointer flex-col gap-0.5">
+                    <span className="truncate font-mono text-sm">{name}</span>
+                    <span className="text-xs text-pretty text-muted-foreground">{SKILL_BLURBS[name] ?? ref.slice(0, ref.lastIndexOf("@"))}</span>
+                  </label>
+                </li>
+              );
+            })}
+          </ul>
+        </AccordionContent>
+      </AccordionItem>
+    </Accordion>
   );
 }
 

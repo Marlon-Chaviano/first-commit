@@ -10,7 +10,8 @@
       "Every catalog entry now has an icon: a publisher mark when available, otherwise a semantic icon for its category, in both themes.",
       "One general Security pack with 12 skills replaces the separate AI security add-on. It covers code, auth, access control, web/APIs, mobile, infrastructure, secrets and dependencies; LLM/MCP checks apply when the project implements those features.",
       "create-first-commit 1.0.3 adds platform-aware catalog compatibility and improves verification: project build combinations exclude skills, while skill names are checked separately from their official source files with an installer fallback.",
-      "A generated coverage report documents the options offered by each kit. New verification matrix entries exercise the added catalog choices without requiring production credentials."
+      "A generated coverage report documents the options offered by each kit. New verification matrix entries exercise the added catalog choices without requiring production credentials.",
+      "Design, Security and first-commit skill packs start compact. Expand each pack to inspect and select its skills; inclusion switches remain available independently."
     ]
   },
   {

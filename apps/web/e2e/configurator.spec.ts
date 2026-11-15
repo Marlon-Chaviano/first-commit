@@ -30,6 +30,7 @@ for (const kit of ["web-next", "mcp-server-ts", "mobile-expo"]) {
     await expect(security).toBeChecked();
     const pack = page.locator("div[data-on]").filter({ has: security });
     await expect(pack.getByText("12/12 skills", { exact: true })).toBeVisible();
+    await page.getByRole("button", { name: "Show Security pack skills", exact: true }).click();
     for (const skill of ["code-review-security", "web-security-review", "api-security-review", "mobile-code-review", "iac-security-review"]) {
       await expect(page.getByRole("checkbox", { name: new RegExp(`^${skill}\\b`) })).toBeChecked();
     }
@@ -42,12 +43,54 @@ for (const kit of ["web-next", "mcp-server-ts", "mobile-expo"]) {
 
 test("individual security skills can be excluded from the install command", async ({ page }) => {
   await page.goto("/kits/web-next");
+  await page.getByRole("button", { name: "Show Security pack skills", exact: true }).click();
   const review = page.getByRole("checkbox", { name: /^code-review-security\b/ });
   await expect(review).toBeChecked();
   await review.uncheck();
   await expect(command(page)).toContainText("--no-skill OWASP/secure-agent-playbook@code-review-security");
+  await page.getByRole("button", { name: "Hide Security pack skills", exact: true }).click();
+  await expect(page.getByText("11/12 skills", { exact: true })).toBeVisible();
+  await expect(command(page)).toContainText("--no-skill OWASP/secure-agent-playbook@code-review-security");
+  await page.getByRole("button", { name: "Show Security pack skills", exact: true }).click();
+  await expect(review).not.toBeChecked();
   await review.check();
   await expect(command(page)).not.toContainText("--no-skill");
+});
+
+test("skill packs start compact and expand independently without changing selections", async ({ page }) => {
+  await page.goto("/kits/web-next");
+  const initialCommand = await command(page).innerText();
+  for (const title of ["Design pack", "Security pack", "Pack first-commit"]) {
+    const show = page.getByRole("button", { name: `Show ${title} skills`, exact: true });
+    const include = page.getByRole("switch", { name: `Include ${title}`, exact: true });
+    const pack = page.locator("div[data-on]").filter({ has: include });
+    await expect(show).toHaveAttribute("aria-expanded", "false");
+    await expect(include).toBeChecked();
+    await expect(pack.getByRole("checkbox")).toHaveCount(0);
+    await show.focus();
+    await page.keyboard.press("Enter");
+    const hide = page.getByRole("button", { name: `Hide ${title} skills`, exact: true });
+    await expect(hide).toHaveAttribute("aria-expanded", "true");
+    await expect(pack.getByRole("checkbox").first()).toBeVisible();
+    await expect(command(page)).toHaveText(initialCommand);
+    await hide.click();
+    await expect(show).toHaveAttribute("aria-expanded", "false");
+    await expect(command(page)).toHaveText(initialCommand);
+  }
+});
+
+test("a disabled pack can be inspected without enabling it", async ({ page }) => {
+  await page.goto("/kits/web-next");
+  const include = page.getByRole("switch", { name: "Include Security pack", exact: true });
+  await include.uncheck();
+  await page.getByRole("button", { name: "Show Security pack skills", exact: true }).click();
+  const review = page.getByRole("checkbox", { name: /^code-review-security\b/ });
+  await expect(review).toBeVisible();
+  await expect(review).toBeDisabled();
+  await expect(command(page)).toContainText("--security none");
+  await include.check();
+  await expect(review).toBeEnabled();
+  await expect(command(page)).not.toContainText("--security none");
 });
 
 test("Nuxt offers framework-specific deployment choices with icons", async ({ page }) => {
