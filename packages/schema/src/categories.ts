@@ -24,7 +24,7 @@ export const LIBRARY_CATEGORIES = [
   { kind: "ci", key: "ci", optionId: "ci", type: "multi", label: "Continuous integration" },
   { kind: "deploy", key: "deploy", optionId: "deploy", type: "select", label: "Deployment" },
   { kind: "design", key: "design", optionId: "design", type: "multi", label: "Design pack", description: "Design skills so your agent builds polished, non-generic interfaces." },
-  { kind: "security", key: "security", optionId: "security", type: "multi", label: "Security pack", description: "OWASP guidance, security reviews, secrets and dependency checks. Requires verification; skills alone do not guarantee security." },
+  { kind: "security", key: "security", optionId: "security", type: "multi", label: "Security pack", description: "Security for the whole project: code, permissions, web/APIs, mobile, infrastructure, secrets and dependencies." },
   { kind: "workflow", key: "workflow", optionId: "workflow", type: "multi", label: `Pack ${BRAND.name}`, description: "General-purpose skills we picked that work in any project." },
 ] as const;
 

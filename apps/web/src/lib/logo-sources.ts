@@ -6,6 +6,7 @@
 import type { SimpleIcon } from "simple-icons";
 import {
   siAlpinedotjs,
+  siAngular,
   siApachemaven,
   siAstro,
   siBetterauth,
@@ -56,6 +57,7 @@ import {
   siJest,
   siJunit5,
   siKotlin,
+  siKtor,
   siLangchain,
   siLaravel,
   siLemonsqueezy,
@@ -81,6 +83,7 @@ import {
   siPosthog,
   siPrettier,
   siPrimevue,
+  siPrimeng,
   siPrisma,
   siPydantic,
   siPypi,
@@ -294,6 +297,54 @@ export const LOGOS: Record<string, SimpleIcon> = {
   "swift": siSwift,
   "swiftui": siSwift,
 };
+
+// Variants keep the original publisher's mark; libraries without a public mark use a semantic icon.
+const LIBRARY_ALIASES: Record<string, string> = {
+  "bun-test": "bun", "railway-bun": "railway", "spring-tests": "spring", "spring-actuator": "spring", "laravel-pint": "laravel",
+  "shadcn-vue": "shadcn", "shadcn-svelte": "shadcn", "tailwind-astro": "tailwind",
+  "tailwind-sveltekit": "tailwind", "tailwind-nuxt": "tailwind", "tanstack-query-vue": "tanstack-query",
+  "tanstack-query-svelte": "tanstack-query", "sentry-react-native": "sentry", "posthog-react-native": "posthog",
+  "github-actions-django": "github-actions", "github-actions-rust": "github-actions", "github-actions-dotnet": "github-actions",
+  "github-actions-rails": "github-actions", "github-actions-laravel": "github-actions", "github-actions-spring": "github-actions",
+  "github-actions-flutter": "github-actions", "github-actions-swiftui": "github-actions", "github-actions-android": "github-actions",
+  "workspace-ci": "github-actions", "workspace-deploy": "railway", "vercel-static": "vercel", "netlify-static": "netlify",
+  "cloudflare-pages": "cloudflare", "netlify-nuxt": "netlify", "docker-nuxt": "docker", "railway-nuxt": "railway",
+  "sveltekit-vercel": "vercel", "sveltekit-netlify": "netlify", "sveltekit-node": "nodejs",
+  "nuxt-ui": "nuxt", "nuxt-auth-utils": "nuxt", "nuxt-i18n": "nuxt", "vue-i18n": "vue",
+  "pinia-vue": "pinia", "supabase-js": "supabase", "better-auth-server": "better-auth",
+  "drizzle-nuxt": "drizzle", "drizzle-sveltekit": "drizzle", "drizzle-node": "drizzle", "drizzle-bun": "drizzle",
+  "stripe-server": "stripe", "stripe-python": "stripe", "stripe-ruby": "stripe", "stripe-php": "stripe",
+  "stripe-java": "stripe", "stripe-dotnet": "stripe", "resend-nuxt": "resend", "resend-sveltekit": "resend",
+  "resend-python": "resend", "resend-ruby": "resend", "resend-go": "resend", "resend-laravel": "resend",
+  "sentry-nuxt": "sentry", "sentry-sveltekit": "sentry", "sentry-vue": "sentry", "sentry-django": "sentry",
+  "sentry-rails": "sentry", "sentry-laravel": "sentry", "sentry-rust": "sentry", "sentry-flutter": "sentry",
+  "sentry-angular": "sentry", "angular-localize": "angular", "angular-tests": "angular",
+  "vitest-vue": "vitest", "vitest-svelte": "vitest", "pytest-django": "pytest", "anthropic-python": "claude",
+  "rails-postgres": "postgres", "rails-auth": "rails", "rails-i18n": "rails", "rspec-rails": "ruby",
+  "laravel-sanctum": "laravel", "laravel-eloquent": "laravel", "laravel-localization": "laravel",
+  "spring-security": "spring", "spring-jdbc": "spring", "spring-oauth2": "spring", "spring-mail": "spring",
+  "efcore-sqlite": "dotnet", "jwt-dotnet": "dotnet", "dotnet-format": "dotnet", "rustfmt-clippy": "rust",
+  "sqflite": "sqlite", "supabase-flutter": "supabase", "flutter-lints": "flutter", "intl-dart": "dart",
+  "http-dart": "dart", "flutter-stores": "flutter", "android-stores": "gradle", "android-unit-tests": "gradle",
+  "android-lint": "gradle", "android-credentials": "google", "kotlinx-serialization": "kotlin",
+  "swift-testing": "swift", "swiftlint": "swift", "app-store-connect": "xcode", "npm-publish": "npm",
+  "github-releases": "github", "chrome-web-store": "chrome-extension", "vscode-marketplace": "typescript",
+  "railway-python": "railway", "railway-django": "railway", "railway-rails": "railway", "railway-laravel": "railway",
+  "railway-spring": "railway", "railway-rust": "railway", "railway-dotnet": "railway", "docker-go": "docker",
+};
+LOGOS.dart = siDart;
+LOGOS.kotlin = siKotlin;
+LOGOS.claude = siClaude;
+LOGOS.google = siGoogle;
+LOGOS.github = siGithub;
+LOGOS.angular = siAngular;
+for (const [id, original] of Object.entries(LIBRARY_ALIASES)) {
+  if (!LOGOS[original]) throw new Error(`Missing logo source ${original} for ${id}`);
+  LOGOS[id] = LOGOS[original]!;
+}
+LOGOS.primeng = siPrimeng;
+LOGOS["angular-material"] = siAngular;
+LOGOS["ktor-client"] = siKtor;
 
 /** Agents and languages (TechIcon looks here first). */
 const PACKAGE_MANAGERS = ["npm", "pnpm", "bun", "deno", "uv", "pip", "bundler", "composer", "maven", "cargo", "gradle", "flutter", "dotnet"];

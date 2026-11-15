@@ -114,7 +114,7 @@ writeFileSync(join(root, "kit.schema.json"), JSON.stringify(z.toJSONSchema(kitSc
 console.log(`✓ ${entries.length} kits and ${catalog.length} libraries valid → registry/index.json`);
 
 if (process.argv.includes("--check-skills")) {
-  const { missing } = checkSkills(refs, (source, ok) => console.log(`${ok ? "✓" : "✗"} ${source}`));
+  const { missing } = await checkSkills(refs, (source, ok) => console.log(`${ok ? "✓" : "✗"} ${source}`));
   if (missing.length) {
     console.error(`\nSkills that don't exist:\n${missing.map((m) => `  - ${m}`).join("\n")}`);
     process.exit(1);

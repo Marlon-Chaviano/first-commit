@@ -58,7 +58,11 @@ Si algún día se pasa del gratuito: Redis pay-as-you-go cuesta 0,20 $ por 100.0
 
 ## Confianza: verificaciones, integridad y auditorías
 
-Los kits oficiales declaran `libraries.security`: `security-pack` por defecto y también `security-ai-pack` en los kits de IA y MCP. Son contribuciones ordinarias del catálogo: `expandKit` genera la opción compartida por CLI, web y MCP; `resolve` elimina skills duplicadas con el pack de flujo de trabajo, y `agentsSection` escribe las reglas de seguridad en el bloque gestionado. No añaden servicios ni dependencias de ejecución. Las fuentes, la comprobación de archivos auxiliares de OWASP y los límites están en [security-packs.md](security-packs.md).
+El catálogo distingue frameworks y plataformas (`libraries.platforms`) y permite exclusiones (`excludeFrameworks`): el renderer de una extensión no determina dónde se publica. Nuxt, SvelteKit y sitios estáticos tienen configuraciones de despliegue distintas. Los monorepos mantienen las dependencias en cada servicio; sus opciones comunes no inyectan SDK de aplicación en la raíz. `pnpm registry:coverage` genera el inventario revisable por kit en [catalog-coverage.md](catalog-coverage.md). Los iconos se generan desde `logo-sources.ts`; cuando no hay marca pública se usa un icono semántico de categoría, sin añadir `simple-icons` al cliente.
+
+Las combinaciones de `create-first-commit test` excluyen todas las skills, incluida la del producto, para medir el proyecto generado sin clonar repositorios de skills en cada variante. La existencia de skills se comprueba una vez: nombres declarados en `SKILL.md` oficiales mediante lectura HTTP; si el formato o la red no lo permiten, se recurre al listado/instalador de skills. Esto comprueba disponibilidad, no audita el comportamiento de una skill.
+
+Todos los kits oficiales declaran `libraries.security: ["security-pack"]`: un único pack general de 12 skills que cubre código, web/APIs, móvil, infraestructura, secretos y dependencias. Incluye revisiones LLM/MCP solo aplicables a proyectos con esas funcionalidades. Es una contribución ordinaria del catálogo: `expandKit` genera la opción compartida por CLI, web y MCP; `resolve` elimina skills duplicadas con el pack de flujo de trabajo, y `agentsSection` escribe las reglas de seguridad en el bloque gestionado. No añaden servicios ni dependencias de ejecución. Las fuentes, la comprobación de archivos auxiliares de OWASP y los límites están en [security-packs.md](security-packs.md).
 
 | Pieza | Cómo funciona |
 | --- | --- |

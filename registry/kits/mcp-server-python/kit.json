@@ -1,6 +1,6 @@
 {
   "$schema": "../../kit.schema.json",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "author": "marlon-chaviano",
   "name": "mcp-server-python",
   "title": "MCP server with Python",
@@ -53,9 +53,16 @@
       "essentials"
     ],
     "security": [
-      "security-pack",
-      "security-ai-pack"
-    ]
+      "security-pack"
+    ],
+    "ai": [],
+    "auth": "none",
+    "database": "none",
+    "deploy": "none",
+    "email": "none",
+    "observability": [],
+    "payments": "none",
+    "testing": []
   },
   "verify": {
     "command": ".venv/bin/python -c \"import server; assert server.greet('a')\" && (test ! -x .venv/bin/ruff || .venv/bin/ruff check .)",

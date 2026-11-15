@@ -46,8 +46,8 @@ export function FitBadges({ names, variant = "secondary", className }: { names: 
   const hidden = names.length - shown;
   return (
     <ul ref={ref} className={cn("relative flex flex-wrap content-start gap-1.5 overflow-hidden [contain:size]", className)}>
-      {names.slice(0, shown).map((name) => (
-        <li key={name}>
+      {names.slice(0, shown).map((name, index) => (
+        <li key={`${index}-${name}`}>
           <Badge variant={variant} className="font-mono">
             {name}
           </Badge>

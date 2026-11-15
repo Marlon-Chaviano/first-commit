@@ -57,7 +57,7 @@ export async function test(args: ParsedArgs, cliVersion: string): Promise<void> 
   if (!args.switches.has("skip-skills") && refs.length) {
     const spinner = progress();
     spinner.start(`Checking ${refs.length} skills`);
-    skills = { checked: refs.length, ...checkSkills(refs) };
+    skills = { checked: refs.length, ...await checkSkills(refs) };
     if (skills.missing.length) spinner.error(`Skills that don't exist: ${skills.missing.join(", ")}`);
     else spinner.stop(`${refs.length} skills exist`);
   }

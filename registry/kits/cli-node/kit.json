@@ -1,7 +1,7 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "cli-node",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "author": "marlon-chaviano",
   "title": "Command-line tool with Node.js",
   "description": "A TypeScript CLI ready to publish to npm: commands with Commander, bundled with tsup, tests with Vitest and `npx` support from day one.",
@@ -81,7 +81,19 @@
     ],
     "security": [
       "security-pack"
-    ]
+    ],
+    "ai": [],
+    "auth": "none",
+    "database": "none",
+    "deploy": "none",
+    "email": "none",
+    "observability": [],
+    "payments": "none",
+    "testing": [],
+    "platforms": [
+      "npm-package"
+    ],
+    "forms": []
   },
   "verify": {
     "command": "{{pm}} run typecheck && {{pm}} run test && {{pm}} run build && node dist/index.js hello Ada",
@@ -92,6 +104,14 @@
         ],
         "ci": [
           "github-actions"
+        ]
+      },
+      {
+        "database": [
+          "drizzle-node"
+        ],
+        "deploy": [
+          "npm-publish"
         ]
       }
     ]

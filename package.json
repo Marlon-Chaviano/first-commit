@@ -8,6 +8,7 @@
     "dev:web": "pnpm --filter web dev",
     "registry:index": "tsx scripts/build-registry.ts",
     "registry:check": "tsx scripts/build-registry.ts --check-skills",
+    "registry:coverage": "tsx scripts/catalog-coverage.ts",
     "typecheck": "pnpm -r typecheck",
     "test": "vitest run",
     "registry:tag": "tsx scripts/tag-registry.ts"

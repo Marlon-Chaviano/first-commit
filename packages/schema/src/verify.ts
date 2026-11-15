@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { BRAND } from "./brand";
+import { BRAND, KITS_SKILL } from "./brand";
 import { allKitSkills, defaultSelections, pruneSelections, requirementsMet, validateSelections, type Selections } from "./resolve";
 import type { Kit } from "./schema";
 
@@ -20,7 +20,7 @@ export interface TestCombination {
  * once, separately) and a single agent is used: they don't affect the build.
  */
 export function testCombinations(kit: Kit): TestCombination[] {
-  const base: Selections = { ...defaultSelections(kit), removeSkills: allKitSkills(kit), agents: ["claude-code"] };
+  const base: Selections = { ...defaultSelections(kit), removeSkills: [...new Set([...allKitSkills(kit), KITS_SKILL])], agents: ["claude-code"] };
   const combos: TestCombination[] = [{ label: "defaults", sel: base }];
 
   const variant = (overrides: Record<string, string[]>): TestCombination => {

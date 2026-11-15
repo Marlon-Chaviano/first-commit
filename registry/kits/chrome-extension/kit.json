@@ -1,7 +1,7 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "chrome-extension",
-  "version": "1.4.2",
+  "version": "1.4.3",
   "title": "Browser extension with WXT",
   "description": "An extension for Chrome, Firefox and Edge with WXT (Manifest V3, hot reload) and the UI framework you prefer.",
   "category": "extension",
@@ -38,6 +38,11 @@
         ],
         "ci": [
           "github-actions"
+        ]
+      },
+      {
+        "deploy": [
+          "chrome-web-store"
         ]
       }
     ]
@@ -117,6 +122,17 @@
     ],
     "security": [
       "security-pack"
+    ],
+    "auth": "none",
+    "data": "none",
+    "deploy": "none",
+    "forms": [],
+    "i18n": "none",
+    "observability": [],
+    "state": "none",
+    "testing": [],
+    "platforms": [
+      "browser-extension"
     ]
   },
   "instructions": "## How to work here\n\n- Entry points in `entrypoints/` (popup, background, content scripts); WXT generates the manifest from them.\n- Request only the minimum permissions in `wxt.config.ts`.\n- `npm run dev` opens a browser with the extension loaded and hot reload.",

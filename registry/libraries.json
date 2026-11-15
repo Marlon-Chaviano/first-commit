@@ -1317,7 +1317,9 @@
     "frameworks": [
       "nextjs",
       "nodejs",
-      "bun"
+      "bun",
+      "nuxt",
+      "sveltekit"
     ],
     "url": "https://platform.claude.com/docs",
     "description": "Anthropic's official SDK for calling Claude.",
@@ -1411,7 +1413,14 @@
     "name": "Playwright",
     "kind": "testing",
     "frameworks": [
-      "nextjs"
+      "nextjs",
+      "vue",
+      "nuxt",
+      "svelte",
+      "sveltekit",
+      "astro",
+      "react",
+      "vanilla"
     ],
     "url": "https://playwright.dev",
     "description": "End-to-end tests in real browsers.",
@@ -1484,7 +1493,12 @@
       "nextjs",
       "nodejs",
       "bun",
-      "expo"
+      "expo",
+      "nuxt",
+      "sveltekit",
+      "astro",
+      "angular",
+      "react-native"
     ],
     "url": "https://biomejs.dev",
     "description": "Formatting and linting in one very fast tool.",
@@ -1517,7 +1531,12 @@
       "nextjs",
       "nodejs",
       "bun",
-      "expo"
+      "expo",
+      "nuxt",
+      "sveltekit",
+      "astro",
+      "angular",
+      "react-native"
     ],
     "url": "https://typicode.github.io/husky/",
     "description": "Formats the changed files on every commit.",
@@ -1555,7 +1574,17 @@
       "nextjs",
       "nodejs",
       "bun",
-      "expo"
+      "expo",
+      "nuxt",
+      "sveltekit",
+      "astro",
+      "angular",
+      "react-native",
+      "electron",
+      "tauri",
+      "npm-package",
+      "vscode-extension",
+      "browser-extension"
     ],
     "url": "https://docs.github.com/actions",
     "description": "Installs, checks, builds and runs the tests on every push and PR.",
@@ -1577,17 +1606,24 @@
     "name": "Vercel",
     "kind": "deploy",
     "frameworks": [
-      "nextjs"
+      "nextjs",
+      "nuxt"
     ],
     "url": "https://vercel.com",
     "description": "Deployments with a preview for every PR.",
-    "usage": "Deploy by connecting the repository at vercel.com (every push to main goes to production and every PR gets its own URL) or with `npx vercel`. Set the variables from `.env.example` in the Vercel project.",
+    "usage": "Deploy by connecting the repository at vercel.com (every push to main goes to production and every PR gets its own URL) or with `npx vercel`. Set the variables from `.env.example` in the Vercel project. Nuxt is detected automatically by Vercel/Nitro; do not use a Next.js output preset.",
     "skills": [
       "vercel-labs/agent-skills@deploy-to-vercel",
       "vercel-labs/agent-skills@vercel-cli-with-tokens"
     ],
     "setupTasks": [
       "Vercel: import the repository at vercel.com/new and copy the variables from `.env.example` there."
+    ],
+    "excludeFrameworks": [
+      "electron",
+      "tauri",
+      "browser-extension",
+      "vscode-extension"
     ]
   },
   {
@@ -1614,6 +1650,12 @@
     "skills": [
       "github/awesome-copilot@multi-stage-dockerfile",
       "affaan-m/ecc@docker-patterns"
+    ],
+    "excludeFrameworks": [
+      "electron",
+      "tauri",
+      "browser-extension",
+      "vscode-extension"
     ]
   },
   {
@@ -1639,6 +1681,12 @@
     ],
     "setupTasks": [
       "EAS: sign in with `npx eas-cli@latest login` and link the project with `npx eas-cli@latest init`."
+    ],
+    "excludeFrameworks": [
+      "electron",
+      "tauri",
+      "browser-extension",
+      "vscode-extension"
     ]
   },
   {
@@ -2273,6 +2321,12 @@
     "skills": [
       "github/awesome-copilot@multi-stage-dockerfile",
       "affaan-m/ecc@docker-patterns"
+    ],
+    "excludeFrameworks": [
+      "electron",
+      "tauri",
+      "browser-extension",
+      "vscode-extension"
     ]
   },
   {
@@ -2693,6 +2747,12 @@
       "netlify/context-and-tools@netlify-frameworks",
       "netlify/context-and-tools@netlify-functions",
       "netlify/context-and-tools@netlify-caching"
+    ],
+    "excludeFrameworks": [
+      "electron",
+      "tauri",
+      "browser-extension",
+      "vscode-extension"
     ]
   },
   {
@@ -2714,6 +2774,12 @@
     ],
     "setupTasks": [
       "Render: create a Blueprint from the repository at dashboard.render.com."
+    ],
+    "excludeFrameworks": [
+      "electron",
+      "tauri",
+      "browser-extension",
+      "vscode-extension"
     ]
   },
   {
@@ -2722,11 +2788,13 @@
     "kind": "deploy",
     "frameworks": [
       "nextjs",
-      "nodejs"
+      "nodejs",
+      "react-router",
+      "tanstack-start"
     ],
     "url": "https://railway.com",
     "description": "Deploys from your repo, with one-click databases.",
-    "usage": "The config is in `railway.json`. Deploy with `npx @railway/cli up` or by connecting the repository.",
+    "usage": "The config is in `railway.json`. Deploy with `npx @railway/cli up` or by connecting the repository. For React Router/TanStack Start select the actual server entry point and framework deployment guide; do not publish the server build as static files.",
     "writeFiles": [
       {
         "path": "railway.json",
@@ -2735,6 +2803,12 @@
     ],
     "setupTasks": [
       "Railway: create a project from the repository at railway.com and add the variables from `.env.example`."
+    ],
+    "excludeFrameworks": [
+      "electron",
+      "tauri",
+      "browser-extension",
+      "vscode-extension"
     ]
   },
   {
@@ -2764,6 +2838,12 @@
     ],
     "setupTasks": [
       "Fly.io: install flyctl, run `fly launch --no-deploy` to create the app and then `fly deploy`."
+    ],
+    "excludeFrameworks": [
+      "electron",
+      "tauri",
+      "browser-extension",
+      "vscode-extension"
     ]
   },
   {
@@ -2783,7 +2863,12 @@
       "rails",
       "laravel",
       "angular",
-      "django"
+      "django",
+      "electron",
+      "tauri",
+      "browser-extension",
+      "vscode-extension",
+      "monorepo"
     ],
     "url": "https://github.com/pbakaus/impeccable",
     "description": "A visual direction with character, polished details, accessibility and purposeful animation. The most-used design skills right now.",
@@ -2839,8 +2924,8 @@
       "any"
     ],
     "url": "https://github.com/OWASP/secure-agent-playbook",
-    "description": "Secure coding, OWASP code and API reviews, secrets, vulnerable dependencies and security regressions. Guidance backed by tests and evidence, not a security guarantee.",
-    "usage": "Before planning or changing code that handles untrusted input, authentication, authorization, secrets, files or network access, read `security-and-hardening` and map the assets and trust boundaries. Apply the relevant OWASP ASVS requirements and Cheat Sheet guidance; enforce server-side authorization for every resource, validate inputs, parameterize queries, protect secrets and use safe defaults. Use `sharp-edges` when designing APIs or configuration.\n\nBefore completing a security-sensitive change, use `code-review-security` and `differential-review`; for HTTP APIs also use `api-security-review` (OWASP API Security Top 10). Test denied access, cross-user/cross-tenant access and malformed input, plus abuse, replay and resource limits where relevant. Run `secrets-scan` before commit and `sca-audit` on resolved lockfiles before release or after dependency changes. Never print secret values or validate live credentials; redact findings and recommend revocation/rotation if exposed. Run scanners and attack probes only against the authorized local/test scope; do not upload code or secrets to external services.\n\nOWASP skills may reference plugin files that the skills CLI does not copy. Read missing `plays/<name>.md` at https://github.com/OWASP/secure-agent-playbook/tree/main/plugins/code-security-skills/plays and `templates/finding.md` at https://github.com/OWASP/secure-agent-playbook/blob/main/plugins/code-security-skills/templates/finding.md. Their full ASVS reference data is at https://github.com/OWASP/secure-agent-playbook/tree/main/data/asvs; current standards and prevention guidance are at https://owasp.org/ASVS/ and https://cheatsheetseries.owasp.org/. Check the cited edition: some plays use Top 10:2021 category numbers; do not relabel those as Top 10:2025.\n\nReport reviewed scope, file:line evidence, severity, fixes, tests and scanner results, and anything not checked. If a skill, reference or scanner is unavailable, say so explicitly and do not claim that check passed. Skills guide the agent; installation, a clean scan or this pack is not proof of security, ASVS compliance or certification.",
+    "description": "Security for the whole project: code, auth, permissions, web and APIs, mobile, infrastructure, secrets and dependencies. LLM and MCP checks apply when relevant.",
+    "usage": "This is the project's general security pack. Before planning or changing code, identify the project's stack, assets, entry points, sensitive data and trust boundaries. Read `security-and-hardening` for security-sensitive work. Apply the relevant OWASP ASVS requirements and Cheat Sheet guidance: enforce server-side authorization for every resource, validate inputs, parameterize queries, protect credentials and personal data, use safe defaults and handle errors without leaking secrets. Use `sharp-edges` when designing APIs or configuration.\n\nChoose reviews from the actual project surface, not from the fact that an AI agent is writing the code:\n- All projects: `code-review-security` and `differential-review` for security-sensitive changes; `secrets-scan` before commit; `sca-audit` on resolved lockfiles before release and after dependency changes.\n- Web applications: `web-security-review` for OWASP Top 10, authentication, sessions, access control, injection, browser protections and SSRF.\n- HTTP APIs: `api-security-review` for ownership, tenant isolation, field-level permissions, unsafe consumption, replay and abuse limits.\n- Mobile applications: `mobile-code-review` for platform permissions, secure storage, cryptography and network protections (OWASP MASVS/MASTG). Declare partial coverage when native code or runtime tests are unavailable, including cross-platform shells.\n- Infrastructure as code: `iac-security-review` for Terraform/OpenTofu, Kubernetes/Helm and CloudFormation; review permissions, exposed resources, secret handling, encryption and deployment configuration.\n- Only if the application implements LLM/RAG/agent functionality: `llm-risk-assess`. Treat prompts, retrieved documents and model output as untrusted; enforce authorization outside the model and bound tokens, time, cost and resource usage.\n- Only if the project implements or configures MCP servers/tools: `mcp-server-review`. Minimize capabilities, validate inputs and outputs, and check data exposure. Using an AI coding assistant alone does not make the project an AI application.\n\nTest denied access, cross-user/cross-tenant access and malformed input, plus abuse, replay and resource limits where relevant. Never print secret values or validate live credentials; redact findings and recommend revocation/rotation if exposed. Run scanners and attack probes only against the authorized local/test scope; do not upload code or secrets to external services.\n\nOWASP skills may reference plugin files that the skills CLI does not copy. Read missing `plays/<file>.md` and `templates/finding.md` from https://github.com/OWASP/secure-agent-playbook/tree/main/plugins/code-security-skills or, for LLM/MCP reviews, https://github.com/OWASP/secure-agent-playbook/tree/main/plugins/ai-security-skills. The web review uses `plays/owasp-top10-web-review.md`. ASVS, MASVS, MASTG and infrastructure reference files are under https://github.com/OWASP/secure-agent-playbook/tree/main/plugins/code-security-skills/data (preserve the skill's `data/<dataset>/<file>` path). Official standards and prevention guidance: https://owasp.org/ASVS/, https://cheatsheetseries.owasp.org/, https://mas.owasp.org/ and https://genai.owasp.org/llm-top-10/. Check the cited edition: some plays use Top 10:2021 category numbers; do not relabel those as Top 10:2025.\n\nReport reviewed scope, applicable and non-applicable checks with reasons, file:line evidence, severity, fixes, tests and scanner results, and anything not checked. If a skill, reference or scanner is unavailable, say so explicitly and do not claim that check passed. Skills guide the agent; installation, a clean scan or this pack is not proof of security, ASVS compliance or certification.",
     "skills": [
       "addyosmani/agent-skills@security-and-hardening",
       "OWASP/secure-agent-playbook@code-review-security",
@@ -2848,27 +2933,2687 @@
       "OWASP/secure-agent-playbook@secrets-scan",
       "OWASP/secure-agent-playbook@sca-audit",
       "trailofbits/skills@sharp-edges",
-      "trailofbits/skills@differential-review"
-    ]
-  },
-  {
-    "id": "security-ai-pack",
-    "name": "AI security pack",
-    "kind": "security",
-    "frameworks": [
-      "any"
-    ],
-    "url": "https://github.com/OWASP/secure-agent-playbook",
-    "description": "OWASP LLM and MCP reviews for prompt injection, data exposure, excessive tool permissions and unbounded consumption.",
-    "requires": {
-      "security": [
-        "security-pack"
-      ]
-    },
-    "usage": "Before building or changing LLM, RAG, agent or MCP functionality, use `llm-risk-assess` and `mcp-server-review` as applicable. Treat prompts, retrieved documents, model output and tool output as untrusted data. Keep secrets out of prompts, enforce authorization outside the model, validate outputs before execution, minimize tool capabilities and bound tokens, time, costs and resource usage. Test prompt injection and unauthorized tool calls in an authorized local/test environment. Follow the base security pack's review and evidence requirements.\n\nIf plugin references are absent locally, read `plays/<name>.md` at https://github.com/OWASP/secure-agent-playbook/tree/main/plugins/ai-security-skills/plays and `templates/finding.md` at https://github.com/OWASP/secure-agent-playbook/blob/main/plugins/ai-security-skills/templates/finding.md. Read the official LLM guidance at https://genai.owasp.org/llm-top-10/. Report unavailable references/tools and untested risks; do not equate installing these skills with a completed security assessment.",
-    "skills": [
+      "trailofbits/skills@differential-review",
+      "OWASP/secure-agent-playbook@web-security-review",
+      "OWASP/secure-agent-playbook@mobile-code-review",
+      "OWASP/secure-agent-playbook@iac-security-review",
       "OWASP/secure-agent-playbook@llm-risk-assess",
       "OWASP/secure-agent-playbook@mcp-server-review"
     ]
+  },
+  {
+    "id": "vercel-static",
+    "name": "Vercel",
+    "kind": "deploy",
+    "frameworks": [
+      "react",
+      "vue",
+      "solid",
+      "vanilla",
+      "astro",
+      "angular"
+    ],
+    "url": "https://vercel.com/docs/frameworks",
+    "description": "Static hosting and preview deployments for frontend apps.",
+    "usage": "Import the repository and choose its actual framework preset and output directory (Vite/Astro: dist; VitePress: .vitepress/dist; Angular: dist/<project>/browser). For Astro server rendering, install and configure @astrojs/vercel before deploying. Do not deploy an SSR server as static files.",
+    "setupTasks": [
+      "Vercel: connect the repository, set the framework/output directory and add any environment variables."
+    ],
+    "excludeFrameworks": [
+      "electron",
+      "tauri",
+      "browser-extension",
+      "vscode-extension",
+      "nextjs",
+      "nuxt",
+      "sveltekit",
+      "react-router",
+      "tanstack-start"
+    ]
+  },
+  {
+    "id": "netlify-static",
+    "name": "Netlify",
+    "kind": "deploy",
+    "frameworks": [
+      "react",
+      "vue",
+      "solid",
+      "vanilla",
+      "astro"
+    ],
+    "url": "https://docs.netlify.com/frameworks/",
+    "description": "Static hosting with deploy previews.",
+    "usage": "Connect the repository, build with {{pm}} run build and publish the framework output (Vite/Astro: dist; VitePress: .vitepress/dist). For Astro SSR, configure the official @astrojs/netlify adapter first.",
+    "setupTasks": [
+      "Netlify: select the actual build directory and configure environment variables."
+    ],
+    "excludeFrameworks": [
+      "electron",
+      "tauri",
+      "browser-extension",
+      "vscode-extension",
+      "nextjs",
+      "nuxt",
+      "sveltekit",
+      "react-router",
+      "tanstack-start"
+    ]
+  },
+  {
+    "id": "cloudflare-pages",
+    "name": "Cloudflare Pages",
+    "kind": "deploy",
+    "frameworks": [
+      "react",
+      "vue",
+      "solid",
+      "vanilla",
+      "astro"
+    ],
+    "url": "https://developers.cloudflare.com/pages/framework-guides/",
+    "description": "Static frontend deployments on Cloudflare Pages.",
+    "usage": "Use the Pages preset for the generated framework and its build output (Vite/Astro: dist; VitePress: .vitepress/dist). Keep server secrets out of client variables. SSR needs the platform-specific Workers adapter; this option is for static output.",
+    "setupTasks": [
+      "Cloudflare Pages: connect the repository, set the build command and framework output directory."
+    ],
+    "excludeFrameworks": [
+      "electron",
+      "tauri",
+      "browser-extension",
+      "vscode-extension",
+      "nextjs",
+      "nuxt",
+      "sveltekit",
+      "react-router",
+      "tanstack-start"
+    ]
+  },
+  {
+    "id": "netlify-nuxt",
+    "name": "Netlify",
+    "kind": "deploy",
+    "frameworks": [
+      "nuxt"
+    ],
+    "url": "https://nuxt.com/deploy/netlify",
+    "description": "Nitro server rendering and previews on Netlify.",
+    "usage": "Nitro detects Netlify automatically. Use the netlify preset and deploy dist, including generated functions; do not publish .next or only .output/public.",
+    "writeFiles": [
+      {
+        "path": "netlify.toml",
+        "content": "[build]\n  command = \"{{pm}} run build\"\n  publish = \"dist\"\n[build.environment]\n  NITRO_PRESET = \"netlify\"\n",
+        "mode": "create"
+      }
+    ],
+    "setupTasks": [
+      "Netlify: connect the Nuxt repository and copy server-side variables from .env.example."
+    ],
+    "excludeFrameworks": [
+      "electron",
+      "tauri",
+      "browser-extension",
+      "vscode-extension"
+    ]
+  },
+  {
+    "id": "docker-nuxt",
+    "name": "Docker",
+    "kind": "deploy",
+    "frameworks": [
+      "nuxt"
+    ],
+    "url": "https://nuxt.com/docs/4.x/getting-started/deployment",
+    "description": "A standalone Nitro Node server in a container.",
+    "usage": "Build with docker build -t app . and run with docker run -p 3000:3000 --env-file .env app. The production entry point is .output/server/index.mjs, not npm start. Keep secret files out of the build context.",
+    "writeFiles": [
+      {
+        "path": "Dockerfile",
+        "content": "FROM node:22-alpine AS build\nWORKDIR /app\nRUN corepack enable\nCOPY . .\nRUN {{pm}} install && NITRO_PRESET=node-server {{pm}} run build\nFROM node:22-alpine\nWORKDIR /app\nCOPY --from=build /app/.output ./.output\nENV NODE_ENV=production HOST=0.0.0.0 PORT=3000\nEXPOSE 3000\nCMD [\"node\", \".output/server/index.mjs\"]\n",
+        "mode": "create"
+      },
+      {
+        "path": ".dockerignore",
+        "content": "node_modules\n.nuxt\n.output\n.git\n.env\n.env.*\n!.env.example\n",
+        "mode": "create"
+      }
+    ],
+    "excludeFrameworks": [
+      "electron",
+      "tauri",
+      "browser-extension",
+      "vscode-extension"
+    ]
+  },
+  {
+    "id": "railway-nuxt",
+    "name": "Railway",
+    "kind": "deploy",
+    "frameworks": [
+      "nuxt"
+    ],
+    "url": "https://nuxt.com/deploy/railway",
+    "description": "Nuxt SSR with the Nitro Node output.",
+    "usage": "Build with NITRO_PRESET=node-server {{pm}} run build and start node .output/server/index.mjs. Railway supplies PORT; keep server variables in the service settings.",
+    "writeFiles": [
+      {
+        "path": "railway.json",
+        "content": "{\n  \"$schema\": \"https://railway.com/railway.schema.json\",\n  \"build\": {\n    \"builder\": \"RAILPACK\",\n    \"buildCommand\": \"NITRO_PRESET=node-server {{pm}} run build\"\n  },\n  \"deploy\": {\n    \"startCommand\": \"node .output/server/index.mjs\",\n    \"restartPolicyType\": \"ON_FAILURE\"\n  }\n}\n",
+        "mode": "create"
+      }
+    ],
+    "setupTasks": [
+      "Railway: create a service from this repository and add the required environment variables."
+    ],
+    "excludeFrameworks": [
+      "electron",
+      "tauri",
+      "browser-extension",
+      "vscode-extension"
+    ]
+  },
+  {
+    "id": "sveltekit-vercel",
+    "name": "Vercel",
+    "kind": "deploy",
+    "frameworks": [
+      "sveltekit"
+    ],
+    "url": "https://svelte.dev/docs/kit/adapter-vercel",
+    "description": "SvelteKit with its official vercel deployment adapter.",
+    "usage": "The official adapter configures the generated official adapter in the generated Svelte config. Connect the repository to vercel and configure the server environment variables.",
+    "devDependencies": [
+      "@sveltejs/adapter-vercel@^7.0.3"
+    ],
+    "postInstall": [
+      "node -e 'const fs=require('\"'\"'node:fs'\"'\"');const paths=['\"'\"'svelte.config.ts'\"'\"','\"'\"'svelte.config.js'\"'\"','\"'\"'svelte.config.mjs'\"'\"','\"'\"'vite.config.ts'\"'\"','\"'\"'vite.config.js'\"'\"'];const re=/@sveltejs\\/adapter-(auto|node|vercel|netlify)/g;const p=paths.find(x=>fs.existsSync(x)&&/@sveltejs\\/adapter-(auto|node|vercel|netlify)/.test(fs.readFileSync(x,'\"'\"'utf8'\"'\"')));if(!p)throw Error('\"'\"'Review the custom adapter before changing deployment'\"'\"');fs.writeFileSync(p,fs.readFileSync(p,'\"'\"'utf8'\"'\"').replace(re,\"@sveltejs/adapter-vercel\"));'"
+    ],
+    "setupTasks": [
+      "Review adapter options for the target environment before the first deployment."
+    ],
+    "excludeFrameworks": [
+      "electron",
+      "tauri",
+      "browser-extension",
+      "vscode-extension"
+    ]
+  },
+  {
+    "id": "sveltekit-netlify",
+    "name": "Netlify",
+    "kind": "deploy",
+    "frameworks": [
+      "sveltekit"
+    ],
+    "url": "https://svelte.dev/docs/kit/adapter-netlify",
+    "description": "SvelteKit with its official netlify deployment adapter.",
+    "usage": "The official adapter configures the generated official adapter in the generated Svelte config. Connect the repository to netlify and configure the server environment variables.",
+    "devDependencies": [
+      "@sveltejs/adapter-netlify@^7.0.1"
+    ],
+    "postInstall": [
+      "node -e 'const fs=require('\"'\"'node:fs'\"'\"');const paths=['\"'\"'svelte.config.ts'\"'\"','\"'\"'svelte.config.js'\"'\"','\"'\"'svelte.config.mjs'\"'\"','\"'\"'vite.config.ts'\"'\"','\"'\"'vite.config.js'\"'\"'];const re=/@sveltejs\\/adapter-(auto|node|vercel|netlify)/g;const p=paths.find(x=>fs.existsSync(x)&&/@sveltejs\\/adapter-(auto|node|vercel|netlify)/.test(fs.readFileSync(x,'\"'\"'utf8'\"'\"')));if(!p)throw Error('\"'\"'Review the custom adapter before changing deployment'\"'\"');fs.writeFileSync(p,fs.readFileSync(p,'\"'\"'utf8'\"'\"').replace(re,\"@sveltejs/adapter-netlify\"));'"
+    ],
+    "setupTasks": [
+      "Review adapter options for the target environment before the first deployment."
+    ],
+    "excludeFrameworks": [
+      "electron",
+      "tauri",
+      "browser-extension",
+      "vscode-extension"
+    ]
+  },
+  {
+    "id": "sveltekit-node",
+    "name": "Node.js server",
+    "kind": "deploy",
+    "frameworks": [
+      "sveltekit"
+    ],
+    "url": "https://svelte.dev/docs/kit/adapter-node",
+    "description": "SvelteKit with its official node deployment adapter.",
+    "usage": "The official adapter configures the generated official adapter in the generated Svelte config. Start the built server with node build and set ORIGIN to the public URL.",
+    "devDependencies": [
+      "@sveltejs/adapter-node@^6.0.2"
+    ],
+    "postInstall": [
+      "node -e 'const fs=require('\"'\"'node:fs'\"'\"');const paths=['\"'\"'svelte.config.ts'\"'\"','\"'\"'svelte.config.js'\"'\"','\"'\"'svelte.config.mjs'\"'\"','\"'\"'vite.config.ts'\"'\"','\"'\"'vite.config.js'\"'\"'];const re=/@sveltejs\\/adapter-(auto|node|vercel|netlify)/g;const p=paths.find(x=>fs.existsSync(x)&&/@sveltejs\\/adapter-(auto|node|vercel|netlify)/.test(fs.readFileSync(x,'\"'\"'utf8'\"'\"')));if(!p)throw Error('\"'\"'Review the custom adapter before changing deployment'\"'\"');fs.writeFileSync(p,fs.readFileSync(p,'\"'\"'utf8'\"'\"').replace(re,\"@sveltejs/adapter-node\"));'"
+    ],
+    "setupTasks": [
+      "Review adapter options for the target environment before the first deployment."
+    ],
+    "excludeFrameworks": [
+      "electron",
+      "tauri",
+      "browser-extension",
+      "vscode-extension"
+    ]
+  },
+  {
+    "id": "prettier",
+    "name": "Prettier",
+    "kind": "quality",
+    "frameworks": [
+      "react",
+      "vue",
+      "svelte",
+      "solid",
+      "vanilla",
+      "nextjs",
+      "nuxt",
+      "sveltekit",
+      "astro",
+      "angular",
+      "nodejs",
+      "bun",
+      "expo",
+      "react-native",
+      "electron",
+      "tauri",
+      "npm-package",
+      "vscode-extension",
+      "browser-extension"
+    ],
+    "url": "https://prettier.io",
+    "description": "Consistent formatting with the official formatter.",
+    "usage": "Use {{pmx}} prettier --write . and --check . in CI. Keep framework-specific plugins when already configured; Astro and Svelte need their respective Prettier plugins.",
+    "devDependencies": [
+      "prettier@^3.10.1"
+    ],
+    "writeFiles": [
+      {
+        "path": ".prettierignore",
+        "content": "node_modules\ndist\nbuild\n.next\n.nuxt\n.output\ncoverage\n",
+        "mode": "create"
+      }
+    ]
+  },
+  {
+    "id": "valibot",
+    "name": "Valibot",
+    "kind": "forms",
+    "frameworks": [
+      "react",
+      "vue",
+      "svelte",
+      "solid",
+      "vanilla",
+      "nextjs",
+      "nuxt",
+      "sveltekit",
+      "astro",
+      "angular",
+      "nodejs",
+      "bun",
+      "expo",
+      "react-native"
+    ],
+    "url": "https://valibot.dev",
+    "description": "Small, typed validation schemas for client and server boundaries.",
+    "usage": "Build schemas with valibot and use safeParse for untrusted input. Validate again on the server; browser validation is only feedback.",
+    "dependencies": [
+      "valibot@^1.5.0"
+    ]
+  },
+  {
+    "id": "vee-validate",
+    "name": "VeeValidate",
+    "kind": "forms",
+    "frameworks": [
+      "vue",
+      "nuxt"
+    ],
+    "url": "https://vee-validate.logaretm.com",
+    "description": "Vue form state, validation and accessible error messages.",
+    "usage": "Use useForm/useField in script setup components. Connect field errors to their inputs and retain server-side validation.",
+    "dependencies": [
+      "vee-validate@^4.15.1"
+    ]
+  },
+  {
+    "id": "pinia-vue",
+    "name": "Pinia",
+    "kind": "state",
+    "frameworks": [
+      "vue"
+    ],
+    "url": "https://pinia.vuejs.org",
+    "description": "Shared Vue state with typed setup stores.",
+    "usage": "Register createPinia() on the Vue application before using setup stores. In Nuxt prefer the Pinia Nuxt module instead of a singleton shared across requests.",
+    "dependencies": [
+      "pinia@^4.1.0"
+    ],
+    "setupTasks": [
+      "Register Pinia in the application entry point, or install @pinia/nuxt for Nuxt projects."
+    ],
+    "excludeFrameworks": [
+      "nuxt"
+    ]
+  },
+  {
+    "id": "vue-i18n",
+    "name": "Vue I18n",
+    "kind": "i18n",
+    "frameworks": [
+      "vue"
+    ],
+    "url": "https://vue-i18n.intlify.dev",
+    "description": "Localized Vue messages and formatting.",
+    "usage": "Register createI18n({ legacy: false, locale, messages }) and use useI18n in script setup. In Nuxt prefer the Nuxt i18n module for routing and SSR.",
+    "dependencies": [
+      "vue-i18n@^11.4.20"
+    ],
+    "setupTasks": [
+      "Register Vue I18n and define the supported locales and messages."
+    ],
+    "excludeFrameworks": [
+      "nuxt"
+    ]
+  },
+  {
+    "id": "nuxt-i18n",
+    "name": "Nuxt i18n",
+    "kind": "i18n",
+    "frameworks": [
+      "nuxt"
+    ],
+    "url": "https://i18n.nuxtjs.org",
+    "description": "Locale-aware routes, messages and SSR for Nuxt.",
+    "usage": "The @nuxtjs/i18n module is installed in nuxt.config.ts. Define locales, defaultLocale and translation files before translating routes; avoid global per-user locale state.",
+    "dependencies": [
+      "@nuxtjs/i18n@^10.6.0"
+    ],
+    "postInstall": [
+      "npx nuxi@latest module add @nuxtjs/i18n"
+    ],
+    "setupTasks": [
+      "Nuxt i18n: configure locales, defaultLocale and language files."
+    ]
+  },
+  {
+    "id": "nuxt-auth-utils",
+    "name": "Nuxt Auth Utils",
+    "kind": "auth",
+    "frameworks": [
+      "nuxt"
+    ],
+    "url": "https://github.com/nuxt/nuxt-auth-utils",
+    "description": "Sealed-cookie sessions and OAuth helpers for Nuxt.",
+    "usage": "Use setUserSession/getUserSession/requireUserSession on the server. Check resource ownership separately from login. The module needs a random NUXT_SESSION_PASSWORD of at least 32 characters at runtime; never expose it to the client.",
+    "dependencies": [
+      "nuxt-auth-utils@^0.6.2"
+    ],
+    "postInstall": [
+      "npx nuxi@latest module add auth-utils"
+    ],
+    "env": {
+      "NUXT_SESSION_PASSWORD": ""
+    },
+    "setupTasks": [
+      "Generate NUXT_SESSION_PASSWORD with a cryptographic random generator and configure the OAuth provider you use."
+    ]
+  },
+  {
+    "id": "supabase-js",
+    "name": "Supabase",
+    "kind": "auth",
+    "frameworks": [
+      "react",
+      "vue",
+      "svelte",
+      "solid",
+      "vanilla",
+      "nextjs",
+      "nuxt",
+      "sveltekit",
+      "astro",
+      "angular",
+      "expo",
+      "react-native"
+    ],
+    "url": "https://supabase.com/docs/reference/javascript",
+    "description": "Auth and data clients for web and mobile JavaScript.",
+    "usage": "Create separate browser and server clients. Only the project URL and publishable/anon key may reach the browser; service-role keys stay on the server. Enforce database RLS and server authorization.",
+    "dependencies": [
+      "@supabase/supabase-js@^2.119.0"
+    ],
+    "env": {
+      "SUPABASE_URL": "",
+      "SUPABASE_ANON_KEY": ""
+    },
+    "setupTasks": [
+      "Supabase: configure the keys in server environment variables and wire the feature before using the SDK."
+    ]
+  },
+  {
+    "id": "openai-sdk",
+    "name": "OpenAI",
+    "kind": "ai",
+    "frameworks": [
+      "nodejs",
+      "bun",
+      "nuxt",
+      "sveltekit",
+      "nextjs"
+    ],
+    "url": "https://github.com/openai/openai-node",
+    "description": "Official OpenAI SDK for server-side model calls.",
+    "usage": "Create the SDK client only inside server code when OPENAI_API_KEY is present. Bound tokens, timeouts and spend; validate model output before taking actions.",
+    "dependencies": [
+      "openai@^7.57.0"
+    ],
+    "env": {
+      "OPENAI_API_KEY": ""
+    },
+    "setupTasks": [
+      "OpenAI: configure the keys in server environment variables and wire the feature before using the SDK."
+    ]
+  },
+  {
+    "id": "stripe-server",
+    "name": "Stripe",
+    "kind": "payments",
+    "frameworks": [
+      "nodejs",
+      "bun",
+      "nuxt",
+      "sveltekit"
+    ],
+    "url": "https://docs.stripe.com/sdks/node",
+    "description": "Server-side Stripe payments outside Next.js.",
+    "usage": "Create a Stripe client on demand on the server. Never send STRIPE_SECRET_KEY to the browser. Verify webhook signatures and make updates idempotent; do not infer payment state from a redirect.",
+    "dependencies": [
+      "stripe@^23.1.0"
+    ],
+    "env": {
+      "STRIPE_SECRET_KEY": "",
+      "STRIPE_WEBHOOK_SECRET": ""
+    },
+    "setupTasks": [
+      "Stripe: configure the keys in server environment variables and wire the feature before using the SDK."
+    ]
+  },
+  {
+    "id": "drizzle-nuxt",
+    "name": "Drizzle + Postgres",
+    "kind": "database",
+    "frameworks": [
+      "nuxt"
+    ],
+    "url": "https://orm.drizzle.team/docs/get-started/postgresql-new",
+    "description": "Typed Postgres queries and SQL migrations for nuxt.",
+    "usage": "Use getDb() from server/utils/database.ts only in server code. The connection is created on first use, so builds work without DATABASE_URL. Define schemas and reviewed migrations before deploying; do not run schema changes on request handlers.",
+    "dependencies": [
+      "drizzle-orm@^0.45.4",
+      "postgres@^4.1.1"
+    ],
+    "devDependencies": [
+      "drizzle-kit@^0.31.11"
+    ],
+    "env": {
+      "DATABASE_URL": ""
+    },
+    "writeFiles": [
+      {
+        "path": "server/utils/database.ts",
+        "content": "import { drizzle } from \"drizzle-orm/postgres-js\";\nimport postgres from \"postgres\";\n\nlet db: ReturnType<typeof drizzle> | undefined;\nexport function getDb() {\n  if (!db) {\n    const url = process.env.DATABASE_URL;\n    if (!url) throw new Error(\"DATABASE_URL is required for database access\");\n    db = drizzle(postgres(url, { prepare: false }));\n  }\n  return db;\n}\n",
+        "mode": "create"
+      }
+    ],
+    "setupTasks": [
+      "Drizzle: define the schema and migration configuration, set DATABASE_URL, and review/run migrations before using the database."
+    ]
+  },
+  {
+    "id": "drizzle-sveltekit",
+    "name": "Drizzle + Postgres",
+    "kind": "database",
+    "frameworks": [
+      "sveltekit"
+    ],
+    "url": "https://orm.drizzle.team/docs/get-started/postgresql-new",
+    "description": "Typed Postgres queries and SQL migrations for sveltekit.",
+    "usage": "Use getDb() from src/lib/server/database.ts only in server code. The connection is created on first use, so builds work without DATABASE_URL. Define schemas and reviewed migrations before deploying; do not run schema changes on request handlers.",
+    "dependencies": [
+      "drizzle-orm@^0.45.4",
+      "postgres@^4.1.1"
+    ],
+    "devDependencies": [
+      "drizzle-kit@^0.31.11"
+    ],
+    "env": {
+      "DATABASE_URL": ""
+    },
+    "writeFiles": [
+      {
+        "path": "src/lib/server/database.ts",
+        "content": "import { drizzle } from \"drizzle-orm/postgres-js\";\nimport postgres from \"postgres\";\n\nlet db: ReturnType<typeof drizzle> | undefined;\nexport function getDb() {\n  if (!db) {\n    const url = process.env.DATABASE_URL;\n    if (!url) throw new Error(\"DATABASE_URL is required for database access\");\n    db = drizzle(postgres(url, { prepare: false }));\n  }\n  return db;\n}\n",
+        "mode": "create"
+      }
+    ],
+    "setupTasks": [
+      "Drizzle: define the schema and migration configuration, set DATABASE_URL, and review/run migrations before using the database."
+    ]
+  },
+  {
+    "id": "drizzle-node",
+    "name": "Drizzle + Postgres",
+    "kind": "database",
+    "frameworks": [
+      "nodejs"
+    ],
+    "url": "https://orm.drizzle.team/docs/get-started/postgresql-new",
+    "description": "Typed Postgres queries and SQL migrations for nodejs.",
+    "usage": "Use getDb() from src/lib/database.ts only in server code. The connection is created on first use, so builds work without DATABASE_URL. Define schemas and reviewed migrations before deploying; do not run schema changes on request handlers.",
+    "dependencies": [
+      "drizzle-orm@^0.45.4",
+      "postgres@^4.1.1"
+    ],
+    "devDependencies": [
+      "drizzle-kit@^0.31.11"
+    ],
+    "env": {
+      "DATABASE_URL": ""
+    },
+    "writeFiles": [
+      {
+        "path": "src/lib/database.ts",
+        "content": "import { drizzle } from \"drizzle-orm/postgres-js\";\nimport postgres from \"postgres\";\n\nlet db: ReturnType<typeof drizzle> | undefined;\nexport function getDb() {\n  if (!db) {\n    const url = process.env.DATABASE_URL;\n    if (!url) throw new Error(\"DATABASE_URL is required for database access\");\n    db = drizzle(postgres(url, { prepare: false }));\n  }\n  return db;\n}\n",
+        "mode": "create"
+      }
+    ],
+    "setupTasks": [
+      "Drizzle: define the schema and migration configuration, set DATABASE_URL, and review/run migrations before using the database."
+    ]
+  },
+  {
+    "id": "drizzle-bun",
+    "name": "Drizzle + Postgres",
+    "kind": "database",
+    "frameworks": [
+      "bun"
+    ],
+    "url": "https://orm.drizzle.team/docs/get-started/postgresql-new",
+    "description": "Typed Postgres queries and SQL migrations for bun.",
+    "usage": "Use getDb() from src/lib/database.ts only in server code. The connection is created on first use, so builds work without DATABASE_URL. Define schemas and reviewed migrations before deploying; do not run schema changes on request handlers.",
+    "dependencies": [
+      "drizzle-orm@^0.45.4",
+      "postgres@^4.1.1"
+    ],
+    "devDependencies": [
+      "drizzle-kit@^0.31.11"
+    ],
+    "env": {
+      "DATABASE_URL": ""
+    },
+    "writeFiles": [
+      {
+        "path": "src/lib/database.ts",
+        "content": "import { drizzle } from \"drizzle-orm/postgres-js\";\nimport postgres from \"postgres\";\n\nlet db: ReturnType<typeof drizzle> | undefined;\nexport function getDb() {\n  if (!db) {\n    const url = process.env.DATABASE_URL;\n    if (!url) throw new Error(\"DATABASE_URL is required for database access\");\n    db = drizzle(postgres(url, { prepare: false }));\n  }\n  return db;\n}\n",
+        "mode": "create"
+      }
+    ],
+    "setupTasks": [
+      "Drizzle: define the schema and migration configuration, set DATABASE_URL, and review/run migrations before using the database."
+    ]
+  },
+  {
+    "id": "resend-nuxt",
+    "name": "Resend",
+    "kind": "email",
+    "frameworks": [
+      "nuxt"
+    ],
+    "url": "https://resend.com/docs",
+    "description": "Transactional email from nuxt server code.",
+    "usage": "Call getEmail() from server/utils/email.ts only on the server. Verify the sending domain and handle failures; never expose the API key to the client.",
+    "dependencies": [
+      "resend@^6.38.1"
+    ],
+    "env": {
+      "RESEND_API_KEY": ""
+    },
+    "writeFiles": [
+      {
+        "path": "server/utils/email.ts",
+        "content": "import { Resend } from \"resend\";\n\nexport function getEmail() {\n  const key = process.env.RESEND_API_KEY;\n  if (!key) throw new Error(\"RESEND_API_KEY is required to send email\");\n  return new Resend(key);\n}\n",
+        "mode": "create"
+      }
+    ],
+    "setupTasks": [
+      "Resend: verify a sending domain and set RESEND_API_KEY."
+    ]
+  },
+  {
+    "id": "resend-sveltekit",
+    "name": "Resend",
+    "kind": "email",
+    "frameworks": [
+      "sveltekit"
+    ],
+    "url": "https://resend.com/docs",
+    "description": "Transactional email from sveltekit server code.",
+    "usage": "Call getEmail() from src/lib/server/email.ts only on the server. Verify the sending domain and handle failures; never expose the API key to the client.",
+    "dependencies": [
+      "resend@^6.38.1"
+    ],
+    "env": {
+      "RESEND_API_KEY": ""
+    },
+    "writeFiles": [
+      {
+        "path": "src/lib/server/email.ts",
+        "content": "import { Resend } from \"resend\";\n\nexport function getEmail() {\n  const key = process.env.RESEND_API_KEY;\n  if (!key) throw new Error(\"RESEND_API_KEY is required to send email\");\n  return new Resend(key);\n}\n",
+        "mode": "create"
+      }
+    ],
+    "setupTasks": [
+      "Resend: verify a sending domain and set RESEND_API_KEY."
+    ]
+  },
+  {
+    "id": "sentry-nuxt",
+    "name": "Sentry",
+    "kind": "observability",
+    "frameworks": [
+      "nuxt"
+    ],
+    "url": "https://docs.sentry.io/platforms/javascript/",
+    "description": "Official nuxt error and performance SDK.",
+    "usage": "Initialize the official SDK separately for browser/server entry points as appropriate. Leave DSN unset until configured, keep sendDefaultPii false and never upload secrets in source maps.",
+    "dependencies": [
+      "@sentry/nuxt@^11.12.0"
+    ],
+    "env": {
+      "SENTRY_DSN": ""
+    },
+    "setupTasks": [
+      "Sentry: follow the nuxt SDK guide to configure framework hooks and the DSN. No network reporting is enabled just by installing the SDK."
+    ],
+    "skills": [
+      "getsentry/sentry-for-ai@sentry-fix-issues"
+    ]
+  },
+  {
+    "id": "sentry-sveltekit",
+    "name": "Sentry",
+    "kind": "observability",
+    "frameworks": [
+      "sveltekit"
+    ],
+    "url": "https://docs.sentry.io/platforms/javascript/",
+    "description": "Official sveltekit error and performance SDK.",
+    "usage": "Initialize the official SDK separately for browser/server entry points as appropriate. Leave DSN unset until configured, keep sendDefaultPii false and never upload secrets in source maps.",
+    "dependencies": [
+      "@sentry/sveltekit@^11.12.0"
+    ],
+    "env": {
+      "SENTRY_DSN": ""
+    },
+    "setupTasks": [
+      "Sentry: follow the sveltekit SDK guide to configure framework hooks and the DSN. No network reporting is enabled just by installing the SDK."
+    ],
+    "skills": [
+      "getsentry/sentry-for-ai@sentry-fix-issues"
+    ]
+  },
+  {
+    "id": "sentry-vue",
+    "name": "Sentry",
+    "kind": "observability",
+    "frameworks": [
+      "vue"
+    ],
+    "url": "https://docs.sentry.io/platforms/javascript/",
+    "description": "Official vue error and performance SDK.",
+    "usage": "Initialize the official SDK separately for browser/server entry points as appropriate. Leave DSN unset until configured, keep sendDefaultPii false and never upload secrets in source maps.",
+    "dependencies": [
+      "@sentry/vue@^11.12.0"
+    ],
+    "env": {
+      "SENTRY_DSN": ""
+    },
+    "setupTasks": [
+      "Sentry: follow the vue SDK guide to configure framework hooks and the DSN. No network reporting is enabled just by installing the SDK."
+    ],
+    "skills": [
+      "getsentry/sentry-for-ai@sentry-fix-issues"
+    ],
+    "excludeFrameworks": [
+      "nuxt"
+    ]
+  },
+  {
+    "id": "vitest-vue",
+    "name": "Vitest + Vue Test Utils",
+    "kind": "testing",
+    "frameworks": [
+      "vue",
+      "nuxt"
+    ],
+    "url": "https://test-utils.vuejs.org",
+    "description": "Vue component tests with the official Vue Test Utils.",
+    "usage": "Use mount from @vue/test-utils with Vitest and a DOM environment. Nuxt runtime composables need @nuxt/test-utils; keep plain unit tests separate from Nuxt runtime tests.",
+    "devDependencies": [
+      "vitest@^5.1.0",
+      "@vue/test-utils@^2.5.1",
+      "@vitejs/plugin-vue@^6.0.11",
+      "jsdom@^31.0.1"
+    ],
+    "setupTasks": [
+      "Configure Vitest with @vitejs/plugin-vue and jsdom; add @nuxt/test-utils for tests that require the Nuxt runtime."
+    ]
+  },
+  {
+    "id": "vitest-svelte",
+    "name": "Vitest",
+    "kind": "testing",
+    "frameworks": [
+      "svelte",
+      "sveltekit"
+    ],
+    "url": "https://svelte.dev/docs/svelte/testing",
+    "description": "Svelte unit tests and browser-aware test configuration.",
+    "usage": "Use Vitest for pure logic and the official Svelte/Vite test configuration for components. Do not import server-only modules into browser tests.",
+    "devDependencies": [
+      "vitest@^5.1.0"
+    ],
+    "setupTasks": [
+      "Configure the Svelte/Vite test plugin and add a test script."
+    ]
+  },
+  {
+    "id": "sqlalchemy",
+    "name": "SQLAlchemy",
+    "kind": "database",
+    "frameworks": [
+      "python",
+      "django"
+    ],
+    "url": "https://www.sqlalchemy.org/",
+    "description": "SQLAlchemy for Python projects; no API keys needed to install.",
+    "usage": "Create engines lazily and use one session per request/task. Use parameterized queries and reviewed migrations, never connect during module import.",
+    "env": {
+      "DATABASE_URL": ""
+    },
+    "dependencies": [
+      "sqlalchemy==2.1.8"
+    ]
+  },
+  {
+    "id": "pyjwt",
+    "name": "PyJWT",
+    "kind": "auth",
+    "frameworks": [
+      "python",
+      "django"
+    ],
+    "url": "https://pyjwt.readthedocs.io/",
+    "description": "PyJWT for Python projects; no API keys needed to install.",
+    "usage": "Verify JWT signatures with an explicit algorithm allowlist, issuer, audience and expiry. JWT parsing is not authorization; use the existing authentication framework where possible.",
+    "env": {},
+    "dependencies": [
+      "PyJWT==2.15.1"
+    ]
+  },
+  {
+    "id": "stripe-python",
+    "name": "Stripe",
+    "kind": "payments",
+    "frameworks": [
+      "python",
+      "django"
+    ],
+    "url": "https://docs.stripe.com/sdks/python",
+    "description": "Stripe for Python projects; no API keys needed to install.",
+    "usage": "Create the official Stripe client on demand. Verify webhook signatures and apply events once; keys and billing decisions stay on the server.",
+    "env": {
+      "STRIPE_SECRET_KEY": "",
+      "STRIPE_WEBHOOK_SECRET": ""
+    },
+    "dependencies": [
+      "stripe==17.0.0"
+    ]
+  },
+  {
+    "id": "resend-python",
+    "name": "Resend",
+    "kind": "email",
+    "frameworks": [
+      "python",
+      "django"
+    ],
+    "url": "https://resend.com/docs/send-with-python",
+    "description": "Resend for Python projects; no API keys needed to install.",
+    "usage": "Set the API key only when sending server-side email. Verify sender domains and avoid logging recipients or message contents unnecessarily.",
+    "env": {
+      "RESEND_API_KEY": ""
+    },
+    "dependencies": [
+      "resend==2.53.2"
+    ]
+  },
+  {
+    "id": "anthropic-python",
+    "name": "Anthropic",
+    "kind": "ai",
+    "frameworks": [
+      "python",
+      "django"
+    ],
+    "url": "https://github.com/anthropics/anthropic-sdk-python",
+    "description": "Anthropic for Python projects; no API keys needed to install.",
+    "usage": "Create the SDK client on demand after checking ANTHROPIC_API_KEY; set timeouts and token/cost limits, and validate outputs.",
+    "env": {
+      "ANTHROPIC_API_KEY": ""
+    },
+    "dependencies": [
+      "anthropic==2.8.0"
+    ]
+  },
+  {
+    "id": "openai-python",
+    "name": "OpenAI",
+    "kind": "ai",
+    "frameworks": [
+      "python",
+      "django"
+    ],
+    "url": "https://github.com/openai/openai-python",
+    "description": "OpenAI for Python projects; no API keys needed to install.",
+    "usage": "Create the SDK client on demand after checking OPENAI_API_KEY; set timeouts and token/cost limits, and validate outputs.",
+    "env": {
+      "OPENAI_API_KEY": ""
+    },
+    "dependencies": [
+      "openai==3.51.0"
+    ]
+  },
+  {
+    "id": "pytest",
+    "name": "pytest",
+    "kind": "testing",
+    "frameworks": [
+      "python",
+      "django"
+    ],
+    "url": "https://docs.pytest.org/",
+    "description": "pytest for Python projects; no API keys needed to install.",
+    "usage": "Run pytest in the project virtual environment; use fixtures and test failure/permission cases.",
+    "env": {},
+    "devDependencies": [
+      "pytest==9.2.0"
+    ]
+  },
+  {
+    "id": "mypy",
+    "name": "mypy",
+    "kind": "quality",
+    "frameworks": [
+      "python",
+      "django"
+    ],
+    "url": "https://mypy.readthedocs.io/",
+    "description": "mypy for Python projects; no API keys needed to install.",
+    "usage": "Run mypy inside the virtual environment and configure third-party stubs explicitly; do not hide all errors with ignore_missing_imports.",
+    "env": {},
+    "devDependencies": [
+      "mypy==2.4.1"
+    ]
+  },
+  {
+    "id": "sentry-django",
+    "name": "Sentry",
+    "kind": "observability",
+    "frameworks": [
+      "django"
+    ],
+    "url": "https://docs.sentry.io/platforms/python/integrations/django/",
+    "description": "Django error reporting, disabled until a DSN is configured.",
+    "usage": "Initialization is in config/settings.py. Keep send_default_pii=False and redact sensitive data before reporting.",
+    "dependencies": [
+      "sentry-sdk==2.75.0"
+    ],
+    "env": {
+      "SENTRY_DSN": ""
+    },
+    "writeFiles": [
+      {
+        "path": "config/settings.py",
+        "content": "\nimport os as _sentry_os\nimport sentry_sdk\nsentry_sdk.init(dsn=_sentry_os.environ.get(\"SENTRY_DSN\"), send_default_pii=False)\n",
+        "mode": "append"
+      }
+    ],
+    "setupTasks": [
+      "Sentry: create a Django project and configure SENTRY_DSN."
+    ]
+  },
+  {
+    "id": "devise",
+    "name": "Devise",
+    "kind": "auth",
+    "frameworks": [
+      "rails"
+    ],
+    "url": "https://github.com/heartcombo/devise",
+    "description": "Devise for Rails applications.",
+    "usage": "Generate Devise configuration/models and migrations before enabling login. Review controllers, mailers and authorization separately.",
+    "env": {},
+    "dependencies": [
+      "devise"
+    ],
+    "setupTasks": [
+      "Devise: complete its Rails configuration before using the feature."
+    ]
+  },
+  {
+    "id": "rails-postgres",
+    "name": "Postgres",
+    "kind": "database",
+    "frameworks": [
+      "rails"
+    ],
+    "url": "https://github.com/ged/ruby-pg",
+    "description": "Postgres for Rails applications.",
+    "usage": "Configure the Rails PostgreSQL adapter through DATABASE_URL; use migrations and transaction boundaries.",
+    "env": {
+      "DATABASE_URL": ""
+    },
+    "dependencies": [
+      "pg"
+    ],
+    "setupTasks": [
+      "Postgres: complete its Rails configuration before using the feature."
+    ]
+  },
+  {
+    "id": "sentry-rails",
+    "name": "Sentry",
+    "kind": "observability",
+    "frameworks": [
+      "rails"
+    ],
+    "url": "https://docs.sentry.io/platforms/ruby/guides/rails/",
+    "description": "Sentry for Rails applications.",
+    "usage": "Configure Sentry in an initializer; leave DSN unset until ready and keep sensitive data out of events.",
+    "env": {
+      "SENTRY_DSN": ""
+    },
+    "dependencies": [
+      "sentry-rails"
+    ],
+    "setupTasks": [
+      "Sentry: complete its Rails configuration before using the feature."
+    ]
+  },
+  {
+    "id": "stripe-ruby",
+    "name": "Stripe",
+    "kind": "payments",
+    "frameworks": [
+      "rails"
+    ],
+    "url": "https://docs.stripe.com/sdks/ruby",
+    "description": "Stripe for Rails applications.",
+    "usage": "Use the official Stripe Ruby SDK on the server. Verify webhook signatures and process events idempotently.",
+    "env": {
+      "STRIPE_SECRET_KEY": "",
+      "STRIPE_WEBHOOK_SECRET": ""
+    },
+    "dependencies": [
+      "stripe"
+    ],
+    "setupTasks": [
+      "Stripe: complete its Rails configuration before using the feature."
+    ]
+  },
+  {
+    "id": "resend-ruby",
+    "name": "Resend",
+    "kind": "email",
+    "frameworks": [
+      "rails"
+    ],
+    "url": "https://resend.com/docs/send-with-ruby",
+    "description": "Resend for Rails applications.",
+    "usage": "Configure the sending domain and API key before invoking Resend. Keep API keys in Rails credentials or server environment variables.",
+    "env": {
+      "RESEND_API_KEY": ""
+    },
+    "dependencies": [
+      "resend"
+    ],
+    "setupTasks": [
+      "Resend: complete its Rails configuration before using the feature."
+    ]
+  },
+  {
+    "id": "openai-ruby",
+    "name": "OpenAI",
+    "kind": "ai",
+    "frameworks": [
+      "rails"
+    ],
+    "url": "https://github.com/openai/openai-ruby",
+    "description": "OpenAI for Rails applications.",
+    "usage": "Instantiate the official OpenAI client only when a feature needs it; bound tokens, timeouts and tool permissions.",
+    "env": {
+      "OPENAI_API_KEY": ""
+    },
+    "dependencies": [
+      "openai"
+    ],
+    "setupTasks": [
+      "OpenAI: complete its Rails configuration before using the feature."
+    ]
+  },
+  {
+    "id": "rails-i18n",
+    "name": "Rails I18n",
+    "kind": "i18n",
+    "frameworks": [
+      "rails"
+    ],
+    "url": "https://github.com/svenfuchs/rails-i18n",
+    "description": "Rails I18n for Rails applications.",
+    "usage": "Put messages in config/locales and declare allowed locales. Scope locale changes per request; never mutate global locale for all users.",
+    "env": {},
+    "dependencies": [
+      "rails-i18n"
+    ],
+    "setupTasks": [
+      "Rails I18n: complete its Rails configuration before using the feature."
+    ]
+  },
+  {
+    "id": "factory-bot-rails",
+    "name": "Factory Bot",
+    "kind": "testing",
+    "frameworks": [
+      "rails"
+    ],
+    "url": "https://github.com/thoughtbot/factory_bot_rails",
+    "description": "Factory Bot for Rails applications.",
+    "usage": "Define small factories for persistence tests; prefer build_stubbed when a database row is unnecessary.",
+    "env": {},
+    "devDependencies": [
+      "factory_bot_rails"
+    ],
+    "setupTasks": [
+      "Factory Bot: complete its Rails configuration before using the feature."
+    ]
+  },
+  {
+    "id": "standard-ruby",
+    "name": "Standard Ruby",
+    "kind": "quality",
+    "frameworks": [
+      "rails"
+    ],
+    "url": "https://github.com/standardrb/standard",
+    "description": "Standard Ruby for Rails applications.",
+    "usage": "Run bundle exec standardrb and fix reported issues; keep the formatter in the development/test group.",
+    "env": {},
+    "devDependencies": [
+      "standard"
+    ],
+    "setupTasks": [
+      "Standard Ruby: complete its Rails configuration before using the feature."
+    ]
+  },
+  {
+    "id": "sentry-laravel",
+    "name": "Sentry",
+    "kind": "observability",
+    "frameworks": [
+      "laravel"
+    ],
+    "url": "https://docs.sentry.io/platforms/php/guides/laravel/",
+    "description": "Sentry with Laravel integration.",
+    "usage": "Configure the official Laravel integration and DSN; redact request data and credentials.",
+    "dependencies": [
+      "sentry/sentry-laravel:^4.30.0"
+    ],
+    "env": {
+      "SENTRY_LARAVEL_DSN": ""
+    },
+    "setupTasks": [
+      "Sentry: configure the Laravel service provider/transport before use."
+    ]
+  },
+  {
+    "id": "stripe-php",
+    "name": "Stripe",
+    "kind": "payments",
+    "frameworks": [
+      "laravel"
+    ],
+    "url": "https://docs.stripe.com/sdks/php",
+    "description": "Stripe with Laravel integration.",
+    "usage": "Use the official Stripe SDK on the server, verify webhook signatures and enforce idempotency.",
+    "dependencies": [
+      "stripe/stripe-php:^23.0.0"
+    ],
+    "env": {
+      "STRIPE_SECRET_KEY": "",
+      "STRIPE_WEBHOOK_SECRET": ""
+    },
+    "setupTasks": [
+      "Stripe: configure the Laravel service provider/transport before use."
+    ]
+  },
+  {
+    "id": "resend-laravel",
+    "name": "Resend",
+    "kind": "email",
+    "frameworks": [
+      "laravel"
+    ],
+    "url": "https://resend.com/docs/send-with-laravel",
+    "description": "Resend with Laravel integration.",
+    "usage": "Configure the Resend mail transport and verified sender; keep credentials in server environment variables.",
+    "dependencies": [
+      "resend/resend-laravel:^1.7.0"
+    ],
+    "env": {
+      "RESEND_API_KEY": ""
+    },
+    "setupTasks": [
+      "Resend: configure the Laravel service provider/transport before use."
+    ]
+  },
+  {
+    "id": "laravel-eloquent",
+    "name": "Eloquent",
+    "kind": "database",
+    "frameworks": [
+      "laravel"
+    ],
+    "url": "https://laravel.com/docs/eloquent",
+    "description": "Laravel built-in ORM, migrations and query builder.",
+    "usage": "Use Eloquent models and database migrations, validate requests and authorize every resource. Set DB_CONNECTION/DB_* in the server environment. Eloquent is already included in Laravel; no extra package is needed."
+  },
+  {
+    "id": "laravel-localization",
+    "name": "Laravel localization",
+    "kind": "i18n",
+    "frameworks": [
+      "laravel"
+    ],
+    "url": "https://laravel.com/docs/localization",
+    "description": "Laravel built-in translation files and locale handling.",
+    "usage": "Publish language files with php artisan lang:publish, use lang/ translation files and scope locales per request. No extra package is needed."
+  },
+  {
+    "id": "sqlx-rust",
+    "name": "SQLx",
+    "kind": "database",
+    "frameworks": [
+      "rust"
+    ],
+    "url": "https://github.com/launchbadge/sqlx",
+    "description": "SQLx for Rust projects.",
+    "usage": "Use runtime queries until the database/schema is available; use SQLx offline metadata for checked macros in CI. Create pools on demand and never connect at module import.",
+    "postInstall": [
+      "cargo add sqlx@0.9.0 --features runtime-tokio,sqlite,tls-rustls"
+    ]
+  },
+  {
+    "id": "jwt-rust",
+    "name": "jsonwebtoken",
+    "kind": "auth",
+    "frameworks": [
+      "rust"
+    ],
+    "url": "https://github.com/Keats/jsonwebtoken",
+    "description": "jsonwebtoken for Rust projects.",
+    "usage": "Require explicit algorithms, issuer, audience and expiry; reject invalid tokens and authorize each resource after verification.",
+    "postInstall": [
+      "cargo add jsonwebtoken@12.0.0 --features rust_crypto"
+    ]
+  },
+  {
+    "id": "sentry-rust",
+    "name": "Sentry",
+    "kind": "observability",
+    "frameworks": [
+      "rust"
+    ],
+    "url": "https://docs.sentry.io/platforms/rust/",
+    "description": "Sentry for Rust projects.",
+    "usage": "Initialize Sentry in main only when a DSN is available; retain the guard and redact sensitive data.",
+    "postInstall": [
+      "cargo add sentry@0.49.5"
+    ]
+  },
+  {
+    "id": "lettre",
+    "name": "Lettre",
+    "kind": "email",
+    "frameworks": [
+      "rust"
+    ],
+    "url": "https://lettre.rs",
+    "description": "Lettre for Rust projects.",
+    "usage": "Use a configured SMTP transport with TLS, explicit timeouts and server-side credentials; create it only when sending mail.",
+    "postInstall": [
+      "cargo add lettre@0.11.23"
+    ]
+  },
+  {
+    "id": "proptest",
+    "name": "Proptest",
+    "kind": "testing",
+    "frameworks": [
+      "rust"
+    ],
+    "url": "https://proptest-rs.github.io/proptest/",
+    "description": "Proptest for Rust projects.",
+    "usage": "Add property tests for invariants and parser/input edge cases; persist minimized regression cases.",
+    "postInstall": [
+      "cargo add --dev proptest@1.12.0"
+    ]
+  },
+  {
+    "id": "rustfmt-clippy",
+    "name": "rustfmt + Clippy",
+    "kind": "quality",
+    "frameworks": [
+      "rust"
+    ],
+    "url": "https://doc.rust-lang.org/clippy/",
+    "description": "Formatting and lint checks from the Rust toolchain.",
+    "usage": "Install rustfmt and clippy through your Rust toolchain, then run cargo fmt --check and cargo clippy --all-targets -- -D warnings. Review lints rather than suppressing them globally."
+  },
+  {
+    "id": "efcore-sqlite",
+    "name": "Entity Framework Core + SQLite",
+    "kind": "database",
+    "frameworks": [
+      "dotnet"
+    ],
+    "url": "https://learn.microsoft.com/ef/core/",
+    "description": "Entity Framework Core + SQLite for ASP.NET Core.",
+    "usage": "Register a scoped DbContext with SQLite and migrations; do not connect or migrate at application build time.",
+    "postInstall": [
+      "dotnet add src/Api package Microsoft.EntityFrameworkCore.Sqlite --version 10.0.15"
+    ],
+    "env": {
+      "ConnectionStrings__Database": "Data Source=app.db"
+    },
+    "setupTasks": [
+      "Entity Framework Core + SQLite: wire the service in src/Api/Program.cs before exposing the feature."
+    ]
+  },
+  {
+    "id": "dapper",
+    "name": "Dapper",
+    "kind": "database",
+    "frameworks": [
+      "dotnet"
+    ],
+    "url": "https://github.com/DapperLib/Dapper",
+    "description": "Dapper for ASP.NET Core.",
+    "usage": "Use parameterized SQL and scoped connections. Open connections when handling a request, never during static initialization.",
+    "postInstall": [
+      "dotnet add src/Api package Dapper --version 2.1.89"
+    ],
+    "env": {},
+    "setupTasks": [
+      "Dapper: wire the service in src/Api/Program.cs before exposing the feature."
+    ]
+  },
+  {
+    "id": "jwt-dotnet",
+    "name": "JWT bearer authentication",
+    "kind": "auth",
+    "frameworks": [
+      "dotnet"
+    ],
+    "url": "https://learn.microsoft.com/aspnet/core/security/authentication/",
+    "description": "JWT bearer authentication for ASP.NET Core.",
+    "usage": "Configure trusted issuer/audience and signature validation. Register authentication and authorization middleware and require policies on protected endpoints.",
+    "postInstall": [
+      "dotnet add src/Api package Microsoft.AspNetCore.Authentication.JwtBearer --version 10.0.15"
+    ],
+    "env": {},
+    "setupTasks": [
+      "JWT bearer authentication: wire the service in src/Api/Program.cs before exposing the feature."
+    ]
+  },
+  {
+    "id": "serilog",
+    "name": "Serilog",
+    "kind": "observability",
+    "frameworks": [
+      "dotnet"
+    ],
+    "url": "https://github.com/serilog/serilog-aspnetcore",
+    "description": "Serilog for ASP.NET Core.",
+    "usage": "Configure structured logging through the host builder, redact tokens/PII and record security events without request bodies.",
+    "postInstall": [
+      "dotnet add src/Api package Serilog.AspNetCore --version 10.0.0"
+    ],
+    "env": {},
+    "setupTasks": [
+      "Serilog: wire the service in src/Api/Program.cs before exposing the feature."
+    ]
+  },
+  {
+    "id": "fluentvalidation",
+    "name": "FluentValidation",
+    "kind": "forms",
+    "frameworks": [
+      "dotnet"
+    ],
+    "url": "https://docs.fluentvalidation.net/",
+    "description": "FluentValidation for ASP.NET Core.",
+    "usage": "Define validators for request DTOs, run them at the server boundary and return safe validation errors.",
+    "postInstall": [
+      "dotnet add src/Api package FluentValidation --version 12.2.0"
+    ],
+    "env": {},
+    "setupTasks": [
+      "FluentValidation: wire the service in src/Api/Program.cs before exposing the feature."
+    ]
+  },
+  {
+    "id": "stripe-dotnet",
+    "name": "Stripe",
+    "kind": "payments",
+    "frameworks": [
+      "dotnet"
+    ],
+    "url": "https://docs.stripe.com/sdks/dotnet",
+    "description": "Stripe for ASP.NET Core.",
+    "usage": "Create Stripe clients lazily, verify webhook signatures and apply subscription/payment events idempotently.",
+    "postInstall": [
+      "dotnet add src/Api package Stripe.net --version 53.1.0"
+    ],
+    "env": {
+      "STRIPE_SECRET_KEY": "",
+      "STRIPE_WEBHOOK_SECRET": ""
+    },
+    "setupTasks": [
+      "Stripe: wire the service in src/Api/Program.cs before exposing the feature."
+    ]
+  },
+  {
+    "id": "openai-dotnet",
+    "name": "OpenAI",
+    "kind": "ai",
+    "frameworks": [
+      "dotnet"
+    ],
+    "url": "https://github.com/openai/openai-dotnet",
+    "description": "OpenAI for ASP.NET Core.",
+    "usage": "Create the official client only on demand when a key is set; bound token use, timeouts and tool capabilities.",
+    "postInstall": [
+      "dotnet add src/Api package OpenAI --version 2.15.0"
+    ],
+    "env": {
+      "OPENAI_API_KEY": ""
+    },
+    "setupTasks": [
+      "OpenAI: wire the service in src/Api/Program.cs before exposing the feature."
+    ]
+  },
+  {
+    "id": "dotnet-format",
+    "name": "dotnet format",
+    "kind": "quality",
+    "frameworks": [
+      "dotnet"
+    ],
+    "url": "https://learn.microsoft.com/dotnet/core/tools/dotnet-format",
+    "description": "Formatting and analyzers from the .NET SDK.",
+    "usage": "Use dotnet format --verify-no-changes in CI and dotnet format locally. Keep compiler warnings and nullable analysis enabled."
+  },
+  {
+    "id": "riverpod",
+    "name": "Riverpod",
+    "kind": "state",
+    "frameworks": [
+      "flutter"
+    ],
+    "url": "https://riverpod.dev",
+    "description": "Riverpod for Flutter applications.",
+    "usage": "Wrap the app with ProviderScope and model state with providers/notifiers. Keep business logic outside widgets.",
+    "dependencies": [
+      "flutter_riverpod:^3.5.0"
+    ],
+    "setupTasks": [
+      "Riverpod: complete provider/platform configuration before using the feature."
+    ]
+  },
+  {
+    "id": "bloc",
+    "name": "BLoC",
+    "kind": "state",
+    "frameworks": [
+      "flutter"
+    ],
+    "url": "https://bloclibrary.dev",
+    "description": "BLoC for Flutter applications.",
+    "usage": "Use Bloc/Cubit and explicit immutable states. Scope providers to the feature and test state transitions.",
+    "dependencies": [
+      "flutter_bloc:^9.1.1"
+    ],
+    "setupTasks": [
+      "BLoC: complete provider/platform configuration before using the feature."
+    ]
+  },
+  {
+    "id": "provider",
+    "name": "Provider",
+    "kind": "state",
+    "frameworks": [
+      "flutter"
+    ],
+    "url": "https://pub.dev/packages/provider",
+    "description": "Provider for Flutter applications.",
+    "usage": "Scope providers to the smallest relevant subtree and use selectors to avoid rebuilding unrelated widgets.",
+    "dependencies": [
+      "provider:^6.1.5+1"
+    ],
+    "setupTasks": [
+      "Provider: complete provider/platform configuration before using the feature."
+    ]
+  },
+  {
+    "id": "dio",
+    "name": "Dio",
+    "kind": "data",
+    "frameworks": [
+      "flutter"
+    ],
+    "url": "https://pub.dev/packages/dio",
+    "description": "Dio for Flutter applications.",
+    "usage": "Use one configured client with timeouts/cancellation; redact interceptors and keep credentials out of logs.",
+    "dependencies": [
+      "dio:^5.11.1"
+    ],
+    "setupTasks": [
+      "Dio: complete provider/platform configuration before using the feature."
+    ]
+  },
+  {
+    "id": "http-dart",
+    "name": "HTTP",
+    "kind": "data",
+    "frameworks": [
+      "flutter"
+    ],
+    "url": "https://pub.dev/packages/http",
+    "description": "HTTP for Flutter applications.",
+    "usage": "Use the Dart team HTTP client behind repositories, inject clients for tests and close them when no longer needed.",
+    "dependencies": [
+      "http:^1.6.0"
+    ],
+    "setupTasks": [
+      "HTTP: complete provider/platform configuration before using the feature."
+    ]
+  },
+  {
+    "id": "sqflite",
+    "name": "SQLite (sqflite)",
+    "kind": "database",
+    "frameworks": [
+      "flutter"
+    ],
+    "url": "https://pub.dev/packages/sqflite",
+    "description": "SQLite (sqflite) for Flutter applications.",
+    "usage": "Open the database lazily on supported platforms, version schemas and migrate transactionally. This plugin does not provide web support.",
+    "dependencies": [
+      "sqflite:^2.4.6"
+    ],
+    "setupTasks": [
+      "SQLite (sqflite): complete provider/platform configuration before using the feature."
+    ]
+  },
+  {
+    "id": "supabase-flutter",
+    "name": "Supabase",
+    "kind": "auth",
+    "frameworks": [
+      "flutter"
+    ],
+    "url": "https://supabase.com/docs/reference/dart",
+    "description": "Supabase for Flutter applications.",
+    "usage": "Initialize after checking the project URL and publishable key. Never embed service-role secrets; enforce RLS and resource ownership on the server.",
+    "dependencies": [
+      "supabase_flutter:^2.18.3"
+    ],
+    "setupTasks": [
+      "Supabase: complete provider/platform configuration before using the feature."
+    ]
+  },
+  {
+    "id": "sentry-flutter",
+    "name": "Sentry",
+    "kind": "observability",
+    "frameworks": [
+      "flutter"
+    ],
+    "url": "https://docs.sentry.io/platforms/dart/guides/flutter/",
+    "description": "Sentry for Flutter applications.",
+    "usage": "Initialize only when a DSN is configured, redact sensitive data and keep source-map/symbol upload credentials out of the app.",
+    "dependencies": [
+      "sentry_flutter:^10.4.0"
+    ],
+    "setupTasks": [
+      "Sentry: complete provider/platform configuration before using the feature."
+    ]
+  },
+  {
+    "id": "intl-dart",
+    "name": "Intl",
+    "kind": "i18n",
+    "frameworks": [
+      "flutter"
+    ],
+    "url": "https://docs.flutter.dev/ui/accessibility-and-internationalization/internationalization",
+    "description": "Intl for Flutter applications.",
+    "usage": "Use ARB files and Flutter localization generation; format dates/numbers with locale-aware APIs.",
+    "dependencies": [
+      "intl:^0.20.3"
+    ],
+    "setupTasks": [
+      "Intl: complete provider/platform configuration before using the feature."
+    ]
+  },
+  {
+    "id": "mocktail",
+    "name": "Mocktail",
+    "kind": "testing",
+    "frameworks": [
+      "flutter"
+    ],
+    "url": "https://pub.dev/packages/mocktail",
+    "description": "Mocktail for Flutter applications.",
+    "usage": "Mock external boundaries in unit/widget tests and verify observable behavior rather than internal call sequences.",
+    "devDependencies": [
+      "mocktail:^1.0.5"
+    ],
+    "setupTasks": [
+      "Mocktail: complete provider/platform configuration before using the feature."
+    ]
+  },
+  {
+    "id": "flutter-lints",
+    "name": "Flutter Lints",
+    "kind": "quality",
+    "frameworks": [
+      "flutter"
+    ],
+    "url": "https://pub.dev/packages/flutter_lints",
+    "description": "Flutter Lints for Flutter applications.",
+    "usage": "Include package:flutter_lints/flutter.yaml from analysis_options.yaml and run flutter analyze.",
+    "devDependencies": [
+      "flutter_lints:^6.0.0"
+    ],
+    "setupTasks": [
+      "Flutter Lints: complete provider/platform configuration before using the feature."
+    ]
+  },
+  {
+    "id": "flutter-stores",
+    "name": "App Store & Google Play",
+    "kind": "deploy",
+    "frameworks": [
+      "flutter"
+    ],
+    "url": "https://docs.flutter.dev/deployment",
+    "description": "Official release builds for Flutter stores.",
+    "usage": "Build Android with flutter build appbundle --release and iOS on macOS with flutter build ipa. Configure signing and store metadata before submitting; never commit signing keys.",
+    "setupTasks": [
+      "Configure application identifiers, signing credentials and store accounts. Upload release artifacts through the store consoles or a reviewed release workflow."
+    ]
+  },
+  {
+    "id": "android-stores",
+    "name": "Google Play",
+    "kind": "deploy",
+    "frameworks": [
+      "android"
+    ],
+    "url": "https://developer.android.com/studio/publish",
+    "description": "Signed Android release bundles for Google Play.",
+    "usage": "Create a signed release App Bundle for the actual application module (app or androidApp). Keep keystores outside git and set signing credentials via the CI secret store.",
+    "setupTasks": [
+      "Configure application IDs, release signing and the Play Console listing before submission."
+    ]
+  },
+  {
+    "id": "app-store-connect",
+    "name": "App Store Connect",
+    "kind": "deploy",
+    "frameworks": [
+      "swiftui"
+    ],
+    "url": "https://developer.apple.com/app-store-connect/",
+    "description": "TestFlight distribution and App Store releases.",
+    "usage": "Archive the Xcode scheme for a real iOS device, configure automatic signing for the intended team, then distribute through App Store Connect. Never commit signing keys.",
+    "setupTasks": [
+      "Set the bundle identifier, Apple team, App Store Connect record and signing before archiving."
+    ]
+  },
+  {
+    "id": "swift-testing",
+    "name": "Swift Testing",
+    "kind": "testing",
+    "frameworks": [
+      "swiftui"
+    ],
+    "url": "https://developer.apple.com/xcode/swift-testing/",
+    "description": "The native Swift test framework already included in the SDK.",
+    "usage": "Write @Test functions and #expect assertions in the test target. Build for testing with the kit verify command; run tests on a supported simulator in CI. No extra package is required."
+  },
+  {
+    "id": "swiftlint",
+    "name": "SwiftLint",
+    "kind": "quality",
+    "frameworks": [
+      "swiftui"
+    ],
+    "url": "https://github.com/realm/SwiftLint",
+    "description": "SwiftLint configuration for native Swift projects.",
+    "usage": "Install SwiftLint through its official distribution, add a reviewed .swiftlint.yml and run swiftlint lint. This option provides guidance; it does not silently install a system binary.",
+    "setupTasks": [
+      "Install SwiftLint and add its lint step to the Xcode/CI build."
+    ]
+  },
+  {
+    "id": "android-unit-tests",
+    "name": "JUnit + Android tests",
+    "kind": "testing",
+    "frameworks": [
+      "android"
+    ],
+    "url": "https://developer.android.com/training/testing",
+    "description": "The Android test targets already included in the official template.",
+    "usage": "Keep local unit tests in src/test and instrumented tests in src/androidTest. Run the generated module unit test task; instrumented tests need an emulator/device. No extra package is installed."
+  },
+  {
+    "id": "android-lint",
+    "name": "Android Lint",
+    "kind": "quality",
+    "frameworks": [
+      "android"
+    ],
+    "url": "https://developer.android.com/studio/write/lint",
+    "description": "Static analysis through the Android Gradle plugin.",
+    "usage": "Run the actual app module lint task and review security, resource and accessibility findings. Keep baselines reviewed and scoped; do not disable lint globally. No extra package is required."
+  },
+  {
+    "id": "github-actions-rust",
+    "name": "GitHub Actions",
+    "kind": "ci",
+    "frameworks": [
+      "rust"
+    ],
+    "url": "https://docs.github.com/actions",
+    "description": "Build and test rust with its own toolchain.",
+    "usage": "The workflow is in .github/workflows/ci.yml. Keep toolchain versions aligned with the project and add its actual test/lint tasks. This configuration is not a deployment or a completed remote CI run.",
+    "writeFiles": [
+      {
+        "path": ".github/workflows/ci.yml",
+        "content": "name: CI\non:\n  push:\n    branches: [main]\n  pull_request:\npermissions:\n  contents: read\njobs:\n  check:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - uses: dtolnay/rust-toolchain@stable\n      - run: cargo fmt --check\n      - run: cargo clippy --all-targets -- -D warnings\n      - run: cargo test\n",
+        "mode": "create"
+      }
+    ]
+  },
+  {
+    "id": "github-actions-dotnet",
+    "name": "GitHub Actions",
+    "kind": "ci",
+    "frameworks": [
+      "dotnet"
+    ],
+    "url": "https://docs.github.com/actions",
+    "description": "Build and test dotnet with its own toolchain.",
+    "usage": "The workflow is in .github/workflows/ci.yml. Keep toolchain versions aligned with the project and add its actual test/lint tasks. This configuration is not a deployment or a completed remote CI run.",
+    "writeFiles": [
+      {
+        "path": ".github/workflows/ci.yml",
+        "content": "name: CI\non:\n  push:\n    branches: [main]\n  pull_request:\npermissions:\n  contents: read\njobs:\n  check:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - uses: actions/setup-dotnet@v4\n        with:\n          dotnet-version: \"10.0.x\"\n      - run: dotnet restore\n      - run: dotnet build --no-restore\n      - run: dotnet test --no-build\n",
+        "mode": "create"
+      }
+    ]
+  },
+  {
+    "id": "github-actions-rails",
+    "name": "GitHub Actions",
+    "kind": "ci",
+    "frameworks": [
+      "rails"
+    ],
+    "url": "https://docs.github.com/actions",
+    "description": "Build and test rails with its own toolchain.",
+    "usage": "The workflow is in .github/workflows/ci.yml. Keep toolchain versions aligned with the project and add its actual test/lint tasks. This configuration is not a deployment or a completed remote CI run.",
+    "writeFiles": [
+      {
+        "path": ".github/workflows/ci.yml",
+        "content": "name: CI\non:\n  push:\n    branches: [main]\n  pull_request:\npermissions:\n  contents: read\njobs:\n  check:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - uses: ruby/setup-ruby@v1\n        with:\n          ruby-version: \"3.4\"\n          bundler-cache: true\n      - run: bin/rails db:prepare\n      - run: bin/rails test\n",
+        "mode": "create"
+      }
+    ]
+  },
+  {
+    "id": "github-actions-laravel",
+    "name": "GitHub Actions",
+    "kind": "ci",
+    "frameworks": [
+      "laravel"
+    ],
+    "url": "https://docs.github.com/actions",
+    "description": "Build and test laravel with its own toolchain.",
+    "usage": "The workflow is in .github/workflows/ci.yml. Keep toolchain versions aligned with the project and add its actual test/lint tasks. This configuration is not a deployment or a completed remote CI run.",
+    "writeFiles": [
+      {
+        "path": ".github/workflows/ci.yml",
+        "content": "name: CI\non:\n  push:\n    branches: [main]\n  pull_request:\npermissions:\n  contents: read\njobs:\n  check:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - uses: shivammathur/setup-php@v2\n        with:\n          php-version: \"8.4\"\n          tools: composer\n      - run: composer install --no-interaction --prefer-dist\n      - run: cp .env.example .env && php artisan key:generate\n      - run: php artisan test\n",
+        "mode": "create"
+      }
+    ]
+  },
+  {
+    "id": "github-actions-spring",
+    "name": "GitHub Actions",
+    "kind": "ci",
+    "frameworks": [
+      "spring"
+    ],
+    "url": "https://docs.github.com/actions",
+    "description": "Build and test spring with its own toolchain.",
+    "usage": "The workflow is in .github/workflows/ci.yml. Keep toolchain versions aligned with the project and add its actual test/lint tasks. This configuration is not a deployment or a completed remote CI run.",
+    "writeFiles": [
+      {
+        "path": ".github/workflows/ci.yml",
+        "content": "name: CI\non:\n  push:\n    branches: [main]\n  pull_request:\npermissions:\n  contents: read\njobs:\n  check:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - uses: actions/setup-java@v4\n        with:\n          distribution: temurin\n          java-version: \"17\"\n      - run: ./mvnw -B test\n",
+        "mode": "create"
+      }
+    ]
+  },
+  {
+    "id": "github-actions-flutter",
+    "name": "GitHub Actions",
+    "kind": "ci",
+    "frameworks": [
+      "flutter"
+    ],
+    "url": "https://docs.github.com/actions",
+    "description": "Build and test flutter with its own toolchain.",
+    "usage": "The workflow is in .github/workflows/ci.yml. Keep toolchain versions aligned with the project and add its actual test/lint tasks. This configuration is not a deployment or a completed remote CI run.",
+    "writeFiles": [
+      {
+        "path": ".github/workflows/ci.yml",
+        "content": "name: CI\non:\n  push:\n    branches: [main]\n  pull_request:\npermissions:\n  contents: read\njobs:\n  check:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - uses: subosito/flutter-action@v2\n        with:\n          channel: stable\n      - run: flutter pub get\n      - run: flutter analyze\n      - run: if [ -d test ]; then flutter test; fi\n",
+        "mode": "create"
+      }
+    ]
+  },
+  {
+    "id": "github-actions-swiftui",
+    "name": "GitHub Actions",
+    "kind": "ci",
+    "frameworks": [
+      "swiftui"
+    ],
+    "url": "https://docs.github.com/actions",
+    "description": "Build and test swiftui with its own toolchain.",
+    "usage": "The workflow is in .github/workflows/ci.yml. Keep toolchain versions aligned with the project and add its actual test/lint tasks. This configuration is not a deployment or a completed remote CI run.",
+    "writeFiles": [
+      {
+        "path": ".github/workflows/ci.yml",
+        "content": "name: CI\non:\n  push:\n    branches: [main]\n  pull_request:\npermissions:\n  contents: read\njobs:\n  check:\n    runs-on: macos-latest\n    steps:\n      - uses: actions/checkout@v4\n      - run: brew install xcodegen\n      - run: xcodegen generate\n      - run: xcodebuild build-for-testing -project {{name}}.xcodeproj -scheme {{name}} -destination \"generic/platform=iOS Simulator\" CODE_SIGNING_ALLOWED=NO -quiet\n",
+        "mode": "create"
+      }
+    ]
+  },
+  {
+    "id": "github-actions-android",
+    "name": "GitHub Actions",
+    "kind": "ci",
+    "frameworks": [
+      "android"
+    ],
+    "url": "https://docs.github.com/actions",
+    "description": "Build and test android with its own toolchain.",
+    "usage": "The workflow is in .github/workflows/ci.yml. Keep toolchain versions aligned with the project and add its actual test/lint tasks. This configuration is not a deployment or a completed remote CI run.",
+    "writeFiles": [
+      {
+        "path": ".github/workflows/ci.yml",
+        "content": "name: CI\non:\n  push:\n    branches: [main]\n  pull_request:\npermissions:\n  contents: read\njobs:\n  check:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - uses: actions/setup-java@v4\n        with:\n          distribution: temurin\n          java-version: \"17\"\n      - uses: android-actions/setup-android@v3\n      - run: ./gradlew --no-daemon assembleDebug\n",
+        "mode": "create"
+      }
+    ]
+  },
+  {
+    "id": "railway-python",
+    "name": "Railway",
+    "kind": "deploy",
+    "frameworks": [
+      "python"
+    ],
+    "url": "https://docs.railway.com/guides/languages-frameworks",
+    "description": "Repository deployments with python detection.",
+    "usage": "Connect the repository and verify the detected runtime. Set the actual project build/start commands, listen on the supplied PORT and configure secrets in Railway. For monorepos set the service root to the application directory.",
+    "setupTasks": [
+      "Railway: configure the project runtime, service root, build/start commands and environment variables. This option does not create a service or add a payment plan."
+    ],
+    "excludeFrameworks": [
+      "electron",
+      "tauri",
+      "browser-extension",
+      "vscode-extension"
+    ]
+  },
+  {
+    "id": "railway-django",
+    "name": "Railway",
+    "kind": "deploy",
+    "frameworks": [
+      "django"
+    ],
+    "url": "https://docs.railway.com/guides/languages-frameworks",
+    "description": "Repository deployments with django detection.",
+    "usage": "Connect the repository and verify the detected runtime. Set the actual project build/start commands, listen on the supplied PORT and configure secrets in Railway. For monorepos set the service root to the application directory.",
+    "setupTasks": [
+      "Railway: configure the project runtime, service root, build/start commands and environment variables. This option does not create a service or add a payment plan."
+    ],
+    "excludeFrameworks": [
+      "electron",
+      "tauri",
+      "browser-extension",
+      "vscode-extension"
+    ]
+  },
+  {
+    "id": "railway-rails",
+    "name": "Railway",
+    "kind": "deploy",
+    "frameworks": [
+      "rails"
+    ],
+    "url": "https://docs.railway.com/guides/languages-frameworks",
+    "description": "Repository deployments with rails detection.",
+    "usage": "Connect the repository and verify the detected runtime. Set the actual project build/start commands, listen on the supplied PORT and configure secrets in Railway. For monorepos set the service root to the application directory.",
+    "setupTasks": [
+      "Railway: configure the project runtime, service root, build/start commands and environment variables. This option does not create a service or add a payment plan."
+    ],
+    "excludeFrameworks": [
+      "electron",
+      "tauri",
+      "browser-extension",
+      "vscode-extension"
+    ]
+  },
+  {
+    "id": "railway-laravel",
+    "name": "Railway",
+    "kind": "deploy",
+    "frameworks": [
+      "laravel"
+    ],
+    "url": "https://docs.railway.com/guides/languages-frameworks",
+    "description": "Repository deployments with laravel detection.",
+    "usage": "Connect the repository and verify the detected runtime. Set the actual project build/start commands, listen on the supplied PORT and configure secrets in Railway. For monorepos set the service root to the application directory.",
+    "setupTasks": [
+      "Railway: configure the project runtime, service root, build/start commands and environment variables. This option does not create a service or add a payment plan."
+    ],
+    "excludeFrameworks": [
+      "electron",
+      "tauri",
+      "browser-extension",
+      "vscode-extension"
+    ]
+  },
+  {
+    "id": "railway-spring",
+    "name": "Railway",
+    "kind": "deploy",
+    "frameworks": [
+      "spring"
+    ],
+    "url": "https://docs.railway.com/guides/languages-frameworks",
+    "description": "Repository deployments with spring detection.",
+    "usage": "Connect the repository and verify the detected runtime. Set the actual project build/start commands, listen on the supplied PORT and configure secrets in Railway. For monorepos set the service root to the application directory.",
+    "setupTasks": [
+      "Railway: configure the project runtime, service root, build/start commands and environment variables. This option does not create a service or add a payment plan."
+    ],
+    "excludeFrameworks": [
+      "electron",
+      "tauri",
+      "browser-extension",
+      "vscode-extension"
+    ]
+  },
+  {
+    "id": "railway-rust",
+    "name": "Railway",
+    "kind": "deploy",
+    "frameworks": [
+      "rust"
+    ],
+    "url": "https://docs.railway.com/guides/languages-frameworks",
+    "description": "Repository deployments with rust detection.",
+    "usage": "Connect the repository and verify the detected runtime. Set the actual project build/start commands, listen on the supplied PORT and configure secrets in Railway. For monorepos set the service root to the application directory.",
+    "setupTasks": [
+      "Railway: configure the project runtime, service root, build/start commands and environment variables. This option does not create a service or add a payment plan."
+    ]
+  },
+  {
+    "id": "railway-dotnet",
+    "name": "Railway",
+    "kind": "deploy",
+    "frameworks": [
+      "dotnet"
+    ],
+    "url": "https://docs.railway.com/guides/languages-frameworks",
+    "description": "Repository deployments with dotnet detection.",
+    "usage": "Connect the repository and verify the detected runtime. Set the actual project build/start commands, listen on the supplied PORT and configure secrets in Railway. For monorepos set the service root to the application directory.",
+    "setupTasks": [
+      "Railway: configure the project runtime, service root, build/start commands and environment variables. This option does not create a service or add a payment plan."
+    ]
+  },
+  {
+    "id": "nuxt-ui",
+    "name": "Nuxt UI",
+    "kind": "components",
+    "frameworks": [
+      "nuxt"
+    ],
+    "url": "https://ui.nuxt.com",
+    "description": "Official Nuxt UI components with Tailwind and accessible primitives.",
+    "usage": "Use Nuxt UI components and its app configuration/theme instead of mixing component systems. Import its CSS with the module setup and wrap the application with UApp where required.",
+    "dependencies": [
+      "@nuxt/ui@^4.12.0"
+    ],
+    "postInstall": [
+      "npx nuxi@latest module add @nuxt/ui"
+    ],
+    "setupTasks": [
+      "Nuxt UI: add the documented CSS imports and UApp wrapper."
+    ]
+  },
+  {
+    "id": "primeng",
+    "name": "PrimeNG",
+    "kind": "components",
+    "frameworks": [
+      "angular"
+    ],
+    "url": "https://primeng.org",
+    "description": "Accessible Angular components and theme presets.",
+    "usage": "Use standalone PrimeNG components and configure providePrimeNG with a theme preset in app.config.ts. Keep Angular and PrimeNG supported major versions aligned.",
+    "dependencies": [
+      "primeng@^22.1.5",
+      "@primeuix/themes@^3.1.1"
+    ],
+    "setupTasks": [
+      "PrimeNG: configure its provider/theme and import the components used by the application."
+    ]
+  },
+  {
+    "id": "angular-material",
+    "name": "Angular Material",
+    "kind": "components",
+    "frameworks": [
+      "angular"
+    ],
+    "url": "https://material.angular.dev",
+    "description": "Angular Material components with CDK accessibility primitives.",
+    "usage": "Use standalone Material components and one configured theme. Keep @angular/material and @angular/cdk on the Angular application supported major version.",
+    "dependencies": [
+      "@angular/material@^22.2.7",
+      "@angular/cdk@^22.2.7"
+    ],
+    "setupTasks": [
+      "Angular Material: add the supported Material theme, providers and component imports."
+    ]
+  },
+  {
+    "id": "sveltekit-superforms",
+    "name": "Superforms",
+    "kind": "forms",
+    "frameworks": [
+      "sveltekit"
+    ],
+    "url": "https://superforms.rocks",
+    "description": "Typed SvelteKit forms with server-side validation.",
+    "usage": "Use superValidate in server load/actions and superForm in components. Validate on every server action and return field errors without exposing internal exceptions.",
+    "dependencies": [
+      "sveltekit-superforms@^3.1.0"
+    ]
+  },
+  {
+    "id": "better-auth-server",
+    "name": "Better Auth",
+    "kind": "auth",
+    "frameworks": [
+      "nuxt",
+      "sveltekit",
+      "nodejs",
+      "bun"
+    ],
+    "url": "https://www.better-auth.com/docs/integrations",
+    "description": "Server authentication and sessions for non-Next.js applications.",
+    "usage": "Configure a server-only Better Auth instance, the framework handler and a database adapter. Generate a cryptographic secret, set trusted origins and run reviewed migrations before enabling login. Initialize lazily so a build does not require credentials.",
+    "dependencies": [
+      "better-auth@^1.7.25"
+    ],
+    "env": {
+      "BETTER_AUTH_SECRET": "",
+      "BETTER_AUTH_URL": ""
+    },
+    "setupTasks": [
+      "Better Auth: configure its database, server handler, trusted origins and migrations before exposing authentication."
+    ],
+    "skills": [
+      "better-auth/skills@better-auth-best-practices",
+      "better-auth/skills@better-auth-security-best-practices"
+    ]
+  },
+  {
+    "id": "jwt-go",
+    "name": "JWT",
+    "kind": "auth",
+    "frameworks": [
+      "go"
+    ],
+    "url": "https://github.com/golang-jwt/jwt",
+    "description": "JWT for Go services.",
+    "usage": "Use VerifyAccessToken from jwt_tokens.go with trusted issuer keys. It enforces RS256, issuer, audience and expiry. Resolve keys only from the configured issuer, never a token-provided URL. Authorization is a separate server-side check.",
+    "dependencies": [
+      "github.com/golang-jwt/jwt/v5@v5.3.1"
+    ],
+    "writeFiles": [
+      {
+        "path": "jwt_tokens.go",
+        "content": "package main\n\nimport (\n    \"errors\"\n    \"github.com/golang-jwt/jwt/v5\"\n)\n\n// VerifyAccessToken accepts only RS256 tokens issued for this service.\n// The caller must supply a key resolver backed by its configured trusted issuer.\nfunc VerifyAccessToken(raw string, key jwt.Keyfunc, issuer, audience string) (*jwt.Token, error) {\n    if issuer == \"\" || audience == \"\" || len(raw) > 16384 {\n        return nil, errors.New(\"invalid token verification configuration or token size\")\n    }\n    return jwt.Parse(raw, key, jwt.WithValidMethods([]string{\"RS256\"}), jwt.WithIssuer(issuer), jwt.WithAudience(audience), jwt.WithExpirationRequired())\n}\n"
+      },
+      {
+        "path": "jwt_tokens_test.go",
+        "content": "package main\n\nimport (\n    \"crypto/rand\"\n    \"crypto/rsa\"\n    \"testing\"\n    \"time\"\n    \"github.com/golang-jwt/jwt/v5\"\n)\n\nfunc TestVerifyAccessTokenRejectsInvalidClaims(t *testing.T) {\n    key, err := rsa.GenerateKey(rand.Reader, 2048)\n    if err != nil { t.Fatal(err) }\n    resolver := func(_ *jwt.Token) (any, error) { return &key.PublicKey, nil }\n    valid := jwt.RegisteredClaims{Issuer: \"trusted\", Audience: jwt.ClaimStrings{\"service\"}, ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Minute))}\n    for _, tc := range []struct { name string; claims jwt.RegisteredClaims; wantError bool }{\n        {\"valid\", valid, false},\n        {\"wrong issuer\", jwt.RegisteredClaims{Issuer: \"other\", Audience: valid.Audience, ExpiresAt: valid.ExpiresAt}, true},\n        {\"wrong audience\", jwt.RegisteredClaims{Issuer: valid.Issuer, Audience: jwt.ClaimStrings{\"other\"}, ExpiresAt: valid.ExpiresAt}, true},\n        {\"expired\", jwt.RegisteredClaims{Issuer: valid.Issuer, Audience: valid.Audience, ExpiresAt: jwt.NewNumericDate(time.Now().Add(-time.Minute))}, true},\n        {\"missing expiry\", jwt.RegisteredClaims{Issuer: valid.Issuer, Audience: valid.Audience}, true},\n    } {\n        t.Run(tc.name, func(t *testing.T) {\n            raw, err := jwt.NewWithClaims(jwt.SigningMethodRS256, tc.claims).SignedString(key)\n            if err != nil { t.Fatal(err) }\n            token, err := VerifyAccessToken(raw, resolver, \"trusted\", \"service\")\n            if (err != nil) != tc.wantError { t.Fatalf(\"unexpected verification result: %v\", err) }\n            if !tc.wantError && !token.Valid { t.Fatal(\"valid token rejected\") }\n        })\n    }\n    raw, err := jwt.NewWithClaims(jwt.SigningMethodHS256, valid).SignedString([]byte(\"test-only-key\"))\n    if err != nil { t.Fatal(err) }\n    if _, err := VerifyAccessToken(raw, resolver, \"trusted\", \"service\"); err == nil { t.Fatal(\"unexpected algorithm accepted\") }\n}\n"
+      }
+    ]
+  },
+  {
+    "id": "sqlx-go",
+    "name": "sqlx",
+    "kind": "database",
+    "frameworks": [
+      "go"
+    ],
+    "url": "https://github.com/jmoiron/sqlx",
+    "description": "sqlx for Go services.",
+    "usage": "Use parameterized SQL and context-aware calls. Configure a database/sql driver and open connections on demand; use migrations for schema changes.",
+    "dependencies": [
+      "github.com/jmoiron/sqlx@v1.4.0"
+    ],
+    "writeFiles": [
+      {
+        "path": "database_sqlx.go",
+        "content": "package main\n\nimport (\n    \"time\"\n    \"github.com/jmoiron/sqlx\"\n)\n\n// OpenSQLXDatabase creates a lazy pool; the caller registers its chosen SQL driver.\nfunc OpenSQLXDatabase(driver, dsn string) (*sqlx.DB, error) {\n    db, err := sqlx.Open(driver, dsn)\n    if err != nil { return nil, err }\n    db.SetMaxOpenConns(20)\n    db.SetMaxIdleConns(5)\n    db.SetConnMaxLifetime(30 * time.Minute)\n    return db, nil\n}\n"
+      }
+    ]
+  },
+  {
+    "id": "zerolog",
+    "name": "Zerolog",
+    "kind": "observability",
+    "frameworks": [
+      "go"
+    ],
+    "url": "https://github.com/rs/zerolog",
+    "description": "Zerolog for Go services.",
+    "usage": "Emit structured logs with request IDs and redact credentials and PII. Never log full request or response bodies by default.",
+    "dependencies": [
+      "github.com/rs/zerolog@v1.35.1"
+    ],
+    "writeFiles": [
+      {
+        "path": "logging_zerolog.go",
+        "content": "package main\n\nimport (\n    \"io\"\n    \"github.com/rs/zerolog\"\n)\n\nfunc NewStructuredLogger(output io.Writer) zerolog.Logger {\n    return zerolog.New(output).With().Timestamp().Logger()\n}\n"
+      }
+    ]
+  },
+  {
+    "id": "resend-go",
+    "name": "Resend",
+    "kind": "email",
+    "frameworks": [
+      "go"
+    ],
+    "url": "https://resend.com/docs/send-with-go",
+    "description": "Resend for Go services.",
+    "usage": "Construct the official client only when the API key is available. Set timeouts and verify the sending domain.",
+    "dependencies": [
+      "github.com/resend/resend-go/v2@v2.28.0"
+    ],
+    "writeFiles": [
+      {
+        "path": "email_resend.go",
+        "content": "package main\n\nimport (\n    \"errors\"\n    \"github.com/resend/resend-go/v2\"\n)\n\n// NewEmailClient is called only when sending email, never during package initialization.\nfunc NewEmailClient(key string) (*resend.Client, error) {\n    if key == \"\" { return nil, errors.New(\"RESEND_API_KEY is required to send email\") }\n    return resend.NewClient(key), nil\n}\n"
+      }
+    ]
+  },
+  {
+    "id": "spring-jdbc",
+    "name": "Spring JDBC",
+    "kind": "database",
+    "frameworks": [
+      "spring"
+    ],
+    "url": "https://docs.spring.io/spring-framework/reference/data-access/jdbc.html",
+    "description": "Spring JDBC for Spring Boot.",
+    "usage": "Use JdbcTemplate with bound parameters and managed transactions. Configure the datasource through environment variables; choose a JDBC driver before connecting.",
+    "writeFiles": [
+      {
+        "path": "pom.xml",
+        "content": "\t\t<dependency>\n\t\t\t<groupId>org.springframework.boot</groupId>\n\t\t\t<artifactId>spring-boot-starter-jdbc</artifactId>\n\t\t</dependency>\n\t\t<dependency><groupId>com.h2database</groupId><artifactId>h2</artifactId><scope>runtime</scope></dependency>\n",
+        "mode": "insert-before",
+        "anchor": "\t</dependencies>"
+      }
+    ],
+    "setupTasks": [
+      "Spring JDBC: configure the application service and production credentials before use."
+    ]
+  },
+  {
+    "id": "spring-oauth2",
+    "name": "OAuth2 resource server",
+    "kind": "auth",
+    "frameworks": [
+      "spring"
+    ],
+    "url": "https://docs.spring.io/spring-security/reference/servlet/oauth2/resource-server/index.html",
+    "description": "OAuth2 resource server for Spring Boot.",
+    "usage": "Configure an explicitly trusted issuer/JWK set and authorization rules. Do not disable CSRF or allow all endpoints as a shortcut.",
+    "writeFiles": [
+      {
+        "path": "pom.xml",
+        "content": "\t\t<dependency>\n\t\t\t<groupId>org.springframework.boot</groupId>\n\t\t\t<artifactId>spring-boot-starter-oauth2-resource-server</artifactId>\n\t\t</dependency>\n",
+        "mode": "insert-before",
+        "anchor": "\t</dependencies>"
+      }
+    ],
+    "setupTasks": [
+      "OAuth2 resource server: configure the application service and production credentials before use."
+    ]
+  },
+  {
+    "id": "spring-mail",
+    "name": "Spring Mail",
+    "kind": "email",
+    "frameworks": [
+      "spring"
+    ],
+    "url": "https://docs.spring.io/spring-boot/reference/io/email.html",
+    "description": "Spring Mail for Spring Boot.",
+    "usage": "Configure SMTP host, authentication and TLS through the server environment, and set connection/read/write timeouts. Do not attempt to connect during application startup.",
+    "writeFiles": [
+      {
+        "path": "pom.xml",
+        "content": "\t\t<dependency>\n\t\t\t<groupId>org.springframework.boot</groupId>\n\t\t\t<artifactId>spring-boot-starter-mail</artifactId>\n\t\t</dependency>\n",
+        "mode": "insert-before",
+        "anchor": "\t</dependencies>"
+      }
+    ],
+    "setupTasks": [
+      "Spring Mail: configure the application service and production credentials before use."
+    ]
+  },
+  {
+    "id": "stripe-java",
+    "name": "Stripe",
+    "kind": "payments",
+    "frameworks": [
+      "spring"
+    ],
+    "url": "https://docs.stripe.com/sdks/java",
+    "description": "Stripe for Spring Boot.",
+    "usage": "Create the official Stripe client lazily. Verify webhook signatures and process events once; keep API keys in server environment variables.",
+    "writeFiles": [
+      {
+        "path": "pom.xml",
+        "content": "\t\t<dependency>\n\t\t\t<groupId>com.stripe</groupId>\n\t\t\t<artifactId>stripe-java</artifactId>\n\t\t\t<version>34.1.0</version>\n\t\t</dependency>\n",
+        "mode": "insert-before",
+        "anchor": "\t</dependencies>"
+      }
+    ],
+    "setupTasks": [
+      "Stripe: configure the application service and production credentials before use."
+    ]
+  },
+  {
+    "id": "openai-java",
+    "name": "OpenAI",
+    "kind": "ai",
+    "frameworks": [
+      "spring"
+    ],
+    "url": "https://github.com/openai/openai-java",
+    "description": "OpenAI for Spring Boot.",
+    "usage": "Create the official client only when a key is available and an AI feature is invoked. Bound tokens, timeouts and costs; validate outputs.",
+    "writeFiles": [
+      {
+        "path": "pom.xml",
+        "content": "\t\t<dependency>\n\t\t\t<groupId>com.openai</groupId>\n\t\t\t<artifactId>openai-java</artifactId>\n\t\t\t<version>4.105.0</version>\n\t\t</dependency>\n",
+        "mode": "insert-before",
+        "anchor": "\t</dependencies>"
+      }
+    ],
+    "setupTasks": [
+      "OpenAI: configure the application service and production credentials before use."
+    ]
+  },
+  {
+    "id": "alamofire",
+    "name": "Alamofire",
+    "kind": "data",
+    "frameworks": [
+      "swiftui"
+    ],
+    "url": "https://alamofire.github.io/Alamofire/",
+    "description": "Alamofire installed through Swift Package Manager.",
+    "usage": "The package is declared in project.yml and linked to the application target. Use a configured session behind repositories and cancel requests with view-model lifetimes. Retain TLS verification and redact logs.",
+    "postInstall": [
+      "/usr/bin/ruby -e 'require \"yaml\"; p=\"project.yml\"; d=YAML.safe_load(File.read(p), aliases: false); d[\"packages\"] ||= {}; d[\"packages\"][\"Alamofire\"]={\"url\"=>\"https://github.com/Alamofire/Alamofire.git\", \"from\"=>\"5.12.2\"}; t=d.fetch(\"targets\").fetch(\"{{name}}\"); t[\"dependencies\"] ||= []; e={\"package\"=>\"Alamofire\"}; t[\"dependencies\"] << e unless t[\"dependencies\"].include?(e); File.write(p,YAML.dump(d))'",
+      "xcodegen generate"
+    ]
+  },
+  {
+    "id": "grdb",
+    "name": "GRDB",
+    "kind": "database",
+    "frameworks": [
+      "swiftui"
+    ],
+    "url": "https://github.com/groue/GRDB.swift",
+    "description": "GRDB installed through Swift Package Manager.",
+    "usage": "The package is declared in project.yml and linked to the application target. Use a DatabaseQueue/DatabasePool and transactional migrations. Store sensitive credentials in Keychain, not the SQLite database.",
+    "postInstall": [
+      "/usr/bin/ruby -e 'require \"yaml\"; p=\"project.yml\"; d=YAML.safe_load(File.read(p), aliases: false); d[\"packages\"] ||= {}; d[\"packages\"][\"GRDB\"]={\"url\"=>\"https://github.com/groue/GRDB.swift.git\", \"from\"=>\"7.12.0\"}; t=d.fetch(\"targets\").fetch(\"{{name}}\"); t[\"dependencies\"] ||= []; e={\"package\"=>\"GRDB\"}; t[\"dependencies\"] << e unless t[\"dependencies\"].include?(e); File.write(p,YAML.dump(d))'",
+      "xcodegen generate"
+    ]
+  },
+  {
+    "id": "ktor-client",
+    "name": "Ktor Client",
+    "kind": "data",
+    "frameworks": [
+      "android"
+    ],
+    "url": "https://ktor.io/docs/client-create-new-application.html",
+    "description": "Ktor Client for Android and the Android target of KMP.",
+    "usage": "Use a client behind repositories, configure timeouts and a platform engine, and close it with its owner. For shared KMP code configure engines for every target.",
+    "postInstall": [
+      "node -e 'const fs=require('\"'\"'node:fs'\"'\"');const p=['\"'\"'app/build.gradle.kts'\"'\"','\"'\"'androidApp/build.gradle.kts'\"'\"'].find(x=>fs.existsSync(x));if(!p)throw Error('\"'\"'No Android application module found'\"'\"');const block=\"\\n// Added by the workspace catalog\\ndependencies {\\n    implementation(\\\"io.ktor:ktor-client-core:3.6.1\\\")\\n}\\n\";const s=fs.readFileSync(p,'\"'\"'utf8'\"'\"');if(!s.includes(\"io.ktor:ktor-client-core:3.6.1\"))fs.appendFileSync(p,block);'"
+    ]
+  },
+  {
+    "id": "kotlinx-serialization",
+    "name": "Kotlinx Serialization",
+    "kind": "forms",
+    "frameworks": [
+      "android"
+    ],
+    "url": "https://github.com/Kotlin/kotlinx.serialization",
+    "description": "Kotlinx Serialization for Android and the Android target of KMP.",
+    "usage": "Validate decoded values at the boundary and handle malformed JSON. Add the Kotlin serialization compiler plugin matching the Kotlin version when using @Serializable.",
+    "postInstall": [
+      "node -e 'const fs=require('\"'\"'node:fs'\"'\"');const p=['\"'\"'app/build.gradle.kts'\"'\"','\"'\"'androidApp/build.gradle.kts'\"'\"'].find(x=>fs.existsSync(x));if(!p)throw Error('\"'\"'No Android application module found'\"'\"');const block=\"\\n// Added by the workspace catalog\\ndependencies {\\n    implementation(\\\"org.jetbrains.kotlinx:kotlinx-serialization-json:1.13.0\\\")\\n}\\n\";const s=fs.readFileSync(p,'\"'\"'utf8'\"'\"');if(!s.includes(\"org.jetbrains.kotlinx:kotlinx-serialization-json:1.13.0\"))fs.appendFileSync(p,block);'"
+    ]
+  },
+  {
+    "id": "android-credentials",
+    "name": "Credential Manager",
+    "kind": "auth",
+    "frameworks": [
+      "android"
+    ],
+    "url": "https://developer.android.com/identity/sign-in/credential-manager",
+    "description": "Credential Manager for Android and the Android target of KMP.",
+    "usage": "Use Android Credential Manager with a configured provider; verify returned credentials on a trusted server and check authorization separately.",
+    "postInstall": [
+      "node -e 'const fs=require('\"'\"'node:fs'\"'\"');const p=['\"'\"'app/build.gradle.kts'\"'\"','\"'\"'androidApp/build.gradle.kts'\"'\"'].find(x=>fs.existsSync(x));if(!p)throw Error('\"'\"'No Android application module found'\"'\"');const block=\"\\n// Added by the workspace catalog\\ndependencies {\\n    implementation(\\\"androidx.credentials:credentials:1.6.0\\\")\\n}\\n\";const s=fs.readFileSync(p,'\"'\"'utf8'\"'\"');if(!s.includes(\"androidx.credentials:credentials:1.6.0\"))fs.appendFileSync(p,block);'"
+    ]
+  },
+  {
+    "id": "npm-publish",
+    "name": "npm",
+    "kind": "deploy",
+    "frameworks": [
+      "npm-package"
+    ],
+    "url": "https://docs.npmjs.com/packages-and-modules/contributing-packages-to-the-registry",
+    "description": "Publish CLI tools and libraries to npm.",
+    "usage": "Review package name, exports/bin/files, license and npm pack --dry-run output before publishing. Use npm trusted publishing or a scoped token in CI; publishing requires explicit release authorization. In a workspace whose root is private, pack and publish the intended packages/<name> directory, not the repository root.",
+    "setupTasks": [
+      "npm: reserve the package name, configure trusted publishing and review the package contents before the first release."
+    ]
+  },
+  {
+    "id": "github-releases",
+    "name": "GitHub Releases",
+    "kind": "deploy",
+    "frameworks": [
+      "electron",
+      "tauri",
+      "rust",
+      "dotnet"
+    ],
+    "url": "https://docs.github.com/repositories/releasing-projects-on-github",
+    "description": "Versioned desktop apps and binary release artifacts.",
+    "usage": "Build artifacts for each supported OS/architecture, sign/notarize where required and upload to a reviewed GitHub Release. Never ship development credentials or unsigned automatic update manifests.",
+    "setupTasks": [
+      "Configure per-platform builds, signing/notarization and a release workflow before distributing binaries."
+    ]
+  },
+  {
+    "id": "chrome-web-store",
+    "name": "Chrome Web Store",
+    "kind": "deploy",
+    "frameworks": [
+      "browser-extension"
+    ],
+    "url": "https://developer.chrome.com/docs/webstore/publish",
+    "description": "Publish browser extension packages to the Chrome Web Store.",
+    "usage": "Build the extension, review permissions/host access and package the production extension output. Store credentials belong in the CI secret store; publication needs a store account and review.",
+    "setupTasks": [
+      "Create the store listing, prepare privacy/permission disclosures and review the release package before submission."
+    ]
+  },
+  {
+    "id": "vscode-marketplace",
+    "name": "VS Code Marketplace",
+    "kind": "deploy",
+    "frameworks": [
+      "vscode-extension"
+    ],
+    "url": "https://code.visualstudio.com/api/working-with-extensions/publishing-extension",
+    "description": "Package and publish VS Code extensions.",
+    "usage": "Review the extension manifest and permissions, package with @vscode/vsce and test the VSIX before publishing. Keep publisher credentials in CI secrets.",
+    "setupTasks": [
+      "Create the publisher, review vsce package output and configure Marketplace publishing credentials."
+    ]
+  },
+  {
+    "id": "workspace-ci",
+    "name": "GitHub Actions",
+    "kind": "ci",
+    "frameworks": [
+      "monorepo"
+    ],
+    "url": "https://docs.github.com/actions",
+    "description": "Frontend/workspace CI with explicit service setup tasks.",
+    "usage": "The workflow builds the JavaScript workspace or frontend directory. Add separate backend jobs with the correct Python/Ruby/Java/Go toolchain and the kit verification command before treating CI as full coverage. Do not install frontend dependencies in the repository root.",
+    "writeFiles": [
+      {
+        "path": ".github/workflows/ci.yml",
+        "content": "name: CI\non:\n  push:\n    branches: [main]\n  pull_request:\npermissions:\n  contents: read\njobs:\n  check:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - uses: actions/setup-node@v4\n        with:\n          node-version: 22\n      - uses: pnpm/action-setup@v4\n        with:\n          version: 10\n      - name: Check workspace\n        run: |\n          if [ -f pnpm-workspace.yaml ]; then\n            pnpm install\n            pnpm run --if-present build\n            pnpm run --if-present test\n          elif [ -f package.json ]; then\n            npm install\n            npm run --if-present build\n            npm run --if-present test\n          fi\n          if [ -f frontend/package.json ]; then\n            cd frontend\n            npm install\n            npm run build\n          fi\n"
+      }
+    ],
+    "setupTasks": [
+      "Add backend verification jobs matching the kit verify command and service roots before relying on CI."
+    ]
+  },
+  {
+    "id": "workspace-deploy",
+    "name": "Per-service deployment",
+    "kind": "deploy",
+    "frameworks": [
+      "monorepo"
+    ],
+    "url": "https://docs.railway.com/guides/monorepo",
+    "description": "Independent deployment roots for the frontend and backend services.",
+    "usage": "Deploy each application from its actual root (frontend/backend, or the relevant apps/ directory). Configure each service build/start command, secrets, public URL and allowed origins separately; never publish the whole monorepo as one static site.",
+    "setupTasks": [
+      "Connect each service to its deployment provider and configure its repository root and environment variables."
+    ]
+  },
+  {
+    "id": "workspace-tests",
+    "name": "Workspace tests",
+    "kind": "testing",
+    "frameworks": [
+      "monorepo"
+    ],
+    "url": "https://docs.github.com/actions",
+    "description": "Use the test/build targets already provided by every workspace service.",
+    "usage": "Run the kit verification command across all service roots. Keep frontend and backend test tools in their own packages/virtual environments, with integration tests for API contracts. No extra packages are installed at the monorepo root."
+  },
+  {
+    "id": "workspace-quality",
+    "name": "Service quality checks",
+    "kind": "quality",
+    "frameworks": [
+      "monorepo"
+    ],
+    "url": "https://docs.github.com/actions",
+    "description": "Review and automate quality checks within each service root.",
+    "usage": "Use the formatter, linter and typechecker appropriate to each service language. Add commands in each service and aggregate them in CI; avoid a root dependency installation that hides missing frontend/backend dependencies."
+  },
+  {
+    "id": "shouldly",
+    "name": "Shouldly",
+    "kind": "testing",
+    "frameworks": [
+      "dotnet"
+    ],
+    "url": "https://docs.shouldly.org/",
+    "description": "Shouldly for ASP.NET Core projects.",
+    "usage": "Use expressive assertions in the existing xUnit tests and test behavior at the application boundary.",
+    "postInstall": [
+      "dotnet add tests/Api.Tests package Shouldly --version 4.3.0"
+    ]
+  },
+  {
+    "id": "mailkit",
+    "name": "MailKit",
+    "kind": "email",
+    "frameworks": [
+      "dotnet"
+    ],
+    "url": "https://github.com/jstedfast/MailKit",
+    "description": "MailKit for ASP.NET Core projects.",
+    "usage": "Create the SMTP client on demand with explicit TLS, authentication and timeouts; keep credentials in server environment variables and never connect during application startup.",
+    "postInstall": [
+      "dotnet add src/Api package MailKit --version 5.0.0"
+    ]
+  },
+  {
+    "id": "aspnet-localization",
+    "name": "ASP.NET localization",
+    "kind": "i18n",
+    "frameworks": [
+      "dotnet"
+    ],
+    "url": "https://learn.microsoft.com/aspnet/core/fundamentals/localization",
+    "description": "Localization middleware and resources included in ASP.NET Core.",
+    "usage": "Register localization and request-localization middleware, declare supported cultures and put messages in resource files. No extra package is required."
+  },
+  {
+    "id": "apple-sign-in",
+    "name": "Sign in with Apple",
+    "kind": "auth",
+    "frameworks": [
+      "swiftui"
+    ],
+    "url": "https://developer.apple.com/sign-in-with-apple/",
+    "description": "AuthenticationServices and Sign in with Apple from the iOS SDK.",
+    "usage": "Configure the Sign in with Apple capability and use AuthenticationServices. Verify identity tokens/nonces on a trusted server and authorize resources separately. No extra package is required."
+  },
+  {
+    "id": "apple-oslog",
+    "name": "OSLog",
+    "kind": "observability",
+    "frameworks": [
+      "swiftui"
+    ],
+    "url": "https://developer.apple.com/documentation/oslog",
+    "description": "Structured logging with the Apple OSLog framework.",
+    "usage": "Use Logger with subsystem/category and privacy-aware interpolation. Do not log tokens, identifiers or personal data as public. No extra package is required."
+  },
+  {
+    "id": "storekit",
+    "name": "StoreKit",
+    "kind": "payments",
+    "frameworks": [
+      "swiftui"
+    ],
+    "url": "https://developer.apple.com/storekit/",
+    "description": "In-app subscriptions and purchases through StoreKit.",
+    "usage": "Use StoreKit 2 and verified transactions. Keep entitlement decisions server-backed when needed, finish processed transactions and test purchases with a local StoreKit configuration before release. No extra package is required."
+  },
+  {
+    "id": "kotlin-stateflow",
+    "name": "StateFlow + ViewModel",
+    "kind": "state",
+    "frameworks": [
+      "android"
+    ],
+    "url": "https://developer.android.com/kotlin/flow/stateflow-and-sharedflow",
+    "description": "State management using the Kotlin/Android primitives in the template.",
+    "usage": "Expose immutable StateFlow from lifecycle-scoped ViewModels and collect it with lifecycle awareness in Compose. Keep mutable state private and model loading/error states explicitly."
+  },
+  {
+    "id": "android-localization",
+    "name": "Android resources",
+    "kind": "i18n",
+    "frameworks": [
+      "android"
+    ],
+    "url": "https://developer.android.com/guide/topics/resources/localization",
+    "description": "Localized strings and plurals using the Android resource system.",
+    "usage": "Use values/strings.xml and locale-specific values-* directories, stringResource/pluralStringResource and locale-aware formatting. Keep secrets and server messages out of resource strings. No extra package is required."
+  },
+  {
+    "id": "room",
+    "name": "Room",
+    "kind": "database",
+    "frameworks": [
+      "android"
+    ],
+    "url": "https://developer.android.com/training/data-storage/room",
+    "description": "Android SQLite persistence with Room.",
+    "usage": "The Room runtime is added to the Android app module. Configure the Room compiler with the Kotlin-compatible KSP plugin before defining entities/DAOs; use transactional migrations and never store credentials in plain SQLite.",
+    "postInstall": [
+      "node -e 'const fs=require(\"node:fs\");const p=[\"app/build.gradle.kts\",\"androidApp/build.gradle.kts\"].find(x=>fs.existsSync(x));if(!p)throw Error(\"No Android application module found\");const block=\"\\ndependencies {\\n    implementation(\\\"androidx.room:room-runtime:2.8.5\\\")\\n}\\n\";if(!fs.readFileSync(p,\"utf8\").includes(\"androidx.room:room-runtime:2.8.5\"))fs.appendFileSync(p,block);'"
+    ],
+    "setupTasks": [
+      "Configure the Room compiler/KSP plugin matching the project Kotlin version and add database migrations before using DAOs."
+    ]
+  },
+  {
+    "id": "sentry-angular",
+    "name": "Sentry",
+    "kind": "observability",
+    "frameworks": [
+      "angular"
+    ],
+    "url": "https://docs.sentry.io/platforms/javascript/guides/angular/",
+    "description": "Official Angular error and tracing SDK.",
+    "usage": "Configure the Angular ErrorHandler integration and optional tracing provider. Leave DSN unset until configured, redact credentials and keep sendDefaultPii false.",
+    "dependencies": [
+      "@sentry/angular@^11.12.0"
+    ],
+    "env": {
+      "SENTRY_DSN": ""
+    },
+    "setupTasks": [
+      "Configure the official Angular SDK providers and a DSN before reporting errors."
+    ]
+  },
+  {
+    "id": "angular-localize",
+    "name": "Angular localization",
+    "kind": "i18n",
+    "frameworks": [
+      "angular"
+    ],
+    "url": "https://angular.dev/guide/i18n",
+    "description": "Angular message extraction and localized builds.",
+    "usage": "Configure @angular/localize with ng add @angular/localize, mark templates/messages for translation and define source/target locales in angular.json. Keep runtime locale changes separate from localized build configuration.",
+    "dependencies": [
+      "@angular/localize@^22.2.6"
+    ],
+    "setupTasks": [
+      "Run the Angular localization schematic and configure supported locales and translation files."
+    ]
+  },
+  {
+    "id": "angular-tests",
+    "name": "Angular unit tests",
+    "kind": "testing",
+    "frameworks": [
+      "angular"
+    ],
+    "url": "https://angular.dev/guide/testing",
+    "description": "The unit test runner configured by the official Angular CLI.",
+    "usage": "Use the generated ng test target, with --watch=false in CI. Keep component tests focused on rendered behavior and cover services/auth failures. No extra package is installed beyond the official template."
+  },
+  {
+    "id": "bun-test",
+    "name": "Bun Test",
+    "kind": "testing",
+    "frameworks": [
+      "bun",
+      "elysia"
+    ],
+    "url": "https://bun.sh/docs/test",
+    "description": "The TypeScript test runner included in Bun.",
+    "usage": "Write tests with bun:test and run bun test. Exercise Elysia handlers with app.handle(new Request(...)) without opening a port. Separate application construction from listen(); cover validation failures and denied access. No additional package is installed."
+  },
+  {
+    "id": "railway-bun",
+    "name": "Railway",
+    "kind": "deploy",
+    "frameworks": [
+      "bun",
+      "elysia"
+    ],
+    "url": "https://elysiajs.com/patterns/deploy",
+    "description": "Deploy a Bun server from a repository.",
+    "usage": "Connect the repository to Railway, select Bun, install with bun install --frozen-lockfile and start the actual server entry point with bun run src/index.ts (or the project production script). Bind to 0.0.0.0 and Number(process.env.PORT ?? 3000). Verify the runtime and health check before publishing.",
+    "setupTasks": [
+      "Railway/Bun: configure the runtime, start command, PORT binding, health check and secrets in the service. This option does not create or publish an external service."
+    ]
+  },
+  {
+    "id": "spring-tests",
+    "name": "Spring Boot Test",
+    "kind": "testing",
+    "frameworks": [
+      "spring"
+    ],
+    "url": "https://docs.spring.io/spring-boot/reference/testing/index.html",
+    "description": "JUnit and Spring test support from the official starter.",
+    "usage": "The base kit includes spring-boot-starter-test. Run ./mvnw test; use focused MVC/repository test slices and reserve full @SpringBootTest contexts for integration checks. Cover authorization and invalid requests. No duplicate starter is added."
+  },
+  {
+    "id": "spring-actuator",
+    "name": "Spring Boot Actuator",
+    "kind": "observability",
+    "frameworks": [
+      "spring"
+    ],
+    "url": "https://docs.spring.io/spring-boot/reference/actuator/index.html",
+    "description": "Health and metrics from the actuator starter included in the kit.",
+    "usage": "The base kit includes spring-boot-starter-actuator. Configure readiness/liveness and metrics for the actual deployment; expose only required endpoints and authorize sensitive management endpoints. Never expose env, heap dumps or configuration to unauthenticated users."
+  },
+  {
+    "id": "laravel-pint",
+    "name": "Laravel Pint",
+    "kind": "quality",
+    "frameworks": [
+      "laravel"
+    ],
+    "url": "https://laravel.com/docs/12.x/pint",
+    "description": "Laravel formatter included by the official application template.",
+    "usage": "Run ./vendor/bin/pint --test in CI and ./vendor/bin/pint to format locally. The Laravel template already includes laravel/pint as a development dependency; do not install a second formatter."
   }
 ]

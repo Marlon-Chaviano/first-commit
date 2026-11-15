@@ -1,6 +1,6 @@
 {
   "$schema": "../../kit.schema.json",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "author": "marlon-chaviano",
   "name": "saas-tanstack-start",
   "title": "SaaS with TanStack Start",
@@ -42,7 +42,10 @@
   "libraries": {
     "framework": [
       "react",
-      "vanilla"
+      "vanilla",
+      "tanstack-start",
+      "tanstack-start",
+      "tanstack-start"
     ],
     "animation": [],
     "design": [
@@ -53,6 +56,19 @@
     ],
     "security": [
       "security-pack"
+    ],
+    "addons": [],
+    "auth": "none",
+    "ci": [],
+    "components": "none",
+    "data": "none",
+    "deploy": "none",
+    "forms": [],
+    "quality": [],
+    "state": "none",
+    "testing": [],
+    "platforms": [
+      "tanstack-start"
     ]
   },
   "verify": {

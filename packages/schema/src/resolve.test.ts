@@ -95,6 +95,22 @@ describe("framework chosen by an option", () => {
       expect(pruneSelections(kit, selected).options.security).toEqual(["security-pack"]);
     }
   });
+
+  it("keeps extension publishing independent of the selected renderer and hides web hosting", () => {
+    const store = { ...catalog[0]!, id: "chrome-store", name: "Chrome Web Store", kind: "deploy" as const, frameworks: ["browser-extension"] as Catalog[number]["frameworks"] };
+    const hosting = { ...store, id: "web-hosting", name: "Web hosting", frameworks: ["react", "vue"] as Catalog[number]["frameworks"], excludeFrameworks: ["browser-extension"] as Catalog[number]["frameworks"] };
+    const extension = expandKit(parseKit({
+      ...base, name: "extension",
+      options: [{ id: "renderer", label: "Renderer", default: "react", choices: [{ id: "react", label: "React" }, { id: "vue", label: "Vue" }] }],
+      libraries: { framework: { option: "renderer" }, platforms: ["browser-extension"], deploy: "chrome-store" },
+    }), [store, hosting]);
+    expect(extension.options.find((o) => o.id === "deploy")!.choices.map((c) => c.id)).toEqual(["none", "chrome-store"]);
+    for (const renderer of ["react", "vue"]) {
+      const sel = { ...defaultSelections(extension), options: { renderer: [renderer], deploy: ["chrome-store"] } };
+      expect(() => validateSelections(extension, sel)).not.toThrow();
+      expect(pruneSelections(extension, sel).options.deploy).toEqual(["chrome-store"]);
+    }
+  });
 });
 
 describe("buildInitCommand", () => {

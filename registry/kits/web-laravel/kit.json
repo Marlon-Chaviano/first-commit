@@ -1,7 +1,7 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "web-laravel",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "author": "marlon-chaviano",
   "title": "Web app with Laravel",
   "category": "web",
@@ -55,7 +55,15 @@
     "testing": [],
     "security": [
       "security-pack"
-    ]
+    ],
+    "ci": [],
+    "database": "none",
+    "deploy": "none",
+    "email": "none",
+    "i18n": "none",
+    "observability": [],
+    "payments": "none",
+    "quality": []
   },
   "instructions": "## How to work here\n\n- Generate with Artisan (`php artisan make:model Order -mcr`) instead of creating files by hand.\n- Validate with Form Requests and protect routes with middleware and policies.\n- After changing the schema: `php artisan migrate`. Before finishing: `php artisan test`."
 }

@@ -1,6 +1,6 @@
 {
   "$schema": "../../kit.schema.json",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "author": "marlon-chaviano",
   "name": "mobile-expo-supabase",
   "extends": "mobile-expo",
@@ -31,7 +31,16 @@
     ],
     "security": [
       "security-pack"
-    ]
+    ],
+    "animation": [],
+    "auth": "none",
+    "ci": [],
+    "components": "none",
+    "deploy": "none",
+    "i18n": "none",
+    "observability": [],
+    "quality": [],
+    "testing": []
   },
   "verify": {
     "command": "npx expo export --platform web --output-dir .verify-export && npm run --if-present test -- --ci",

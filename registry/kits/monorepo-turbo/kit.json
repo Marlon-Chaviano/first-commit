@@ -1,7 +1,7 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "monorepo-turbo",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "author": "marlon-chaviano",
   "title": "Monorepo with Turborepo",
   "category": "monorepo",
@@ -161,10 +161,7 @@
     }
   ],
   "libraries": {
-    "framework": [
-      "react",
-      "nextjs"
-    ],
+    "framework": "monorepo",
     "design": [
       "design-pack"
     ],
@@ -173,7 +170,11 @@
     ],
     "security": [
       "security-pack"
-    ]
+    ],
+    "ci": [],
+    "deploy": "none",
+    "quality": [],
+    "testing": []
   },
   "writeFiles": [
     {

@@ -1,7 +1,7 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "web-astro",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "author": "marlon-chaviano",
   "title": "Content site with Astro",
   "category": "web",
@@ -50,7 +50,13 @@
     "forms": [],
     "security": [
       "security-pack"
-    ]
+    ],
+    "auth": "none",
+    "ci": [],
+    "components": "none",
+    "deploy": "none",
+    "quality": [],
+    "testing": []
   },
   "instructions": "## How to work here\n\n- Pages in `src/pages/` (each file is a route) and `.astro` components in `src/components/`.\n- Everything is static HTML by default: add client-side JavaScript only through an island (`client:visible`, `client:idle`) when interaction is needed.\n- Markdown content with content collections (`src/content/`).\n- Before finishing: `npm run build`."
 }

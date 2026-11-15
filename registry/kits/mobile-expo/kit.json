@@ -1,7 +1,7 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "mobile-expo",
-  "version": "1.4.2",
+  "version": "1.4.3",
   "title": "Mobile app with Expo",
   "description": "React Native + Expo Router ready for iOS, Android and web, with Expo's official skills so your agent doesn't reach for outdated APIs.",
   "category": "mobile",
@@ -160,7 +160,10 @@
     "forms": [],
     "security": [
       "security-pack"
-    ]
+    ],
+    "auth": "none",
+    "ci": [],
+    "quality": []
   },
   "instructions": "## How to work here\n\n- Screens in `src/app/` (Expo Router); components in `src/components/`.\n- Add dependencies with `npx expo install`, never with `npm install` directly.\n- Before finishing a task: `npx tsc --noEmit` and `npx expo lint`.",
   "language": "typescript"

@@ -1,6 +1,6 @@
 {
   "$schema": "../../kit.schema.json",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "author": "marlon-chaviano",
   "name": "monorepo-django-react",
   "title": "Django + React in one repo",
@@ -59,9 +59,7 @@
     }
   ],
   "libraries": {
-    "framework": [
-      "react"
-    ],
+    "framework": "monorepo",
     "design": [
       "design-pack"
     ],
@@ -70,10 +68,30 @@
     ],
     "security": [
       "security-pack"
-    ]
+    ],
+    "ci": [],
+    "deploy": "none",
+    "quality": [],
+    "testing": []
   },
   "verify": {
-    "command": "cd backend && .venv/bin/python manage.py check && .venv/bin/python manage.py test && cd ../frontend && npm run build"
+    "command": "cd backend && .venv/bin/python manage.py check && .venv/bin/python manage.py test && cd ../frontend && npm run build",
+    "matrix": [
+      {
+        "testing": [
+          "workspace-tests"
+        ],
+        "quality": [
+          "workspace-quality"
+        ],
+        "ci": [
+          "workspace-ci"
+        ],
+        "deploy": [
+          "workspace-deploy"
+        ]
+      }
+    ]
   },
   "instructions": "## How to work here\n\n- `backend/` is Django + DRF (start with `cd backend && .venv/bin/python manage.py runserver`) and `frontend/` is React + Vite (`cd frontend && npm run dev`).\n- The API lives under `/api/`; the frontend calls it with the `VITE_API_URL` URL. CORS only allows the frontend's origin (`CORS_ALLOWED_ORIGINS`).\n- Before finishing: `manage.py test` in `backend/` and `npm run build` in `frontend/`.\n- Each app lives in its own folder with its own dependencies; don't mix code from one into another.\n- Whatever backend and frontend share (types, API contracts) is defined in one place and documented.\n"
 }

@@ -1,6 +1,6 @@
 {
   "$schema": "../../kit.schema.json",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "author": "marlon-chaviano",
   "name": "monorepo-packages",
   "title": "npm libraries monorepo",
@@ -75,8 +75,14 @@
     }
   ],
   "libraries": {
-    "framework": "nodejs",
+    "framework": "monorepo",
+    "platforms": [
+      "npm-package"
+    ],
     "ci": [],
+    "testing": [],
+    "quality": [],
+    "deploy": "none",
     "workflow": [
       "essentials"
     ],

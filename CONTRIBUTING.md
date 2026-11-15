@@ -29,6 +29,7 @@ El catálogo (`registry/libraries.json`) es compartido: una biblioteca aparece e
    | --- | --- |
    | `kind` | Categoría de `packages/schema/src/categories.ts`, incluidos los packs `design`, `security` y `workflow`. |
    | `frameworks` | Dónde funciona. Si la configuración cambia por plataforma (Sentry en Next.js y en Node), crea una entrada por variante. |
+   | `excludeFrameworks` | Plataformas incompatibles aunque coincida el renderer: una app Electron con React no debe recibir hosting de sitios estáticos. |
    | `usage` | Regla para el agente en `AGENTS.md`: cómo se usa y qué no hacer. |
    | `dependencies`, `devDependencies` | Paquetes. |
    | `writeFiles` | Archivos de configuración. `mode`: `create`, `append`, `prepend`, `insert-before` (con `anchor`) o `json-merge` (scripts de `package.json`). Admite `{{name}}`, `{{pm}}` y `{{pmx}}`. |
@@ -42,6 +43,8 @@ El catálogo (`registry/libraries.json`) es compartido: una biblioteca aparece e
 6. `pnpm registry:check` valida el esquema y que cada skill exista.
 
 Los packs de skills siguen este mismo catálogo, sin añadir paquetes de ejecución ni claves. Los de seguridad se documentan en [docs/security-packs.md](docs/security-packs.md): comprueba la procedencia y los archivos auxiliares, además de que exista el nombre de la skill. Activa el pack en los valores por defecto de un kit para verificarlo con `create-first-commit test`.
+
+Los kits pueden declarar `libraries.platforms` además de `framework`: el destino de publicación de una extensión debe seguir siendo el mismo al cambiar su renderer. `pnpm registry:coverage` genera [la cobertura de los 70 kits](docs/catalog-coverage.md). No fuerces categorías incompatibles para aumentar el número de opciones y no instales dependencias del frontend en la raíz de un monorepo con servicios separados. Las opciones basadas en capacidades incluidas en el SDK deben indicarlo; las que requieren configuración manual deben declararla en `setupTasks`.
 
 ## Cambiar un kit oficial
 

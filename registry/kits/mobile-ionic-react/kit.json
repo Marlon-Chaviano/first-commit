@@ -1,6 +1,6 @@
 {
   "$schema": "../../kit.schema.json",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "author": "marlon-chaviano",
   "name": "mobile-ionic-react",
   "title": "Mobile app with Ionic and React",
@@ -43,7 +43,15 @@
     ],
     "security": [
       "security-pack"
-    ]
+    ],
+    "addons": [],
+    "animation": [],
+    "auth": "none",
+    "ci": [],
+    "components": "none",
+    "deploy": "none",
+    "quality": [],
+    "testing": []
   },
   "verify": {
     "command": "{{pm}} run build",

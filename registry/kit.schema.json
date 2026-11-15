@@ -412,6 +412,12 @@
             }
           ]
         },
+        "platforms": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
         "components": {
           "type": "string"
         },

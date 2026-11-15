@@ -1,7 +1,7 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "web-nuxt",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "author": "marlon-chaviano",
   "title": "Web app with Nuxt",
   "category": "web",
@@ -45,6 +45,61 @@
         "forms": [
           "zod"
         ]
+      },
+      {
+        "components": [
+          "nuxt-ui"
+        ],
+        "forms": [
+          "valibot",
+          "vee-validate"
+        ],
+        "auth": [
+          "nuxt-auth-utils"
+        ],
+        "database": [
+          "drizzle-nuxt"
+        ],
+        "payments": [
+          "stripe-server"
+        ],
+        "email": [
+          "resend-nuxt"
+        ],
+        "i18n": [
+          "nuxt-i18n"
+        ],
+        "ai": [
+          "openai-sdk"
+        ],
+        "observability": [
+          "sentry-nuxt"
+        ],
+        "testing": [
+          "vitest-vue"
+        ],
+        "quality": [
+          "prettier"
+        ],
+        "deploy": [
+          "netlify-nuxt"
+        ]
+      },
+      {
+        "auth": [
+          "supabase-js"
+        ],
+        "deploy": [
+          "docker-nuxt"
+        ]
+      },
+      {
+        "auth": [
+          "better-auth-server"
+        ],
+        "deploy": [
+          "railway-nuxt"
+        ]
       }
     ]
   },
@@ -67,7 +122,18 @@
     "forms": [],
     "security": [
       "security-pack"
-    ]
+    ],
+    "ai": [],
+    "auth": "none",
+    "ci": [],
+    "database": "none",
+    "deploy": "none",
+    "email": "none",
+    "i18n": "none",
+    "observability": [],
+    "payments": "none",
+    "quality": [],
+    "testing": []
   },
   "instructions": "## How to work here\n\n- Pages in `app/pages/`, components in `app/components/` (auto-imported) and reusable logic in `app/composables/`.\n- Data with `useFetch` / `useAsyncData`, not with `fetch` inside `onMounted`.\n- Your own API in `server/api/`.\n- Before finishing: `npm run build`."
 }

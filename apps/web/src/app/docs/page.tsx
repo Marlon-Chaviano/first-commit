@@ -54,8 +54,9 @@ export default function DocsOverview() {
         <li>Installs the libraries you chose and writes their config files.</li>
         <li>
           Installs the skills for your agents: the <strong className="text-foreground"><BrandName /> pack</strong> (plan, debug,
-          verify), the security pack (OWASP reviews, secrets and dependencies), the design pack when there&apos;s an interface,
-          and the framework&apos;s official skills. AI and MCP kits also select the AI security pack. Skills guide the agent;
+          verify), one security pack for the whole project (code, web/APIs, mobile, infrastructure, secrets and dependencies),
+          the design pack when there&apos;s an interface, and the framework&apos;s official skills. LLM and MCP security checks
+          are part of the same security pack and apply when the project uses those features. Skills guide the agent;
           they do not guarantee security or replace tests and review.
         </li>
         <li>Configures the MCP servers and writes the stack&apos;s rules in <Code>AGENTS.md</Code>.</li>

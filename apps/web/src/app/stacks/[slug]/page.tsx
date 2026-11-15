@@ -1,5 +1,5 @@
 import { BRAND, buildInitCommand, kitLanguage, LANGUAGES, LIBRARY_OPTION_IDS, REPO_URL, resolve } from "@kits/schema";
-import { ArrowUpRightIcon, BoxIcon, FileTextIcon, KeyRoundIcon, PackageIcon, PaletteIcon, PlugIcon, ShieldCheckIcon, SlidersHorizontalIcon, type LucideIcon } from "lucide-react";
+import { ArrowUpRightIcon, FileTextIcon, KeyRoundIcon, PackageIcon, PaletteIcon, PlugIcon, ShieldCheckIcon, SlidersHorizontalIcon, type LucideIcon } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -11,7 +11,6 @@ import { JsonLd } from "@/components/shared/json-ld";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { LOGOS } from "@/lib/logos";
 import { recommendationHref } from "@/features/recommend/href";
 import { StackCard, StackLogos, stackLogoKeys } from "@/features/stacks/stack-card";
 import { TechIcon } from "@/components/shared/tech-icon";
@@ -139,7 +138,7 @@ async function StackContent({ slug }: { slug: Promise<string> }) {
                 <li key={`${optionId}-${choice.id}`} className="flex h-full flex-col gap-3 rounded-xl border p-4">
                   <span className="flex items-center justify-between gap-3">
                     <span className="flex shrink-0 items-center">
-                      {PackIcon ? <PackIcon className="size-5" /> : (LOGOS[choice.id] ? <TechLogo id={choice.id} label="" className="size-5" /> : <BoxIcon className="size-5 text-muted-foreground" />)}
+                      {PackIcon ? <PackIcon className="size-5" /> : <TechLogo id={choice.id} label="" className="size-5" />}
                     </span>
                     {choice.skills.length > 0 && (
                       <Badge variant="outline" className="font-mono tabular-nums">

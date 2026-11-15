@@ -11,19 +11,27 @@ const registry = fileURLToPath(new URL("../../../registry", import.meta.url));
 let kits: Kit[];
 beforeAll(async () => { kits = await loadRegistryKits(registry); });
 
-describe("official security packs", () => {
-  it("installs the base pack by default in every official kit, including inherited kits", () => {
+describe("official security pack", () => {
+  it("offers one general pack with 12 skills by default in every official kit", () => {
     expect(kits.length).toBeGreaterThan(0);
     for (const kit of kits) {
       const { selections } = selectionsFrom(kit, {});
-      expect(selections.options.security, kit.name).toContain("security-pack");
+      expect(selections.options.security, kit.name).toEqual(["security-pack"]);
+      const option = kit.options.find((o) => o.id === "security")!;
+      expect(option.choices.map((c) => c.id), kit.name).toEqual(["security-pack"]);
+      expect(option.choices[0]!.skills, kit.name).toHaveLength(12);
       const result = resolve(kit, selections);
       expect(result.skills, kit.name).toContain("OWASP/secure-agent-playbook@code-review-security");
       expect(result.skills, kit.name).toContain("trailofbits/skills@sharp-edges");
+      for (const skill of ["web-security-review", "mobile-code-review", "iac-security-review", "llm-risk-assess", "mcp-server-review"]) {
+        expect(result.skills, kit.name).toContain(`OWASP/secure-agent-playbook@${skill}`);
+      }
       expect(result.skills.filter((s) => s.endsWith("@security-and-hardening")), kit.name).toHaveLength(1);
       const instructions = agentsSection(kit, result);
       expect(instructions, kit.name).toContain("server-side authorization");
       expect(instructions, kit.name).toContain("not proof of security");
+      expect(instructions, kit.name).toContain("Using an AI coding assistant alone does not make the project an AI application");
+      expect(instructions, kit.name).toContain("applicable and non-applicable checks with reasons");
     }
   });
 
@@ -38,19 +46,15 @@ describe("official security packs", () => {
     expect(buildInitCommand(kit.name, kit, selections)).toContain("--security none");
   });
 
-  it("selects AI reviews by default for AI and MCP kits, and can add them elsewhere", () => {
-    for (const name of ["saas-ai-next", "ai-agent-python", "mcp-server-ts", "mcp-server-python"]) {
-      const kit = kits.find((k) => k.name === name)!;
-      const { selections } = selectionsFrom(kit, {});
-      expect(selections.options.security, name).toContain("security-ai-pack");
-      expect(resolve(kit, selections).skills, name).toContain("OWASP/secure-agent-playbook@mcp-server-review");
+  it("keeps the general pack when updating selections from the former split packs", () => {
+    const kit = kits.find((k) => k.name === "mcp-server-ts")!;
+    for (const security of [["security-pack", "security-ai-pack"], ["security-ai-pack"]]) {
+      const { selections } = selectionsFrom(kit, { options: { security } }, { unknown: "ignore" });
+      expect(selections.options.security).toEqual(["security-pack"]);
+      const result = resolve(kit, selections);
+      expect(result.skills).toContain("OWASP/secure-agent-playbook@code-review-security");
+      expect(result.skills).toContain("OWASP/secure-agent-playbook@mcp-server-review");
     }
-    const kit = kits.find((k) => k.name === "web-next")!;
-    const { selections, added } = selectionsFrom(kit, { options: { security: ["security-ai-pack"] } }, { requirements: "autofill" });
-    expect(added).toContainEqual({ optionId: "security", choiceId: "security-pack", label: "Security pack" });
-    expect(resolve(kit, selections).skills).toContain("OWASP/secure-agent-playbook@llm-risk-assess");
-    const disabled = selectionsFrom(kit, { base: selections, options: { security: ["security-ai-pack"] } }, { requirements: "prune" });
-    expect(disabled.selections.options.security).toEqual([]);
   });
 
   it("plans grouped installs and honors removal of an individual security skill", () => {

@@ -1,7 +1,7 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "spa-vite-react",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "author": "marlon-chaviano",
   "title": "SPA with Vite and React",
   "category": "web",
@@ -69,7 +69,13 @@
     "forms": [],
     "security": [
       "security-pack"
-    ]
+    ],
+    "addons": [],
+    "auth": "none",
+    "ci": [],
+    "deploy": "none",
+    "quality": [],
+    "testing": []
   },
   "instructions": "## How to work here\n\n- Components in `src/components/`, one per file; import with the `@/` alias (`@/components/...`).\n- Style with Tailwind CSS v4 classes (`src/index.css` imports Tailwind).\n- It's an SPA: data comes from an API; public variables are prefixed with `VITE_`.\n- Before finishing: `npm run build` (includes type checking).",
   "devDependencies": [

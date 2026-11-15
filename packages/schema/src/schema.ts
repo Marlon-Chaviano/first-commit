@@ -153,6 +153,8 @@ export const kitSchema = z
       .object({
         /** Fixed framework(s) (["react", "nextjs"]) or the option whose choice id is the framework. */
         framework: z.union([z.string(), z.array(z.string()).min(1), z.object({ option: z.string() })]),
+        /** Project platforms independent of a selectable renderer (e.g. a browser extension). */
+        platforms: z.array(z.string()).optional(),
         ...categoryDefaults,
       })
       .optional(),

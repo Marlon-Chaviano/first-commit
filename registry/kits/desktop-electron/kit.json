@@ -1,7 +1,7 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "desktop-electron",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "author": "marlon-chaviano",
   "title": "Desktop app with Electron",
   "description": "A cross-platform desktop app with Electron Forge, Vite and TypeScript: secure preload, hot reload and installers for macOS, Windows and Linux.",
@@ -28,7 +28,10 @@
   ],
   "libraries": {
     "framework": [
-      "vanilla"
+      "vanilla",
+      "electron",
+      "electron",
+      "electron"
     ],
     "design": [
       "design-pack"
@@ -38,7 +41,16 @@
     ],
     "security": [
       "security-pack"
-    ]
+    ],
+    "ci": [],
+    "deploy": "none",
+    "quality": [],
+    "platforms": [
+      "electron"
+    ],
+    "testing": [],
+    "forms": [],
+    "auth": "none"
   },
   "verify": {
     "command": "npm run typecheck && npx oxlint && npx oxfmt --check src"

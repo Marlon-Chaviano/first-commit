@@ -1,6 +1,6 @@
 {
   "$schema": "../../kit.schema.json",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "author": "marlon-chaviano",
   "name": "monorepo-t3-turbo",
   "title": "T3 monorepo with Turborepo",
@@ -42,10 +42,7 @@
     "expo/skills@expo-router"
   ],
   "libraries": {
-    "framework": [
-      "react",
-      "nextjs"
-    ],
+    "framework": "monorepo",
     "design": [
       "design-pack"
     ],
@@ -54,7 +51,11 @@
     ],
     "security": [
       "security-pack"
-    ]
+    ],
+    "ci": [],
+    "deploy": "none",
+    "quality": [],
+    "testing": []
   },
   "verify": {
     "command": "SKIP_ENV_VALIDATION=1 pnpm turbo run build --filter=./apps/nextjs"

@@ -32,6 +32,16 @@ export const FRAMEWORKS = [
   "angular",
   "android",
   "flutter",
+  "rust",
+  "dotnet",
+  "electron",
+  "tauri",
+  "npm-package",
+  "browser-extension",
+  "vscode-extension",
+  "monorepo",
+  "react-router",
+  "tanstack-start",
   /** Works in any kit (e.g. workflow skills). */
   "any",
 ] as const;
@@ -53,6 +63,8 @@ export const librarySchema = z.object({
    */
   kind: z.enum(LIBRARY_KINDS),
   frameworks: z.array(z.enum(FRAMEWORKS)).min(1),
+  /** Platforms where this integration would be inappropriate even if a renderer framework matches. */
+  excludeFrameworks: z.array(z.enum(FRAMEWORKS)).optional(),
   /** How the agent adds a component or uses the library, shown in AGENTS.md. */
   usage: z.string(),
   /** Manual setup the agent still has to do (providers, CSS imports…). Becomes a setup task. */
@@ -98,6 +110,16 @@ export const FRAMEWORK_LABELS: Record<string, string> = {
   angular: "Angular",
   android: "Android",
   flutter: "Flutter",
+  rust: "Rust",
+  dotnet: ".NET",
+  electron: "Electron",
+  tauri: "Tauri",
+  "npm-package": "npm package",
+  "browser-extension": "Browser extension",
+  "vscode-extension": "VS Code extension",
+  monorepo: "Monorepo",
+  "react-router": "React Router",
+  "tanstack-start": "TanStack Start",
   any: "Cualquiera",
 };
 
@@ -116,19 +138,21 @@ export function expandKit(kit: Kit, catalog: Catalog): Kit {
   const frameworks = frameworkOption
     ? (kit.options.find((o) => o.id === frameworkOption)?.choices.map((c) => c.id) ?? [])
     : ([] as string[]).concat(libs.framework as string | string[]);
+  const platforms = libs.platforms ?? [];
+  const targets = [...frameworks, ...platforms];
   const available = (kind: Library["kind"]) =>
-    catalog.filter((l) => l.kind === kind && (l.frameworks.includes("any") || l.frameworks.some((f) => frameworks.includes(f))));
+    catalog.filter((l) => l.kind === kind && !(l.excludeFrameworks ?? []).some((f) => targets.includes(f)) && (l.frameworks.includes("any") || l.frameworks.some((f) => targets.includes(f))));
 
   // Same name in one category (Sentry for Node, Bun, Workers…): add the platform to tell them apart.
-  const sameName = (lib: Library) => catalog.filter((l) => l.kind === lib.kind && l.name === lib.name && l.frameworks.some((f) => frameworks.includes(f))).length > 1;
+  const sameName = (lib: Library) => available(lib.kind).filter((l) => l.name === lib.name).length > 1;
   const label = (lib: Library) =>
     sameName(lib)
-      ? `${lib.name} (${lib.frameworks.filter((f) => frameworks.includes(f)).map((f) => FRAMEWORK_LABELS[f] ?? f).join(", ")})`
+      ? `${lib.name} (${lib.frameworks.filter((f) => targets.includes(f)).map((f) => FRAMEWORK_LABELS[f] ?? f).join(", ")})`
       : lib.name;
 
   const toChoice = (lib: Library): Choice => {
     const requires = { ...lib.requires };
-    if (frameworkOption && !lib.frameworks.includes("any")) requires[frameworkOption] = lib.frameworks.filter((f) => frameworks.includes(f));
+    if (frameworkOption && !lib.frameworks.includes("any") && !lib.frameworks.some((f) => platforms.includes(f))) requires[frameworkOption] = lib.frameworks.filter((f) => frameworks.includes(f));
     return {
       id: lib.id,
       label: label(lib),
@@ -185,7 +209,7 @@ export function libraryRule(lib: Library): string {
 
 The whole interface is built with **${lib.name}** (${lib.url}) and, if there are any, the add-on libraries below. It's the project's only source of components.
 
-- Before writing a component, check whether ${lib.name} already has it. Add it with: \`${lib.usage}\`.
+- Before writing a component, check whether ${lib.name} already has it. Setup and usage: ${lib.usage}
 - Don't install other component libraries or rebuild by hand a component ${lib.name} already provides.
 - Customize through ${lib.name}'s theming system, not with one-off styles.`;
     case "addon":

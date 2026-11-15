@@ -1,7 +1,7 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "ai-agent-python",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "author": "marlon-chaviano",
   "title": "AI agent with Python and LangGraph",
   "description": "A tool-using AI agent in Python with LangChain v1 and LangGraph: typed tools, any model provider, the LangGraph dev server and tests that don't spend tokens.",
@@ -91,9 +91,15 @@
       "essentials"
     ],
     "security": [
-      "security-pack",
-      "security-ai-pack"
-    ]
+      "security-pack"
+    ],
+    "ai": [],
+    "auth": "none",
+    "database": "none",
+    "deploy": "none",
+    "email": "none",
+    "payments": "none",
+    "testing": []
   },
   "verify": {
     "command": ".venv/bin/python -m pytest -q && (test ! -x .venv/bin/ruff || .venv/bin/ruff check .)",

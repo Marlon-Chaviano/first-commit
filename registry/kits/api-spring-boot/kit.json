@@ -1,7 +1,7 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "api-spring-boot",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "author": "marlon-chaviano",
   "title": "API with Spring Boot",
   "category": "api",
@@ -37,6 +37,37 @@
         "auth": [
           "spring-security"
         ]
+      },
+      {
+        "auth": [
+          "spring-oauth2"
+        ],
+        "database": [
+          "spring-jdbc"
+        ],
+        "payments": [
+          "stripe-java"
+        ],
+        "email": [
+          "spring-mail"
+        ],
+        "ai": [
+          "openai-java"
+        ],
+        "ci": [
+          "github-actions-spring"
+        ],
+        "deploy": [
+          "railway-spring"
+        ]
+      },
+      {
+        "testing": [
+          "spring-tests"
+        ],
+        "observability": [
+          "spring-actuator"
+        ]
       }
     ]
   },
@@ -51,7 +82,14 @@
     "auth": "none",
     "security": [
       "security-pack"
-    ]
+    ],
+    "ai": [],
+    "ci": [],
+    "deploy": "none",
+    "email": "none",
+    "payments": "none",
+    "testing": [],
+    "observability": []
   },
   "instructions": "## How to work here\n\n- Code in `src/main/java`, in layers: `controller` (HTTP), `service` (logic) and `repository` (data).\n- Validate input with `@Valid` and Bean Validation; return DTOs, never entities.\n- Configuration in `src/main/resources/application.properties`; secrets through environment variables.\n- Start with `./mvnw spring-boot:run`. Before finishing: `./mvnw test`."
 }

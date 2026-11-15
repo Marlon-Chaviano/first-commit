@@ -498,21 +498,22 @@ function SkillName({ refName }: { refName: string }) {
 /** A labelled group of values; long ones show the first few and "+N more". */
 function Item({ label, values, max = 6 }: { label: string; values: string[]; max?: number }) {
   const [open, setOpen] = useState(false);
-  const shown = open ? values : values.slice(0, max);
+  const distinct = [...new Set(values)];
+  const shown = open ? distinct : distinct.slice(0, max);
   return (
     <div className="flex flex-col gap-2">
       <dt className="label-mono text-muted-foreground">{label}</dt>
       <dd className="flex flex-wrap gap-1.5">
-        {values.length ? (
+        {distinct.length ? (
           <>
             {shown.map((v) => (
               <Badge key={v} variant="outline" className="max-w-full truncate font-mono">
                 {v}
               </Badge>
             ))}
-            {values.length > max && (
+            {distinct.length > max && (
               <button type="button" onClick={() => setOpen(!open)} className="font-mono text-xs text-muted-foreground hover:text-foreground">
-                {open ? "show less" : `+${values.length - max} more`}
+                {open ? "show less" : `+${distinct.length - max} more`}
               </button>
             )}
           </>

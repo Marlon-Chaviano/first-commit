@@ -1,6 +1,6 @@
 {
   "$schema": "../../kit.schema.json",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "author": "marlon-chaviano",
   "name": "api-rails",
   "title": "API with Rails",
@@ -34,7 +34,17 @@
     ],
     "security": [
       "security-pack"
-    ]
+    ],
+    "ai": [],
+    "auth": "none",
+    "ci": [],
+    "database": "none",
+    "deploy": "none",
+    "email": "none",
+    "observability": [],
+    "payments": "none",
+    "quality": [],
+    "i18n": "none"
   },
   "verify": {
     "command": "bin/rails db:prepare && bin/rails test && bin/rails zeitwerk:check && (test ! -d spec || bundle exec rspec)",
@@ -42,6 +52,41 @@
       {
         "testing": [
           "rspec-rails"
+        ]
+      },
+      {
+        "auth": [
+          "devise"
+        ],
+        "database": [
+          "rails-postgres"
+        ],
+        "payments": [
+          "stripe-ruby"
+        ],
+        "email": [
+          "resend-ruby"
+        ],
+        "i18n": [
+          "rails-i18n"
+        ],
+        "ai": [
+          "openai-ruby"
+        ],
+        "observability": [
+          "sentry-rails"
+        ],
+        "testing": [
+          "factory-bot-rails"
+        ],
+        "quality": [
+          "standard-ruby"
+        ],
+        "ci": [
+          "github-actions-rails"
+        ],
+        "deploy": [
+          "railway-rails"
         ]
       }
     ]

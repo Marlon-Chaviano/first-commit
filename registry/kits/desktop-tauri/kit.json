@@ -1,7 +1,7 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "desktop-tauri",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "author": "marlon-chaviano",
   "title": "Desktop app with Tauri",
   "description": "A small, fast desktop app with Tauri 2: a React + Vite interface and a Rust backend, with mobile targets available. Installers a fraction of Electron's size.",
@@ -33,7 +33,10 @@
   ],
   "libraries": {
     "framework": [
-      "react"
+      "react",
+      "tauri",
+      "tauri",
+      "tauri"
     ],
     "components": "none",
     "animation": [],
@@ -48,7 +51,15 @@
     ],
     "security": [
       "security-pack"
-    ]
+    ],
+    "ci": [],
+    "deploy": "none",
+    "quality": [],
+    "platforms": [
+      "tauri"
+    ],
+    "testing": [],
+    "auth": "none"
   },
   "verify": {
     "command": "{{pm}} run build && cargo metadata --format-version 1 --manifest-path src-tauri/Cargo.toml > /dev/null",

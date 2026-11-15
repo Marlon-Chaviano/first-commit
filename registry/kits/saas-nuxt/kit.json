@@ -1,6 +1,6 @@
 {
   "$schema": "../../kit.schema.json",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "author": "marlon-chaviano",
   "name": "saas-nuxt",
   "title": "SaaS with Nuxt UI",
@@ -50,7 +50,23 @@
     ],
     "security": [
       "security-pack"
-    ]
+    ],
+    "ai": [],
+    "animation": [],
+    "auth": "none",
+    "ci": [],
+    "data": "none",
+    "database": "none",
+    "deploy": "none",
+    "email": "none",
+    "forms": [],
+    "i18n": "none",
+    "observability": [],
+    "payments": "none",
+    "quality": [],
+    "state": "none",
+    "styling": "none",
+    "testing": []
   },
   "verify": {
     "command": "{{pm}} run build"

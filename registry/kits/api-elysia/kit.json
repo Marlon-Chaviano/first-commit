@@ -1,7 +1,7 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "api-elysia",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "author": "marlon-chaviano",
   "title": "API with Elysia on Bun",
   "category": "api",
@@ -26,7 +26,22 @@
     "wshobson/agents@api-design-principles"
   ],
   "verify": {
-    "command": "bunx tsc --noEmit -p . && bun build src/index.ts --target bun --outdir .verify-build"
+    "command": "bunx tsc --noEmit -p . && bun build src/index.ts --target bun --outdir .verify-build",
+    "matrix": [
+      {
+        "database": [
+          "drizzle-bun"
+        ]
+      },
+      {
+        "testing": [
+          "bun-test"
+        ],
+        "deploy": [
+          "railway-bun"
+        ]
+      }
+    ]
   },
   "libraries": {
     "framework": [
@@ -38,7 +53,18 @@
     ],
     "security": [
       "security-pack"
-    ]
+    ],
+    "ai": [],
+    "auth": "none",
+    "ci": [],
+    "database": "none",
+    "email": "none",
+    "observability": [],
+    "payments": "none",
+    "quality": [],
+    "forms": [],
+    "testing": [],
+    "deploy": "none"
   },
   "instructions": "## How to work here\n\n- Routes in `src/`, grouped with `new Elysia({ prefix: '/resource' })` and mounted with `.use()`.\n- Validate params, query and body with `t` (TypeBox) on every route; types are inferred.\n- Start with `bun dev`. Before finishing: `bunx tsc --noEmit`."
 }

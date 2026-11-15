@@ -1,5 +1,19 @@
 [
   {
+    "date": "2026-11-14",
+    "title": "A fuller catalog for every stack, and one Security pack",
+    "items": [
+      "The shared catalog now has 256 entries, with 144 new library, tooling and deployment options across TypeScript, Python, Go, Rust, C#, Ruby, PHP, Java, Kotlin, Swift and Dart.",
+      "All 70 official kits were reviewed for compatible categories. Nuxt now offers Vercel, Netlify, Docker and Railway, plus auth, database, payments, email, i18n, observability and testing choices. SvelteKit gets its own Vercel, Netlify and Node adapters.",
+      "Expanded native and backend choices include Flutter state/data packages, Swift Package Manager integrations, Android libraries, Rust crates, ASP.NET Core packages, Spring starters and official server SDKs. Setup tasks identify configuration that still needs to be completed.",
+      "Deployment choices follow the project platform: browser and VS Code extensions get their publishing destinations, desktop apps get release distribution, and monorepos keep deployment and dependencies scoped to their services.",
+      "Every catalog entry now has an icon: a publisher mark when available, otherwise a semantic icon for its category, in both themes.",
+      "One general Security pack with 12 skills replaces the separate AI security add-on. It covers code, auth, access control, web/APIs, mobile, infrastructure, secrets and dependencies; LLM/MCP checks apply when the project implements those features.",
+      "create-first-commit 1.0.3 adds platform-aware catalog compatibility and improves verification: project build combinations exclude skills, while skill names are checked separately from their official source files with an installer fallback.",
+      "A generated coverage report documents the options offered by each kit. New verification matrix entries exercise the added catalog choices without requiring production credentials."
+    ]
+  },
+  {
     "date": "2026-11-07",
     "title": "first-commit is live",
     "items": [

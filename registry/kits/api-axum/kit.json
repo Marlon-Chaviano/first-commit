@@ -1,7 +1,7 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "api-axum",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "author": "marlon-chaviano",
   "title": "API with Rust and Axum",
   "description": "A fast, type-safe HTTP API in Rust with Axum and Tokio: JSON with Serde, structured logs with tracing and in-process tests with no open ports.",
@@ -61,10 +61,51 @@
     ],
     "security": [
       "security-pack"
-    ]
+    ],
+    "auth": "none",
+    "ci": [],
+    "database": "none",
+    "deploy": "none",
+    "email": "none",
+    "observability": [],
+    "quality": [],
+    "testing": []
   },
   "verify": {
-    "command": "cargo build && cargo test"
+    "command": "cargo build && cargo test",
+    "matrix": [
+      {
+        "auth": [
+          "jwt-rust"
+        ],
+        "database": [
+          "sqlx-rust"
+        ],
+        "email": [
+          "lettre"
+        ],
+        "observability": [
+          "sentry-rust"
+        ],
+        "testing": [
+          "proptest"
+        ],
+        "quality": [
+          "rustfmt-clippy"
+        ],
+        "ci": [
+          "github-actions-rust"
+        ],
+        "deploy": [
+          "railway-rust"
+        ]
+      },
+      {
+        "deploy": [
+          "github-releases"
+        ]
+      }
+    ]
   },
   "instructions": "## How to work here\n\n- Routes in `src/lib.rs` (`router()`); split them into modules per resource (`src/routes/users.rs`) and merge with `Router::merge` or `nest`.\n- Handlers take extractors (`Json<T>`, `Path<T>`, `State<AppState>`) and return `impl IntoResponse`. Shared state (DB pool, config) goes in an `AppState` passed with `.with_state()`.\n- Errors: define an `AppError` that implements `IntoResponse` and use `?` in handlers; no `unwrap()` outside tests.\n- Tests call `router().oneshot(request)` (see `tests/health.rs`): no server, no ports.\n- Run with `cargo run` (`RUST_LOG=debug` for more logs). Before finishing: `cargo fmt`, `cargo clippy` and `cargo test`."
 }
