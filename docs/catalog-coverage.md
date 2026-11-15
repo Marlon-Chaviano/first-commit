@@ -2,6 +2,8 @@
 
 Generado con `pnpm registry:coverage`. 70 kits y 256 entradas de catálogo.
 
+La evidencia de esta ampliación está en [catalog-validation.json](catalog-validation.json): una combinación verificada por cada opción nueva. [catalog-package-sources.json](catalog-package-sources.json) registra las consultas a los registros oficiales de paquetes.
+
 Los números cuentan opciones disponibles, sin «None»; no significan que todas estén instaladas ni verificadas en cada combinación. «—» indica que esa categoría no se ofrece en el configurador: puede venir incluida en el kit base o no ser pertinente. El pack general de Security y el de flujo de trabajo están disponibles en los 70 kits y no cuentan como bibliotecas de estas columnas.
 
 Los frameworks y plataformas se resuelven con `loadRegistryKits`, igual que en CLI y web. Las extensiones reciben destinos de publicación propios; los proyectos de escritorio no reciben hosting web. Los monorepos conservan las dependencias dentro de cada servicio: sus opciones comunes cubren CI, comprobaciones y despliegue por servicio, sin instalar bibliotecas del frontend en la raíz.

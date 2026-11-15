@@ -1,0 +1,2016 @@
+{
+  "checkedOn": "2026-11-14",
+  "catalogEntries": 256,
+  "newEntries": 144,
+  "scope": "Each new entry appears in at least one passing generated-project verification. Checks are those declared by its kit; this does not assert every cross-product of options, remote deployment, external API credentials, or a completed security audit. Skills were checked separately with registry:check (351 names).",
+  "ciRun": "https://github.com/Marlon-Chaviano/first-commit/actions/runs/43656246296",
+  "cases": [
+    {
+      "case": 1,
+      "kit": "ios-swiftui",
+      "version": "1.3.3",
+      "platform": "darwin",
+      "packageManager": "swift",
+      "options": {
+        "data": [
+          "alamofire"
+        ],
+        "auth": [
+          "apple-sign-in"
+        ],
+        "database": [
+          "grdb"
+        ],
+        "payments": [
+          "storekit"
+        ],
+        "observability": [
+          "apple-oslog"
+        ],
+        "testing": [
+          "swift-testing"
+        ],
+        "quality": [
+          "swiftlint"
+        ],
+        "ci": [
+          "github-actions-swiftui"
+        ],
+        "deploy": [
+          "app-store-connect"
+        ],
+        "design": [
+          "design-pack-native"
+        ],
+        "security": [
+          "security-pack"
+        ],
+        "workflow": [
+          "essentials"
+        ]
+      },
+      "source": "github-actions"
+    },
+    {
+      "case": 2,
+      "kit": "mobile-kmp",
+      "version": "1.1.3",
+      "platform": "linux",
+      "packageManager": "gradle",
+      "options": {
+        "state": [
+          "kotlin-stateflow"
+        ],
+        "data": [
+          "ktor-client"
+        ],
+        "forms": [
+          "kotlinx-serialization"
+        ],
+        "auth": [
+          "android-credentials"
+        ],
+        "database": [
+          "room"
+        ],
+        "i18n": [
+          "android-localization"
+        ],
+        "testing": [
+          "android-unit-tests"
+        ],
+        "quality": [
+          "android-lint"
+        ],
+        "ci": [
+          "github-actions-android"
+        ],
+        "deploy": [
+          "android-stores"
+        ],
+        "design": [
+          "design-pack-native"
+        ],
+        "security": [
+          "security-pack"
+        ],
+        "workflow": [
+          "essentials"
+        ]
+      },
+      "source": "github-actions"
+    },
+    {
+      "case": 3,
+      "kit": "web-angular",
+      "version": "1.1.3",
+      "platform": "darwin",
+      "packageManager": "pnpm",
+      "options": {
+        "components": [
+          "primeng"
+        ],
+        "forms": [],
+        "auth": [
+          "none"
+        ],
+        "i18n": [
+          "angular-localize"
+        ],
+        "observability": [
+          "sentry-angular"
+        ],
+        "testing": [
+          "angular-tests"
+        ],
+        "quality": [],
+        "ci": [],
+        "deploy": [
+          "vercel-static"
+        ],
+        "design": [
+          "design-pack"
+        ],
+        "security": [
+          "security-pack"
+        ],
+        "workflow": [
+          "essentials"
+        ]
+      },
+      "source": "local"
+    },
+    {
+      "case": 4,
+      "kit": "web-angular",
+      "version": "1.1.3",
+      "platform": "darwin",
+      "packageManager": "pnpm",
+      "options": {
+        "components": [
+          "angular-material"
+        ],
+        "forms": [],
+        "auth": [
+          "none"
+        ],
+        "i18n": [
+          "none"
+        ],
+        "observability": [],
+        "testing": [],
+        "quality": [],
+        "ci": [],
+        "deploy": [
+          "none"
+        ],
+        "design": [
+          "design-pack"
+        ],
+        "security": [
+          "security-pack"
+        ],
+        "workflow": [
+          "essentials"
+        ]
+      },
+      "source": "local"
+    },
+    {
+      "case": 5,
+      "kit": "api-fastapi",
+      "version": "1.3.3",
+      "platform": "darwin",
+      "packageManager": "pip",
+      "options": {
+        "auth": [
+          "pyjwt"
+        ],
+        "database": [
+          "sqlalchemy"
+        ],
+        "payments": [
+          "stripe-python"
+        ],
+        "email": [
+          "resend-python"
+        ],
+        "ai": [
+          "anthropic-python",
+          "openai-python"
+        ],
+        "observability": [],
+        "testing": [
+          "pytest"
+        ],
+        "quality": [
+          "mypy"
+        ],
+        "ci": [],
+        "deploy": [
+          "railway-python"
+        ],
+        "security": [
+          "security-pack"
+        ],
+        "workflow": [
+          "essentials"
+        ]
+      },
+      "source": "local"
+    },
+    {
+      "case": 6,
+      "kit": "api-aspnet",
+      "version": "1.0.3",
+      "platform": "darwin",
+      "packageManager": "dotnet",
+      "options": {
+        "forms": [
+          "fluentvalidation"
+        ],
+        "auth": [
+          "jwt-dotnet"
+        ],
+        "database": [
+          "efcore-sqlite"
+        ],
+        "payments": [
+          "stripe-dotnet"
+        ],
+        "email": [
+          "mailkit"
+        ],
+        "i18n": [
+          "aspnet-localization"
+        ],
+        "ai": [
+          "openai-dotnet"
+        ],
+        "observability": [
+          "serilog"
+        ],
+        "testing": [
+          "shouldly"
+        ],
+        "quality": [
+          "dotnet-format"
+        ],
+        "ci": [
+          "github-actions-dotnet"
+        ],
+        "deploy": [
+          "railway-dotnet"
+        ],
+        "security": [
+          "security-pack"
+        ],
+        "workflow": [
+          "essentials"
+        ]
+      },
+      "source": "local"
+    },
+    {
+      "case": 7,
+      "kit": "web-nuxt",
+      "version": "1.2.3",
+      "platform": "darwin",
+      "packageManager": "pnpm",
+      "options": {
+        "components": [
+          "none"
+        ],
+        "animation": [],
+        "styling-lib": [
+          "none"
+        ],
+        "state": [
+          "none"
+        ],
+        "data": [
+          "none"
+        ],
+        "forms": [],
+        "auth": [
+          "better-auth-server"
+        ],
+        "database": [
+          "none"
+        ],
+        "payments": [
+          "none"
+        ],
+        "email": [
+          "none"
+        ],
+        "i18n": [
+          "none"
+        ],
+        "ai": [],
+        "observability": [],
+        "testing": [],
+        "quality": [],
+        "ci": [],
+        "deploy": [
+          "railway-nuxt"
+        ],
+        "design": [
+          "design-pack"
+        ],
+        "security": [
+          "security-pack"
+        ],
+        "workflow": [
+          "essentials"
+        ]
+      },
+      "source": "local"
+    },
+    {
+      "case": 8,
+      "kit": "mobile-flutter",
+      "version": "1.1.3",
+      "platform": "darwin",
+      "packageManager": "flutter",
+      "options": {
+        "state": [
+          "bloc"
+        ],
+        "data": [
+          "http-dart"
+        ],
+        "auth": [
+          "none"
+        ],
+        "database": [
+          "none"
+        ],
+        "i18n": [
+          "none"
+        ],
+        "observability": [],
+        "testing": [],
+        "quality": [],
+        "ci": [],
+        "deploy": [
+          "none"
+        ],
+        "design": [
+          "design-pack-native"
+        ],
+        "security": [
+          "security-pack"
+        ],
+        "workflow": [
+          "essentials"
+        ]
+      },
+      "source": "local"
+    },
+    {
+      "case": 9,
+      "kit": "api-elysia",
+      "version": "1.2.3",
+      "platform": "darwin",
+      "packageManager": "bun",
+      "options": {
+        "forms": [],
+        "auth": [
+          "none"
+        ],
+        "database": [
+          "none"
+        ],
+        "payments": [
+          "none"
+        ],
+        "email": [
+          "none"
+        ],
+        "ai": [],
+        "observability": [],
+        "testing": [
+          "bun-test"
+        ],
+        "quality": [],
+        "ci": [],
+        "deploy": [
+          "railway-bun"
+        ],
+        "security": [
+          "security-pack"
+        ],
+        "workflow": [
+          "essentials"
+        ]
+      },
+      "source": "local"
+    },
+    {
+      "case": 10,
+      "kit": "chrome-extension",
+      "version": "1.4.3",
+      "platform": "darwin",
+      "packageManager": "pnpm",
+      "options": {
+        "framework": [
+          "react"
+        ],
+        "components": [
+          "none"
+        ],
+        "component-addons": [],
+        "animation": [],
+        "state": [
+          "none"
+        ],
+        "data": [
+          "none"
+        ],
+        "forms": [],
+        "auth": [
+          "none"
+        ],
+        "i18n": [
+          "none"
+        ],
+        "observability": [],
+        "testing": [],
+        "quality": [],
+        "ci": [],
+        "deploy": [
+          "chrome-web-store"
+        ],
+        "design": [
+          "design-pack"
+        ],
+        "security": [
+          "security-pack"
+        ],
+        "workflow": [
+          "essentials"
+        ]
+      },
+      "source": "local"
+    },
+    {
+      "case": 11,
+      "kit": "web-vue-vite",
+      "version": "1.1.3",
+      "platform": "darwin",
+      "packageManager": "pnpm",
+      "options": {
+        "components": [
+          "none"
+        ],
+        "animation": [],
+        "state": [
+          "none"
+        ],
+        "forms": [],
+        "auth": [
+          "none"
+        ],
+        "i18n": [
+          "none"
+        ],
+        "observability": [],
+        "testing": [],
+        "quality": [],
+        "ci": [],
+        "deploy": [
+          "cloudflare-pages"
+        ],
+        "design": [
+          "design-pack"
+        ],
+        "security": [
+          "security-pack"
+        ],
+        "workflow": [
+          "essentials"
+        ]
+      },
+      "source": "local"
+    },
+    {
+      "case": 12,
+      "kit": "api-aspnet",
+      "version": "1.0.3",
+      "platform": "darwin",
+      "packageManager": "dotnet",
+      "options": {
+        "forms": [],
+        "auth": [
+          "none"
+        ],
+        "database": [
+          "dapper"
+        ],
+        "payments": [
+          "none"
+        ],
+        "email": [
+          "none"
+        ],
+        "i18n": [
+          "none"
+        ],
+        "ai": [],
+        "observability": [],
+        "testing": [],
+        "quality": [],
+        "ci": [],
+        "deploy": [
+          "none"
+        ],
+        "security": [
+          "security-pack"
+        ],
+        "workflow": [
+          "essentials"
+        ]
+      },
+      "source": "local"
+    },
+    {
+      "case": 13,
+      "kit": "api-rails",
+      "version": "1.1.3",
+      "platform": "darwin",
+      "packageManager": "bundler",
+      "options": {
+        "auth": [
+          "devise"
+        ],
+        "database": [
+          "rails-postgres"
+        ],
+        "payments": [
+          "stripe-ruby"
+        ],
+        "email": [
+          "resend-ruby"
+        ],
+        "i18n": [
+          "rails-i18n"
+        ],
+        "ai": [
+          "openai-ruby"
+        ],
+        "observability": [
+          "sentry-rails"
+        ],
+        "testing": [
+          "factory-bot-rails"
+        ],
+        "quality": [
+          "standard-ruby"
+        ],
+        "ci": [
+          "github-actions-rails"
+        ],
+        "deploy": [
+          "railway-rails"
+        ],
+        "security": [
+          "security-pack"
+        ],
+        "workflow": [
+          "essentials"
+        ]
+      },
+      "source": "local"
+    },
+    {
+      "case": 14,
+      "kit": "mobile-flutter",
+      "version": "1.1.3",
+      "platform": "darwin",
+      "packageManager": "flutter",
+      "options": {
+        "state": [
+          "riverpod"
+        ],
+        "data": [
+          "dio"
+        ],
+        "auth": [
+          "supabase-flutter"
+        ],
+        "database": [
+          "sqflite"
+        ],
+        "i18n": [
+          "intl-dart"
+        ],
+        "observability": [
+          "sentry-flutter"
+        ],
+        "testing": [
+          "mocktail"
+        ],
+        "quality": [
+          "flutter-lints"
+        ],
+        "ci": [
+          "github-actions-flutter"
+        ],
+        "deploy": [
+          "flutter-stores"
+        ],
+        "design": [
+          "design-pack-native"
+        ],
+        "security": [
+          "security-pack"
+        ],
+        "workflow": [
+          "essentials"
+        ]
+      },
+      "source": "local"
+    },
+    {
+      "case": 15,
+      "kit": "web-nuxt",
+      "version": "1.2.3",
+      "platform": "darwin",
+      "packageManager": "pnpm",
+      "options": {
+        "components": [
+          "none"
+        ],
+        "animation": [],
+        "styling-lib": [
+          "none"
+        ],
+        "state": [
+          "none"
+        ],
+        "data": [
+          "none"
+        ],
+        "forms": [],
+        "auth": [
+          "supabase-js"
+        ],
+        "database": [
+          "none"
+        ],
+        "payments": [
+          "none"
+        ],
+        "email": [
+          "none"
+        ],
+        "i18n": [
+          "none"
+        ],
+        "ai": [],
+        "observability": [],
+        "testing": [],
+        "quality": [],
+        "ci": [],
+        "deploy": [
+          "docker-nuxt"
+        ],
+        "design": [
+          "design-pack"
+        ],
+        "security": [
+          "security-pack"
+        ],
+        "workflow": [
+          "essentials"
+        ]
+      },
+      "source": "local"
+    },
+    {
+      "case": 16,
+      "kit": "api-elysia",
+      "version": "1.2.3",
+      "platform": "darwin",
+      "packageManager": "bun",
+      "options": {
+        "forms": [],
+        "auth": [
+          "none"
+        ],
+        "database": [
+          "drizzle-bun"
+        ],
+        "payments": [
+          "none"
+        ],
+        "email": [
+          "none"
+        ],
+        "ai": [],
+        "observability": [],
+        "quality": [],
+        "ci": [],
+        "security": [
+          "security-pack"
+        ],
+        "workflow": [
+          "essentials"
+        ]
+      },
+      "source": "local"
+    },
+    {
+      "case": 17,
+      "kit": "cli-node",
+      "version": "1.0.3",
+      "platform": "darwin",
+      "packageManager": "pnpm",
+      "options": {
+        "forms": [],
+        "auth": [
+          "none"
+        ],
+        "database": [
+          "drizzle-node"
+        ],
+        "payments": [
+          "none"
+        ],
+        "email": [
+          "none"
+        ],
+        "ai": [],
+        "observability": [],
+        "testing": [],
+        "quality": [],
+        "ci": [],
+        "deploy": [
+          "npm-publish"
+        ],
+        "security": [
+          "security-pack"
+        ],
+        "workflow": [
+          "essentials"
+        ]
+      },
+      "source": "local"
+    },
+    {
+      "case": 18,
+      "kit": "web-nuxt",
+      "version": "1.2.3",
+      "platform": "darwin",
+      "packageManager": "pnpm",
+      "options": {
+        "components": [
+          "nuxt-ui"
+        ],
+        "animation": [],
+        "styling-lib": [
+          "none"
+        ],
+        "state": [
+          "none"
+        ],
+        "data": [
+          "none"
+        ],
+        "forms": [
+          "valibot",
+          "vee-validate"
+        ],
+        "auth": [
+          "nuxt-auth-utils"
+        ],
+        "database": [
+          "drizzle-nuxt"
+        ],
+        "payments": [
+          "stripe-server"
+        ],
+        "email": [
+          "resend-nuxt"
+        ],
+        "i18n": [
+          "nuxt-i18n"
+        ],
+        "ai": [
+          "openai-sdk"
+        ],
+        "observability": [
+          "sentry-nuxt"
+        ],
+        "testing": [
+          "vitest-vue"
+        ],
+        "quality": [
+          "prettier"
+        ],
+        "ci": [],
+        "deploy": [
+          "netlify-nuxt"
+        ],
+        "design": [
+          "design-pack"
+        ],
+        "security": [
+          "security-pack"
+        ],
+        "workflow": [
+          "essentials"
+        ]
+      },
+      "source": "local"
+    },
+    {
+      "case": 19,
+      "kit": "web-sveltekit",
+      "version": "1.2.3",
+      "platform": "darwin",
+      "packageManager": "pnpm",
+      "options": {
+        "components": [
+          "none"
+        ],
+        "animation": [],
+        "styling-lib": [
+          "none"
+        ],
+        "data": [
+          "none"
+        ],
+        "forms": [
+          "sveltekit-superforms"
+        ],
+        "auth": [
+          "none"
+        ],
+        "database": [
+          "drizzle-sveltekit"
+        ],
+        "payments": [
+          "none"
+        ],
+        "email": [
+          "resend-sveltekit"
+        ],
+        "ai": [],
+        "observability": [
+          "sentry-sveltekit"
+        ],
+        "testing": [
+          "vitest-svelte"
+        ],
+        "quality": [],
+        "ci": [],
+        "deploy": [
+          "sveltekit-vercel"
+        ],
+        "design": [
+          "design-pack"
+        ],
+        "security": [
+          "security-pack"
+        ],
+        "workflow": [
+          "essentials"
+        ]
+      },
+      "source": "local"
+    },
+    {
+      "case": 20,
+      "kit": "api-laravel",
+      "version": "1.1.3",
+      "platform": "darwin",
+      "packageManager": "composer",
+      "options": {
+        "auth": [
+          "laravel-sanctum"
+        ],
+        "database": [
+          "laravel-eloquent"
+        ],
+        "payments": [
+          "stripe-php"
+        ],
+        "email": [
+          "resend-laravel"
+        ],
+        "i18n": [
+          "laravel-localization"
+        ],
+        "observability": [
+          "sentry-laravel"
+        ],
+        "testing": [],
+        "ci": [
+          "github-actions-laravel"
+        ],
+        "deploy": [
+          "railway-laravel"
+        ],
+        "security": [
+          "security-pack"
+        ],
+        "workflow": [
+          "essentials"
+        ]
+      },
+      "source": "local"
+    },
+    {
+      "case": 21,
+      "kit": "api-axum",
+      "version": "1.0.3",
+      "platform": "darwin",
+      "packageManager": "cargo",
+      "options": {
+        "auth": [
+          "jwt-rust"
+        ],
+        "database": [
+          "sqlx-rust"
+        ],
+        "email": [
+          "lettre"
+        ],
+        "observability": [
+          "sentry-rust"
+        ],
+        "testing": [
+          "proptest"
+        ],
+        "quality": [
+          "rustfmt-clippy"
+        ],
+        "ci": [
+          "github-actions-rust"
+        ],
+        "deploy": [
+          "railway-rust"
+        ],
+        "security": [
+          "security-pack"
+        ],
+        "workflow": [
+          "essentials"
+        ]
+      },
+      "source": "local"
+    },
+    {
+      "case": 22,
+      "kit": "api-spring-boot",
+      "version": "1.2.3",
+      "platform": "linux",
+      "packageManager": "maven",
+      "options": {
+        "auth": [
+          "spring-oauth2"
+        ],
+        "database": [
+          "spring-jdbc"
+        ],
+        "payments": [
+          "stripe-java"
+        ],
+        "email": [
+          "spring-mail"
+        ],
+        "ai": [
+          "openai-java"
+        ],
+        "observability": [],
+        "testing": [],
+        "ci": [
+          "github-actions-spring"
+        ],
+        "deploy": [
+          "railway-spring"
+        ],
+        "security": [
+          "security-pack"
+        ],
+        "workflow": [
+          "essentials"
+        ]
+      },
+      "source": "github-actions"
+    },
+    {
+      "case": 23,
+      "kit": "api-axum",
+      "version": "1.0.3",
+      "platform": "darwin",
+      "packageManager": "cargo",
+      "options": {
+        "auth": [
+          "none"
+        ],
+        "database": [
+          "none"
+        ],
+        "email": [
+          "none"
+        ],
+        "observability": [],
+        "testing": [],
+        "quality": [],
+        "ci": [],
+        "deploy": [
+          "github-releases"
+        ],
+        "security": [
+          "security-pack"
+        ],
+        "workflow": [
+          "essentials"
+        ]
+      },
+      "source": "local"
+    },
+    {
+      "case": 24,
+      "kit": "api-go",
+      "version": "1.3.3",
+      "platform": "darwin",
+      "packageManager": "go",
+      "options": {
+        "auth": [
+          "jwt-go"
+        ],
+        "database": [
+          "sqlx-go"
+        ],
+        "email": [
+          "resend-go"
+        ],
+        "observability": [
+          "zerolog"
+        ],
+        "testing": [],
+        "quality": [],
+        "ci": [],
+        "deploy": [
+          "none"
+        ],
+        "security": [
+          "security-pack"
+        ],
+        "workflow": [
+          "essentials"
+        ]
+      },
+      "source": "local"
+    },
+    {
+      "case": 25,
+      "kit": "api-laravel",
+      "version": "1.1.3",
+      "platform": "darwin",
+      "packageManager": "composer",
+      "options": {
+        "auth": [
+          "laravel-sanctum"
+        ],
+        "database": [
+          "none"
+        ],
+        "payments": [
+          "none"
+        ],
+        "email": [
+          "none"
+        ],
+        "i18n": [
+          "none"
+        ],
+        "observability": [],
+        "testing": [],
+        "quality": [
+          "laravel-pint"
+        ],
+        "ci": [],
+        "deploy": [
+          "none"
+        ],
+        "security": [
+          "security-pack"
+        ],
+        "workflow": [
+          "essentials"
+        ]
+      },
+      "source": "local"
+    },
+    {
+      "case": 26,
+      "kit": "web-vue-vite",
+      "version": "1.1.3",
+      "platform": "darwin",
+      "packageManager": "pnpm",
+      "options": {
+        "components": [
+          "none"
+        ],
+        "animation": [],
+        "state": [
+          "pinia-vue"
+        ],
+        "forms": [],
+        "auth": [
+          "none"
+        ],
+        "i18n": [
+          "vue-i18n"
+        ],
+        "observability": [
+          "sentry-vue"
+        ],
+        "testing": [],
+        "quality": [],
+        "ci": [],
+        "deploy": [
+          "netlify-static"
+        ],
+        "design": [
+          "design-pack"
+        ],
+        "security": [
+          "security-pack"
+        ],
+        "workflow": [
+          "essentials"
+        ]
+      },
+      "source": "local"
+    },
+    {
+      "case": 27,
+      "kit": "mobile-flutter",
+      "version": "1.1.3",
+      "platform": "darwin",
+      "packageManager": "flutter",
+      "options": {
+        "state": [
+          "provider"
+        ],
+        "data": [
+          "none"
+        ],
+        "auth": [
+          "none"
+        ],
+        "database": [
+          "none"
+        ],
+        "i18n": [
+          "none"
+        ],
+        "observability": [],
+        "testing": [],
+        "quality": [],
+        "ci": [],
+        "deploy": [
+          "none"
+        ],
+        "design": [
+          "design-pack-native"
+        ],
+        "security": [
+          "security-pack"
+        ],
+        "workflow": [
+          "essentials"
+        ]
+      },
+      "source": "local"
+    },
+    {
+      "case": 28,
+      "kit": "api-django",
+      "version": "1.2.3",
+      "platform": "darwin",
+      "packageManager": "pip",
+      "options": {
+        "auth": [
+          "none"
+        ],
+        "database": [
+          "none"
+        ],
+        "payments": [
+          "none"
+        ],
+        "email": [
+          "none"
+        ],
+        "ai": [],
+        "observability": [
+          "sentry-django"
+        ],
+        "testing": [],
+        "quality": [],
+        "ci": [],
+        "deploy": [
+          "railway-django"
+        ],
+        "security": [
+          "security-pack"
+        ],
+        "workflow": [
+          "essentials"
+        ]
+      },
+      "source": "local"
+    },
+    {
+      "case": 29,
+      "kit": "api-spring-boot",
+      "version": "1.2.3",
+      "platform": "linux",
+      "packageManager": "maven",
+      "options": {
+        "auth": [
+          "none"
+        ],
+        "database": [
+          "none"
+        ],
+        "payments": [
+          "none"
+        ],
+        "email": [
+          "none"
+        ],
+        "ai": [],
+        "observability": [
+          "spring-actuator"
+        ],
+        "testing": [
+          "spring-tests"
+        ],
+        "ci": [],
+        "deploy": [
+          "none"
+        ],
+        "security": [
+          "security-pack"
+        ],
+        "workflow": [
+          "essentials"
+        ]
+      },
+      "source": "github-actions"
+    },
+    {
+      "case": 30,
+      "kit": "web-sveltekit",
+      "version": "1.2.3",
+      "platform": "darwin",
+      "packageManager": "pnpm",
+      "options": {
+        "components": [
+          "none"
+        ],
+        "animation": [],
+        "styling-lib": [
+          "none"
+        ],
+        "data": [
+          "none"
+        ],
+        "forms": [],
+        "auth": [
+          "none"
+        ],
+        "database": [
+          "none"
+        ],
+        "payments": [
+          "none"
+        ],
+        "email": [
+          "none"
+        ],
+        "ai": [],
+        "observability": [],
+        "testing": [],
+        "quality": [],
+        "ci": [],
+        "deploy": [
+          "sveltekit-netlify"
+        ],
+        "design": [
+          "design-pack"
+        ],
+        "security": [
+          "security-pack"
+        ],
+        "workflow": [
+          "essentials"
+        ]
+      },
+      "source": "local"
+    },
+    {
+      "case": 31,
+      "kit": "web-sveltekit",
+      "version": "1.2.3",
+      "platform": "darwin",
+      "packageManager": "pnpm",
+      "options": {
+        "components": [
+          "none"
+        ],
+        "animation": [],
+        "styling-lib": [
+          "none"
+        ],
+        "data": [
+          "none"
+        ],
+        "forms": [],
+        "auth": [
+          "none"
+        ],
+        "database": [
+          "none"
+        ],
+        "payments": [
+          "none"
+        ],
+        "email": [
+          "none"
+        ],
+        "ai": [],
+        "observability": [],
+        "testing": [],
+        "quality": [],
+        "ci": [],
+        "deploy": [
+          "sveltekit-node"
+        ],
+        "design": [
+          "design-pack"
+        ],
+        "security": [
+          "security-pack"
+        ],
+        "workflow": [
+          "essentials"
+        ]
+      },
+      "source": "local"
+    },
+    {
+      "case": 32,
+      "kit": "vscode-extension",
+      "version": "1.1.3",
+      "platform": "darwin",
+      "packageManager": "pnpm",
+      "options": {
+        "forms": [],
+        "auth": [
+          "none"
+        ],
+        "database": [
+          "none"
+        ],
+        "payments": [
+          "none"
+        ],
+        "email": [
+          "none"
+        ],
+        "observability": [],
+        "testing": [],
+        "quality": [],
+        "ci": [],
+        "deploy": [
+          "vscode-marketplace"
+        ],
+        "security": [
+          "security-pack"
+        ],
+        "workflow": [
+          "essentials"
+        ]
+      },
+      "source": "local"
+    },
+    {
+      "case": 33,
+      "kit": "monorepo-django-react",
+      "version": "1.1.3",
+      "platform": "darwin",
+      "packageManager": "pip",
+      "options": {
+        "testing": [
+          "workspace-tests"
+        ],
+        "quality": [
+          "workspace-quality"
+        ],
+        "ci": [
+          "workspace-ci"
+        ],
+        "deploy": [
+          "workspace-deploy"
+        ],
+        "design": [
+          "design-pack"
+        ],
+        "security": [
+          "security-pack"
+        ],
+        "workflow": [
+          "essentials"
+        ]
+      },
+      "source": "local"
+    }
+  ],
+  "entries": [
+    {
+      "id": "alamofire",
+      "case": 1
+    },
+    {
+      "id": "android-credentials",
+      "case": 2
+    },
+    {
+      "id": "android-lint",
+      "case": 2
+    },
+    {
+      "id": "android-localization",
+      "case": 2
+    },
+    {
+      "id": "android-stores",
+      "case": 2
+    },
+    {
+      "id": "android-unit-tests",
+      "case": 2
+    },
+    {
+      "id": "angular-localize",
+      "case": 3
+    },
+    {
+      "id": "angular-material",
+      "case": 4
+    },
+    {
+      "id": "angular-tests",
+      "case": 3
+    },
+    {
+      "id": "anthropic-python",
+      "case": 5
+    },
+    {
+      "id": "app-store-connect",
+      "case": 1
+    },
+    {
+      "id": "apple-oslog",
+      "case": 1
+    },
+    {
+      "id": "apple-sign-in",
+      "case": 1
+    },
+    {
+      "id": "aspnet-localization",
+      "case": 6
+    },
+    {
+      "id": "better-auth-server",
+      "case": 7
+    },
+    {
+      "id": "bloc",
+      "case": 8
+    },
+    {
+      "id": "bun-test",
+      "case": 9
+    },
+    {
+      "id": "chrome-web-store",
+      "case": 10
+    },
+    {
+      "id": "cloudflare-pages",
+      "case": 11
+    },
+    {
+      "id": "dapper",
+      "case": 12
+    },
+    {
+      "id": "devise",
+      "case": 13
+    },
+    {
+      "id": "dio",
+      "case": 14
+    },
+    {
+      "id": "docker-nuxt",
+      "case": 15
+    },
+    {
+      "id": "dotnet-format",
+      "case": 6
+    },
+    {
+      "id": "drizzle-bun",
+      "case": 16
+    },
+    {
+      "id": "drizzle-node",
+      "case": 17
+    },
+    {
+      "id": "drizzle-nuxt",
+      "case": 18
+    },
+    {
+      "id": "drizzle-sveltekit",
+      "case": 19
+    },
+    {
+      "id": "efcore-sqlite",
+      "case": 6
+    },
+    {
+      "id": "factory-bot-rails",
+      "case": 13
+    },
+    {
+      "id": "fluentvalidation",
+      "case": 6
+    },
+    {
+      "id": "flutter-lints",
+      "case": 14
+    },
+    {
+      "id": "flutter-stores",
+      "case": 14
+    },
+    {
+      "id": "github-actions-android",
+      "case": 2
+    },
+    {
+      "id": "github-actions-dotnet",
+      "case": 6
+    },
+    {
+      "id": "github-actions-flutter",
+      "case": 14
+    },
+    {
+      "id": "github-actions-laravel",
+      "case": 20
+    },
+    {
+      "id": "github-actions-rails",
+      "case": 13
+    },
+    {
+      "id": "github-actions-rust",
+      "case": 21
+    },
+    {
+      "id": "github-actions-spring",
+      "case": 22
+    },
+    {
+      "id": "github-actions-swiftui",
+      "case": 1
+    },
+    {
+      "id": "github-releases",
+      "case": 23
+    },
+    {
+      "id": "grdb",
+      "case": 1
+    },
+    {
+      "id": "http-dart",
+      "case": 8
+    },
+    {
+      "id": "intl-dart",
+      "case": 14
+    },
+    {
+      "id": "jwt-dotnet",
+      "case": 6
+    },
+    {
+      "id": "jwt-go",
+      "case": 24
+    },
+    {
+      "id": "jwt-rust",
+      "case": 21
+    },
+    {
+      "id": "kotlin-stateflow",
+      "case": 2
+    },
+    {
+      "id": "kotlinx-serialization",
+      "case": 2
+    },
+    {
+      "id": "ktor-client",
+      "case": 2
+    },
+    {
+      "id": "laravel-eloquent",
+      "case": 20
+    },
+    {
+      "id": "laravel-localization",
+      "case": 20
+    },
+    {
+      "id": "laravel-pint",
+      "case": 25
+    },
+    {
+      "id": "lettre",
+      "case": 21
+    },
+    {
+      "id": "mailkit",
+      "case": 6
+    },
+    {
+      "id": "mocktail",
+      "case": 14
+    },
+    {
+      "id": "mypy",
+      "case": 5
+    },
+    {
+      "id": "netlify-nuxt",
+      "case": 18
+    },
+    {
+      "id": "netlify-static",
+      "case": 26
+    },
+    {
+      "id": "npm-publish",
+      "case": 17
+    },
+    {
+      "id": "nuxt-auth-utils",
+      "case": 18
+    },
+    {
+      "id": "nuxt-i18n",
+      "case": 18
+    },
+    {
+      "id": "nuxt-ui",
+      "case": 18
+    },
+    {
+      "id": "openai-dotnet",
+      "case": 6
+    },
+    {
+      "id": "openai-java",
+      "case": 22
+    },
+    {
+      "id": "openai-python",
+      "case": 5
+    },
+    {
+      "id": "openai-ruby",
+      "case": 13
+    },
+    {
+      "id": "openai-sdk",
+      "case": 18
+    },
+    {
+      "id": "pinia-vue",
+      "case": 26
+    },
+    {
+      "id": "prettier",
+      "case": 18
+    },
+    {
+      "id": "primeng",
+      "case": 3
+    },
+    {
+      "id": "proptest",
+      "case": 21
+    },
+    {
+      "id": "provider",
+      "case": 27
+    },
+    {
+      "id": "pyjwt",
+      "case": 5
+    },
+    {
+      "id": "pytest",
+      "case": 5
+    },
+    {
+      "id": "rails-i18n",
+      "case": 13
+    },
+    {
+      "id": "rails-postgres",
+      "case": 13
+    },
+    {
+      "id": "railway-bun",
+      "case": 9
+    },
+    {
+      "id": "railway-django",
+      "case": 28
+    },
+    {
+      "id": "railway-dotnet",
+      "case": 6
+    },
+    {
+      "id": "railway-laravel",
+      "case": 20
+    },
+    {
+      "id": "railway-nuxt",
+      "case": 7
+    },
+    {
+      "id": "railway-python",
+      "case": 5
+    },
+    {
+      "id": "railway-rails",
+      "case": 13
+    },
+    {
+      "id": "railway-rust",
+      "case": 21
+    },
+    {
+      "id": "railway-spring",
+      "case": 22
+    },
+    {
+      "id": "resend-go",
+      "case": 24
+    },
+    {
+      "id": "resend-laravel",
+      "case": 20
+    },
+    {
+      "id": "resend-nuxt",
+      "case": 18
+    },
+    {
+      "id": "resend-python",
+      "case": 5
+    },
+    {
+      "id": "resend-ruby",
+      "case": 13
+    },
+    {
+      "id": "resend-sveltekit",
+      "case": 19
+    },
+    {
+      "id": "riverpod",
+      "case": 14
+    },
+    {
+      "id": "room",
+      "case": 2
+    },
+    {
+      "id": "rustfmt-clippy",
+      "case": 21
+    },
+    {
+      "id": "sentry-angular",
+      "case": 3
+    },
+    {
+      "id": "sentry-django",
+      "case": 28
+    },
+    {
+      "id": "sentry-flutter",
+      "case": 14
+    },
+    {
+      "id": "sentry-laravel",
+      "case": 20
+    },
+    {
+      "id": "sentry-nuxt",
+      "case": 18
+    },
+    {
+      "id": "sentry-rails",
+      "case": 13
+    },
+    {
+      "id": "sentry-rust",
+      "case": 21
+    },
+    {
+      "id": "sentry-sveltekit",
+      "case": 19
+    },
+    {
+      "id": "sentry-vue",
+      "case": 26
+    },
+    {
+      "id": "serilog",
+      "case": 6
+    },
+    {
+      "id": "shouldly",
+      "case": 6
+    },
+    {
+      "id": "spring-actuator",
+      "case": 29
+    },
+    {
+      "id": "spring-jdbc",
+      "case": 22
+    },
+    {
+      "id": "spring-mail",
+      "case": 22
+    },
+    {
+      "id": "spring-oauth2",
+      "case": 22
+    },
+    {
+      "id": "spring-tests",
+      "case": 29
+    },
+    {
+      "id": "sqflite",
+      "case": 14
+    },
+    {
+      "id": "sqlalchemy",
+      "case": 5
+    },
+    {
+      "id": "sqlx-go",
+      "case": 24
+    },
+    {
+      "id": "sqlx-rust",
+      "case": 21
+    },
+    {
+      "id": "standard-ruby",
+      "case": 13
+    },
+    {
+      "id": "storekit",
+      "case": 1
+    },
+    {
+      "id": "stripe-dotnet",
+      "case": 6
+    },
+    {
+      "id": "stripe-java",
+      "case": 22
+    },
+    {
+      "id": "stripe-php",
+      "case": 20
+    },
+    {
+      "id": "stripe-python",
+      "case": 5
+    },
+    {
+      "id": "stripe-ruby",
+      "case": 13
+    },
+    {
+      "id": "stripe-server",
+      "case": 18
+    },
+    {
+      "id": "supabase-flutter",
+      "case": 14
+    },
+    {
+      "id": "supabase-js",
+      "case": 15
+    },
+    {
+      "id": "sveltekit-netlify",
+      "case": 30
+    },
+    {
+      "id": "sveltekit-node",
+      "case": 31
+    },
+    {
+      "id": "sveltekit-superforms",
+      "case": 19
+    },
+    {
+      "id": "sveltekit-vercel",
+      "case": 19
+    },
+    {
+      "id": "swift-testing",
+      "case": 1
+    },
+    {
+      "id": "swiftlint",
+      "case": 1
+    },
+    {
+      "id": "valibot",
+      "case": 18
+    },
+    {
+      "id": "vee-validate",
+      "case": 18
+    },
+    {
+      "id": "vercel-static",
+      "case": 3
+    },
+    {
+      "id": "vitest-svelte",
+      "case": 19
+    },
+    {
+      "id": "vitest-vue",
+      "case": 18
+    },
+    {
+      "id": "vscode-marketplace",
+      "case": 32
+    },
+    {
+      "id": "vue-i18n",
+      "case": 26
+    },
+    {
+      "id": "workspace-ci",
+      "case": 33
+    },
+    {
+      "id": "workspace-deploy",
+      "case": 33
+    },
+    {
+      "id": "workspace-quality",
+      "case": 33
+    },
+    {
+      "id": "workspace-tests",
+      "case": 33
+    },
+    {
+      "id": "zerolog",
+      "case": 24
+    }
+  ]
+}

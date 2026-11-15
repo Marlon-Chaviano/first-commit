@@ -6,6 +6,15 @@ import { LIBRARY_CATEGORIES } from "./categories";
 const kits = await loadRegistryKits(fileURLToPath(new URL("../../../registry", import.meta.url)));
 
 describe("catalog coverage", () => {
+  it("offers testing, CI and a deployment or publishing destination in every kit", () => {
+    for (const kit of kits) {
+      for (const id of ["testing", "ci", "deploy"]) {
+        const option = kit.options.find((o) => o.id === id);
+        expect(option?.choices.some((c) => c.id !== "none"), `${kit.name}: ${id}`).toBe(true);
+      }
+    }
+  });
+
   it("offers real choices in every declared catalog category", () => {
     expect(kits).toHaveLength(70);
     const ids = new Set<string>(LIBRARY_CATEGORIES.map((c) => c.optionId));

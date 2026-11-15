@@ -3069,7 +3069,7 @@
     "writeFiles": [
       {
         "path": "Dockerfile",
-        "content": "FROM node:22-alpine AS build\nWORKDIR /app\nRUN corepack enable\nCOPY . .\nRUN {{pm}} install && NITRO_PRESET=node-server {{pm}} run build\nFROM node:22-alpine\nWORKDIR /app\nCOPY --from=build /app/.output ./.output\nENV NODE_ENV=production HOST=0.0.0.0 PORT=3000\nEXPOSE 3000\nCMD [\"node\", \".output/server/index.mjs\"]\n",
+        "content": "FROM node:22-alpine AS build\nWORKDIR /app\nRUN corepack enable\nRUN if [ \"{{pm}}\" = \"bun\" ]; then npm install --global bun; fi\nCOPY . .\nRUN {{pm}} install && NITRO_PRESET=node-server {{pm}} run build\nFROM node:22-alpine\nWORKDIR /app\nCOPY --from=build --chown=node:node /app/.output ./.output\nENV NODE_ENV=production HOST=0.0.0.0 PORT=3000\nEXPOSE 3000\nUSER node\nCMD [\"node\", \".output/server/index.mjs\"]\n",
         "mode": "create"
       },
       {
