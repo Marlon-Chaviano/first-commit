@@ -58,14 +58,11 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm --filter create-first-commit build
-      # Each kit declares its package managers: install only the toolchains it needs.
+      # Include the selected services and verification matrix of composed workspaces.
       - id: kit
-        run: |
-          pms=$(jq -r '(.packageManagers // ["npm","pnpm","bun"]) | join(" ")' registry/kits/${{ matrix.kit }}/kit.json)
-          echo "pms= $pms " >> "$GITHUB_OUTPUT"
-          first=$(echo $pms | cut -d' ' -f1)
-          # JavaScript kits are tested with pnpm when they support it; the rest with their own manager.
-          if echo " $pms " | grep -q ' pnpm '; then echo "pm=pnpm" >> "$GITHUB_OUTPUT"; else echo "pm=$first" >> "$GITHUB_OUTPUT"; fi
+        env:
+          KIT: ${{ matrix.kit }}
+        run: pnpm exec tsx scripts/kit-test-profile.ts "$KIT" >> "$GITHUB_OUTPUT"
       - if: contains(steps.kit.outputs.pms, ' bun ')
         uses: oven-sh/setup-bun@v2
       - if: contains(steps.kit.outputs.pms, ' maven ') || contains(steps.kit.outputs.pms, ' gradle ')
