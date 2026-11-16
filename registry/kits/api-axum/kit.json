@@ -1,7 +1,7 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "api-axum",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "author": "marlon-chaviano",
   "title": "API with Rust and Axum",
   "description": "A fast, type-safe HTTP API in Rust with Axum and Tokio: JSON with Serde, structured logs with tracing and in-process tests with no open ports.",
@@ -107,5 +107,32 @@
       }
     ]
   },
-  "instructions": "## How to work here\n\n- Routes in `src/lib.rs` (`router()`); split them into modules per resource (`src/routes/users.rs`) and merge with `Router::merge` or `nest`.\n- Handlers take extractors (`Json<T>`, `Path<T>`, `State<AppState>`) and return `impl IntoResponse`. Shared state (DB pool, config) goes in an `AppState` passed with `.with_state()`.\n- Errors: define an `AppError` that implements `IntoResponse` and use `?` in handlers; no `unwrap()` outside tests.\n- Tests call `router().oneshot(request)` (see `tests/health.rs`): no server, no ports.\n- Run with `cargo run` (`RUST_LOG=debug` for more logs). Before finishing: `cargo fmt`, `cargo clippy` and `cargo test`."
+  "instructions": "## How to work here\n\n- Routes in `src/lib.rs` (`router()`); split them into modules per resource (`src/routes/users.rs`) and merge with `Router::merge` or `nest`.\n- Handlers take extractors (`Json<T>`, `Path<T>`, `State<AppState>`) and return `impl IntoResponse`. Shared state (DB pool, config) goes in an `AppState` passed with `.with_state()`.\n- Errors: define an `AppError` that implements `IntoResponse` and use `?` in handlers; no `unwrap()` outside tests.\n- Tests call `router().oneshot(request)` (see `tests/health.rs`): no server, no ports.\n- Run with `cargo run` (`RUST_LOG=debug` for more logs). Before finishing: `cargo fmt`, `cargo clippy` and `cargo test`.",
+  "service": {
+    "dev": "cargo run",
+    "build": "cargo test",
+    "start": "cargo run --release",
+    "port": 8000,
+    "install": "cargo build --release",
+    "ci": [
+      {
+        "uses": "dtolnay/rust-toolchain@stable"
+      }
+    ],
+    "health": "/health",
+    "connect": [
+      {
+        "path": "Cargo.toml",
+        "mode": "replace",
+        "anchor": "features = [\"trace\"]",
+        "content": "features = [\"trace\", \"cors\"]"
+      },
+      {
+        "path": "src/lib.rs",
+        "mode": "replace",
+        "anchor": ".layer(TraceLayer::new_for_http())",
+        "content": ".layer(TraceLayer::new_for_http())\n        .layer(tower_http::cors::CorsLayer::new()\n            .allow_origin(std::env::var(\"WEB_ORIGINS\").unwrap_or_else(|_| \"{{webOrigin}}\".into())\n                .split(',').map(|origin| origin.parse::<axum::http::HeaderValue>().expect(\"valid web origin\")).collect::<Vec<_>>())\n            .allow_methods([axum::http::Method::GET, axum::http::Method::POST, axum::http::Method::PUT, axum::http::Method::PATCH, axum::http::Method::DELETE, axum::http::Method::OPTIONS])\n            .allow_headers([axum::http::header::CONTENT_TYPE, axum::http::header::AUTHORIZATION]))"
+      }
+    ]
+  }
 }

@@ -1,11 +1,13 @@
 "use client";
 
-import { buildPlan, type Kit, type PlanBrand, type Selections, type Step } from "@kits/schema";
+import type { PlanBrand, Selections } from "@kits/schema";
 import { ChevronDownIcon, FileTextIcon, FolderInputIcon, GitCommitHorizontalIcon, PaletteIcon, TerminalIcon, type LucideIcon } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { previewPlan, type PreviewStep as Step } from "./plan-actions";
 
 type RunStep = Extract<Step, { kind: "run" }>;
 type WriteStep = Extract<Step, { kind: "write" }>;
@@ -22,9 +24,31 @@ const FIRST = 6;
  * The same steps `--dry-run` prints, computed with the shared planner: what
  * will run on the user's machine, before they copy the command.
  */
-export function PlanPreview({ kit, kitRef, sel, name, brand }: { kit: Kit; kitRef?: string; sel: Selections; name: string; brand?: PlanBrand | null }) {
+export function PlanPreview({ kitRef, sel, name, brand }: { kitRef: string; sel: Selections; name: string; brand?: PlanBrand | null }) {
+  const [open, setOpen] = useState(false);
+  const [result, setResult] = useState<{ key: string; steps?: Step[]; error?: string } | null>(null);
+  const request = JSON.stringify({ kit: kitRef, selections: sel, name, brand });
+  useEffect(() => {
+    if (!open) return;
+    let cancelled = false;
+    // A brief debounce keeps typing a project name from requesting one plan per keystroke.
+    const timer = setTimeout(() => {
+      previewPlan(JSON.parse(request)).then((response) => {
+        if (!cancelled) setResult({ key: request, ...response });
+      }).catch(() => {
+        if (!cancelled) setResult({ key: request, error: "Couldn't load the plan. Please try again." });
+      });
+    }, 200);
+    return () => { cancelled = true; clearTimeout(timer); };
+  }, [open, request]);
+  if (!open) return <Button variant="outline" className="my-5" onClick={() => setOpen(true)}>Show install steps</Button>;
+  if (result?.key !== request) return <p role="status" className="py-5 text-sm text-muted-foreground">Loading install steps…</p>;
+  if (result.error) return <p role="alert" className="py-5 text-sm">{result.error}</p>;
+  return <PlanSteps steps={result.steps ?? []} name={name} />;
+}
+
+function PlanSteps({ steps, name }: { steps: Step[]; name: string }) {
   const [all, setAll] = useState(false);
-  const steps = buildPlan({ kit, kitDir: "kit", sel, parentDir: ".", name, git: true, brand, kitRef });
   const project = `./${name}/`;
   const rel = (path: string) => (path.startsWith(project) ? path.slice(project.length) : path);
 

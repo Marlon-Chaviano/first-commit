@@ -1,12 +1,12 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "monorepo-turbo",
-  "version": "1.1.3",
+  "version": "2.0.0",
   "author": "marlon-chaviano",
   "title": "Monorepo with Turborepo",
+  "description": "One repo for your whole product: pick the web app (Next.js or Vite), and optionally a mobile app with Expo, an API with Hono and docs with Starlight. Shared UI and config packages, and cached builds with Turborepo.",
   "category": "monorepo",
   "language": "typescript",
-  "description": "One repo for your whole product: pick the web app (Next.js or Vite), and optionally a mobile app with Expo, an API with Hono and docs with Starlight. Shared UI and config packages, and cached builds with Turborepo.",
   "tags": [
     "monorepo",
     "turborepo",
@@ -16,172 +16,170 @@
     "typescript"
   ],
   "base": {
-    "command": "npx create-turbo@latest {{name}} -m {{pm}} --skip-install --no-git && rm -rf {{name}}/apps/docs {{name}}/pnpm-lock.yaml"
+    "command": "echo 'This workspace needs CLI version 1.1.0 or newer. Update the CLI and try again.' >&2; exit 1"
   },
   "packageManagers": [
     "pnpm",
-    "bun",
-    "npm"
+    "npm",
+    "bun"
   ],
-  "skills": [
-    "vercel/turborepo@turborepo",
-    "antfu/skills@pnpm"
-  ],
-  "finalize": [
-    "npm pkg set packageManager=\"{{pm}}@$({{pm}} --version)\"",
-    "[ ! -f pnpm-workspace.yaml ] || grep -q '^allowBuilds:' pnpm-workspace.yaml || printf '\\nallowBuilds:\\n  esbuild: true\\n' >> pnpm-workspace.yaml",
-    "{{pm}} install"
-  ],
-  "verify": {
-    "command": "{{pm}} run build",
-    "matrix": [
-      {
-        "web": [
-          "vite"
-        ],
-        "apps": [
-          "api",
-          "docs"
-        ]
+  "workspace": {
+    "services": {
+      "web": {
+        "label": "Web",
+        "path": "apps/web",
+        "default": "nextjs",
+        "variants": {
+          "nextjs": "web-next@1.0.4",
+          "react": "spa-vite-react@1.2.4",
+          "vue": "web-vue-vite@1.1.4",
+          "nuxt": "web-nuxt@1.2.4",
+          "sveltekit": "web-sveltekit@1.2.4",
+          "astro": "web-astro@1.2.4",
+          "angular": "web-angular@1.1.4",
+          "react-router": "web-react-router@1.1.4",
+          "tanstack-start": "web-tanstack-start@1.1.4"
+        }
       },
-      {
-        "web": [
-          "none"
-        ],
-        "apps": [
-          "mobile",
-          "api"
-        ]
+      "api": {
+        "label": "Api",
+        "path": "apps/api",
+        "default": "hono",
+        "variants": {
+          "django": "api-django@1.2.4",
+          "fastapi": "api-fastapi@1.3.4",
+          "hono": "api-hono@1.4.4",
+          "express": "api-express@1.0.4",
+          "fastify": "api-fastify@1.1.4",
+          "nestjs": "api-nestjs@1.1.4",
+          "elysia": "api-elysia@1.2.4",
+          "go": "api-go@1.3.4",
+          "rails": "api-rails@1.1.4",
+          "spring": "api-spring-boot@1.2.4",
+          "laravel": "api-laravel@1.1.4",
+          "aspnet": "api-aspnet@1.0.4",
+          "axum": "api-axum@1.0.4"
+        }
+      },
+      "docs": {
+        "label": "Docs",
+        "path": "apps/docs",
+        "default": "none",
+        "variants": {
+          "starlight": "docs-starlight@1.1.4",
+          "vitepress": "docs-vitepress@1.1.4",
+          "fumadocs": "docs-fumadocs@1.1.4"
+        }
+      },
+      "mobile": {
+        "label": "Mobile",
+        "path": "apps/mobile",
+        "default": "none",
+        "variants": {
+          "expo": "mobile-expo@1.4.4"
+        }
       }
-    ]
-  },
-  "options": [
-    {
-      "id": "web",
-      "label": "Web app",
-      "description": "The main app in apps/web.",
-      "type": "select",
-      "default": "next",
-      "choices": [
-        {
-          "id": "next",
-          "label": "Next.js",
-          "description": "App Router, using the shared @repo/ui package.",
-          "skills": [
-            "vercel-labs/agent-skills@vercel-react-best-practices",
-            "vercel-labs/agent-skills@vercel-composition-patterns",
-            "wshobson/agents@typescript-advanced-types",
-            "vercel/next.js@next-dev-loop",
-            "vercel/next.js@next-bundle-optimizer",
-            "wshobson/agents@nextjs-app-router-patterns"
-          ]
-        },
-        {
-          "id": "vite",
-          "label": "Vite + React",
-          "description": "SPA with Vite and React.",
-          "postInstall": [
-            "rm -rf apps/web && npx create-vite@latest apps/web --template react-ts --no-interactive && npm pkg set name=web --prefix apps/web"
-          ],
-          "skills": [
-            "vercel-labs/agent-skills@vercel-react-best-practices",
-            "vercel-labs/agent-skills@vercel-composition-patterns",
-            "wshobson/agents@typescript-advanced-types",
-            "antfu/skills@vite"
-          ]
-        },
-        {
-          "id": "none",
-          "label": "None",
-          "postInstall": [
-            "rm -rf apps/web"
-          ]
-        }
-      ]
     },
-    {
-      "id": "apps",
-      "label": "More apps",
-      "description": "The product's other apps, each in its own apps/ folder.",
-      "type": "multi",
-      "default": [
-        "api"
-      ],
-      "choices": [
-        {
-          "id": "api",
-          "label": "API (Hono)",
-          "description": "Node.js API with Hono in apps/api.",
-          "postInstall": [
-            "npx -y tiged honojs/starter/templates/nodejs apps/api && rm -f apps/api/pnpm-workspace.yaml && npm pkg set name=api --prefix apps/api"
-          ],
-          "skills": [
-            "honojs/skills@hono",
-            "wshobson/agents@typescript-advanced-types",
-            "wshobson/agents@api-design-principles"
-          ]
-        },
-        {
-          "id": "mobile",
-          "label": "Mobile (Expo)",
-          "description": "iOS and Android app with Expo in apps/mobile.",
-          "postInstall": [
-            "npx create-expo-app@latest apps/mobile --template blank-typescript --no-install && npm pkg set name=mobile --prefix apps/mobile"
-          ],
-          "skills": [
-            "expo/skills@expo-overview",
-            "expo/skills@expo-router",
-            "expo/skills@expo-native-ui",
-            "expo/skills@expo-ui",
-            "expo/skills@expo-project-structure",
-            "expo/skills@expo-design-system",
-            "expo/skills@expo-data-fetching",
-            "expo/skills@expo-animation",
-            "expo/skills@expo-dev-client",
-            "expo/skills@expo-upgrade",
-            "vercel-labs/agent-skills@vercel-react-native-skills",
-            "callstackincubator/agent-skills@react-native-best-practices",
-            "callstackincubator/agent-skills@upgrading-react-native",
-            "wshobson/agents@typescript-advanced-types"
-          ]
-        },
-        {
-          "id": "docs",
-          "label": "Docs (Starlight)",
-          "description": "Documentation site with Astro Starlight in apps/docs.",
-          "postInstall": [
-            "npx create-astro@latest apps/docs --template starlight --no-install --no-git --yes && npm pkg set name=docs --prefix apps/docs"
-          ],
-          "skills": [
-            "astrolicious/agent-skills@astro",
-            "wshobson/agents@typescript-advanced-types"
-          ]
+    "orchestrator": "turbo",
+    "migrations": {
+      "web": {
+        "choices": {
+          "next": {
+            "web": [
+              "nextjs"
+            ]
+          },
+          "vite": {
+            "web": [
+              "react"
+            ]
+          }
         }
-      ]
+      },
+      "apps": {
+        "defaults": {
+          "api": [
+            "none"
+          ],
+          "docs": [
+            "none"
+          ],
+          "mobile": [
+            "none"
+          ]
+        },
+        "choices": {
+          "api": {
+            "api": [
+              "hono"
+            ]
+          },
+          "mobile": {
+            "mobile": [
+              "expo"
+            ]
+          },
+          "docs": {
+            "docs": [
+              "starlight"
+            ]
+          }
+        }
+      }
     }
-  ],
+  },
   "libraries": {
     "framework": "monorepo",
-    "design": [
-      "design-pack"
-    ],
     "workflow": [
       "essentials"
     ],
     "security": [
       "security-pack"
-    ],
-    "ci": [],
-    "deploy": "none",
-    "quality": [],
-    "testing": []
+    ]
   },
-  "writeFiles": [
+  "options": [
     {
-      "path": "turbo.json",
-      "mode": "json-merge",
-      "content": "{\"tasks\": {\"build\": {\"outputs\": [\"dist/**\"]}}}"
+      "id": "deployment",
+      "label": "Deployment mode",
+      "default": "none",
+      "choices": [
+        {
+          "id": "none",
+          "label": "Configure later"
+        },
+        {
+          "id": "independent",
+          "label": "Independent services"
+        },
+        {
+          "id": "compose",
+          "label": "Docker Compose"
+        }
+      ]
+    },
+    {
+      "id": "orchestrator",
+      "label": "Workspace tasks",
+      "default": "turbo",
+      "choices": [
+        {
+          "id": "simple",
+          "label": "Simple scripts"
+        },
+        {
+          "id": "turbo",
+          "label": "Turborepo"
+        },
+        {
+          "id": "nx",
+          "label": "Nx"
+        }
+      ]
     }
   ],
-  "instructions": "## How to work here\n\n- It's a monorepo: apps live in `apps/` (`web`, `api`, `mobile`, `docs`) and shared code in `packages/` (`@repo/ui`, `@repo/typescript-config`, `@repo/eslint-config`).\n- Run tasks from the root with Turborepo: `pnpm run build`, `pnpm run dev`, `pnpm run lint` (or `npm`/`bun`, depending on the project's package manager). For a single app: `pnpm turbo run dev --filter=web`.\n- Dependencies are added to the app or package that uses them, not to the root (except tools like `turbo` or `prettier`).\n- Anything several apps use goes into a package in `packages/`; never copy it from one app to another.\n- Before finishing: `pnpm run build` from the root."
+  "verify": {
+    "command": "node scripts/workspace.mjs verify",
+    "matrix": []
+  },
+  "minCliVersion": "1.1.0"
 }

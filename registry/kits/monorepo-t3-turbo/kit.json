@@ -1,6 +1,6 @@
 {
   "$schema": "../../kit.schema.json",
-  "version": "1.1.3",
+  "version": "2.0.0",
   "author": "marlon-chaviano",
   "name": "monorepo-t3-turbo",
   "title": "T3 monorepo with Turborepo",
@@ -16,8 +16,7 @@
     "drizzle"
   ],
   "base": {
-    "command": "npx -y create-turbo@latest {{name}} -e https://github.com/t3-oss/create-t3-turbo -m pnpm --skip-install --no-git",
-    "install": "pnpm install"
+    "command": "echo 'This workspace needs CLI version 1.1.0 or newer. Update the CLI and try again.' >&2; exit 1"
   },
   "packageManagers": [
     "pnpm"
@@ -53,12 +52,105 @@
       "security-pack"
     ],
     "ci": [],
-    "deploy": "none",
     "quality": [],
     "testing": []
   },
   "verify": {
-    "command": "SKIP_ENV_VALIDATION=1 pnpm turbo run build --filter=./apps/nextjs"
+    "command": "node scripts/workspace.mjs verify",
+    "matrix": []
   },
-  "instructions": "## How to work here\n\n- Apps in `apps/` (`nextjs`, `expo`) and packages in `packages/` (`api` with the tRPC routers, `db` with Drizzle, `auth`, `ui`, `validators`).\n- The API is written once in `packages/api` and both web and mobile use it; never duplicate an endpoint inside an app.\n- Run from the root: `pnpm dev`, `pnpm build`, `pnpm typecheck`, `pnpm lint`.\n- Each app lives in its own folder with its own dependencies; don't mix code from one into another.\n- Whatever backend and frontend share (types, API contracts) is defined in one place and documented.\n"
+  "instructions": "## How to work here\n\n- Apps in `apps/` (`nextjs`, `expo`) and packages in `packages/` (`api` with the tRPC routers, `db` with Drizzle, `auth`, `ui`, `validators`).\n- The API is written once in `packages/api` and both web and mobile use it; never duplicate an endpoint inside an app.\n- Run from the root: `pnpm dev`, `pnpm build`, `pnpm typecheck`, `pnpm lint`.\n- Each app lives in its own folder with its own dependencies; don't mix code from one into another.\n- Whatever backend and frontend share (types, API contracts) is defined in one place and documented.\n",
+  "workspace": {
+    "preserveBase": true,
+    "services": {
+      "web": {
+        "label": "Web",
+        "path": "apps/nextjs",
+        "default": "nextjs",
+        "variants": {
+          "nextjs": "web-next@1.0.4",
+          "react": "spa-vite-react@1.2.4",
+          "vue": "web-vue-vite@1.1.4",
+          "nuxt": "web-nuxt@1.2.4",
+          "sveltekit": "web-sveltekit@1.2.4",
+          "astro": "web-astro@1.2.4",
+          "angular": "web-angular@1.1.4",
+          "react-router": "web-react-router@1.1.4",
+          "tanstack-start": "web-tanstack-start@1.1.4"
+        },
+        "existing": true
+      },
+      "api": {
+        "label": "Api",
+        "path": "apps/api",
+        "default": "none",
+        "variants": {
+          "django": "api-django@1.2.4",
+          "fastapi": "api-fastapi@1.3.4",
+          "hono": "api-hono@1.4.4",
+          "express": "api-express@1.0.4",
+          "fastify": "api-fastify@1.1.4",
+          "nestjs": "api-nestjs@1.1.4",
+          "elysia": "api-elysia@1.2.4",
+          "go": "api-go@1.3.4",
+          "rails": "api-rails@1.1.4",
+          "spring": "api-spring-boot@1.2.4",
+          "laravel": "api-laravel@1.1.4",
+          "aspnet": "api-aspnet@1.0.4",
+          "axum": "api-axum@1.0.4"
+        }
+      },
+      "docs": {
+        "label": "Docs",
+        "path": "apps/docs",
+        "default": "none",
+        "variants": {
+          "starlight": "docs-starlight@1.1.4",
+          "vitepress": "docs-vitepress@1.1.4",
+          "fumadocs": "docs-fumadocs@1.1.4"
+        }
+      },
+      "mobile": {
+        "label": "Mobile",
+        "path": "apps/expo",
+        "default": "expo",
+        "variants": {
+          "expo": "mobile-expo@1.4.4"
+        },
+        "existing": true
+      }
+    },
+    "nativeVerify": "SKIP_ENV_VALIDATION=1 pnpm turbo run build --filter=./apps/nextjs",
+    "nativeBase": {
+      "command": "npx -y create-turbo@latest {{name}} -e https://github.com/t3-oss/create-t3-turbo -m pnpm --skip-install --no-git",
+      "install": "pnpm install"
+    },
+    "preserveWhen": {
+      "api": [
+        "none"
+      ]
+    }
+  },
+  "minCliVersion": "1.1.0",
+  "options": [
+    {
+      "id": "deployment",
+      "label": "Deployment mode",
+      "default": "none",
+      "choices": [
+        {
+          "id": "none",
+          "label": "Configure later"
+        },
+        {
+          "id": "independent",
+          "label": "Independent services"
+        },
+        {
+          "id": "compose",
+          "label": "Docker Compose"
+        }
+      ]
+    }
+  ]
 }

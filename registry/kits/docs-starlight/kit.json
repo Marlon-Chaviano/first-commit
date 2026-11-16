@@ -1,6 +1,6 @@
 {
   "$schema": "../../kit.schema.json",
-  "version": "1.1.3",
+  "version": "1.1.4",
   "author": "marlon-chaviano",
   "name": "docs-starlight",
   "title": "Docs with Starlight",
@@ -47,5 +47,14 @@
   "verify": {
     "command": "{{pm}} run build"
   },
-  "instructions": "## How to work here\n\n- Each page is a `.md`/`.mdx` file in `src/content/docs/`; the file path is the URL. The sidebar is defined in `astro.config.mjs` (`sidebar`).\n- Use Starlight components (`Tabs`, `Card`, `Aside`, `Steps`) in MDX instead of custom HTML.\n- Write for readers in a hurry: a clear title, one paragraph of context, then the steps.\n- Before finishing: `npm run build` (it also checks internal links)."
+  "instructions": "## How to work here\n\n- Each page is a `.md`/`.mdx` file in `src/content/docs/`; the file path is the URL. The sidebar is defined in `astro.config.mjs` (`sidebar`).\n- Use Starlight components (`Tabs`, `Card`, `Aside`, `Steps`) in MDX instead of custom HTML.\n- Write for readers in a hurry: a clear title, one paragraph of context, then the steps.\n- Before finishing: `npm run build` (it also checks internal links).",
+  "service": {
+    "dev": "{{pm}} run dev {{scriptArgs}} --port 3001",
+    "build": "{{pm}} run build",
+    "start": "npx --yes serve dist -l 3001",
+    "port": 3001,
+    "install": "npm install",
+    "ci": [],
+    "dockerfile": "FROM node:22-slim\nWORKDIR /app\nRUN npm install -g pnpm bun serve\nCOPY {{servicePath}}/ .\nRUN {{pm}} install\nRUN {{pm}} run build\nENV NODE_ENV=production\nENV PORT=3001\nEXPOSE 3001\nCMD [\"sh\", \"-c\", \"serve dist -l ${PORT:-3001}\"]\n"
+  }
 }

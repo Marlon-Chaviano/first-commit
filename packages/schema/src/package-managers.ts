@@ -7,6 +7,8 @@ interface PackageManagerProfile {
   language: string;
   /** {{pmx}}: run a package's binary without installing it. */
   exec: string;
+  /** Separator before arguments forwarded to a package script (npm requires --). */
+  scriptArgs?: string;
   /** How dependencies are added; managers without an "add" command explain where they go instead. */
   add: { deps: string; dev: string };
   /** Lockfiles that reveal it in an existing project. */
@@ -23,7 +25,7 @@ const manual = (where: string) => ({
 });
 
 const PROFILES = {
-  npm: { language: "typescript", exec: "npx", add: { deps: "npm install {{packages}}", dev: "npm install -D {{packages}}" }, lockfiles: ["package-lock.json"], runsNode: true },
+  npm: { language: "typescript", exec: "npx", scriptArgs: "--", add: { deps: "npm install {{packages}}", dev: "npm install -D {{packages}}" }, lockfiles: ["package-lock.json"], runsNode: true },
   pnpm: {
     language: "typescript",
     exec: "pnpm dlx",

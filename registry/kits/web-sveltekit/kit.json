@@ -1,7 +1,7 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "web-sveltekit",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "author": "marlon-chaviano",
   "title": "Web app with SvelteKit",
   "category": "web",
@@ -105,5 +105,23 @@
     "quality": [],
     "testing": []
   },
-  "instructions": "## How to work here\n\n- Routes in `src/routes/` (`+page.svelte`, `+page.server.ts` to load data on the server).\n- Svelte 5: use runes (`$state`, `$derived`, `$props`), not the old syntax (`export let`, `$:`).\n- Before finishing: `npm run check` and `npm run build`."
+  "instructions": "## How to work here\n\n- Routes in `src/routes/` (`+page.svelte`, `+page.server.ts` to load data on the server).\n- Svelte 5: use runes (`$state`, `$derived`, `$props`), not the old syntax (`export let`, `$:`).\n- Before finishing: `npm run check` and `npm run build`.",
+  "service": {
+    "dev": "{{pm}} run dev {{scriptArgs}} --port 3000",
+    "build": "{{pm}} run build",
+    "start": "{{pm}} run start",
+    "port": 3000,
+    "install": "npm install",
+    "ci": [],
+    "client": {
+      "env": "PUBLIC_API_URL",
+      "files": [
+        {
+          "path": "api-client.js",
+          "mode": "create",
+          "content": "import { env } from '$env/dynamic/public';\nexport async function apiHealth(baseUrl = env.PUBLIC_API_URL || '{{apiUrl}}') {\n  const response = await fetch(baseUrl + '{{healthPath}}');\n  if (!response.ok) throw new Error('API health check failed: ' + response.status);\n  return response.headers.get('content-type')?.includes('json') ? response.json() : { ok: true };\n}\n"
+        }
+      ]
+    }
+  }
 }

@@ -1,6 +1,6 @@
 {
   "$schema": "../../kit.schema.json",
-  "version": "1.1.3",
+  "version": "1.1.4",
   "author": "marlon-chaviano",
   "name": "web-tanstack-start",
   "title": "Web app with TanStack Start",
@@ -85,5 +85,23 @@
       }
     ]
   },
-  "instructions": "## How to work here\n\n- Routes are files in `src/routes/` (the route tree is generated for you). Load data in each route's `loader` and use `createServerFn` for whatever must run on the server.\n- Each route's params and search are typed: validate `search` with `validateSearch`.\n- Before finishing: `npm run build`."
+  "instructions": "## How to work here\n\n- Routes are files in `src/routes/` (the route tree is generated for you). Load data in each route's `loader` and use `createServerFn` for whatever must run on the server.\n- Each route's params and search are typed: validate `search` with `validateSearch`.\n- Before finishing: `npm run build`.",
+  "service": {
+    "dev": "{{pm}} run dev {{scriptArgs}} --port 3000",
+    "build": "{{pm}} run build",
+    "start": "{{pm}} run start",
+    "port": 3000,
+    "install": "npm install",
+    "ci": [],
+    "client": {
+      "env": "VITE_API_URL",
+      "files": [
+        {
+          "path": "api-client.js",
+          "mode": "create",
+          "content": "export async function apiHealth(baseUrl = import.meta.env.VITE_API_URL || '{{apiUrl}}') {\n  const response = await fetch(baseUrl + '{{healthPath}}');\n  if (!response.ok) throw new Error('API health check failed: ' + response.status);\n  return response.headers.get('content-type')?.includes('json') ? response.json() : { ok: true };\n}\n"
+        }
+      ]
+    }
+  }
 }

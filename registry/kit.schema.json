@@ -5,6 +5,10 @@
     "$schema": {
       "type": "string"
     },
+    "minCliVersion": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+(?:-[\\w.]+)?$"
+    },
     "name": {
       "type": "string",
       "pattern": "^[a-z0-9-]+$"
@@ -147,6 +151,293 @@
         }
       }
     },
+    "service": {
+      "type": "object",
+      "properties": {
+        "dev": {
+          "type": "string"
+        },
+        "build": {
+          "type": "string"
+        },
+        "start": {
+          "type": "string"
+        },
+        "verify": {
+          "type": "string"
+        },
+        "port": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 65535
+        },
+        "health": {
+          "type": "string"
+        },
+        "options": {
+          "type": "object",
+          "propertyNames": {
+            "type": "string"
+          },
+          "additionalProperties": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "connect": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string",
+                "pattern": "^(?!\\/)(?!(?:.*\\/)?\\.\\.(?:\\/|$))[\\w./@()+[\\]-]+$"
+              },
+              "content": {
+                "type": "string"
+              },
+              "mode": {
+                "default": "create",
+                "type": "string",
+                "enum": [
+                  "create",
+                  "append",
+                  "prepend",
+                  "insert-before",
+                  "replace",
+                  "json-merge"
+                ]
+              },
+              "anchor": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "path",
+              "content"
+            ]
+          }
+        },
+        "client": {
+          "type": "object",
+          "properties": {
+            "env": {
+              "type": "string",
+              "pattern": "^[A-Z][A-Z0-9_]*$"
+            },
+            "files": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "path": {
+                    "type": "string",
+                    "pattern": "^(?!\\/)(?!(?:.*\\/)?\\.\\.(?:\\/|$))[\\w./@()+[\\]-]+$"
+                  },
+                  "content": {
+                    "type": "string"
+                  },
+                  "mode": {
+                    "default": "create",
+                    "type": "string",
+                    "enum": [
+                      "create",
+                      "append",
+                      "prepend",
+                      "insert-before",
+                      "replace",
+                      "json-merge"
+                    ]
+                  },
+                  "anchor": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "path",
+                  "content"
+                ]
+              }
+            }
+          },
+          "required": [
+            "files"
+          ]
+        },
+        "dockerfile": {
+          "type": "string"
+        },
+        "install": {
+          "type": "string"
+        },
+        "ci": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "uses": {
+                "type": "string"
+              },
+              "with": {
+                "type": "object",
+                "propertyNames": {
+                  "type": "string"
+                },
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "uses"
+            ]
+          }
+        }
+      },
+      "required": [
+        "dev",
+        "port"
+      ]
+    },
+    "workspace": {
+      "type": "object",
+      "properties": {
+        "preserveBase": {
+          "type": "boolean"
+        },
+        "nativeVerify": {
+          "type": "string"
+        },
+        "nativeBase": {
+          "type": "object",
+          "properties": {
+            "command": {
+              "type": "string"
+            },
+            "install": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "command"
+          ]
+        },
+        "preserveWhen": {
+          "type": "object",
+          "propertyNames": {
+            "type": "string"
+          },
+          "additionalProperties": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "migrations": {
+          "type": "object",
+          "propertyNames": {
+            "type": "string"
+          },
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "defaults": {
+                "type": "object",
+                "propertyNames": {
+                  "type": "string"
+                },
+                "additionalProperties": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "choices": {
+                "type": "object",
+                "propertyNames": {
+                  "type": "string"
+                },
+                "additionalProperties": {
+                  "type": "object",
+                  "propertyNames": {
+                    "type": "string"
+                  },
+                  "additionalProperties": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            "required": [
+              "choices"
+            ]
+          }
+        },
+        "orchestrator": {
+          "default": "simple",
+          "type": "string",
+          "enum": [
+            "simple",
+            "turbo",
+            "nx"
+          ]
+        },
+        "services": {
+          "type": "object",
+          "propertyNames": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9-]*$"
+          },
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "label": {
+                "type": "string"
+              },
+              "existing": {
+                "type": "boolean"
+              },
+              "path": {
+                "type": "string",
+                "pattern": "^[a-zA-Z0-9_-]+(?:\\/[a-zA-Z0-9_-]+)*$"
+              },
+              "default": {
+                "type": "string"
+              },
+              "variants": {
+                "type": "object",
+                "propertyNames": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9-]+$"
+                },
+                "additionalProperties": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9-]+@\\d+\\.\\d+\\.\\d+$"
+                }
+              }
+            },
+            "required": [
+              "label",
+              "path",
+              "default",
+              "variants"
+            ]
+          }
+        }
+      },
+      "required": [
+        "services"
+      ]
+    },
     "options": {
       "default": [],
       "type": "array",
@@ -155,7 +446,7 @@
         "properties": {
           "id": {
             "type": "string",
-            "pattern": "^[a-z][a-z0-9-]*$"
+            "pattern": "^[a-z][a-z0-9.-]*$"
           },
           "label": {
             "type": "string"
@@ -348,6 +639,7 @@
                           "append",
                           "prepend",
                           "insert-before",
+                          "replace",
                           "json-merge"
                         ]
                       },
@@ -654,6 +946,7 @@
               "append",
               "prepend",
               "insert-before",
+              "replace",
               "json-merge"
             ]
           },

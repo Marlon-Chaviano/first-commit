@@ -1,7 +1,7 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "web-next",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "author": "marlon-chaviano",
   "title": "Web app with Next.js",
   "description": "A full Next.js app (App Router, TypeScript, Tailwind and shadcn/ui) ready to grow: add auth, a database, payments, email or AI from the catalog.",
@@ -89,5 +89,24 @@
       }
     ]
   },
-  "instructions": "## How to work here\n\n- App Router: routes, layouts and route handlers live in `src/app/`. Components are Server Components by default; add `\"use client\"` only where you need state, effects or browser APIs, and keep those components small.\n- Read data in Server Components and change it with Server Actions; validate every input on the server.\n- UI comes from shadcn/ui (`src/components/ui/`); shared pieces go in `src/components/` and pure helpers in `src/lib/`.\n- Secrets only in `.env.local` and only on the server: never prefix them with `NEXT_PUBLIC_`.\n- Before finishing a task: `npm run lint` and `npm run build`."
+  "instructions": "## How to work here\n\n- App Router: routes, layouts and route handlers live in `src/app/`. Components are Server Components by default; add `\"use client\"` only where you need state, effects or browser APIs, and keep those components small.\n- Read data in Server Components and change it with Server Actions; validate every input on the server.\n- UI comes from shadcn/ui (`src/components/ui/`); shared pieces go in `src/components/` and pure helpers in `src/lib/`.\n- Secrets only in `.env.local` and only on the server: never prefix them with `NEXT_PUBLIC_`.\n- Before finishing a task: `npm run lint` and `npm run build`.",
+  "service": {
+    "dev": "{{pm}} run dev",
+    "build": "{{pm}} run build",
+    "start": "{{pm}} run start",
+    "port": 3000,
+    "install": "npm install",
+    "ci": [],
+    "dockerfile": "FROM node:22-slim\nWORKDIR /app\nRUN npm install -g pnpm bun serve\nCOPY {{servicePath}}/ .\nRUN {{pm}} install\nRUN {{pm}} run build\nENV NODE_ENV=production\nENV PORT=3000\nEXPOSE 3000\nCMD [\"sh\", \"-c\", \"{{pm}} run start\"]\n",
+    "client": {
+      "env": "NEXT_PUBLIC_API_URL",
+      "files": [
+        {
+          "path": "api-client.js",
+          "mode": "create",
+          "content": "export async function apiHealth(baseUrl = process.env.NEXT_PUBLIC_API_URL || '{{apiUrl}}') {\n  const response = await fetch(baseUrl + '{{healthPath}}');\n  if (!response.ok) throw new Error('API health check failed: ' + response.status);\n  return response.headers.get('content-type')?.includes('json') ? response.json() : { ok: true };\n}\n"
+        }
+      ]
+    }
+  }
 }

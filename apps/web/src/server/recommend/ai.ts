@@ -97,6 +97,7 @@ export function systemPrompt(kits: Kit[]): string {
   const catalog = kits
     .map((kit) => {
       const options = kit.options
+        .filter((option) => !kit.workspace || !option.id.includes("."))
         .map((o) => {
           const choices = o.choices
             .map((c) => `${c.id}${c.requires ? ` (requires ${Object.entries(c.requires).map(([k, v]) => `${k}=${v.join("|")}`).join(", ")})` : ""}`)
@@ -104,7 +105,11 @@ export function systemPrompt(kits: Kit[]): string {
           return `  - ${o.id} [${o.type}, default ${o.default.length ? [o.default].flat().join(",") : "none"}]: ${choices}`;
         })
         .join("\n");
-      return `## ${kit.name}${FLAGSHIP_KITS.has(kit.name) ? " ★" : ""}: ${kit.title}\n${kit.description}\n${options}`;
+      const services = kit.workspace ? Object.entries(kit.services ?? {}).map(([slot, variants]) =>
+        `${slot}: ${Object.entries(variants).map(([variant, child]) => `${variant} reuses ${child.name}; deployment=${child.options.find((option) => option.id === "deploy")?.choices.map((choice) => choice.id).join("|")}`).join("; ")}`,
+      ).join("\n") : "";
+      const serviceRules = kit.workspace ? `\nService options reuse the standalone kit options below, qualified as service.variant.option (e.g. web.nextjs.components). Select the service framework first. CI is generated centrally; never select service CI.\n${services}` : "";
+      return `## ${kit.name}${FLAGSHIP_KITS.has(kit.name) ? " ★" : ""}: ${kit.title}\n${kit.description}\n${options}${serviceRules}`;
     })
     .join("\n\n");
 

@@ -53,6 +53,8 @@ const EXAMPLES = [
   `${CLI} saas-next-supabase my-app --payments stripe`,
   `${CLI} landing-next site --brand acme/web --agent claude-code,cursor`,
   `${CLI} ana/landing --dry-run`,
+  `${CLI} monorepo product --web nextjs --api django --docs starlight`,
+  `${CLI} add mantine --service web`,
 ];
 
 /** `--help`: what someone needs at a glance, grouped by what they're doing. */

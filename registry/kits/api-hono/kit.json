@@ -1,7 +1,7 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "api-hono",
-  "version": "1.4.3",
+  "version": "1.4.4",
   "title": "API with Hono",
   "description": "Typed REST API with Hono on Node, Bun or Cloudflare Workers. Validation with Zod and an optional Drizzle database.",
   "category": "api",
@@ -168,5 +168,40 @@
     "payments": "none",
     "forms": []
   },
-  "language": "typescript"
+  "language": "typescript",
+  "service": {
+    "dev": "{{pm}} run dev",
+    "build": "{{pm}} run build",
+    "start": "{{pm}} run start",
+    "port": 8000,
+    "install": "npm install",
+    "ci": [],
+    "dockerfile": "FROM node:22-slim\nWORKDIR /app\nRUN npm install -g pnpm bun serve\nCOPY {{servicePath}}/ .\nRUN {{pm}} install\nRUN {{pm}} run build\nENV NODE_ENV=production\nENV PORT=8000\nEXPOSE 8000\nCMD [\"sh\", \"-c\", \"{{pm}} run start\"]\n",
+    "health": "/health",
+    "connect": [
+      {
+        "path": "src/index.ts",
+        "mode": "prepend",
+        "content": "import { cors } from \"hono/cors\";"
+      },
+      {
+        "path": "src/index.ts",
+        "mode": "replace",
+        "anchor": "const app = new Hono()",
+        "content": "const app = new Hono()\napp.use('*', cors({ origin: (process.env.WEB_ORIGINS ?? '{{webOrigin}}').split(',') }))\napp.get('/health', (c) => c.json({ status: 'ok' }))"
+      },
+      {
+        "path": "src/index.ts",
+        "mode": "replace",
+        "anchor": "port: 3000",
+        "content": "port: Number(process.env.PORT ?? 8000)"
+      }
+    ],
+    "options": {
+      "runtime": [
+        "nodejs"
+      ]
+    },
+    "verify": "{{pm}} run build && npm run --if-present test"
+  }
 }

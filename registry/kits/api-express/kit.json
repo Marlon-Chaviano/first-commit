@@ -1,7 +1,7 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "api-express",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "author": "marlon-chaviano",
   "title": "API with Express",
   "description": "A REST API with Express 5 and TypeScript: input validation with Zod, security headers, centralized error handling and tests with Vitest and Supertest.",
@@ -129,5 +129,23 @@
       }
     ]
   },
-  "instructions": "## How to work here\n\n- One router per resource in `src/routes/`, mounted in `src/app.ts`. `createApp()` never listens, so tests use it directly with Supertest.\n- Validate every body, query and param with a Zod schema (`schema.parse`): a `ZodError` becomes a 400 in the central error handler.\n- Express 5 forwards thrown errors and rejected promises to the error handler: don't wrap handlers in try/catch just to call `next`.\n- Never return stack traces or internal messages to clients; log them on the server.\n- Start with `npm run dev`. Before finishing: `npm run typecheck && npm test && npm run build`."
+  "instructions": "## How to work here\n\n- One router per resource in `src/routes/`, mounted in `src/app.ts`. `createApp()` never listens, so tests use it directly with Supertest.\n- Validate every body, query and param with a Zod schema (`schema.parse`): a `ZodError` becomes a 400 in the central error handler.\n- Express 5 forwards thrown errors and rejected promises to the error handler: don't wrap handlers in try/catch just to call `next`.\n- Never return stack traces or internal messages to clients; log them on the server.\n- Start with `npm run dev`. Before finishing: `npm run typecheck && npm test && npm run build`.",
+  "service": {
+    "dev": "{{pm}} run dev",
+    "build": "{{pm}} run build",
+    "start": "{{pm}} run start",
+    "port": 8000,
+    "install": "npm install",
+    "ci": [],
+    "dockerfile": "FROM node:22-slim\nWORKDIR /app\nRUN npm install -g pnpm bun serve\nCOPY {{servicePath}}/ .\nRUN {{pm}} install\nRUN {{pm}} run build\nENV NODE_ENV=production\nENV PORT=8000\nEXPOSE 8000\nCMD [\"sh\", \"-c\", \"{{pm}} run start\"]\n",
+    "health": "/health",
+    "connect": [
+      {
+        "path": "src/app.ts",
+        "mode": "replace",
+        "anchor": "  app.use(helmet());",
+        "content": "  app.use((req, res, next) => {\n    const origin = req.headers.origin;\n    if (origin && (process.env.WEB_ORIGINS ?? \"{{webOrigin}}\").split(\",\").includes(origin)) {\n      res.setHeader(\"Access-Control-Allow-Origin\", origin);\n      res.vary(\"Origin\");\n      res.setHeader(\"Access-Control-Allow-Headers\", \"Content-Type, Authorization\");\n      res.setHeader(\"Access-Control-Allow-Methods\", \"GET, POST, PUT, PATCH, DELETE, OPTIONS\");\n    }\n    if (req.method === \"OPTIONS\") { res.sendStatus(204); return; }\n    next();\n  });\n  app.use(helmet());"
+      }
+    ]
+  }
 }

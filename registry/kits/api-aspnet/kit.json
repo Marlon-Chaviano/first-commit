@@ -1,7 +1,7 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "api-aspnet",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "author": "marlon-chaviano",
   "title": "API with ASP.NET Core",
   "description": "A minimal API with ASP.NET Core and C# (.NET 10): OpenAPI, a solution with a test project and integration tests with WebApplicationFactory.",
@@ -118,5 +118,29 @@
       }
     ]
   },
-  "instructions": "## How to work here\n\n- Endpoints in `src/Api/`. Group them per resource in extension methods (`app.MapUsers()`) using `MapGroup`, and return `TypedResults` so OpenAPI knows every response.\n- Configuration through `appsettings.json` and the options pattern; secrets with `dotnet user-secrets` locally, never in the repo.\n- Register services in `Program.cs` with the right lifetime (scoped for anything holding a DB context).\n- Integration tests in `tests/Api.Tests/` with `WebApplicationFactory<Program>` (see `HealthTests.cs`).\n- Add packages from the project folder: `cd src/Api && dotnet add package <name>`. Run with `dotnet run --project src/Api`.\n- Before finishing: `dotnet build` and `dotnet test`. Needs the .NET 10 SDK."
+  "instructions": "## How to work here\n\n- Endpoints in `src/Api/`. Group them per resource in extension methods (`app.MapUsers()`) using `MapGroup`, and return `TypedResults` so OpenAPI knows every response.\n- Configuration through `appsettings.json` and the options pattern; secrets with `dotnet user-secrets` locally, never in the repo.\n- Register services in `Program.cs` with the right lifetime (scoped for anything holding a DB context).\n- Integration tests in `tests/Api.Tests/` with `WebApplicationFactory<Program>` (see `HealthTests.cs`).\n- Add packages from the project folder: `cd src/Api && dotnet add package <name>`. Run with `dotnet run --project src/Api`.\n- Before finishing: `dotnet build` and `dotnet test`. Needs the .NET 10 SDK.",
+  "service": {
+    "dev": "dotnet run --project src/Api --urls http://0.0.0.0:8000",
+    "build": "dotnet build",
+    "start": "dotnet run --project src/Api --urls http://0.0.0.0:8000",
+    "port": 8000,
+    "install": "dotnet restore",
+    "ci": [
+      {
+        "uses": "actions/setup-dotnet@v4",
+        "with": {
+          "dotnet-version": "10.0.x"
+        }
+      }
+    ],
+    "health": "/health",
+    "connect": [
+      {
+        "path": "src/Api/Program.cs",
+        "mode": "replace",
+        "anchor": "var app = builder.Build();",
+        "content": "builder.Services.AddCors(options => options.AddDefaultPolicy(policy =>\n    policy.WithOrigins((Environment.GetEnvironmentVariable(\"WEB_ORIGINS\") ?? \"{{webOrigin}}\").Split(','))\n          .WithMethods(\"GET\", \"POST\", \"PUT\", \"PATCH\", \"DELETE\", \"OPTIONS\")\n          .WithHeaders(\"Content-Type\", \"Authorization\")));\nvar app = builder.Build();\napp.UseCors();"
+      }
+    ]
+  }
 }

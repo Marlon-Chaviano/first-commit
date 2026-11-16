@@ -46,3 +46,5 @@ export interface RegistryEntry {
   /** Community kits: the owner's handle. */
   owner?: string;
 }
+
+export * from "./workspace";

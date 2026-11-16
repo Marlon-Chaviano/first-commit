@@ -47,3 +47,13 @@ Leyenda: ✅ verificado · 🔨 en construcción · ☁️ se verifica en CI · 
 - [ ] 10 kits por tipo en `registry/kits/`, todos con autor "Marlon Chaviano".
 - [ ] Cada kit pasa `create-first-commit test` (en local o en CI) con sus combinaciones.
 - [ ] El recomendador sigue en ≥25/30 con el catálogo nuevo.
+
+### Constructor de monorepos
+
+- [x] Modelo de composición, opciones por servicio y constructor compartido.
+- [x] Presets existentes conectados al constructor; variantes web, API, docs y móvil.
+- [x] Lock v2 y operaciones dirigidas a servicios.
+- [x] Pruebas unitarias y flujo del configurador en navegador.
+- [ ] Completar la matriz de instalación de todos los frameworks y proveedores antes de publicar.
+
+Detalles: [workspaces](../workspaces.md).

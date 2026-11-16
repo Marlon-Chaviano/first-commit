@@ -1,12 +1,12 @@
 {
   "$schema": "../../kit.schema.json",
-  "version": "1.1.3",
-  "author": "marlon-chaviano",
   "name": "monorepo-nx",
+  "version": "2.0.0",
+  "author": "marlon-chaviano",
   "title": "Monorepo with Nx",
+  "description": "An Nx monorepo with a React (Vite) app and libraries: generators, task caching, a dependency graph and module boundary rules.",
   "category": "monorepo",
   "language": "typescript",
-  "description": "An Nx monorepo with a React (Vite) app and libraries: generators, task caching, a dependency graph and module boundary rules.",
   "tags": [
     "nx",
     "monorepo",
@@ -15,41 +15,124 @@
     "vitest"
   ],
   "base": {
-    "command": "npx -y create-nx-workspace@latest {{name}} --preset=react-monorepo --appName=web --bundler=vite --style=css --e2eTestRunner=none --unitTestRunner=vitest --nxCloud=skip --packageManager={{pm}} --skipGit --interactive=false"
+    "command": "echo 'This workspace needs CLI version 1.1.0 or newer. Update the CLI and try again.' >&2; exit 1"
   },
   "packageManagers": [
+    "pnpm",
     "npm",
-    "pnpm"
+    "bun"
   ],
-  "skills": [
-    "nrwl/nx-ai-agents-config@nx-workspace",
-    "nrwl/nx-ai-agents-config@nx-run-tasks",
-    "nrwl/nx-ai-agents-config@nx-generate",
-    "nrwl/nx-ai-agents-config@nx-plugins",
-    "nrwl/nx-ai-agents-config@link-workspace-packages",
-    "vercel-labs/agent-skills@vercel-react-best-practices",
-    "vercel-labs/agent-skills@vercel-composition-patterns",
-    "wshobson/agents@typescript-advanced-types",
-    "antfu/skills@vite"
-  ],
+  "workspace": {
+    "services": {
+      "web": {
+        "label": "Web",
+        "path": "apps/web",
+        "default": "react",
+        "variants": {
+          "nextjs": "web-next@1.0.4",
+          "react": "spa-vite-react@1.2.4",
+          "vue": "web-vue-vite@1.1.4",
+          "nuxt": "web-nuxt@1.2.4",
+          "sveltekit": "web-sveltekit@1.2.4",
+          "astro": "web-astro@1.2.4",
+          "angular": "web-angular@1.1.4",
+          "react-router": "web-react-router@1.1.4",
+          "tanstack-start": "web-tanstack-start@1.1.4"
+        }
+      },
+      "api": {
+        "label": "Api",
+        "path": "apps/api",
+        "default": "none",
+        "variants": {
+          "django": "api-django@1.2.4",
+          "fastapi": "api-fastapi@1.3.4",
+          "hono": "api-hono@1.4.4",
+          "express": "api-express@1.0.4",
+          "fastify": "api-fastify@1.1.4",
+          "nestjs": "api-nestjs@1.1.4",
+          "elysia": "api-elysia@1.2.4",
+          "go": "api-go@1.3.4",
+          "rails": "api-rails@1.1.4",
+          "spring": "api-spring-boot@1.2.4",
+          "laravel": "api-laravel@1.1.4",
+          "aspnet": "api-aspnet@1.0.4",
+          "axum": "api-axum@1.0.4"
+        }
+      },
+      "docs": {
+        "label": "Docs",
+        "path": "apps/docs",
+        "default": "none",
+        "variants": {
+          "starlight": "docs-starlight@1.1.4",
+          "vitepress": "docs-vitepress@1.1.4",
+          "fumadocs": "docs-fumadocs@1.1.4"
+        }
+      },
+      "mobile": {
+        "label": "Mobile",
+        "path": "apps/mobile",
+        "default": "none",
+        "variants": {
+          "expo": "mobile-expo@1.4.4"
+        }
+      }
+    },
+    "orchestrator": "nx"
+  },
   "libraries": {
     "framework": "monorepo",
-    "design": [
-      "design-pack"
-    ],
     "workflow": [
       "essentials"
     ],
     "security": [
       "security-pack"
-    ],
-    "ci": [],
-    "deploy": "none",
-    "quality": [],
-    "testing": []
+    ]
   },
+  "options": [
+    {
+      "id": "deployment",
+      "label": "Deployment mode",
+      "default": "none",
+      "choices": [
+        {
+          "id": "none",
+          "label": "Configure later"
+        },
+        {
+          "id": "independent",
+          "label": "Independent services"
+        },
+        {
+          "id": "compose",
+          "label": "Docker Compose"
+        }
+      ]
+    },
+    {
+      "id": "orchestrator",
+      "label": "Workspace tasks",
+      "default": "nx",
+      "choices": [
+        {
+          "id": "simple",
+          "label": "Simple scripts"
+        },
+        {
+          "id": "turbo",
+          "label": "Turborepo"
+        },
+        {
+          "id": "nx",
+          "label": "Nx"
+        }
+      ]
+    }
+  ],
   "verify": {
-    "command": "npx nx run-many -t build test --outputStyle=static"
+    "command": "node scripts/workspace.mjs verify",
+    "matrix": []
   },
-  "instructions": "## How to work here\n\n- Create apps and libraries with the generators (`npx nx g @nx/react:library libs/<name>`), not by hand: that way they're registered in the graph.\n- Run tasks through Nx to use the cache: `npx nx build web`, `npx nx run-many -t test`, `npx nx affected -t test`.\n- Respect module boundaries (tags and `@nx/enforce-module-boundaries`).\n- Before finishing: `npx nx run-many -t build test`."
+  "minCliVersion": "1.1.0"
 }

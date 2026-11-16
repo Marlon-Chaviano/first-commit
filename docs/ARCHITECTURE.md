@@ -138,3 +138,9 @@ Es un proyecto personal, así que la arquitectura está pensada para no pagar na
 - **Mucho tráfico de lectura**: las páginas leen Postgres con caché de 5 min; subir `cacheLife("metrics")` si Neon se queda corto. Redis no se toca.
 - **Mucho tráfico de escritura**: un evento = un `LPUSH`. Si el vaciado se queda corto, aumentar `maxBatches` o la frecuencia del schedule (sin pasar de 1.000 mensajes de QStash al día).
 - **Más eventos que el plan gratuito de Redis** (~240.000/mes): pasar a pay-as-you-go (0,20 $ por 100.000 comandos) o agrupar eventos en el CLI.
+
+## Monorepos componibles
+
+El constructor `monorepo` compone kits individuales con opciones por servicio,
+planificación por directorio y un único `kits.lock` v2. Los presets comparten ese
+motor. Contratos, compatibilidad y verificación: [workspaces.md](workspaces.md).

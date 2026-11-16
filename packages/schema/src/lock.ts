@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { PACKAGE_MANAGER_IDS } from "./schema";
+import { PACKAGE_MANAGER_IDS, writeFileSchema } from "./schema";
 
 export const LOCK_FILE = "kits.lock";
 
@@ -8,11 +8,15 @@ export const LOCK_FILE = "kits.lock";
  * kits.lock — committed with the project. Records where it came from so
  * `create-first-commit update`, `add` and `doctor` know what the kit manages.
  */
-export const kitsLockSchema = z.object({
+const projectLockSchema = z.object({
   lockVersion: z.literal(1),
   /** Kit reference without version ("landing-next", "ana/web", "./kit"); null if the project wasn't created from a kit. */
   kit: z.string().nullable(),
   version: z.string().nullable(),
+  /** Native preset service: its files belong to the preset, not the standalone framework kit. */
+  embedded: z.boolean().optional(),
+  /** CI and hosting belong to the workspace, rather than the standalone service kit. */
+  workspaceService: z.boolean().optional(),
   /** API the kit was resolved against. */
   registry: z.string().optional(),
   options: z.record(z.string(), z.array(z.string())).default({}),
@@ -31,6 +35,10 @@ export const kitsLockSchema = z.object({
   updatedAt: z.iso.datetime(),
 });
 
+export const kitsLockSchema = projectLockSchema.extend({
+  lockVersion: z.union([z.literal(1), z.literal(2)]),
+  services: z.record(z.string(), projectLockSchema.extend({ path: writeFileSchema.shape.path })).optional(),
+});
 export type KitsLock = z.infer<typeof kitsLockSchema>;
 
 /** Items in `next` that aren't in `prev`, and the other way round. */

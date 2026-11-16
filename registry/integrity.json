@@ -7,7 +7,8 @@
     "1.4.0": "sha256-IRJFFaASJUlDN2Qy6IIcK711sCgqzogiaAhZdFgxtzs=",
     "1.4.1": "sha256-DdvzKmtWKjT+LncAhRkFQSEnr0slavwVLeF0qzDaiXI=",
     "1.4.2": "sha256-xGB3vsh5SErdutpRVVEwQTjmwBtocNX5DCgcEAq9UvQ=",
-    "1.4.3": "sha256-KZOHUlP14xI1nU/aG0pUAmLzga3CF1ixjrWA+rsilsk="
+    "1.4.3": "sha256-KZOHUlP14xI1nU/aG0pUAmLzga3CF1ixjrWA+rsilsk=",
+    "1.4.4": "sha256-YipyofniKdCHQjdWZm99Udr7Z1xV22HBG9b+jwpnAj4="
   },
   "chrome-extension": {
     "1.0.0": "sha256-grENeCJwjD11nGetz3j3VTPtysoQhX0p79NmMQ0D7ds=",
@@ -38,7 +39,8 @@
     "1.4.0": "sha256-yOC4xtHIQkDE3HImlipKCKuQLUzi+BaPu67lah5nOf0=",
     "1.4.1": "sha256-tGGWNk2My83HE65AMB3qbPOZFn/shFcptB1pZP3CqvA=",
     "1.4.2": "sha256-WESURpwCQvMpqXuqNVAWlfUpQ1DZfzUDQPtI+YbY2IU=",
-    "1.4.3": "sha256-i6AnGxoM3imeYyslVQI/shYxcgShfCucbbUOqsxExq0="
+    "1.4.3": "sha256-i6AnGxoM3imeYyslVQI/shYxcgShfCucbbUOqsxExq0=",
+    "1.4.4": "sha256-ORUoIbYdGwszj48O3jruTWAOS6HTtscjVXqzvuZ31uY="
   },
   "saas-next-supabase": {
     "1.0.0": "sha256-SjRUO1+keSaYqmqc6hGBrOC/P+sn2oqIlt5aqwmI3iI=",
@@ -58,7 +60,8 @@
     "1.3.0": "sha256-x5WTaBBsf40oRrrV/MIlDybpJUIPaagna8DpH3iEJvs=",
     "1.3.1": "sha256-2a+n+b5FotvDZtBUvlx87AaSyUINqbBYp9QX7WBykQg=",
     "1.3.2": "sha256-jQKq6aDoU4OM+un8zU9nj1fe2iNzL+EeszMaysXfiAQ=",
-    "1.3.3": "sha256-CbKtPgINH+cQ1n76HQkAdGiVby4MAtMtVYL2wjG6A4I="
+    "1.3.3": "sha256-CbKtPgINH+cQ1n76HQkAdGiVby4MAtMtVYL2wjG6A4I=",
+    "1.3.4": "sha256-wsMIRO2RLXemi51yG1LoGOfkC1l/jPZtul4uCTS8Vjg="
   },
   "api-go": {
     "1.0.0": "sha256-GZpiFyqNiIPLsgOhCU23x0GYCaM40gz4q1rtb6GxW9g=",
@@ -67,7 +70,8 @@
     "1.3.0": "sha256-t1WPUzNV4bhVtDfMXjfRZFGBOMRKCwwhqxNRwjkbz3I=",
     "1.3.1": "sha256-ydcQUdbqn7wYwp8jgyRV0LkVcsiUgeU3nb7BDuU3AVc=",
     "1.3.2": "sha256-XGMmysi+8A3ujv70XFkvHN4QjllWn485CqqUdAfBeiw=",
-    "1.3.3": "sha256-+UIPT495S4jxFlYuICqXJANt3gGnFY97h/Ivtt0W/FI="
+    "1.3.3": "sha256-+UIPT495S4jxFlYuICqXJANt3gGnFY97h/Ivtt0W/FI=",
+    "1.3.4": "sha256-PHeON6xdU1j5wHWucq7X9T0EdbqT++0qDM+SYkl7EDc="
   },
   "ios-swiftui": {
     "1.0.0": "sha256-dRBrHLiASXX5A84PneKLZq6qbQJ7CQFFwNJcBYG2xmM=",
@@ -85,7 +89,8 @@
     "1.2.0": "sha256-tvy923Yd9pobl1YpypH4rzWFaHYRJ+qdIlTInq0lWG4=",
     "1.2.1": "sha256-nk9S7Gt5Wc4ucxEJ1xxWYmNujhubA/jaHVyca2rRpRM=",
     "1.2.2": "sha256-3oYLmwtkxiGkdAOzhUxFlTwSwpz/QvfU5ge/q9pX6EE=",
-    "1.2.3": "sha256-/p4dVwsCorNPLZ7w/Cgym4FZcj7X7WHBy20i/8wS57w="
+    "1.2.3": "sha256-/p4dVwsCorNPLZ7w/Cgym4FZcj7X7WHBy20i/8wS57w=",
+    "1.2.4": "sha256-anVTRs3GIDdxrHBB778Hz7HJYgcDbkXa6yuarCbKqfA="
   },
   "api-elysia": {
     "1.0.0": "sha256-wlq4mDhP1sOJLIPVa5K2tapOv8/aTeziucWdHipy3tY=",
@@ -94,7 +99,8 @@
     "1.2.0": "sha256-c/xZdPzc7F51yE3Ls0KdwZB4k6Ub0BWNCJndUpmekYY=",
     "1.2.1": "sha256-lI1YqfVB4sf+nhMr+VX8f+Pn8k5ZI14plcT8zywTWhQ=",
     "1.2.2": "sha256-4woKZzBJDkoRNQLGGWrdJ5xQ+c7Xj4ZVEl9z2vZXAI0=",
-    "1.2.3": "sha256-7ZMhfbKoFc4iOXTGWTC1zYp4aTB3TNsu1x9bp/fs/Bg="
+    "1.2.3": "sha256-7ZMhfbKoFc4iOXTGWTC1zYp4aTB3TNsu1x9bp/fs/Bg=",
+    "1.2.4": "sha256-49GYyOnmX0AtIcNKPgi8c7I/Jfg62/9OJ19vNZjd+PI="
   },
   "api-spring-boot": {
     "1.0.0": "sha256-3jIZWiMhgrB2PRnk2ek6aalLtf0pIcuDLFRS2L9fyuA=",
@@ -102,7 +108,8 @@
     "1.2.0": "sha256-uV1GUfsq5KQ6gmaGe0sMQFfK06IpSbnEWb/kWpMZHpE=",
     "1.2.1": "sha256-ghV13uZOHp8IiT1qKRXYGonGZJGharYww1q34pv+uHA=",
     "1.2.2": "sha256-hN2rlQDvgyy0ziHoJ/mG5noaYAWymvY1vW9JcXMjizE=",
-    "1.2.3": "sha256-H8nfgKYZKnfufhbnaOm6trLGEOp2krQWWOwfkWx6Qa4="
+    "1.2.3": "sha256-H8nfgKYZKnfufhbnaOm6trLGEOp2krQWWOwfkWx6Qa4=",
+    "1.2.4": "sha256-xvtYP3fw+x9OFRqZ5Xe8gn01vcRflHEnguD0iUWoFE0="
   },
   "spa-vite-react": {
     "1.0.0": "sha256-7eQoElNygX23WTcfBb+EmElN3kF7CUNpgWZEVo979UA=",
@@ -110,7 +117,8 @@
     "1.2.0": "sha256-uedzDHI259xim7svNw1Bx6hcqqnQn9znbnG4U8KkUTE=",
     "1.2.1": "sha256-gusz+Cb7oAwgNF9wTp7UO03mp6o+45nWp9zANa88+MQ=",
     "1.2.2": "sha256-lidBltFyXBn/cR3LCXlh2op6R9jMWYAXr30xzEkWr1w=",
-    "1.2.3": "sha256-H5AeCOR8R7Nlt0xpG7u3xTqH5x+S6jRElwF/OasrJEM="
+    "1.2.3": "sha256-H5AeCOR8R7Nlt0xpG7u3xTqH5x+S6jRElwF/OasrJEM=",
+    "1.2.4": "sha256-kZu9XMbfOF+r2zRoAuNxUMSTJuw46jB3QfJBL/UX8mw="
   },
   "web-astro": {
     "1.0.0": "sha256-FNppcYM1jsCqAHMhMW5bTtO1hVmZcYo68sLD5IDK3o4=",
@@ -118,7 +126,8 @@
     "1.2.0": "sha256-MI0nW0aOjnYxY4P0IHJecsgMF29ePcHdal9YldhaUHU=",
     "1.2.1": "sha256-XnxUFgYgIXw0We6XMG8hkqRYjmfKwFLmxSIkXqamVs0=",
     "1.2.2": "sha256-PM4EO6fVy9HbONLG6B5C2pw+xCGQbdO1QyzVrFWSsxU=",
-    "1.2.3": "sha256-7ICcZISejuCcviE8foPIhGbdCDg8Zv06p34mEllnJNE="
+    "1.2.3": "sha256-7ICcZISejuCcviE8foPIhGbdCDg8Zv06p34mEllnJNE=",
+    "1.2.4": "sha256-FQXxdMrsjyvkzmwJulrhypMr49V/XqUL4MHXUVInCKI="
   },
   "web-laravel": {
     "1.0.0": "sha256-QJUc3uk2CL3a1W6eGWKFenM6EpaWG+EWZmQg9vYI3l4=",
@@ -135,7 +144,8 @@
     "1.2.0": "sha256-rTrx5HgJd55+qcduCgHEpAeL2B6P4dDMqAneOIEy+zY=",
     "1.2.1": "sha256-dUrVDLsprFS78L6He2IJgT7ntSOH2GK5P69iAirJuwM=",
     "1.2.2": "sha256-3JAn6g75SjyL9rzCfdbzVDzBwnTi8mHTt7L2vlakon0=",
-    "1.2.3": "sha256-0gx0NQdeLjfpXl8i+Sm97T+GIEsJk8LTiPun2lzTDsc="
+    "1.2.3": "sha256-0gx0NQdeLjfpXl8i+Sm97T+GIEsJk8LTiPun2lzTDsc=",
+    "1.2.4": "sha256-FdQCXiUD4YQu1RRLHxx71/nFMeGyiuWVntKbZZxLcNk="
   },
   "web-rails": {
     "1.0.0": "sha256-vZFj/M9ZTrOCn3ncCKjwz9+t6SejH2mdDHpCcRqJ6Lk=",
@@ -152,7 +162,8 @@
     "1.2.0": "sha256-vNM3yhkv0BGIu+uXH3IIVltZw8LpN4TpYeGS1qlEaEg=",
     "1.2.1": "sha256-vsQejVM+nSMr1q7vP12cVQlqjKZUHqvgxPWMlLq0tes=",
     "1.2.2": "sha256-I3hsxLG3OvlehnNHcNChTgkAIhCxT4Akjgnl77ZvEzk=",
-    "1.2.3": "sha256-JH6MYLthgw5/eFetmTp8G+DVqG7SuEMtAhBQT37MVV4="
+    "1.2.3": "sha256-JH6MYLthgw5/eFetmTp8G+DVqG7SuEMtAhBQT37MVV4=",
+    "1.2.4": "sha256-XKT+T53k1pCdOoRvWZbvTPY8PfdSp+iUBhRPRbeYGZ8="
   },
   "monorepo-turbo": {
     "1.0.0": "sha256-eQNN1VfV+kKViSeITdkuy7krEkW3Ew7Eb8WUaN5nPFo=",
@@ -162,7 +173,8 @@
     "1.1.0": "sha256-b8di51IUUFL5FerY+diuWiAoaPBxxezoi1w24SQvaBA=",
     "1.1.1": "sha256-sq+YTx4l2FasFTKCvBir7xoeEfnfDU3lwUtJ0VIHGTQ=",
     "1.1.2": "sha256-ZzjNxuLx/tE6kKmk0DKA4I0PT1sSaZ64iqb24ic5qhA=",
-    "1.1.3": "sha256-y8UGnNsuDeqitPenWGX2l7FhxJqaHfAuJm34rcgOgk4="
+    "1.1.3": "sha256-y8UGnNsuDeqitPenWGX2l7FhxJqaHfAuJm34rcgOgk4=",
+    "2.0.0": "sha256-GRlpJQFit5xY63ONRY4OBKJtDwaSjnjga/pIGfBoD1A="
   },
   "discord-bot": {
     "1.0.0": "sha256-dBTzF3Bm4jHzU3fplfQhgKaemo+T2sTEsQNC67aQE0c=",
@@ -228,21 +240,24 @@
     "1.1.0": "sha256-IUKxqJ1L4swmEHflR+j7sIGk3XisbXDrqR+yPEaH3+E=",
     "1.1.1": "sha256-E+TRdYCgeoxyZJ4A9jkvOASTXg3ZGN7GyZ79flcWQuc=",
     "1.1.2": "sha256-9cakpm3E4DBVqjBDaZNtQUwr+TZeEyMS4CBF+1Q1OGg=",
-    "1.1.3": "sha256-iCLuP5tgsX5pM+MgRA6638zDP2U58SWPDqTuzKZT3KU="
+    "1.1.3": "sha256-iCLuP5tgsX5pM+MgRA6638zDP2U58SWPDqTuzKZT3KU=",
+    "1.1.4": "sha256-cOoda8/68tl3sas2BMKmjjXLxXKQrrNCL/ekutfq3rM="
   },
   "docs-starlight": {
     "1.0.0": "sha256-avJNs/5IAOX4Jxsd32NoSNH+fCdmNc3Js780sBWf5Tk=",
     "1.1.0": "sha256-aqsoS9swXzONk1cixC0+/Tc0ntegu/PSxNB/PaonNTs=",
     "1.1.1": "sha256-x8Y518uLK092wCP8FbSGb8yEWQu4uxjvo3+fhbAX8mw=",
     "1.1.2": "sha256-gWTgfdFrS6+4a/N7AjPPFI90i42bv85/so/h/xD3HXs=",
-    "1.1.3": "sha256-0REazXjVoHdScIocka8YEiRU5mSFJQ2OwZy0YJCbFgo="
+    "1.1.3": "sha256-0REazXjVoHdScIocka8YEiRU5mSFJQ2OwZy0YJCbFgo=",
+    "1.1.4": "sha256-uEMsN2aUEp0XFQ4t855hRiNwi5LbD7LFBQv2KO5XEjk="
   },
   "docs-vitepress": {
     "1.0.0": "sha256-W8pwecKoKRkvzEzfbtApCFcIIu4rdbenntmG7TXCEwE=",
     "1.1.0": "sha256-oDoirT2yPqp0sOnT9I7G58qFShn3PT2z7XaPBZzYm9g=",
     "1.1.1": "sha256-6lQdHrniVdILwK/hPD5ukGLy0ZgC46VpuWuwNy0f/ng=",
     "1.1.2": "sha256-jbHwfKCwmEB0POZVemuRX9gOxfnH0hXb1/4G8B3HXpU=",
-    "1.1.3": "sha256-qUdHHvLCUty17U9lx9RILRRqvJ0V3Vprxmkr6YCNlvw="
+    "1.1.3": "sha256-qUdHHvLCUty17U9lx9RILRRqvJ0V3Vprxmkr6YCNlvw=",
+    "1.1.4": "sha256-lvxJJHcX+p5SzI3YNwU4kKXO7pj/JC7QXMJMccb8vB0="
   },
   "landing-astro": {
     "1.0.0": "sha256-rUPNgwbF/naJNNv479/a3HqXSGa8H01X7nCOxKRezDs=",
@@ -280,14 +295,16 @@
     "1.1.0": "sha256-H06EEtjNjHQrIV3GDMYxzk1nIwO1ZqWicvyKYuuxuAs=",
     "1.1.1": "sha256-Qqt1HXOY2uOY4NNFbLTwePWmry8qznNeMNzWaH32A7k=",
     "1.1.2": "sha256-yNT8hHx5L5NHFcX/CI60MKsrIE/LoooK2frru4aeI8o=",
-    "1.1.3": "sha256-fW2QkApUn9ClLDP8eup8Sr69NUcH9OcTmJhYirFEEOk="
+    "1.1.3": "sha256-fW2QkApUn9ClLDP8eup8Sr69NUcH9OcTmJhYirFEEOk=",
+    "1.1.4": "sha256-XbE5GJNSfjQcw0OjKVy4jzC4zuiyhlZhF3gp9IgGv9M="
   },
   "api-nestjs": {
     "1.0.0": "sha256-aFcCbjRQo45GUCzQu27RW8IgoSJRLtKBVeaqtML9gZM=",
     "1.1.0": "sha256-wFfyQp8kEsTKNvRADvHc6oaJyh2N94uAFWZAr67LqVY=",
     "1.1.1": "sha256-AltPQZ37J8X5W6+Un9qdYIMBKnOOGPPREF9w3+HgMuo=",
     "1.1.2": "sha256-Y5Nk3ZPgaa5p77IUfZ/90UBHN144L+0S8ZCDW/IuXeM=",
-    "1.1.3": "sha256-EIFehhFm9uDD0DyMVKg1N58yCdfRlyeMITUCRX92gu0="
+    "1.1.3": "sha256-EIFehhFm9uDD0DyMVKg1N58yCdfRlyeMITUCRX92gu0=",
+    "1.1.4": "sha256-8rQ58ObVEuNPeO3ksCTFsCCs/Z1YCSBrrnPJLienDN8="
   },
   "api-rails": {
     "1.0.0": "sha256-11QQDUDeqJ+Aadz6akRRHHqcEGRqIbE2AToiiCkmons=",
@@ -295,35 +312,40 @@
     "1.1.0": "sha256-YsnXiB5Tn3ySJ76u9CCQoBlpvtIzN3xGrhu0NS9pkEI=",
     "1.1.1": "sha256-gGEb7znCOyWAsj+jIPht8W5gHn3ykpWN9kT59eXd7D8=",
     "1.1.2": "sha256-dhVIyuh5oiEpZtk+VDwiqmGkt+2JKxWe6mEgwOCK9q4=",
-    "1.1.3": "sha256-2KTwcZrDQSlxrIpkJwFbYqbrG9CpaFh8Ytw8zbiEMsA="
+    "1.1.3": "sha256-2KTwcZrDQSlxrIpkJwFbYqbrG9CpaFh8Ytw8zbiEMsA=",
+    "1.1.4": "sha256-yhosstYGS0kBYkBT3TaHvqrXZYhTzXmEfIlAdZHsrSk="
   },
   "web-angular": {
     "1.0.0": "sha256-UKmgNMO/yz8jxg8Ii9MBLBq4QD7SIQ1VEg8iqjttxuw=",
     "1.1.0": "sha256-ObMJghjefXTfTAWkVYrI7Cr263Sn0iuLhrqnyjDzwKk=",
     "1.1.1": "sha256-9uFJJhxEbIwj6ydlRQVrRY7l2wGwTVbyFyF4uWfpoi8=",
     "1.1.2": "sha256-GIp7xT7XTzOUF7L7IlzARXYtFRGX/EgLgFMV3aIhClw=",
-    "1.1.3": "sha256-w+oRUc2Yvta/LzET10zUuVkfZ65RHsDYbkdzoLfFeJ0="
+    "1.1.3": "sha256-w+oRUc2Yvta/LzET10zUuVkfZ65RHsDYbkdzoLfFeJ0=",
+    "1.1.4": "sha256-qdj2ANn+VPPRs60w7K5BOpCzmooUW/YkJmlEOL/Zl48="
   },
   "web-react-router": {
     "1.0.0": "sha256-IJ+acu3Lpkivy1z3zsth7V6gZwkRqpEffdsEECrQSIY=",
     "1.1.0": "sha256-qpT5eKWEVroYcoTBWoFpWB3lRiribMp55m/6pfmwVvw=",
     "1.1.1": "sha256-+XhjY1UgFHuiNtf43nMtxoHQ4KFlImJZ8W4tKPaW8Ds=",
     "1.1.2": "sha256-3r6owaOFtH62mgAXBugAFCs+DMXfSeqfO0G5D6AoY+Q=",
-    "1.1.3": "sha256-uCHv9F58R/spRud07Qf5FXNjXhRt5FXy+K9+5N7QH5Y="
+    "1.1.3": "sha256-uCHv9F58R/spRud07Qf5FXNjXhRt5FXy+K9+5N7QH5Y=",
+    "1.1.4": "sha256-vZkhPOtSNynuGTBY2SCwLaxn0eXSBDdPL+xeNQl8bzc="
   },
   "web-tanstack-start": {
     "1.0.0": "sha256-EkzHFA6mvcOEjMa1qfj6qBYFIIZfOmNrHSYEoj0pR/4=",
     "1.1.0": "sha256-08JKF2v0ld+xN2TUVl8LwWtrHs26P+4fpC3MIluYOeI=",
     "1.1.1": "sha256-pJe9jZ6384GpMKfY3yDPwpiX79d0vgGziXArCh1ZG2w=",
     "1.1.2": "sha256-5WtOfxwtyG/AhOFBjU8CbvsXwDoRiR5U0H1a4FL7kFA=",
-    "1.1.3": "sha256-q7W2hmNnTKirI8hF7GOOwlIcF5cyZtP6vdmm0yFAbu4="
+    "1.1.3": "sha256-q7W2hmNnTKirI8hF7GOOwlIcF5cyZtP6vdmm0yFAbu4=",
+    "1.1.4": "sha256-/nCcguwPRXS4stQxFNpCzuZiGf88xiamxGcJvZlw2fc="
   },
   "web-vue-vite": {
     "1.0.0": "sha256-FFdfyTBEOArB+7phVCT7csJYcAZLqqI88kmI8uhuyXk=",
     "1.1.0": "sha256-0k7cX7WZ0SEMYNJl7vGxmUxaWc8Ih5aXo6E8IH3GO9s=",
     "1.1.1": "sha256-wzwUSK+0kSlLptPnCTDZ5nzQ2bv0xhNvGPBBlnX3bVw=",
     "1.1.2": "sha256-HjMjx9pxu6IR/nhBX3XRrUdyqPgEsqd9miHr+venn2g=",
-    "1.1.3": "sha256-iOYpIwDCGO6182pxzBsBkTTihQtxW/6hW7Df+52qdPg="
+    "1.1.3": "sha256-iOYpIwDCGO6182pxzBsBkTTihQtxW/6hW7Df+52qdPg=",
+    "1.1.4": "sha256-1S5qLWGiEF/Ak21IMg0bdYKju1OU+7/WXhRp8cud8bg="
   },
   "saas-ai-next": {
     "1.0.0": "sha256-Ga6t7ow/RUW+V5uAB3P8g82HKgnVTqTyA21+Ij03tWw=",
@@ -425,28 +447,32 @@
     "1.1.0": "sha256-3LWcE+sii53MOS/Vj4nv1GJs+uJDUmHtMMjjBmOek9A=",
     "1.1.1": "sha256-ud1bTdtXv7Lj1G1j8LcAh/Jqol6CJb9MK6DfqWxI1M0=",
     "1.1.2": "sha256-DXIxDORru2hibUx+GAasZbE1xT6tK0MEkZ342LkrIiA=",
-    "1.1.3": "sha256-xVKRVpLGGdwovJFQOyaxxwAw/i3FM/lhj+CnD7hnhyI="
+    "1.1.3": "sha256-xVKRVpLGGdwovJFQOyaxxwAw/i3FM/lhj+CnD7hnhyI=",
+    "2.0.0": "sha256-se9Ky/p8HaczY/9ZKBNbahUDXQW9k8lRTkLxVlfp618="
   },
   "monorepo-go": {
     "1.0.0": "sha256-KTvqejpZ7wy9b0bNq1DcCoDyIOBQM26W4s27AqGu/Ic=",
     "1.1.0": "sha256-flLB7L5sWLAvQgG/1xMo5Xd8iLtrNvCdi5MzSPAdtBA=",
     "1.1.1": "sha256-tqCzeu3DUJdXhYH+z8uHsTCFaPk8BbUbgYoCQxP+XhQ=",
     "1.1.2": "sha256-3RrXkABv3o3a1he9WL27zHQ2oYc3PfzYDz93aaDaTMw=",
-    "1.1.3": "sha256-OMQJqWZfWRNoPNEK3B2+ko1Tq+tHrzIIwaDU1EsTg/E="
+    "1.1.3": "sha256-OMQJqWZfWRNoPNEK3B2+ko1Tq+tHrzIIwaDU1EsTg/E=",
+    "2.0.0": "sha256-WCJJAcOwKCFjQYUgjSzM/InSqDIjUytqtCDkt0n7hOA="
   },
   "monorepo-nx": {
     "1.0.0": "sha256-mIj/EvhheS5MO8CSm19pr076T/HVcu/9uAVQ8RcEugM=",
     "1.1.0": "sha256-Ly+d7MuiM0t7H7PsCA+qxLLeuJMajCBQvzeevCD9MI0=",
     "1.1.1": "sha256-E0sKwiQAT66RH7g0f1/zRKOCbsK5Mc9pLlphu22YLEY=",
     "1.1.2": "sha256-32Tmz6vTbhGnxlXs4bvUmo71jWg2rHHaAdwenk7D1ng=",
-    "1.1.3": "sha256-j+VdpJ7W/X8N4oeJorS+Bnz73jSuZNImyo8CrNxlzj0="
+    "1.1.3": "sha256-j+VdpJ7W/X8N4oeJorS+Bnz73jSuZNImyo8CrNxlzj0=",
+    "2.0.0": "sha256-0hISH+184xYGxp1l0/PGRAJNYSQZToCekkz9k4w2vLU="
   },
   "monorepo-packages": {
     "1.0.0": "sha256-qrLPn77buVQYofaIoHW7eIdH1h+ZgpapJgAteOU3WkY=",
     "1.1.0": "sha256-8m5O/HgBuqZAGCT3+njoCGq1vRzIJ/nhB8RaNjCaUl4=",
     "1.1.1": "sha256-d+Scm3cdsEEX8ETnxletYuUCAu5cOxra7bXrr1lhIR0=",
     "1.1.2": "sha256-fy+cagPPljGnp3OLG0T1HL7QzjAadkJiJnlZ4G5auRI=",
-    "1.1.3": "sha256-eW8I5emu/5ghzkvgYFDSacK1+LQQIrRdDeME5Fx0v7U="
+    "1.1.3": "sha256-eW8I5emu/5ghzkvgYFDSacK1+LQQIrRdDeME5Fx0v7U=",
+    "2.0.0": "sha256-aBbGFVKZPw69xnIXkPhzo2Yupz+3Go6Ra7a0qvFGer4="
   },
   "monorepo-rails-react": {
     "1.0.0": "sha256-ueQyM0c2Dt6fucEMD73Ku7/OjjKNU8iw63UiO8uqA/Y=",
@@ -454,14 +480,16 @@
     "1.1.0": "sha256-3B3zBNvfoQ4X/t7OS7F/IRgS3TQ6RdSHLVMrTo0Et5M=",
     "1.1.1": "sha256-JD7ywdmyNGOxyTc8UuvBaeCHh5aePGJPi7W7pQmyGJ0=",
     "1.1.2": "sha256-BAbL/HzUMobqRXX/V3nz9+kRtMqmyqP6JBa9kQIyGmE=",
-    "1.1.3": "sha256-1jYltN014tzZjMOkfIDzhtBUVr6IwHK0eC083aAzsn4="
+    "1.1.3": "sha256-1jYltN014tzZjMOkfIDzhtBUVr6IwHK0eC083aAzsn4=",
+    "2.0.0": "sha256-uZXc8v3y0CCx7QSyQm7he+HY6bvmRZdoskVwILS6p1A="
   },
   "monorepo-spring-react": {
     "1.0.0": "sha256-OB4vmd1fbXYWm/czlpamyrKZtxNNdGcUeRIcTzaVkCM=",
     "1.1.0": "sha256-QP19+Ee4sy52uOOfZGL5GGPwtvoUh00CP1dL91P5CE8=",
     "1.1.1": "sha256-r+0T/3ep3CLWRdahzIaFEW0TcXIW5mdgat1iSVAPCXg=",
     "1.1.2": "sha256-lp6pRlgj6/IBDy8OUbaJ7/WLO+ziLN/mwpmlNONu/G0=",
-    "1.1.3": "sha256-fLmbwLWZJZubO6pABMOaeLooDi+fcVHJLVWy33rzJEw="
+    "1.1.3": "sha256-fLmbwLWZJZubO6pABMOaeLooDi+fcVHJLVWy33rzJEw=",
+    "2.0.0": "sha256-XI+jSmiJsSRSYEVsNfwMRFcGhNnpmc6jav79zKwG3x0="
   },
   "monorepo-t3-turbo": {
     "1.0.0": "sha256-DYjAk0VxPjVKG6LV1+NHfF828RMc2/UnqONcdXDjyHI=",
@@ -470,7 +498,8 @@
     "1.1.0": "sha256-HsA2/kkYElYl0FaEPk1LXfMLtjAkQc0c/Y4XMNC8OkU=",
     "1.1.1": "sha256-/Ddz5PnD7KgZK8Ns6XGuRoxf81tzbWIhKOPiu4Rr0Fs=",
     "1.1.2": "sha256-RYMOo01k1f8pGMOxhp/xVnHCIbMHVm7XRuTvaHUUz90=",
-    "1.1.3": "sha256-VezkwtgVFn4hg84TNJeRENjUogaZIA22uGajuIrlYhs="
+    "1.1.3": "sha256-VezkwtgVFn4hg84TNJeRENjUogaZIA22uGajuIrlYhs=",
+    "2.0.0": "sha256-K/XX6pXmQebjIkaQSB1/6ufOlA/+5+3JmHwHtZQ9g7c="
   },
   "monorepo-uv": {
     "1.0.0": "sha256-dtvOl8qJZDdPokQix2tYAUwAn3+LQCAq/0Dlp2vHJNY=",
@@ -482,7 +511,8 @@
     "1.1.0": "sha256-uiw06OgSEBDD6QVFxEOQU2g4Ai9Z4EAHtMJbgC3s7zE=",
     "1.1.1": "sha256-lqCjwSJDueiDT5gtzZF3646SFX52/QpeDesGjN1nE6k=",
     "1.1.2": "sha256-i/JdWmr/E6+vDVMYIKapFoIYg48KWKgPmFrqeIhzV38=",
-    "1.1.3": "sha256-R4Q/sG0m8be94BcARPTP43oEwdAOcIF6pwk7ZVVC1No="
+    "1.1.3": "sha256-R4Q/sG0m8be94BcARPTP43oEwdAOcIF6pwk7ZVVC1No=",
+    "1.1.4": "sha256-eU1NwrD7/cH+8zw7COF+L+7Q/4y5wWiikw/jApoAG7c="
   },
   "saas-django": {
     "1.0.0": "sha256-bwNadst/vBa537Jf6+8+Cpa/cYDJqdA+ASIqAqM4iPI=",
@@ -526,19 +556,22 @@
     "1.0.0": "sha256-+xm1TxrbbfRnqLV7/klklTFP0GX4K5nkGioqgP1NBSA=",
     "1.0.1": "sha256-E1YW9kEt5GjwLZVEOGJ0uI1FUknf3OYOgX/5BWn4SgU=",
     "1.0.2": "sha256-6zH0XBHfRPCDEIE04B6BzDqGtrXr+Gac2uoalb4Im0E=",
-    "1.0.3": "sha256-lZqF6TwZBhQ0/EP/FxKApBBYQLKZMROU3IhMphrWb+A="
+    "1.0.3": "sha256-lZqF6TwZBhQ0/EP/FxKApBBYQLKZMROU3IhMphrWb+A=",
+    "1.0.4": "sha256-MXgl/3Jol78UFLuHWIM9Gedi1cOR2hdq0ksyPkfMUT4="
   },
   "api-axum": {
     "1.0.0": "sha256-5ZTHd6gBUaDxL4AHasqmqv5vEWvn17dk9aYno9USeMg=",
     "1.0.1": "sha256-Oj47pHex2CiMQVp1bUmfu3PIkSUgGoGbBNjB4ZLle+0=",
     "1.0.2": "sha256-bsDaUsDkg01q2HsQT9yjjkK7ku4mx+RdcNrm/lBUywU=",
-    "1.0.3": "sha256-Ys1bUJlZvOuJLy7xQyHarewm7rjymlYLWfbiaC52NdM="
+    "1.0.3": "sha256-Ys1bUJlZvOuJLy7xQyHarewm7rjymlYLWfbiaC52NdM=",
+    "1.0.4": "sha256-M/JWbdbFCu7pj9nHgENpepRUtn8B8+vLxvkDBx3YkuY="
   },
   "api-express": {
     "1.0.0": "sha256-AMARjL1VEb6s74hC0pgagE8nOP/POClDUWGRz+1phR4=",
     "1.0.1": "sha256-nLMrwNKsjxHJ0hBTBczW8YJ9f1Pea+LwRtrydh8c+is=",
     "1.0.2": "sha256-nt1PIBBHaTHtC8JcOK4GnGTEozgTvPSqnqju10AvSsM=",
-    "1.0.3": "sha256-Vdn6fbyrDcVg1rhPvsIIfEXW2G2goXwL/rGm/HBmFM0="
+    "1.0.3": "sha256-Vdn6fbyrDcVg1rhPvsIIfEXW2G2goXwL/rGm/HBmFM0=",
+    "1.0.4": "sha256-QSAypliTYmVQGyLVZ9WCGf0uTMk3OwQmHc2cO++ua7M="
   },
   "cli-node": {
     "1.0.0": "sha256-rX69qnMFaZfk+oJ+UqB2tUwKeLBdqcFUz09NpxmuEyo=",
@@ -563,6 +596,10 @@
     "1.0.0": "sha256-mmLeYSdh2b9asHQI2gZrOTKh7Eor//mCtTDPXAOYEuE=",
     "1.0.1": "sha256-ApEI8zASpIW336ugFD6i0l5p4vreo6vh2pAMLrCOLAo=",
     "1.0.2": "sha256-RUFTIM1Zy7sEDH0jlsQ7i6Utw/RBP71Z1BMw4WmSEjE=",
-    "1.0.3": "sha256-2CBpPTeWDVVFUMRnj15g3pa/WBAXsflnXeWT6jDQHF4="
+    "1.0.3": "sha256-2CBpPTeWDVVFUMRnj15g3pa/WBAXsflnXeWT6jDQHF4=",
+    "1.0.4": "sha256-30koyihNoex9ykb6OSxQjrbZ2XLVlbNaceimEwr+w4M="
+  },
+  "monorepo": {
+    "1.0.0": "sha256-EkTGKB1gnK5GX8Z4Pc4oRR7RmqCjoAZAC//8NvcpGUU="
   }
 }

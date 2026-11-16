@@ -1,3 +1,4 @@
+import { serviceOptionVisible } from "./workspace";
 import { z } from "zod";
 
 import { FLAGSHIP_KITS } from "./catalog";
@@ -135,8 +136,13 @@ export function recommendHeuristic(description: string, kits: Kit[]): Recommenda
   const reasons = [ranked[0]!.score > 0 ? `${kit.title}: the kit that best fits the description.` : `${kit.title}: no clear hints, so it's a general starting point.`];
 
   const options: Record<string, string[]> = {};
-  for (const option of kit.options) {
-    const matches = option.choices.filter((c) => c.id !== "none" && CHOICE_HINTS[c.id]?.test(text));
+  const ordered = [...kit.options.filter((option) => !option.id.includes(".")), ...kit.options.filter((option) => option.id.includes("."))];
+  for (const option of ordered) {
+    if (kit.workspace && option.id.includes(".")) {
+      const current = selectionsFrom(kit, { options }, { requirements: "prune", unknown: "ignore" }).selections;
+      if (!serviceOptionVisible(kit, current, option)) continue;
+    }
+    const matches = option.choices.filter((c) => c.id !== "none" && (CHOICE_HINTS[c.id]?.test(text) || (kit.workspace && new RegExp(`\\b${c.id === "nextjs" ? "next(?:\\.?(?:js))?" : c.id}\\b`, "i").test(text))));
     if (!matches.length) continue;
     // A select takes the first match; a multi keeps one per library family (posthog OR vercel-analytics, not both).
     const picked = option.type === "select" ? [matches[0]!] : matches.filter((c, i) => !matches.slice(0, i).some((m) => CHOICE_HINTS[m.id]?.source === CHOICE_HINTS[c.id]?.source));
@@ -152,7 +158,16 @@ export function recommendHeuristic(description: string, kits: Kit[]): Recommenda
  * result is checked with validateSelections. Throws if it still isn't valid.
  */
 export function resolveRecommendation(kit: Kit, rec: Recommendation, source: ResolvedRecommendation["source"]): ResolvedRecommendation {
-  const { selections } = selectionsFrom(kit, { options: rec.options }, { requirements: "autofill", unknown: "ignore" });
+  let options = rec.options;
+  if (kit.workspace) {
+    const roots = Object.fromEntries(Object.entries(options).filter(([id]) => !id.includes(".")));
+    const base = selectionsFrom(kit, { options: roots }, { requirements: "prune", unknown: "ignore" }).selections;
+    options = Object.fromEntries(Object.entries(options).filter(([id]) => {
+      const option = kit.options.find((entry) => entry.id === id);
+      return option && serviceOptionVisible(kit, base, option);
+    }));
+  }
+  const { selections } = selectionsFrom(kit, { options }, { requirements: "autofill", unknown: "ignore" });
   return { ...rec, kit: kit.name, options: selections.options, selections, source };
 }
 

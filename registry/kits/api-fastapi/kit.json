@@ -1,7 +1,7 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "api-fastapi",
-  "version": "1.3.3",
+  "version": "1.3.4",
   "title": "API with FastAPI",
   "description": "A Python API with FastAPI, its own virtual environment and tests with pytest. Automatic OpenAPI docs.",
   "category": "api",
@@ -92,7 +92,10 @@
   },
   "options": [],
   "libraries": {
-    "framework": "python",
+    "framework": [
+      "python",
+      "fastapi"
+    ],
     "observability": [],
     "ci": [],
     "workflow": [
@@ -111,5 +114,29 @@
     "testing": []
   },
   "instructions": "## How to work here\n\n- Activate the environment with `source .venv/bin/activate`. Start with `fastapi dev app/main.py` (docs at `/docs`).\n- Group routes by resource with `APIRouter` in `app/routers/` and include them in `app/main.py`.\n- Validate inputs and outputs with Pydantic models; type-annotate every function.\n- After installing a package with pip, update `requirements.txt` (`pip freeze > requirements.txt`).\n- Before finishing a task: `python -m pytest`.",
-  "language": "python"
+  "language": "python",
+  "service": {
+    "dev": ".venv/bin/uvicorn app.main:app --host 0.0.0.0 --port 8000",
+    "build": ".venv/bin/python -c \"import importlib, pkgutil, app; [importlib.import_module(f'app.{m.name}') for m in pkgutil.iter_modules(app.__path__)]\" && .venv/bin/python -m pytest -q && (test ! -x .venv/bin/ruff || .venv/bin/ruff check .)",
+    "start": ".venv/bin/uvicorn app.main:app --host 0.0.0.0 --port 8000",
+    "port": 8000,
+    "install": "python -m venv .venv && .venv/bin/pip install -r requirements.txt",
+    "ci": [
+      {
+        "uses": "actions/setup-python@v5",
+        "with": {
+          "python-version": "3.12"
+        }
+      }
+    ],
+    "dockerfile": "FROM python:3.12-slim\nWORKDIR /app\nCOPY {{servicePath}}/ .\nRUN python -m venv .venv && .venv/bin/pip install -r requirements.txt\nEXPOSE 8000\nCMD [\"sh\", \"-c\", \".venv/bin/uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}\"]\n",
+    "health": "/health",
+    "connect": [
+      {
+        "path": "app/main.py",
+        "mode": "append",
+        "content": "\n# Workspace client origins, configurable in production.\nimport os\nfrom fastapi.middleware.cors import CORSMiddleware\n\napp.add_middleware(CORSMiddleware, allow_origins=os.getenv(\"WEB_ORIGINS\", \"{{webOrigin}}\").split(\",\"), allow_methods=[\"GET\", \"POST\", \"PUT\", \"PATCH\", \"DELETE\", \"OPTIONS\"], allow_headers=[\"Content-Type\", \"Authorization\"])\n"
+      }
+    ]
+  }
 }

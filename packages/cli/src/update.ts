@@ -19,6 +19,8 @@ import {
   templateVars,
   upsertKitSection,
   type Step,
+  type Kit,
+  type KitsLock,
 } from "@kits/schema";
 import pc from "picocolors";
 
@@ -42,10 +44,23 @@ export async function update(args: ParsedArgs, guard: <T>(v: T) => Exclude<T, sy
   if (!lock) throw new Error("No kits.lock in this folder. Was this project created from a kit?");
   if (!lock.kit) throw new Error("This project wasn't created from a kit: use `add` to add pieces from the catalog.");
 
+  if (lock.embedded) {
+    p.log.info(`${lock.kit}: this service belongs to a native preset. Its standalone kit updates do not apply; update the preset's shared dependencies manually.`);
+    return;
+  }
+
+  if (lock.services) {
+    for (const service of Object.values(lock.services)) {
+      const flags = new Map(args.flags); flags.set("dir", [join(dir, service.path)]);
+      await update({ ...args, flags, positionals: [] }, guard, cliVersion);
+    }
+    return;
+  }
   p.intro(pc.bgWhite(pc.black(" update ")));
   const target = args.positionals[0];
   const loaded = await loadKit(target ? `${lock.kit}@${target}` : lock.kit);
-  const { kit } = loaded;
+  const kit = kitForUpdate(loaded.kit, lock);
+  if (kit.workspace) throw new Error("This kit now uses composable services. Keep this existing project on its recorded version; create a new workspace to change its topology.");
   if (kit.version === lock.version && !args.switches.has("force")) {
     p.outro(`${lock.kit} is already on the latest version (${kit.version}).`);
     return;
@@ -133,7 +148,7 @@ export async function update(args: ParsedArgs, guard: <T>(v: T) => Exclude<T, sy
   await writeLock(dir, {
     ...lock,
     version: kit.version,
-    options: sel.options,
+    options: { ...sel.options, ...(lock.workspaceService && lock.options.deploy ? { deploy: lock.options.deploy } : {}) },
     skills: r.skills,
     dependencies: [...new Set([...lock.dependencies, ...r.dependencies])],
     devDependencies: [...new Set([...lock.devDependencies, ...r.devDependencies])],
@@ -142,6 +157,11 @@ export async function update(args: ParsedArgs, guard: <T>(v: T) => Exclude<T, sy
   await reportEvent("update", lock.kit, kit.version, sel, r.skills, cliVersion);
   if (failed.length) p.log.warn(`${failed.length} step(s) failed:\n${failed.map((s) => `  ${describe(s, dir)}`).join("\n")}`);
   p.outro(`${pc.green("Updated")} to ${lock.kit}@${kit.version}. Review the changes with git diff.`);
+}
+
+/** Updating a child must not reinstall standalone CI/hosting over workspace-owned configuration. */
+export function kitForUpdate(kit: Kit, lock: Pick<KitsLock, "workspaceService">): Kit {
+  return lock.workspaceService ? { ...kit, options: kit.options.filter((option) => option.id !== "ci" && option.id !== "deploy") } : kit;
 }
 
 /**

@@ -49,7 +49,16 @@ export async function loadKit(ref: string): Promise<LoadedKit> {
   const top = await loadRawKit(ref);
   // Parents of `extends` are fetched the same way, so they can be official, community or local.
   // Community kits use the official library catalog too.
-  const kit = await loadKitFrom(top, { read: (parentRef) => loadRawKit(parentRef, top.dir), catalog: loadCatalog, resolvePath: resolve });
+  const parents = new Map<string, Promise<LoadedRawKit>>();
+  let catalog: Promise<Catalog> | undefined;
+  const kit = await loadKitFrom(top, {
+    read: (parentRef) => {
+      if (!parents.has(parentRef)) parents.set(parentRef, loadRawKit(parentRef, top.dir));
+      return parents.get(parentRef)!;
+    },
+    catalog: () => catalog ??= loadCatalog(),
+    resolvePath: resolve,
+  });
   return { kit, dir: top.dir, ref };
 }
 

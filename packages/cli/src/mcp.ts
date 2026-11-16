@@ -50,7 +50,7 @@ export async function mcp(args: ParsedArgs, version: string): Promise<void> {
     },
   };
 
-  serveStdio(() => createKitsServer({ source, version, cwd, local: { init: (a, dir) => runSelf(a, dir), add: (piece, dir) => runSelf(["add", piece, "--yes"], dir) } }), {
+  serveStdio(() => createKitsServer({ source, version, cwd, local: { init: (a, dir) => runSelf(a, dir), add: (piece, dir, options) => runSelf(["add", piece, "--yes", ...(options?.service ? ["--service", options.service] : []), ...(options?.dryRun ? ["--dry-run"] : [])], dir) } }), {
     onerror: (error) => process.stderr.write(`[${BRAND.cli} mcp] ${error.message}\n`),
   });
 }

@@ -1,7 +1,7 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "web-astro",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "author": "marlon-chaviano",
   "title": "Content site with Astro",
   "category": "web",
@@ -58,5 +58,24 @@
     "quality": [],
     "testing": []
   },
-  "instructions": "## How to work here\n\n- Pages in `src/pages/` (each file is a route) and `.astro` components in `src/components/`.\n- Everything is static HTML by default: add client-side JavaScript only through an island (`client:visible`, `client:idle`) when interaction is needed.\n- Markdown content with content collections (`src/content/`).\n- Before finishing: `npm run build`."
+  "instructions": "## How to work here\n\n- Pages in `src/pages/` (each file is a route) and `.astro` components in `src/components/`.\n- Everything is static HTML by default: add client-side JavaScript only through an island (`client:visible`, `client:idle`) when interaction is needed.\n- Markdown content with content collections (`src/content/`).\n- Before finishing: `npm run build`.",
+  "service": {
+    "dev": "{{pm}} run dev {{scriptArgs}} --port 3000",
+    "build": "{{pm}} run build",
+    "start": "npx --yes serve dist -l 3000",
+    "port": 3000,
+    "install": "npm install",
+    "ci": [],
+    "dockerfile": "FROM node:22-slim\nWORKDIR /app\nRUN npm install -g pnpm bun serve\nCOPY {{servicePath}}/ .\nRUN {{pm}} install\nRUN {{pm}} run build\nENV NODE_ENV=production\nENV PORT=3000\nEXPOSE 3000\nCMD [\"sh\", \"-c\", \"serve dist -l ${PORT:-3000}\"]\n",
+    "client": {
+      "env": "PUBLIC_API_URL",
+      "files": [
+        {
+          "path": "api-client.js",
+          "mode": "create",
+          "content": "export async function apiHealth(baseUrl = import.meta.env.PUBLIC_API_URL || '{{apiUrl}}') {\n  const response = await fetch(baseUrl + '{{healthPath}}');\n  if (!response.ok) throw new Error('API health check failed: ' + response.status);\n  return response.headers.get('content-type')?.includes('json') ? response.json() : { ok: true };\n}\n"
+        }
+      ]
+    }
+  }
 }

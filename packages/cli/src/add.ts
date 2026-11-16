@@ -2,7 +2,7 @@ import { existsSync } from "node:fs";
 import { basename, join, resolve } from "node:path";
 
 import * as p from "@clack/prompts";
-import { applyWrite, BRAND, dependencySteps, FRAMEWORK_LABELS, importAgentsMd, INSTRUCTION_STUBS, libraryRule, mcpSteps, mergeEnv, skillRefSchema, skillSteps, templateVars, upsertBlock, type KitsLock, type Library, type Step, slugify } from "@kits/schema";
+import { applyWrite, fillTemplate, BRAND, dependencySteps, FRAMEWORK_LABELS, importAgentsMd, INSTRUCTION_STUBS, libraryRule, mcpSteps, mergeEnv, skillRefSchema, skillSteps, templateVars, upsertBlock, type KitsLock, type Library, type Step, slugify } from "@kits/schema";
 import pc from "picocolors";
 
 import { listFlag, type ParsedArgs } from "./args";
@@ -10,7 +10,7 @@ import { detectFramework } from "./create/frameworks";
 import { detectPm, installedLibraries, packageName, readDeps } from "./create/detect";
 import { describe, execute } from "./exec";
 import { hashFile, readLock, writeLock } from "./lockfile";
-import { loadCatalog } from "./registry";
+import { loadCatalog, loadKit } from "./registry";
 import { reportEvent } from "./telemetry";
 
 /**
@@ -21,15 +21,23 @@ import { reportEvent } from "./telemetry";
 export async function add(args: ParsedArgs, guard: <T>(v: T) => Exclude<T, symbol>, cliVersion: string): Promise<void> {
   const target = args.positionals[0];
   if (!target) throw new Error("Uso: add <biblioteca|owner/repo@skill>   (p. ej. add sentry, add kokonutui)");
-  const dir = resolve(args.flags.get("dir")?.[0] ?? ".");
-  if (!existsSync(join(dir, "package.json"))) throw new Error(`No package.json in ${dir}`);
+  let dir = resolve(args.flags.get("dir")?.[0] ?? ".");
+  const workspace = await readLock(dir);
+  if (workspace?.services) {
+    const serviceId = args.flags.get("service")?.[0];
+    if (!serviceId || !workspace.services[serviceId]) throw new Error(`Choose a service with --service: ${Object.keys(workspace.services).join(", ")}`);
+    dir = join(dir, workspace.services[serviceId]!.path);
+  }
+  if (!existsSync(dir)) throw new Error(`Missing service directory: ${dir}`);
   const interactive = Boolean(process.stdin.isTTY) && !args.switches.has("yes");
   const force = args.switches.has("force");
 
   const lock = await readLock(dir);
   const deps = readDeps(dir);
   const framework = detectFramework(deps);
-  const frameworks = framework?.frameworks ?? [];
+  const childKit = lock?.kit ? (await loadKit(`${lock.kit}@${lock.version}`)).kit : undefined;
+  const declared = childKit?.libraries?.framework;
+  const frameworks = framework?.frameworks ?? (typeof declared === "string" ? [declared] : Array.isArray(declared) ? declared : []);
   const pm = lock?.pm ?? detectPm(dir);
   const agents = listFlag(args, "agent") ?? (lock?.agents.length ? lock.agents : ["claude-code"]);
   const title = basename(dir);
@@ -78,16 +86,16 @@ export async function add(args: ParsedArgs, guard: <T>(v: T) => Exclude<T, symbo
     const tasks = [...(lib.setup ? [`${lib.name}: ${lib.setup}`] : []), ...lib.setupTasks];
     const block = [libraryRule(lib), tasks.length ? `### Primeros pasos\n\n${tasks.map((t) => `- [ ] ${t}`).join("\n")}` : ""].filter(Boolean).join("\n\n");
     steps = [
-      ...dependencySteps({ addCommand: framework?.addCommand, pm, dependencies: missing(lib.dependencies), devDependencies: missing(lib.devDependencies), cwd: dir, vars }),
+      ...dependencySteps({ addCommand: childKit?.addCommand ?? framework?.addCommand, pm, dependencies: missing(lib.dependencies), devDependencies: missing(lib.devDependencies), cwd: dir, vars }),
       ...lib.writeFiles.map((f) => ({
         kind: "write" as const,
         title: f.mode === "create" ? "Create file" : "Append to",
         path: join(dir, f.path),
-        merge: applyWrite({ ...f, content: f.content }),
+        merge: applyWrite({ ...f, content: fillTemplate(f.content, vars) }),
         optional: true,
       })),
       // Setup commands only for a library that wasn't there yet.
-      ...(already ? [] : lib.postInstall.map((command) => ({ kind: "run" as const, title: "Configurar", command, cwd: dir, optional: true }))),
+      ...(already ? [] : lib.postInstall.map((command) => ({ kind: "run" as const, title: "Configurar", command: fillTemplate(command, vars), cwd: dir, optional: true }))),
       ...skillSteps({ skills: lib.skills, agents, pm, cwd: dir }),
       ...mcpSteps({ mcp: lib.mcp, agents, projectDir: dir, join }),
       ...(Object.keys(lib.env).length ? [{ kind: "write" as const, title: "Environment variables", path: join(dir, ".env.example"), merge: mergeEnv(lib.env) }] : []),

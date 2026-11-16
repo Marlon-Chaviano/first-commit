@@ -1,7 +1,7 @@
 import { createHash } from "node:crypto";
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { readFile, writeFile } from "node:fs/promises";
-import { isAbsolute, join, relative, resolve } from "node:path";
+import { dirname, isAbsolute, join, relative, resolve } from "node:path";
 
 import { kitsLockSchema, LOCK_FILE, splitKitRef, type KitsLock, type Resolved, type Selections } from "@kits/schema";
 
@@ -9,13 +9,39 @@ export const hashFile = (path: string) => createHash("sha256").update(readFileSy
 
 export async function readLock(projectDir: string): Promise<KitsLock | null> {
   const path = join(projectDir, LOCK_FILE);
-  if (!existsSync(path)) return null;
+  if (!existsSync(path)) {
+    let parent = dirname(projectDir);
+    while (parent !== dirname(parent)) {
+      if (existsSync(join(parent, LOCK_FILE))) {
+        const root = await readLock(parent);
+        return Object.values(root?.services ?? {}).find((service) => resolve(parent, service.path) === resolve(projectDir)) ?? null;
+      }
+      parent = dirname(parent);
+    }
+    return null;
+  }
   const parsed = kitsLockSchema.safeParse(JSON.parse(await readFile(path, "utf8")));
   if (!parsed.success) throw new Error(`${LOCK_FILE} isn't valid: ${parsed.error.issues[0]?.message}`);
   return parsed.data;
 }
 
 export async function writeLock(projectDir: string, lock: KitsLock): Promise<void> {
+  if (!existsSync(join(projectDir, LOCK_FILE))) {
+    let parent = dirname(projectDir);
+    while (parent !== dirname(parent)) {
+      if (existsSync(join(parent, LOCK_FILE))) {
+        const root = await readLock(parent);
+        const entry = Object.entries(root?.services ?? {}).find(([, service]) => resolve(parent, service.path) === resolve(projectDir));
+        if (root && entry) {
+          const { services: _services, ...child } = lock;
+          await writeLock(parent, { ...root, services: { ...root.services, [entry[0]]: { ...child, lockVersion: 1, path: entry[1].path } } });
+          return;
+        }
+        break;
+      }
+      parent = dirname(parent);
+    }
+  }
   await writeFile(join(projectDir, LOCK_FILE), JSON.stringify({ ...lock, updatedAt: new Date().toISOString() }, null, 2) + "\n");
 }
 
@@ -33,6 +59,9 @@ export function managedFiles(projectDir: string, kitDir: string, r: Resolved): R
   for (const path of [...paths].sort()) {
     const full = join(projectDir, path);
     if (existsSync(full)) out[path] = hashFile(full);
+  }
+  for (const service of r.services ?? []) {
+    for (const [path, hash] of Object.entries(managedFiles(join(projectDir, service.path), kitDir, service.resolved))) out[`${service.path}/${path}`] = hash;
   }
   return out;
 }
@@ -61,7 +90,12 @@ export function newLock(o: {
   brand?: KitsLock["brand"];
 }): KitsLock {
   return {
-    lockVersion: 1,
+    lockVersion: o.r.services ? 2 : 1,
+    ...(o.r.services ? { services: Object.fromEntries(o.r.services.map((service) => {
+      const managed = Object.fromEntries(Object.entries(o.managed).filter(([path]) => path.startsWith(service.path + "/")).map(([path, hash]) => [path.slice(service.path.length + 1), hash]));
+      const child = newLock({ kit: service.kit.name, version: service.kit.version, registry: o.registry, sel: service.sel, r: service.resolved, managed });
+      return [service.id, { ...child, workspaceService: true, ...(service.embedded ? { embedded: true } : {}), lockVersion: 1 as const, path: service.path }];
+    })) } : {}),
     kit: o.kit,
     version: o.version,
     registry: o.registry,

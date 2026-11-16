@@ -1,12 +1,12 @@
 {
   "$schema": "../../kit.schema.json",
-  "version": "1.1.3",
-  "author": "marlon-chaviano",
   "name": "monorepo-django-react",
+  "version": "2.0.0",
+  "author": "marlon-chaviano",
   "title": "Django + React in one repo",
-  "category": "monorepo",
-  "language": "python",
   "description": "A Django backend with Django REST Framework and a React + Vite frontend in the same repo, with CORS configured to develop both at once.",
+  "category": "monorepo",
+  "language": "typescript",
   "tags": [
     "django",
     "drf",
@@ -15,83 +15,123 @@
     "fullstack"
   ],
   "base": {
-    "command": "mkdir -p {{name}}/backend && cd {{name}}/backend && python3 -m venv .venv && .venv/bin/pip install -q django djangorestframework django-cors-headers && .venv/bin/django-admin startproject config . && cd .. && npx -y create-vite@latest frontend --template react-ts --no-interactive",
-    "install": "cd frontend && npm install"
+    "command": "echo 'This workspace needs CLI version 1.1.0 or newer. Update the CLI and try again.' >&2; exit 1"
   },
   "packageManagers": [
-    "pip"
+    "pnpm",
+    "npm",
+    "bun"
   ],
-  "skills": [
-    "affaan-m/ecc@django-patterns",
-    "affaan-m/ecc@django-security",
-    "affaan-m/ecc@django-tdd",
-    "getsentry/skills@django-perf-review",
-    "getsentry/skills@django-access-review",
-    "trailofbits/skills@modern-python",
-    "wshobson/agents@python-code-style",
-    "wshobson/agents@python-type-safety",
-    "wshobson/agents@python-error-handling",
-    "wshobson/agents@python-testing-patterns",
-    "wshobson/agents@python-project-structure",
-    "vercel-labs/agent-skills@vercel-react-best-practices",
-    "vercel-labs/agent-skills@vercel-composition-patterns",
-    "wshobson/agents@typescript-advanced-types",
-    "antfu/skills@vite"
-  ],
-  "writeFiles": [
-    {
-      "path": "backend/config/settings.py",
-      "content": "\n# --- API (first-commit) ---\nINSTALLED_APPS += [\"rest_framework\", \"corsheaders\"]\nMIDDLEWARE.insert(0, \"corsheaders.middleware.CorsMiddleware\")\nCORS_ALLOWED_ORIGINS = [\"http://localhost:5173\"]\n",
-      "mode": "append"
-    },
-    {
-      "path": "backend/config/api.py",
-      "content": "from rest_framework.decorators import api_view\nfrom rest_framework.response import Response\n\n\n@api_view([\"GET\"])\ndef health(request):\n    return Response({\"ok\": True})\n"
-    },
-    {
-      "path": "backend/config/urls.py",
-      "content": "\nfrom config.api import health  # noqa: E402\n\nurlpatterns += [path(\"api/health/\", health)]\n",
-      "mode": "append"
-    },
-    {
-      "path": "backend/requirements.txt",
-      "content": "django\ndjangorestframework\ndjango-cors-headers\n"
+  "workspace": {
+    "services": {
+      "web": {
+        "label": "Web",
+        "path": "apps/web",
+        "default": "react",
+        "variants": {
+          "nextjs": "web-next@1.0.4",
+          "react": "spa-vite-react@1.2.4",
+          "vue": "web-vue-vite@1.1.4",
+          "nuxt": "web-nuxt@1.2.4",
+          "sveltekit": "web-sveltekit@1.2.4",
+          "astro": "web-astro@1.2.4",
+          "angular": "web-angular@1.1.4",
+          "react-router": "web-react-router@1.1.4",
+          "tanstack-start": "web-tanstack-start@1.1.4"
+        }
+      },
+      "api": {
+        "label": "Api",
+        "path": "apps/api",
+        "default": "django",
+        "variants": {
+          "django": "api-django@1.2.4",
+          "fastapi": "api-fastapi@1.3.4",
+          "hono": "api-hono@1.4.4",
+          "express": "api-express@1.0.4",
+          "fastify": "api-fastify@1.1.4",
+          "nestjs": "api-nestjs@1.1.4",
+          "elysia": "api-elysia@1.2.4",
+          "go": "api-go@1.3.4",
+          "rails": "api-rails@1.1.4",
+          "spring": "api-spring-boot@1.2.4",
+          "laravel": "api-laravel@1.1.4",
+          "aspnet": "api-aspnet@1.0.4",
+          "axum": "api-axum@1.0.4"
+        }
+      },
+      "docs": {
+        "label": "Docs",
+        "path": "apps/docs",
+        "default": "none",
+        "variants": {
+          "starlight": "docs-starlight@1.1.4",
+          "vitepress": "docs-vitepress@1.1.4",
+          "fumadocs": "docs-fumadocs@1.1.4"
+        }
+      },
+      "mobile": {
+        "label": "Mobile",
+        "path": "apps/mobile",
+        "default": "none",
+        "variants": {
+          "expo": "mobile-expo@1.4.4"
+        }
+      }
     }
-  ],
+  },
   "libraries": {
     "framework": "monorepo",
-    "design": [
-      "design-pack"
-    ],
     "workflow": [
       "essentials"
     ],
     "security": [
       "security-pack"
-    ],
-    "ci": [],
-    "deploy": "none",
-    "quality": [],
-    "testing": []
-  },
-  "verify": {
-    "command": "cd backend && .venv/bin/python manage.py check && .venv/bin/python manage.py test && cd ../frontend && npm run build",
-    "matrix": [
-      {
-        "testing": [
-          "workspace-tests"
-        ],
-        "quality": [
-          "workspace-quality"
-        ],
-        "ci": [
-          "workspace-ci"
-        ],
-        "deploy": [
-          "workspace-deploy"
-        ]
-      }
     ]
   },
-  "instructions": "## How to work here\n\n- `backend/` is Django + DRF (start with `cd backend && .venv/bin/python manage.py runserver`) and `frontend/` is React + Vite (`cd frontend && npm run dev`).\n- The API lives under `/api/`; the frontend calls it with the `VITE_API_URL` URL. CORS only allows the frontend's origin (`CORS_ALLOWED_ORIGINS`).\n- Before finishing: `manage.py test` in `backend/` and `npm run build` in `frontend/`.\n- Each app lives in its own folder with its own dependencies; don't mix code from one into another.\n- Whatever backend and frontend share (types, API contracts) is defined in one place and documented.\n"
+  "options": [
+    {
+      "id": "deployment",
+      "label": "Deployment mode",
+      "default": "none",
+      "choices": [
+        {
+          "id": "none",
+          "label": "Configure later"
+        },
+        {
+          "id": "independent",
+          "label": "Independent services"
+        },
+        {
+          "id": "compose",
+          "label": "Docker Compose"
+        }
+      ]
+    },
+    {
+      "id": "orchestrator",
+      "label": "Workspace tasks",
+      "default": "simple",
+      "choices": [
+        {
+          "id": "simple",
+          "label": "Simple scripts"
+        },
+        {
+          "id": "turbo",
+          "label": "Turborepo"
+        },
+        {
+          "id": "nx",
+          "label": "Nx"
+        }
+      ]
+    }
+  ],
+  "verify": {
+    "command": "node scripts/workspace.mjs verify",
+    "matrix": []
+  },
+  "minCliVersion": "1.1.0"
 }

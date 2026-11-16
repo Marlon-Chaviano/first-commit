@@ -47,7 +47,7 @@ export const mcpServerSchema = z.union([
 export const writeFileSchema = z.object({
   path: z.string().regex(/^(?!\/)(?!(?:.*\/)?\.\.(?:\/|$))[\w./@()+[\]-]+$/, "Relative path inside the project"),
   content: z.string(),
-  mode: z.enum(["create", "append", "prepend", "insert-before", "json-merge"]).default("create"),
+  mode: z.enum(["create", "append", "prepend", "insert-before", "replace", "json-merge"]).default("create"),
   anchor: z.string().optional(),
 });
 
@@ -88,7 +88,7 @@ export const choiceSchema = z.object({
 });
 
 export const optionSchema = z.object({
-  id: z.string().regex(/^[a-z][a-z0-9-]*$/),
+  id: z.string().regex(/^[a-z][a-z0-9.-]*$/),
   label: z.string(),
   description: z.string().optional(),
   /** "select": exactly one choice. "multi": any number of choices. */
@@ -101,6 +101,7 @@ export const optionSchema = z.object({
 export const kitSchema = z
   .object({
     $schema: z.string().optional(),
+    minCliVersion: z.string().regex(SEMVER).optional(),
     name: z.string().regex(/^[a-z0-9-]+$/),
     /** Semver of this kit. Install a specific one with `init <kit>@<version>`. */
     version: z.string().regex(SEMVER, "version must be semver, e.g. 1.0.0"),
@@ -144,6 +145,33 @@ export const kitSchema = z
         matrix: z.array(z.record(z.string(), z.array(z.string()))).optional(),
       })
       .optional(),
+    service: z.object({
+      dev: z.string(), build: z.string().optional(), start: z.string().optional(), verify: z.string().optional(),
+      port: z.number().int().min(1).max(65535), health: z.string().optional(),
+      options: requiresSchema.optional(),
+      connect: z.array(writeFileSchema).optional(),
+      /** Web adapter: public URL variable and files templated with apiUrl/healthPath. */
+      client: z.object({ env: z.string().regex(/^[A-Z][A-Z0-9_]*$/).optional(), files: z.array(writeFileSchema) }).optional(),
+      dockerfile: z.string().optional(), install: z.string().optional(), ci: z.array(z.object({ uses: z.string(), with: z.record(z.string(), z.string()).optional() })).optional(),
+    }).optional(),
+    workspace: z.object({
+      preserveBase: z.boolean().optional(),
+      nativeVerify: z.string().optional(),
+      nativeBase: z.object({ command: z.string(), install: z.string().optional() }).optional(),
+      preserveWhen: requiresSchema.optional(),
+      migrations: z.record(z.string(), z.object({
+        defaults: z.record(z.string(), z.array(z.string())).optional(),
+        choices: z.record(z.string(), z.record(z.string(), z.array(z.string()))),
+      })).optional(),
+      orchestrator: z.enum(["simple", "turbo", "nx"]).default("simple"),
+      services: z.record(z.string().regex(/^[a-z][a-z0-9-]*$/), z.object({
+        label: z.string(),
+        existing: z.boolean().optional(),
+        path: z.string().regex(/^[a-zA-Z0-9_-]+(?:\/[a-zA-Z0-9_-]+)*$/),
+        default: z.string(),
+        variants: z.record(z.string().regex(/^[a-z0-9-]+$/), z.string().regex(/^[a-z0-9-]+@\d+\.\d+\.\d+$/, "Use a versioned official service kit")),
+      })),
+    }).optional(),
     options: z.array(optionSchema).default([]),
     /**
      * Offer libraries from the shared catalog (registry/libraries.json). The kit's
@@ -180,7 +208,7 @@ export type WriteFile = z.infer<typeof writeFileSchema>;
 export type McpServer = z.infer<typeof mcpServerSchema>;
 export type Choice = z.infer<typeof choiceSchema>;
 export type KitOption = z.infer<typeof optionSchema>;
-export type Kit = z.infer<typeof kitSchema>;
+export type Kit = z.infer<typeof kitSchema> & { services?: Record<string, Record<string, Kit>> };
 /** Raw kit.json as authored (defaults not yet applied). */
 export type KitInput = z.input<typeof kitSchema>;
 

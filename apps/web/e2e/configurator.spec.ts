@@ -109,3 +109,21 @@ test("Nuxt offers framework-specific deployment choices with icons", async ({ pa
   await expect(page.getByRole("button", { name: "Netlify", exact: true })).not.toHaveAttribute("data-state", "on");
   expect(duplicateKeys).toEqual([]);
 });
+
+test("a monorepo configures libraries independently for web, API and docs", async ({ page }) => {
+  await page.goto("/kits/monorepo");
+  await expect(command(page)).toContainText("monorepo");
+  await page.getByRole("button", { name: "Web · nextjs", exact: true }).click();
+  await page.getByRole("button", { name: "Mantine", exact: true }).click();
+  await expect(command(page)).toContainText("--web.nextjs.components mantine");
+  await page.getByRole("button", { name: "Backend with Django", exact: true }).click();
+  await expect(command(page)).toContainText("--api django");
+  await page.getByRole("button", { name: "Api · django", exact: true }).click();
+  await expect(page.getByText("Libraries and tools installed in apps/api.", { exact: true })).toBeVisible();
+  await expect(command(page)).toContainText("--web.nextjs.components mantine");
+  await page.getByRole("button", { name: /Docs with Starlight/, exact: false }).click();
+  await expect(command(page)).toContainText("--docs starlight");
+  await page.getByRole("button", { name: "Show install steps", exact: true }).click();
+  await expect(page.getByText("Create workspace", { exact: true })).toBeVisible();
+  await expect(page.getByText("Loading install steps…", { exact: true })).not.toBeVisible();
+});

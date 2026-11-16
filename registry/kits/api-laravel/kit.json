@@ -1,6 +1,6 @@
 {
   "$schema": "../../kit.schema.json",
-  "version": "1.1.3",
+  "version": "1.1.4",
   "author": "marlon-chaviano",
   "name": "api-laravel",
   "title": "API with Laravel",
@@ -87,5 +87,27 @@
       }
     ]
   },
-  "instructions": "## How to work here\n\n- API routes go in `routes/api.php` (prefix `/api`); protect them with `auth:sanctum`.\n- Respond with API Resources (`php artisan make:resource`) and validate with Form Requests (`php artisan make:request`); never return models as they are.\n- Database changes only through migrations.\n- Before finishing: `php artisan test`."
+  "instructions": "## How to work here\n\n- API routes go in `routes/api.php` (prefix `/api`); protect them with `auth:sanctum`.\n- Respond with API Resources (`php artisan make:resource`) and validate with Form Requests (`php artisan make:request`); never return models as they are.\n- Database changes only through migrations.\n- Before finishing: `php artisan test`.",
+  "service": {
+    "dev": "php artisan serve --host=0.0.0.0 --port=8000",
+    "build": "php artisan test",
+    "start": "php artisan serve --host=0.0.0.0 --port=8000",
+    "port": 8000,
+    "install": "composer install",
+    "ci": [
+      {
+        "uses": "shivammathur/setup-php@v2",
+        "with": {
+          "php-version": "8.3"
+        }
+      }
+    ],
+    "health": "/up",
+    "connect": [
+      {
+        "path": "config/cors.php",
+        "content": "<?php\nreturn [\n 'paths' => ['*'],\n 'allowed_methods' => ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],\n 'allowed_origins' => explode(',', env('WEB_ORIGINS', '{{webOrigin}}')),\n 'allowed_origins_patterns' => [],\n 'allowed_headers' => ['Content-Type', 'Authorization'],\n 'exposed_headers' => [],\n 'max_age' => 0,\n 'supports_credentials' => false,\n];\n"
+      }
+    ]
+  }
 }

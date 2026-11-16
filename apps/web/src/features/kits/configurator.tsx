@@ -1,6 +1,6 @@
 "use client";
 
-import { AGENTS, buildInitCommand, defaultSelections, LIBRARY_OPTION_IDS, pruneSelections, requirementsMet, requirementText, resolve, selectionsFrom, type Choice, type Kit, type Selections, isProjectName } from "@kits/schema/light";
+import { serviceOptionVisible, AGENTS, buildInitCommand, defaultSelections, LIBRARY_OPTION_IDS, pruneSelections, requirementsMet, requirementText, resolve, selectionsFrom, type Choice, type Kit, type Selections, isProjectName } from "@kits/schema/light";
 import { BanIcon, PackageIcon, PaletteIcon, PlusIcon, SearchIcon, ShieldCheckIcon, SparklesIcon, XIcon, type LucideIcon } from "lucide-react";
 import { toast } from "sonner";
 import { useEffect, useRef, useState } from "react";
@@ -65,7 +65,11 @@ export function Configurator({
   /** Server-rendered extras for the sticky column (stats, author, badge…). */
   details?: React.ReactNode;
 }) {
-  const [sel, setSel] = useState<Selections>(() => initial ?? defaultSelections(kit));
+  const [sel, setSel] = useState<Selections>(() => initial ? {
+    ...initial,
+    ...selectionsFrom(kit, { options: initial.options, agents: initial.agents, pm: initial.pm }, { unknown: "ignore", requirements: "prune" }).selections,
+    addSkills: initial.addSkills, removeSkills: initial.removeSkills, badge: initial.badge,
+  } : defaultSelections(kit));
   const [name, setName] = useState(initialName);
   const [brand, setBrand] = useState<BrandChoice | null>(null);
   // When the install command scrolls out of view, a bar at the bottom keeps it one click away.
@@ -96,16 +100,18 @@ export function Configurator({
 
   // Curated skill packs get their own cards; their skills aren't repeated in the list below.
   const packs = kit.options.filter((o) => Object.hasOwn(PACK_ICONS, o.id));
-  const stackOptions = kit.options.filter((o) => !packs.includes(o));
+  const stackOptions = kit.options.filter((o) => !packs.includes(o) && serviceOptionVisible(kit, sel, o));
   const packSkills = new Set(packs.flatMap((o) => o.choices.flatMap((c) => c.skills)));
   const toggleSkill = (ref: string, on: boolean) =>
     update({ removeSkills: on ? sel.removeSkills.filter((s) => s !== ref) : [...sel.removeSkills, ref] });
   const projectName = isProjectName(name) ? name : kit.name;
   const counts = [
-    [resolved.dependencies.length + resolved.devDependencies.length, "dependencies"],
+    [resolved.dependencies.length + resolved.devDependencies.length + (resolved.services ?? []).reduce((sum, service) => sum + service.resolved.dependencies.length + service.resolved.devDependencies.length, 0), "dependencies"],
     [resolved.skills.length, "skills"],
     [Object.keys(resolved.mcp).length, "MCP"],
   ] as const;
+  const included = [{ path: "", resolved }, ...(resolved.services ?? []).map((service) => ({ path: `${service.path}/`, resolved: service.resolved }))];
+  const tasks = included.reduce((sum, part) => sum + part.resolved.setupTasks.length, 0);
 
   const renderOption = (option: Kit["options"][number]) => (
     <div key={option.id} className="grid grid-cols-1 gap-3 border-b py-5 last:border-b-0 sm:grid-cols-[180px_minmax(0,1fr)] sm:gap-6">
@@ -124,6 +130,7 @@ export function Configurator({
             const { selections, added } = selectionsFrom(kit, { base: sel, options: { [option.id]: value } }, { requirements: "autofill" });
             if (added.length) toast.info(`Also added: ${added.map((a) => a.label).join(", ")}`);
             update({ options: selections.options });
+            if (kit.workspace?.services[option.id] && sel.options[option.id]?.[0] !== "none") toast.info("Framework changed. Incompatible library selections were cleared for this service.");
           } catch (error) {
             toast.error((error as Error).message);
           }
@@ -132,7 +139,7 @@ export function Configurator({
       >
         {option.choices.map((choice) => {
           // Library requirements are added on click; only framework ones block the choice.
-          const allowed = requirementsMet(choice, sel) || autoSatisfiable(choice);
+          const allowed = requirementsMet(choice, sel) || autoSatisfiable(choice, sel);
           // "None" is an icon: the empty choice reads at a glance, and it's the same in every language.
           if (choice.id === "none") {
             return (
@@ -235,8 +242,12 @@ export function Configurator({
         </Panel>
 
         {stackOptions.length > 0 && (
-          <Panel title="Stack" description="Pick the pieces; your agent gets the rule to use only these.">
-            {stackOptions.map(renderOption)}
+          <Panel title={kit.workspace ? "Services" : "Stack"} description={kit.workspace ? "Choose each application, then configure its libraries and tools below." : "Pick the pieces; your agent gets the rule to use only these."}>
+            {stackOptions.filter((o) => !kit.workspace || !o.id.includes(".")).map(renderOption)}
+            {kit.workspace && Object.entries(kit.workspace.services).map(([id, service]) => {
+              const options = stackOptions.filter((o) => o.id.startsWith(`${id}.`));
+              return options.length ? <Accordion key={id} className="border-t"><AccordionItem value={id}><AccordionTrigger>{service.label} · {sel.options[id]?.[0]}</AccordionTrigger><AccordionContent><p className="text-sm text-muted-foreground">Libraries and tools installed in {service.path}.</p>{options.map(renderOption)}</AccordionContent></AccordionItem></Accordion> : null;
+            })}
           </Panel>
         )}
 
@@ -306,7 +317,7 @@ export function Configurator({
         </Panel>
 
         <Panel title="What will run" description="The CLI's exact steps with these options, in order. It shows them again and waits for your yes before running anything.">
-          <PlanPreview kit={kit} kitRef={kitRef} sel={effective} name={projectName} brand={brand && { ref: brand.slug, title: brand.title, images: brand.images }} />
+          <PlanPreview kitRef={kitRef} sel={effective} name={projectName} brand={brand && { ref: brand.slug, title: brand.title, images: brand.images }} />
         </Panel>
       </div>
 
@@ -339,14 +350,14 @@ export function Configurator({
             <Item
               label="Rules in AGENTS.md"
               values={resolved.chosen
-                .filter((c) => (Object.values(LIBRARY_OPTION_IDS) as string[]).includes(c.optionId))
-                .flatMap((c) => c.choices.filter((choice) => choice.id !== "none").map((choice) => choice.label))}
+                .filter((c) => (Object.values(LIBRARY_OPTION_IDS) as string[]).includes(c.optionId.split(".").at(-1)!))
+                .flatMap((c) => c.choices.filter((choice) => choice.id !== "none").map((choice) => c.optionId.includes(".") ? `${c.optionId.split(".")[0]}: ${choice.label}` : choice.label))}
             />
-            <Item label="Dependencies" values={[...resolved.dependencies, ...resolved.devDependencies]} />
+            <Item label="Dependencies" values={included.flatMap((part) => [...part.resolved.dependencies, ...part.resolved.devDependencies].map((dep) => part.path ? `${part.path}: ${dep}` : dep))} />
             <Item label="MCP servers" values={Object.keys(resolved.mcp)} />
-            <Item label="Environment variables" values={Object.keys(resolved.env)} />
-            <Item label="Files" values={[...new Set(resolved.writeFiles.map((f) => f.path))]} />
-            {resolved.setupTasks.length > 0 && <Item label="First steps" values={[`${resolved.setupTasks.length} tasks for the agent`]} />}
+            <Item label="Environment variables" values={included.flatMap((part) => Object.keys(part.resolved.env).map((key) => `${part.path}${key}`))} />
+            <Item label="Files" values={[...new Set(included.flatMap((part) => part.resolved.writeFiles.map((f) => `${part.path}${f.path}`)))]} />
+            {tasks > 0 && <Item label="First steps" values={[`${tasks} tasks for the agent`]} />}
           </dl>
         </section>
 
@@ -479,7 +490,7 @@ function Panel({ title, description, children }: { title: string; description?: 
 
 /** "Requires shadcn/ui" — names the choices a disabled choice is waiting for. */
 const LIBRARY_OPTIONS = new Set<string>(Object.values(LIBRARY_OPTION_IDS));
-const autoSatisfiable = (choice: Choice) => Object.keys(choice.requires ?? {}).every((id) => LIBRARY_OPTIONS.has(id));
+const autoSatisfiable = (choice: Choice, sel: Selections) => Object.entries(choice.requires ?? {}).every(([id, allowed]) => LIBRARY_OPTIONS.has(id.split(".").at(-1)!) || (sel.options[id] ?? []).some((value) => allowed.includes(value)));
 
 export function SectionTitle({ children }: { children: React.ReactNode }) {
   return (

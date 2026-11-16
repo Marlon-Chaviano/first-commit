@@ -31,7 +31,7 @@ export interface LocalActions {
   /** Runs `init` with these arguments in `dir` and returns its output. */
   init(args: string[], dir: string): Promise<string>;
   /** Runs `add <piece>` in `dir` and returns its output. */
-  add(piece: string, dir: string): Promise<string>;
+  add(piece: string, dir: string, options?: { service?: string; dryRun?: boolean }): Promise<string>;
 }
 
 export interface KitsServerOptions {
@@ -93,6 +93,7 @@ function kitSummary(ref: string, kit: Kit) {
     title: kit.title,
     description: kit.description,
     packageManagers: kit.packageManagers,
+    ...(kit.workspace ? { workspace: kit.workspace, optionFormat: "service.framework.option (for example web.nextjs.components)" } : {}),
     skills: kit.skills,
     options: kit.options.map((o) => ({
       id: o.id,
@@ -245,13 +246,16 @@ export function createKitsServer({ source, version, local, cwd = "." }: KitsServ
           "Adds a catalog library (sentry, posthog, kokonutui, stripe…) or a skill (owner/repo@skill) to the project in the working directory, with its config and AGENTS.md rule. Changes files: tell the user what you're adding first.",
         inputSchema: z.object({
           piece: z.string().describe("Library id from the catalog, or owner/repo@skill"),
+          service: z.string().regex(/^[a-z][a-z0-9-]*$/).optional().describe("Workspace service to modify, such as web or api."),
+          approved: z.boolean().default(false).describe("False previews the plan. Set true only after the user approves that plan."),
           dir: z.string().optional().describe("Project folder, relative to the working directory. Default: the working directory."),
         }),
         annotations: { readOnlyHint: false, destructiveHint: false, openWorldHint: true },
       },
-      async ({ piece, dir }) => {
+      async ({ piece, dir, service, approved }) => {
         try {
-          return text(await local.add(piece, dir ? `${cwd}/${dir}` : cwd));
+          const output = await local.add(piece, dir ? `${cwd}/${dir}` : cwd, { service, dryRun: !approved });
+          return text(approved ? output : `${output}\nShow this plan to the user, then call again with approved: true only after approval.`);
         } catch (error) {
           return fail(error);
         }

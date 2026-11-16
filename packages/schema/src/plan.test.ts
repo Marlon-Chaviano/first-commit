@@ -172,3 +172,12 @@ describe("AGENTS.md for the chosen stack", () => {
     expect(agentsSection(java, resolve(java, defaultSelections(java)))).toContain("Java with maven: dependencies go in <dependencies> in pom.xml.");
   });
 });
+
+test("writes a template manifest before adding selected dependencies", () => {
+  const kit = parseKit({ name: "api-test", version: "1.0.0", title: "API", description: "API", author: "test", category: "api", base: { command: "mkdir {{name}}" }, dependencies: ["express"], writeFiles: [{ path: "package.json", content: '{"scripts":{"dev":"node server.js"}}' }] });
+  const plan = buildPlan({ kit, kitDir: "", sel: defaultSelections(kit), parentDir: "/tmp", name: "api", git: false });
+  const manifest = plan.findIndex((step) => step.kind === "write" && step.path.endsWith("package.json"));
+  const dependencies = plan.findIndex((step) => step.kind === "run" && step.command.includes("express"));
+  expect(manifest).toBeGreaterThan(-1);
+  expect(dependencies).toBeGreaterThan(manifest);
+});

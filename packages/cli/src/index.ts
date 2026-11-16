@@ -2,7 +2,7 @@ import { existsSync } from "node:fs";
 import { join, resolve as resolvePath } from "node:path";
 
 import * as p from "@clack/prompts";
-import { AGENTS, BRAND, buildPlan, allKitSkills, buildInitCommand, defaultSelections, PACKAGE_MANAGERS, pmFromUserAgent, pruneSelections, requirementsMet, resolve, selectionsFrom, skillRefSchema, validateSelections, type Kit, type PackageManager, type Selections, isProjectName } from "@kits/schema";
+import { AGENTS, BRAND, KITS_SKILL, workspaceSelectionOptions, buildPlan, allKitSkills, buildInitCommand, defaultSelections, PACKAGE_MANAGERS, pmFromUserAgent, pruneSelections, requirementsMet, resolve, selectionsFrom, skillRefSchema, validateSelections, type Kit, type PackageManager, type Selections, isProjectName } from "@kits/schema";
 import pc from "picocolors";
 
 import { listFlag, parseArgs, type ParsedArgs } from "./args";
@@ -252,6 +252,10 @@ const AGENT_COMMANDS: Record<string, string> = {
 };
 
 async function collectSelections(kit: Kit, args: ParsedArgs, interactive: boolean): Promise<Selections> {
+  if (kit.workspace) {
+    const flags = Object.fromEntries([...args.flags.keys()].map((key) => [key, listFlag(args, key)!]));
+    args = { ...args, flags: new Map(Object.entries(workspaceSelectionOptions(kit, flags))) };
+  }
   let sel = defaultSelections(kit);
   const explicit = new Set<string>();
 
@@ -288,7 +292,7 @@ async function collectSelections(kit: Kit, args: ParsedArgs, interactive: boolea
   sel.addSkills = added;
   const removed = listFlag(args, "no-skill") ?? [];
   if (args.switches.has("no-skills")) {
-    sel.removeSkills = allKitSkills(kit);
+    sel.removeSkills = [...allKitSkills(kit), KITS_SKILL];
   } else if (removed.length || added.length || !interactive) {
     sel.removeSkills = removed;
   } else {

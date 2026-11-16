@@ -1,7 +1,7 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "api-spring-boot",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "author": "marlon-chaviano",
   "title": "API with Spring Boot",
   "category": "api",
@@ -91,5 +91,28 @@
     "testing": [],
     "observability": []
   },
-  "instructions": "## How to work here\n\n- Code in `src/main/java`, in layers: `controller` (HTTP), `service` (logic) and `repository` (data).\n- Validate input with `@Valid` and Bean Validation; return DTOs, never entities.\n- Configuration in `src/main/resources/application.properties`; secrets through environment variables.\n- Start with `./mvnw spring-boot:run`. Before finishing: `./mvnw test`."
+  "instructions": "## How to work here\n\n- Code in `src/main/java`, in layers: `controller` (HTTP), `service` (logic) and `repository` (data).\n- Validate input with `@Valid` and Bean Validation; return DTOs, never entities.\n- Configuration in `src/main/resources/application.properties`; secrets through environment variables.\n- Start with `./mvnw spring-boot:run`. Before finishing: `./mvnw test`.",
+  "service": {
+    "dev": "./mvnw spring-boot:run",
+    "build": "./mvnw test",
+    "start": "java -jar target/*.jar",
+    "port": 8000,
+    "install": "./mvnw package -DskipTests",
+    "ci": [
+      {
+        "uses": "actions/setup-java@v4",
+        "with": {
+          "distribution": "temurin",
+          "java-version": "21"
+        }
+      }
+    ],
+    "health": "/actuator/health",
+    "connect": [
+      {
+        "path": "src/main/java/com/example/api/WorkspaceCors.java",
+        "content": "package com.example.api;\nimport org.springframework.context.annotation.Configuration;\nimport org.springframework.web.servlet.config.annotation.CorsRegistry;\nimport org.springframework.web.servlet.config.annotation.WebMvcConfigurer;\n@Configuration\npublic class WorkspaceCors implements WebMvcConfigurer {\n  @Override public void addCorsMappings(CorsRegistry registry) {\n    String origins = System.getenv().getOrDefault(\"WEB_ORIGINS\", \"{{webOrigin}}\");\n    registry.addMapping(\"/**\").allowedOrigins(origins.split(\",\"))\n      .allowedMethods(\"GET\", \"POST\", \"PUT\", \"PATCH\", \"DELETE\", \"OPTIONS\")\n      .allowedHeaders(\"Content-Type\", \"Authorization\");\n  }\n}\n"
+      }
+    ]
+  }
 }

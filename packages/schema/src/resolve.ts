@@ -1,3 +1,4 @@
+import { preservesWorkspaceBase, selectedServices, serviceOptionVisible } from "./workspace";
 import { BRAND, KITS_SKILL, KITS_SKILL_PUBLISHED } from "./brand";
 import type { PackageManager } from "./package-managers";
 import type { Choice, Kit, McpServer, WriteFile } from "./schema";
@@ -22,6 +23,7 @@ export interface Selections {
 }
 
 export interface Resolved {
+  services?: { id: string; path: string; kit: Kit; sel: Selections; resolved: Resolved; embedded?: boolean }[];
   dependencies: string[];
   devDependencies: string[];
   skills: string[];
@@ -52,6 +54,7 @@ export function defaultSelections(kit: Kit): Selections {
 export function allKitSkills(kit: Kit): string[] {
   const skills = [...kit.skills];
   for (const o of kit.options) for (const c of o.choices) skills.push(...c.skills);
+  for (const variants of Object.values(kit.services ?? {})) for (const child of Object.values(variants)) skills.push(...allKitSkills(child));
   return unique(skills);
 }
 
@@ -60,18 +63,24 @@ export function resolve(kit: Kit, sel: Selections): Resolved {
     const ids = sel.options[option.id] ?? [];
     return { optionId: option.id, choices: option.choices.filter((c) => ids.includes(c.id)) };
   });
-  const parts = [kit, ...chosen.flatMap((c) => c.choices)];
+  const root = kit.workspace?.preserveBase && !preservesWorkspaceBase(kit, sel) ? { ...kit, skills: [], mcp: {}, env: {}, instructions: undefined } : kit;
+  const parts = [root, ...chosen.filter((c) => !kit.workspace || !c.optionId.includes(".")).flatMap((c) => c.choices)];
+  const services = selectedServices(kit, sel).map((s) => ({
+    ...s, resolved: resolve(s.kit, s.sel),
+    ...(preservesWorkspaceBase(kit, sel) && kit.workspace?.services[s.id]?.existing ? { embedded: true } : {}),
+  }));
   const removed = new Set(sel.removeSkills);
 
   return {
+    ...(kit.workspace ? { services } : {}),
     dependencies: unique(parts.flatMap((p) => p.dependencies)),
     devDependencies: unique(parts.flatMap((p) => p.devDependencies)),
     // Every kit also installs the kits skill, so the agent knows `update` and `add` later.
-    skills: unique([...parts.flatMap((p) => p.skills), ...(KITS_SKILL_PUBLISHED ? [KITS_SKILL] : []), ...sel.addSkills]).filter((s) => !removed.has(s)),
-    mcp: Object.assign({}, ...parts.map((p) => p.mcp)),
+    skills: unique([...parts.flatMap((p) => p.skills), ...services.flatMap((s) => s.resolved.skills), ...(KITS_SKILL_PUBLISHED ? [KITS_SKILL] : []), ...sel.addSkills]).filter((s) => !removed.has(s)),
+    mcp: Object.assign({}, ...parts.map((p) => p.mcp), ...services.map((service) => Object.fromEntries(Object.entries(service.resolved.mcp).map(([id, server]) => [`${service.id}-${id}`, server])))),
     env: Object.assign({}, ...parts.map((p) => p.env)),
     files: parts.flatMap((p) => (p.files === undefined ? [] : ([] as string[]).concat(p.files))),
-    instructions: parts.flatMap((p) => (p.instructions ? [p.instructions] : [])),
+    instructions: [...parts.flatMap((p) => (p.instructions ? [p.instructions] : [])), ...(kit.workspace ? [`Services: ${services.map((s) => `${s.id} in ${s.path} (${s.sel.pm})`).join(", ")}. Use node scripts/workspace.mjs dev|build|verify [service]. Install libraries in the service that uses them.`] : [])],
     postInstall: parts.flatMap((p) => p.postInstall),
     writeFiles: parts.flatMap((p) => p.writeFiles),
     setupTasks: unique(parts.flatMap((p) => p.setupTasks)),
@@ -114,9 +123,15 @@ export function pruneSelections(kit: Kit, sel: Selections, keep: ReadonlySet<str
 
 /** Throws a readable error when selections don't match the kit. */
 export function validateSelections(kit: Kit, sel: Selections): void {
+  if (kit.workspace) {
+    const selected = selectedServices(kit, sel);
+    if (!preservesWorkspaceBase(kit, sel) && !selected.length) throw new Error("Select at least one service");
+    if (sel.options.deployment?.[0] === "compose" && !selected.some((service) => service.kit.service?.dockerfile)) throw new Error("Compose needs at least one server with a Docker recipe");
+  }
   for (const [id, values] of Object.entries(sel.options)) {
     const option = kit.options.find((o) => o.id === id);
     if (!option) throw new Error(`Unknown option "--${id}". Available: ${kit.options.map((o) => o.id).join(", ") || "none"}`);
+    if (!serviceOptionVisible(kit, sel, option) && !values.length) continue;
     if (option.type === "select" && values.length !== 1) throw new Error(`"--${id}" takes exactly one value`);
     for (const v of values) {
       const choice = option.choices.find((c) => c.id === v);
@@ -152,6 +167,7 @@ export function initArgs(kitRef: string, kit: Kit, sel: Selections, projectName?
   for (const option of kit.options) {
     const value = sel.options[option.id] ?? [];
     const def = defaults.options[option.id] ?? [];
+    if (!serviceOptionVisible(kit, sel, option)) continue;
     if (!sameSet(value, def)) args.push(`--${option.id}`, value.length ? value.join(",") : "none");
   }
   for (const s of sel.addSkills) args.push("--skill", s);

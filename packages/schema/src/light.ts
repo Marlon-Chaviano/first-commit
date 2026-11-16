@@ -13,3 +13,5 @@ export * from "./selections";
 export type { Choice, Kit } from "./schema";
 export { PACKAGE_MANAGER_IDS as PACKAGE_MANAGERS } from "./package-managers";
 export type { RegistryEntry } from "./index";
+
+export * from "./workspace";

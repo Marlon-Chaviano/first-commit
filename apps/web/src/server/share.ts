@@ -2,7 +2,7 @@ import "server-only";
 
 import { createHash } from "node:crypto";
 
-import { AGENTS, isProjectName, pruneSelections, type Kit, type Selections } from "@kits/schema";
+import { AGENTS, isProjectName, selectionsFrom, type Kit, type Selections } from "@kits/schema";
 import { eq, sql } from "drizzle-orm";
 import { cacheLife, cacheTag } from "next/cache";
 import { z } from "zod";
@@ -72,15 +72,12 @@ export async function shareConfig(input: z.infer<typeof shareInput>): Promise<st
 
   const agents = input.selections.agents.filter((a) => AGENTS.some((known) => known.id === a));
   const pm = kit.packageManagers.includes(input.selections.pm as Selections["pm"]) ? (input.selections.pm as Selections["pm"]) : (kit.packageManagers[0] ?? "npm");
-  const options = Object.fromEntries(kit.options.map((o) => [o.id, (input.selections.options[o.id] ?? [o.default].flat()).filter((c) => o.choices.some((choice) => choice.id === c))]));
-  const selections = pruneSelections(kit, {
-    options,
+  const selections: Selections = {
+    ...selectionsFrom(kit, { options: input.selections.options, agents: agents.length ? agents : ["claude-code"], pm }, { requirements: "prune", unknown: "ignore" }).selections,
     addSkills: input.selections.addSkills,
     removeSkills: input.selections.removeSkills,
-    agents: agents.length ? agents : ["claude-code"],
-    pm,
     ...(input.selections.badge === false ? { badge: false } : {}),
-  });
+  };
   const name = input.name && isProjectName(input.name) ? input.name : null;
 
   const id = configId(page.meta.slug, selections, name);

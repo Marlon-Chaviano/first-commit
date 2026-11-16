@@ -49,6 +49,10 @@ export async function doctor(args: ParsedArgs): Promise<void> {
 
 export async function diagnose(dir: string, lock: KitsLock | null, online = true): Promise<Finding[]> {
   const findings: Finding[] = [];
+  for (const [id, service] of Object.entries(lock?.services ?? {})) {
+    const child = await diagnose(join(dir, service.path), service, online);
+    findings.push(...child.filter((finding) => !finding.check.includes("skill")).map((finding) => ({ ...finding, check: `${id}: ${finding.check}` })));
+  }
   if (!lock) {
     findings.push({
       level: "info",

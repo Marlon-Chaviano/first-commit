@@ -1,3 +1,4 @@
+import { workspacePlan } from "./workspace-plan";
 import { BRAND } from "./brand";
 import { importAgentsMd, INSTRUCTION_STUBS, MCP_TARGETS, mergeEnv, upsertKitSection, type Merge } from "./agents";
 import { LANGUAGE_CONVENTIONS } from "./conventions";
@@ -72,6 +73,7 @@ export function templateVars(sel: Selections, name: string): Record<string, stri
     name,
     pm: sel.pm,
     pmx: packageManager(sel.pm).exec,
+    scriptArgs: packageManager(sel.pm).scriptArgs ?? "",
     ciSetup: packageManager(sel.pm).ciSetup ?? "",
     ...Object.fromEntries(Object.entries(sel.options).map(([k, v]) => [`opt.${k}`, v.join(",")])),
   };
@@ -166,41 +168,44 @@ export function buildPlan({ kit, kitDir, sel, parentDir, name, git, brand, kitRe
   const vars = templateVars(sel, name);
   const fill = (template: string, extra: Record<string, string> = {}) => fillTemplate(template, { ...vars, ...extra });
 
-  const steps: Step[] = [
-    { kind: "run", title: "Create the base project", command: fill(kit.base.command), cwd: parentDir },
-  ];
-  if (kit.base.install) {
-    steps.push({ kind: "run", title: "Install base dependencies", command: fill(kit.base.install), cwd: projectDir });
+  const steps: Step[] = kit.workspace
+    ? workspacePlan({ kit, kitDir, sel, parentDir, name, git: false, brand, kitRef, paths })
+    : [{ kind: "run", title: "Create the base project", command: fill(kit.base.command), cwd: parentDir }];
+  if (!kit.workspace) {
+    if (kit.base.install) {
+      steps.push({ kind: "run", title: "Install base dependencies", command: fill(kit.base.install), cwd: projectDir });
+    }
+
+
+    for (const files of r.files) {
+      // Absolute when inherited through `extends`; resolve() keeps those as they are.
+      steps.push({ kind: "copy", title: `Copy files (${basename(files)})`, from: resolvePath(kitDir, files), to: projectDir });
+    }
+
+    for (const file of r.writeFiles) {
+      steps.push({
+        kind: "write",
+        title: WRITE_TITLES[file.mode],
+        path: join(projectDir, file.path),
+        merge: applyWrite({ ...file, content: fill(file.content) }),
+        // A patch whose anchor isn't there is reported at the end, not fatal.
+        optional: true,
+      });
+    }
+
+    steps.push(...dependencySteps({ addCommand: kit.addCommand, pm: sel.pm, dependencies: r.dependencies, devDependencies: r.devDependencies, cwd: projectDir, vars }));
+
+    // Setup commands (e.g. `shadcn init`) can fail on an unusual base project;
+    // report them at the end instead of discarding the whole project.
+    for (const command of r.postInstall) {
+      steps.push({ kind: "run", title: "Set up", command: fill(command), cwd: projectDir, optional: true });
+    }
+
+    for (const command of kit.finalize) {
+      steps.push({ kind: "run", title: "Finish the install", command: fill(command), cwd: projectDir });
+    }
+
   }
-
-  steps.push(...dependencySteps({ addCommand: kit.addCommand, pm: sel.pm, dependencies: r.dependencies, devDependencies: r.devDependencies, cwd: projectDir, vars }));
-
-  for (const files of r.files) {
-    // Absolute when inherited through `extends`; resolve() keeps those as they are.
-    steps.push({ kind: "copy", title: `Copy files (${basename(files)})`, from: resolvePath(kitDir, files), to: projectDir });
-  }
-
-  for (const file of r.writeFiles) {
-    steps.push({
-      kind: "write",
-      title: WRITE_TITLES[file.mode],
-      path: join(projectDir, file.path),
-      merge: applyWrite({ ...file, content: fill(file.content) }),
-      // A patch whose anchor isn't there is reported at the end, not fatal.
-      optional: true,
-    });
-  }
-
-  // Setup commands (e.g. `shadcn init`) can fail on an unusual base project;
-  // report them at the end instead of discarding the whole project.
-  for (const command of r.postInstall) {
-    steps.push({ kind: "run", title: "Set up", command: fill(command), cwd: projectDir, optional: true });
-  }
-
-  for (const command of kit.finalize) {
-    steps.push({ kind: "run", title: "Finish the install", command: fill(command), cwd: projectDir });
-  }
-
   steps.push(...skillSteps({ skills: r.skills, agents: sel.agents, pm: sel.pm, cwd: projectDir }));
   steps.push(...mcpSteps({ mcp: r.mcp, agents: sel.agents, projectDir, join }));
 
@@ -223,7 +228,7 @@ export function buildPlan({ kit, kitDir, sel, parentDir, name, git, brand, kitRe
     // Optional: a README the base project wrote in an unusual way must never stop the install.
     steps.push({ kind: "write", title: "Add the first-commit badge to README.md", path: join(projectDir, "README.md"), merge: addReadmeBadge(readmeBadge(kitRef ?? kit.name), name), optional: true });
   }
-  if (brand) steps.push(brandStep(brand, projectDir));
+  if (brand && !kit.workspace) steps.push(brandStep(brand, projectDir));
   if (git) steps.push({ kind: "git", title: "Initial commit", cwd: projectDir });
   return steps;
 }
@@ -303,7 +308,7 @@ export function skillGroups(kit: Kit, r: Resolved): { title: string; skills: str
 }
 
 /** Quote package specs like `tailwindcss@^3.4.17` so the shell leaves them alone. */
-function shellQuote(value: string): string {
+export function shellQuote(value: string): string {
   return /^[\w@./:=-]+$/.test(value) ? value : `'${value.replace(/'/g, `'\\''`)}'`;
 }
 
@@ -312,6 +317,7 @@ export const WRITE_TITLES: Record<WriteFile["mode"], string> = {
   append: "Append to",
   prepend: "Prepend to",
   "insert-before": "Insert into",
+  replace: "Replace in",
   "json-merge": "Merge into",
 };
 
@@ -320,7 +326,7 @@ export function applyWrite(file: WriteFile): Merge {
   return (existing) => {
     const content = file.content.endsWith("\n") ? file.content : `${file.content}\n`;
     if (existing === undefined) {
-      if (file.mode === "insert-before") throw new Error(`The file to insert into doesn't exist (${file.path})`);
+      if (file.mode === "insert-before" || file.mode === "replace") throw new Error(`The file to insert into doesn't exist (${file.path})`);
       return content;
     }
     if (file.mode === "json-merge") {
@@ -338,6 +344,10 @@ export function applyWrite(file: WriteFile): Merge {
         return `${existing.trimEnd()}\n\n${content}`;
       case "prepend":
         return `${content}${existing}`;
+      case "replace": {
+        if (!file.anchor || !existing.includes(file.anchor)) throw new Error(`Couldn't find "${file.anchor}" in ${file.path}`);
+        return existing.replace(file.anchor, file.content);
+      }
       case "insert-before": {
         const at = file.anchor ? existing.indexOf(file.anchor) : -1;
         if (at === -1) throw new Error(`Couldn't find "${file.anchor}" in ${file.path}`);

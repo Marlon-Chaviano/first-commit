@@ -1,4 +1,4 @@
-import { allKitSkills, AUTHOR, BRAND, CATEGORY_LABELS, kitLanguage, LANGUAGES, defaultSelections, selectionsFrom, type Selections, cliCommand, REPO_URL, pruneSelections, resolve } from "@kits/schema";
+import { allKitSkills, AUTHOR, BRAND, CATEGORY_LABELS, kitLanguage, LANGUAGES, defaultSelections, selectionsFrom, type Selections, cliCommand, REPO_URL, resolve } from "@kits/schema";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { LockIcon } from "lucide-react";
@@ -21,6 +21,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import { configuratorKit } from "@/features/kits/configurator-kit";
 import { Configurator } from "@/features/kits/configurator";
 import { ReportDialog } from "@/features/kits/report-dialog";
 import { BuyKitButton } from "@/features/billing/buttons";
@@ -79,7 +80,7 @@ async function RecommendedConfigurator({
   const shared = typeof shareId === "string" ? await getSharedConfig(shareId) : null;
   if (shared && shared.kit === props.kitRef) {
     try {
-      return <Configurator {...props} initial={pruneSelections(props.kit, shared.selections)} initialName={shared.name ?? undefined} />;
+      return <Configurator {...props} initial={shared.selections} initialName={shared.name ?? undefined} />;
     } catch {
       // The kit changed since and the configuration no longer fits: fall through to the defaults.
     }
@@ -97,7 +98,7 @@ async function RecommendedConfigurator({
 
 function KitSkeleton() {
   return (
-    <div className="mx-auto flex max-w-5xl flex-col gap-6 px-4 pt-8 sm:px-6 sm:pt-12">
+    <div className="mx-auto flex min-h-screen max-w-5xl flex-col gap-6 px-4 pt-8 sm:px-6 sm:pt-12">
       <ScrollToTop />
       <Skeleton className="h-4 w-40" />
       <Skeleton className="h-10 w-72" />
@@ -121,6 +122,7 @@ async function KitContent({ slug, searchParams }: { slug: Promise<string>; searc
     getInstallMinutes(meta.slug, meta.version),
   ]);
   const defaults = defaultSelections(kit);
+  const clientKit = configuratorKit(kit);
 
   const languageLabel = LANGUAGES.find((l) => l.id === kitLanguage(kit))?.label ?? "";
   // Details for the sticky column next to the install command.
@@ -313,9 +315,9 @@ async function KitContent({ slug, searchParams }: { slug: Promise<string>; searc
       </div>
 
       <div className="mt-10">
-        {/* The shell shows the defaults; a recommendation in the URL (?animation=motion&why=…) streams in. */}
-        <Suspense fallback={<Configurator kit={kit} kitRef={meta.slug} audits={audits} details={details} />}>
-          <RecommendedConfigurator kit={kit} kitRef={meta.slug} audits={audits} details={details} searchParams={searchParams} shareable={meta.visibility === "public"} />
+        {/* Mount the controls once URL selections are ready, so streaming never resets an early click. */}
+        <Suspense fallback={<Skeleton className="h-96 w-full" aria-label="Loading configurator" />}>
+          <RecommendedConfigurator kit={clientKit} kitRef={meta.slug} audits={audits} details={details} searchParams={searchParams} shareable={meta.visibility === "public"} />
         </Suspense>
       </div>
     </div>

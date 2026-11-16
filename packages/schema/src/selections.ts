@@ -1,3 +1,4 @@
+import { workspaceSelectionOptions } from "./workspace";
 import { defaultSelections, pruneSelections, requirementsMet, validateSelections, type Selections } from "./resolve";
 import type { Choice, Kit } from "./schema";
 
@@ -47,7 +48,7 @@ export function selectionsFrom(kit: Kit, request: SelectionRequest, { requiremen
   };
   const requested = new Set<string>();
 
-  for (const [id, values] of Object.entries(request.options ?? {})) {
+  for (const [id, values] of Object.entries(workspaceSelectionOptions(kit, request.options ?? {}))) {
     const option = kit.options.find((o) => o.id === id);
     if (!option) {
       if (unknown === "throw") throw new Error(`"${kit.name}" has no "${id}" option. Options: ${kit.options.map((o) => o.id).join(", ") || "none"}`);

@@ -1,6 +1,6 @@
 {
   "$schema": "../../kit.schema.json",
-  "version": "1.1.3",
+  "version": "1.1.4",
   "author": "marlon-chaviano",
   "name": "web-vue-vite",
   "title": "Web app with Vue and Vite",
@@ -88,5 +88,24 @@
       }
     ]
   },
-  "instructions": "## How to work here\n\n- Components with `<script setup lang=\"ts\">` and the Composition API. Views go in `src/views/` and routes in `src/router/`.\n- Shared state in Pinia stores (`src/stores/`); local state stays in the component.\n- Before finishing: `npm run build && npm run test:unit -- --run`."
+  "instructions": "## How to work here\n\n- Components with `<script setup lang=\"ts\">` and the Composition API. Views go in `src/views/` and routes in `src/router/`.\n- Shared state in Pinia stores (`src/stores/`); local state stays in the component.\n- Before finishing: `npm run build && npm run test:unit -- --run`.",
+  "service": {
+    "dev": "{{pm}} run dev {{scriptArgs}} --port 3000",
+    "build": "{{pm}} run build",
+    "start": "npx --yes serve dist -l 3000",
+    "port": 3000,
+    "install": "npm install",
+    "ci": [],
+    "dockerfile": "FROM node:22-slim\nWORKDIR /app\nRUN npm install -g pnpm bun serve\nCOPY {{servicePath}}/ .\nRUN {{pm}} install\nRUN {{pm}} run build\nENV NODE_ENV=production\nENV PORT=3000\nEXPOSE 3000\nCMD [\"sh\", \"-c\", \"serve dist -l ${PORT:-3000}\"]\n",
+    "client": {
+      "env": "VITE_API_URL",
+      "files": [
+        {
+          "path": "api-client.js",
+          "mode": "create",
+          "content": "export async function apiHealth(baseUrl = import.meta.env.VITE_API_URL || '{{apiUrl}}') {\n  const response = await fetch(baseUrl + '{{healthPath}}');\n  if (!response.ok) throw new Error('API health check failed: ' + response.status);\n  return response.headers.get('content-type')?.includes('json') ? response.json() : { ok: true };\n}\n"
+        }
+      ]
+    }
+  }
 }

@@ -82,7 +82,7 @@ for (const name of readdirSync(join(root, "kits")).sort()) {
     tags: kit.tags,
     author: kit.author,
     skills: allKitSkills(kit).length,
-    options: kit.options.map((o) => o.label),
+    options: [...new Set(kit.options.map((o) => o.label))],
     language: kitLanguage(kit),
     libraries: [...new Set(kit.options.flatMap((o) => o.choices).flatMap((c) => catalog.filter((l) => l.id === c.id).map((l) => l.name)))],
   });

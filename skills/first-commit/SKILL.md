@@ -36,3 +36,20 @@ Community kits (`user/kit`) that aren't verified ask for confirmation; with `--y
 
 - The rules in `AGENTS.md` between `<!-- kits:start -->` and `<!-- kits:end -->` come from the kit: follow them (for example, "only use the chosen component library"). Don't edit that block by hand; `update` rewrites it.
 - Don't install a second library for something the kit already chose (another component system, another auth). Use `add --force` only if the user explicitly wants to switch.
+
+## Composable monorepos
+
+Use the `monorepo` kit to choose web, API, documentation and mobile separately.
+`--web nextjs --api django --docs starlight` selects frameworks; library flags
+include their service and framework, for example `--web.nextjs.components mantine`
+and `--api.fastapi.database sqlmodel`. Use `info monorepo` to inspect exact choices.
+Choose `--orchestrator simple|turbo|nx` and `--deployment independent|compose|none`.
+A service destination is scoped too: `--web.nextjs.deploy vercel`.
+
+Run `node scripts/workspace.mjs dev|build|verify [service]` from the generated root.
+After starting web and API, `node scripts/check-connection.mjs` checks API health and
+CORS. Production URLs and secrets belong in the hosting provider, not in the kit.
+
+`kits.lock` v2 records each service separately. Use `add <library> --service web`
+to target a service; `update` preserves the topology and updates existing services.
+Old v1 projects are not automatically restructured into workspaces.

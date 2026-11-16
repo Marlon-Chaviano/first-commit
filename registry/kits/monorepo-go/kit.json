@@ -1,6 +1,6 @@
 {
   "$schema": "../../kit.schema.json",
-  "version": "1.1.3",
+  "version": "2.0.0",
   "author": "marlon-chaviano",
   "name": "monorepo-go",
   "title": "Go monorepo with go.work",
@@ -14,7 +14,7 @@
     "monorepo"
   ],
   "base": {
-    "command": "mkdir {{name}}"
+    "command": "echo 'This workspace needs CLI version 1.1.0 or newer. Update the CLI and try again.' >&2; exit 1"
   },
   "packageManagers": [
     "go"
@@ -88,12 +88,98 @@
       "security-pack"
     ],
     "ci": [],
-    "deploy": "none",
     "quality": [],
     "testing": []
   },
   "verify": {
-    "command": "for m in apps/api apps/worker packages/shared; do (cd $m && go vet ./... && go build ./... && go test ./...) || exit 1; done"
+    "command": "node scripts/workspace.mjs verify",
+    "matrix": []
   },
-  "instructions": "## How to work here\n\n- Each app (`apps/api`, `apps/worker`) and package (`packages/shared`) is a Go module; `go.work` ties them together so they can use each other without being published.\n- Add a new module with `go work use ./path`. External dependencies go inside the module that uses them (`cd apps/api && go get …`).\n- Before finishing, in each module: `go vet ./... && go test ./...`.\n- Each app lives in its own folder with its own dependencies; don't mix code from one into another.\n- Whatever backend and frontend share (types, API contracts) is defined in one place and documented.\n"
+  "instructions": "## How to work here\n\n- Each app (`apps/api`, `apps/worker`) and package (`packages/shared`) is a Go module; `go.work` ties them together so they can use each other without being published.\n- Add a new module with `go work use ./path`. External dependencies go inside the module that uses them (`cd apps/api && go get \u2026`).\n- Before finishing, in each module: `go vet ./... && go test ./...`.\n- Each app lives in its own folder with its own dependencies; don't mix code from one into another.\n- Whatever backend and frontend share (types, API contracts) is defined in one place and documented.\n",
+  "workspace": {
+    "preserveBase": true,
+    "services": {
+      "web": {
+        "label": "Web",
+        "path": "apps/web",
+        "default": "none",
+        "variants": {
+          "nextjs": "web-next@1.0.4",
+          "react": "spa-vite-react@1.2.4",
+          "vue": "web-vue-vite@1.1.4",
+          "nuxt": "web-nuxt@1.2.4",
+          "sveltekit": "web-sveltekit@1.2.4",
+          "astro": "web-astro@1.2.4",
+          "angular": "web-angular@1.1.4",
+          "react-router": "web-react-router@1.1.4",
+          "tanstack-start": "web-tanstack-start@1.1.4"
+        }
+      },
+      "api": {
+        "label": "Api",
+        "path": "apps/api",
+        "default": "go",
+        "variants": {
+          "django": "api-django@1.2.4",
+          "fastapi": "api-fastapi@1.3.4",
+          "hono": "api-hono@1.4.4",
+          "express": "api-express@1.0.4",
+          "fastify": "api-fastify@1.1.4",
+          "nestjs": "api-nestjs@1.1.4",
+          "elysia": "api-elysia@1.2.4",
+          "go": "api-go@1.3.4",
+          "rails": "api-rails@1.1.4",
+          "spring": "api-spring-boot@1.2.4",
+          "laravel": "api-laravel@1.1.4",
+          "aspnet": "api-aspnet@1.0.4",
+          "axum": "api-axum@1.0.4"
+        },
+        "existing": true
+      },
+      "docs": {
+        "label": "Docs",
+        "path": "apps/docs",
+        "default": "none",
+        "variants": {
+          "starlight": "docs-starlight@1.1.4",
+          "vitepress": "docs-vitepress@1.1.4",
+          "fumadocs": "docs-fumadocs@1.1.4"
+        }
+      },
+      "mobile": {
+        "label": "Mobile",
+        "path": "apps/mobile",
+        "default": "none",
+        "variants": {
+          "expo": "mobile-expo@1.4.4"
+        }
+      }
+    },
+    "nativeVerify": "for m in apps/api apps/worker packages/shared; do (cd $m && go vet ./... && go build ./... && go test ./...) || exit 1; done",
+    "nativeBase": {
+      "command": "mkdir {{name}}"
+    }
+  },
+  "minCliVersion": "1.1.0",
+  "options": [
+    {
+      "id": "deployment",
+      "label": "Deployment mode",
+      "default": "none",
+      "choices": [
+        {
+          "id": "none",
+          "label": "Configure later"
+        },
+        {
+          "id": "independent",
+          "label": "Independent services"
+        },
+        {
+          "id": "compose",
+          "label": "Docker Compose"
+        }
+      ]
+    }
+  ]
 }

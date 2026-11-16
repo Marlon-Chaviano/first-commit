@@ -1,7 +1,7 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "api-elysia",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "author": "marlon-chaviano",
   "title": "API with Elysia on Bun",
   "category": "api",
@@ -66,5 +66,28 @@
     "testing": [],
     "deploy": "none"
   },
-  "instructions": "## How to work here\n\n- Routes in `src/`, grouped with `new Elysia({ prefix: '/resource' })` and mounted with `.use()`.\n- Validate params, query and body with `t` (TypeBox) on every route; types are inferred.\n- Start with `bun dev`. Before finishing: `bunx tsc --noEmit`."
+  "instructions": "## How to work here\n\n- Routes in `src/`, grouped with `new Elysia({ prefix: '/resource' })` and mounted with `.use()`.\n- Validate params, query and body with `t` (TypeBox) on every route; types are inferred.\n- Start with `bun dev`. Before finishing: `bunx tsc --noEmit`.",
+  "service": {
+    "dev": "{{pm}} run dev",
+    "build": "bunx tsc --noEmit",
+    "start": "bun run src/index.ts",
+    "port": 8000,
+    "install": "npm install",
+    "ci": [],
+    "health": "/health",
+    "connect": [
+      {
+        "path": "src/index.ts",
+        "mode": "replace",
+        "anchor": "new Elysia()",
+        "content": "new Elysia()\n  .onRequest(({ request, set }) => {\n    const origin = request.headers.get('Origin');\n    if (origin && (process.env.WEB_ORIGINS ?? '{{webOrigin}}').split(',').includes(origin)) {\n      set.headers['Access-Control-Allow-Origin'] = origin;\n      set.headers['Vary'] = 'Origin';\n      set.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, PATCH, DELETE, OPTIONS';\n      set.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization';\n    }\n    if (request.method === 'OPTIONS') { set.status = 204; return ''; }\n  })"
+      },
+      {
+        "path": "src/index.ts",
+        "mode": "replace",
+        "anchor": ".listen(3000)",
+        "content": ".get('/health', () => ({ status: 'ok' }))\n  .listen(Number(process.env.PORT ?? 8000))"
+      }
+    ]
+  }
 }
