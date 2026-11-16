@@ -106,7 +106,7 @@ Es un proyecto personal, así que la arquitectura está pensada para no pagar na
 | Neon Postgres | Eventos crudos y resumen diario | Inserts por lotes cada 10 min; la web no lee Postgres en cada visita. |
 | Sentry | Errores de la web | Plan Developer. |
 | Stripe (opcional) | Planes Pro y Equipos, kits de pago (Connect) | Sin cuota fija: comisión por cobro. **Cobrar exige salir de Vercel Hobby** (no admite uso comercial): Vercel Pro u otro proveedor. Desactivado sin `STRIPE_SECRET_KEY`. |
-| Resend | Confirmaciones y newsletter semanal | Plan gratuito con límite diario: con muchos suscriptores, enviar por tandas o pasar de plan. |
+| Resend | Confirmaciones y correos por entrada del changelog | Plan gratuito con límite diario: con muchos suscriptores, enviar por tandas o pasar de plan. |
 | xAI API (opcional) | "Describe tu proyecto" y `recommend_kit` | **Lo único que puede costar dinero.** Sin `XAI_API_KEY` responde el recomendador por palabras clave (gratis). Con clave: Grok (`RECOMMEND_MODEL`), temperatura 0, `max_tokens` 600, timeout de 15 s, el catálogo primero y siempre igual para que lo sirva la caché de prompts de xAI, respuesta cacheada por descripción normalizada (`"use cache"`, días) y 24 peticiones al día por IP, compartidas entre la web y `recommend_kit` del MCP remoto. |
 
 ## Agentes (fase 6)
@@ -127,7 +127,7 @@ Es un proyecto personal, así que la arquitectura está pensada para no pagar na
 | Comparativas | `/comparar/<a>-vs-<b>` | Pares de la misma categoría que comparten framework; datos del catálogo y del desglose de opciones (Postgres). |
 | SEO | `sitemap.ts`, `robots.ts`, `/llms.txt`, RSS en `/novedades/rss.xml` | Solo contenido público. |
 | Insignia | `/badge/<kit>.svg` | 404 para kits privados. |
-| Newsletter | `newsletter_subscribers` (doble opt-in), `newsletter_issues` (una por semana ISO), job `/api/cron/newsletter` (QStash, lunes) | Bajas firmadas con HMAC (`List-Unsubscribe` de un clic). |
+| Newsletter | `newsletter_subscribers` (doble opt-in), `newsletter_releases` y `newsletter_deliveries`; `/api/cron/newsletter` tras el estado exitoso de Vercel en main (GitHub Actions), QStash como reintento semanal | Bajas firmadas con HMAC (`List-Unsubscribe` de un clic). Cada entrega se registra por suscriptor; Resend recibe una clave de idempotencia. `newsletter_issues` conserva el historial semanal anterior. |
 | Organizaciones | `orgs`, `org_members`; `kits.visibility`/`org_id` | El slug de la org es su espacio de nombres (comparte espacio con los usuarios). Política de bibliotecas en `orgs.policy`, comprobada por `create-first-commit doctor` vía `/api/v1/orgs/<org>/policy`. |
 | Archivos de kits | `kit_versions.archive` (`packDir`: JSON comprimido, máx. 5 MB) | Todos los kits de la comunidad publicados se sirven desde aquí (`?archive=1`), con la misma integridad. Así un kit privado o de pago no depende de GitHub. |
 | Planes | `subscriptions`, `stripe_events`, `server/plans.ts` | Checkout + Customer Portal; asientos de Equipos sincronizados al cambiar miembros. |

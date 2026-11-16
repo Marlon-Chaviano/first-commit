@@ -1,4 +1,6 @@
 import type { Selections, VerificationReport } from "@kits/schema";
+import type { Email } from "../email";
+import type { ChangelogEntry } from "../newsletter";
 import { boolean, customType, date, index, integer, jsonb, pgTable, primaryKey, text, timestamp, uuid } from "drizzle-orm/pg-core";
 
 import { user } from "./auth-schema";
@@ -166,7 +168,7 @@ export const newsletterSubscribers = pgTable("newsletter_subscribers", {
   confirmedAt: timestamp("confirmed_at", { withTimezone: true }),
 });
 
-/** One row per digest sent, so the weekly job never sends the same week twice. */
+/** Historical weekly digest log, retained after switching to publication emails. */
 export const newsletterIssues = pgTable("newsletter_issues", {
   id: uuid("id").primaryKey().defaultRandom(),
   /** ISO week, e.g. "2026-W45". */
@@ -175,6 +177,25 @@ export const newsletterIssues = pgTable("newsletter_issues", {
   recipients: integer("recipients").notNull(),
   sentAt: timestamp("sent_at", { withTimezone: true }).defaultNow().notNull(),
 });
+
+/** One immutable snapshot per changelog entry. Historical weekly issues remain above. */
+export const newsletterReleases = pgTable("newsletter_releases", {
+  id: text("id").primaryKey(),
+  entry: jsonb("entry").$type<ChangelogEntry>().notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  completedAt: timestamp("completed_at", { withTimezone: true }),
+});
+
+export const newsletterDeliveries = pgTable("newsletter_deliveries", {
+  releaseId: text("release_id").notNull().references(() => newsletterReleases.id, { onDelete: "cascade" }),
+  subscriberId: uuid("subscriber_id").notNull().references(() => newsletterSubscribers.id, { onDelete: "cascade" }),
+  /** Render once: provider retries must use the identical request body. */
+  email: jsonb("email").$type<Email>().notNull(),
+  firstAttemptAt: timestamp("first_attempt_at", { withTimezone: true }),
+  leaseUntil: timestamp("lease_until", { withTimezone: true }),
+  sentAt: timestamp("sent_at", { withTimezone: true }),
+  skippedAt: timestamp("skipped_at", { withTimezone: true }),
+}, (t) => [primaryKey({ columns: [t.releaseId, t.subscriberId] })]);
 
 /**
  * Organizations: a team with members and a private registry. The slug is the

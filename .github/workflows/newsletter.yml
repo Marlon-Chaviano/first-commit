@@ -1,0 +1,32 @@
+name: Newsletter
+
+on:
+  status:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  send:
+    if: >-
+      (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main') ||
+      (github.event.context == 'Vercel' && github.event.state == 'success' &&
+      contains(github.event.branches.*.name, 'main'))
+    concurrency:
+      group: newsletter-production
+      cancel-in-progress: false
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Send newly published changelog entries
+        run: node --experimental-strip-types scripts/send-newsletter.mjs
+        env:
+          CRON_SECRET: ${{ secrets.NEWSLETTER_CRON_SECRET }}
+          DEPLOYMENT_COMMIT: ${{ github.event.sha || github.sha }}

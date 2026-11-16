@@ -15,7 +15,7 @@ import { BrandName } from "@/components/shared/brand-name";
 
 export const metadata: Metadata = {
   title: "Changelog",
-  description: `What's new in ${BRAND.name}: catalog, official kits, CLI and website. Plus the weekly newsletter.`,
+  description: `What's new in ${BRAND.name}: catalog, official kits, CLI and website. Get new entries by email.`,
   alternates: { canonical: "/changelog", types: { "application/rss+xml": "/changelog/rss.xml" } },
 };
 

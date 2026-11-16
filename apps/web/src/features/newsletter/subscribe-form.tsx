@@ -33,7 +33,7 @@ export function SubscribeForm({ initial = null, email }: { initial?: NewsletterS
     <section aria-labelledby="newsletter" className="grid grid-cols-1 gap-4 rounded-xl border p-5 sm:p-6 md:grid-cols-[minmax(0,1fr)_minmax(0,28rem)] md:items-center md:gap-10">
       <div className="flex flex-col gap-1.5">
         <h2 id="newsletter" className="font-medium">Get it in your inbox</h2>
-        <p className="text-sm text-pretty text-muted-foreground">A short weekly email with what changed here and the community&apos;s best new kits.</p>
+        <p className="text-sm text-pretty text-muted-foreground">An email whenever we publish a new changelog entry.</p>
       </div>
 
       {status === "pending" ? (
@@ -58,7 +58,7 @@ export function SubscribeForm({ initial = null, email }: { initial?: NewsletterS
               </InputGroupButton>
             </InputGroupAddon>
           </InputGroup>
-          <p className="text-sm text-muted-foreground">Once a week: new and featured kits. Unsubscribe in one click.</p>
+          <p className="text-sm text-muted-foreground">New releases, straight to your inbox. Unsubscribe in one click.</p>
         </form>
       )}
     </section>
@@ -79,7 +79,7 @@ function SubscribedCard({ email }: { email?: string }) {
         </span>
         <div className="flex min-w-0 flex-col gap-1">
           <h2 id="newsletter" className="font-medium">You&apos;re subscribed</h2>
-          <p className="text-sm text-pretty text-muted-foreground">Every Monday: what changed here and the best new kits. Unsubscribe from any email.</p>
+          <p className="text-sm text-pretty text-muted-foreground">We&apos;ll email you when a new changelog entry is published. Unsubscribe from any email.</p>
         </div>
       </div>
       {email && (

@@ -99,6 +99,13 @@
       "when": 1794181025497,
       "tag": "0013_goofy_sphinx",
       "breakpoints": true
+    },
+    {
+      "idx": 14,
+      "version": "7",
+      "when": 1794860273617,
+      "tag": "0014_newsletter_releases",
+      "breakpoints": true
     }
   ]
 }

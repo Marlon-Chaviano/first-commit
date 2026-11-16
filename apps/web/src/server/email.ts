@@ -5,6 +5,8 @@ import { BRAND } from "@kits/schema";
 import { env } from "./env";
 
 export interface Email {
+  /** Frozen sender for retried newsletter deliveries. */
+  from?: string;
   to: string;
   subject: string;
   html?: string;
@@ -17,16 +19,22 @@ export interface Email {
 
 const from = () => env.EMAIL_FROM ?? `${BRAND.name} <onboarding@resend.dev>`;
 
+export class EmailDeliveryError extends Error {
+  constructor(public readonly status: number, detail: string) {
+    super(`Resend ${status}: ${detail}`);
+  }
+}
+
 /**
  * Sends through Resend's REST API. Without RESEND_API_KEY it logs the email
  * (local development) and returns false, so nothing ever depends on email.
  */
-export async function sendEmail(email: Email): Promise<boolean> {
-  return (await sendEmails([email])) > 0;
+export async function sendEmail(email: Email, idempotencyKey?: string): Promise<boolean> {
+  return (await sendEmails([email], idempotencyKey)) > 0;
 }
 
 /** Up to 100 per request (Resend batch). Returns how many were accepted. */
-export async function sendEmails(emails: Email[]): Promise<number> {
+export async function sendEmails(emails: Email[], idempotencyKey?: string): Promise<number> {
   if (!emails.length) return 0;
   if (!env.RESEND_API_KEY) {
     for (const e of emails) console.info(`[email] (no RESEND_API_KEY) → ${e.to}: ${e.subject}\n${e.text ?? ""}`);
@@ -38,10 +46,15 @@ export async function sendEmails(emails: Email[]): Promise<number> {
     const chunk = emails.slice(i, i + 100).map(({ replyTo, ...e }) => ({ from: from(), ...e, ...(replyTo ? { reply_to: replyTo } : {}) }));
     const res = await fetch(chunk.length === 1 ? "https://api.resend.com/emails" : "https://api.resend.com/emails/batch", {
       method: "POST",
-      headers: { authorization: `Bearer ${env.RESEND_API_KEY}`, "content-type": "application/json" },
+      headers: {
+        authorization: `Bearer ${env.RESEND_API_KEY}`,
+        "content-type": "application/json",
+        ...(idempotencyKey ? { "Idempotency-Key": `${idempotencyKey}/${i}` } : {}),
+      },
+      signal: AbortSignal.timeout(15_000),
       body: JSON.stringify(chunk.length === 1 ? chunk[0] : chunk),
     });
-    if (!res.ok) throw new Error(`Resend ${res.status}: ${await res.text()}`);
+    if (!res.ok) throw new EmailDeliveryError(res.status, await res.text());
     sent += chunk.length;
   }
   return sent;

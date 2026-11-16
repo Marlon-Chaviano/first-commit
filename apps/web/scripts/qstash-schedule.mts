@@ -1,11 +1,11 @@
 /**
- * Creates (or updates) the QStash schedules: draining the install queue and the weekly newsletter.
+ * Creates (or updates) the QStash schedules: draining the install queue and newsletter retries.
  *
  *   Production: QSTASH_TOKEN=… SITE_URL=https://<dominio> pnpm qstash:schedule
  *   Local:      QSTASH_DEV=1 SITE_URL=http://localhost:3200 pnpm qstash:schedule
  *
  * Every 10 minutes = 144 messages a day, well inside QStash's free tier.
- * Counters are real-time in Redis already; Postgres only needs the durable copy.
+ * Redis stores the event queue; Postgres holds the aggregated counters.
  */
 import { Client } from "@upstash/qstash";
 import { config } from "dotenv";
@@ -14,7 +14,7 @@ config({ path: ".env.local" });
 
 const JOBS = [
   { id: "kits-flush-events", path: "/api/cron/flush-events", cron: process.env.FLUSH_CRON ?? "*/10 * * * *" },
-  // Monday 09:00 UTC: 4 messages a month.
+  // Weekly fallback. Production deployments trigger publication emails immediately.
   { id: "kits-newsletter", path: "/api/cron/newsletter", cron: process.env.NEWSLETTER_CRON ?? "0 9 * * 1" },
 ];
 const siteUrl = process.env.SITE_URL;

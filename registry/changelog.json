@@ -1,5 +1,6 @@
 [
   {
+    "id": "configurable-monorepos",
     "date": "2026-11-16",
     "title": "Build your own monorepo",
     "items": [
@@ -9,6 +10,8 @@
     ]
   },
   {
+    "id": "expanded-catalog-and-security",
+    "notify": false,
     "date": "2026-11-14",
     "title": "A fuller catalog for every stack, and one Security pack",
     "items": [
@@ -24,6 +27,8 @@
     ]
   },
   {
+    "id": "launch",
+    "notify": false,
     "date": "2026-11-07",
     "title": "first-commit is live",
     "items": [
