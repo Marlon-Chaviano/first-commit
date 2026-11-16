@@ -1,5 +1,14 @@
 [
   {
+    "date": "2026-11-16",
+    "title": "Build your own monorepo",
+    "items": [
+      "A new monorepo kit lets you choose web, API, docs and mobile frameworks, with libraries and tools configured separately for each service.",
+      "The eight existing monorepo presets now share the same configurator. Workspace tasks can use simple scripts, Turborepo or Nx.",
+      "Generated projects include web-to-API connection settings, CI for each service and deployment instructions. Requires CLI 1.1.0 or newer."
+    ]
+  },
+  {
     "date": "2026-11-14",
     "title": "A fuller catalog for every stack, and one Security pack",
     "items": [
