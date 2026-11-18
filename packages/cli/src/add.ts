@@ -2,11 +2,11 @@ import { existsSync } from "node:fs";
 import { basename, join, resolve } from "node:path";
 
 import * as p from "@clack/prompts";
-import { applyWrite, fillTemplate, BRAND, dependencySteps, FRAMEWORK_LABELS, importAgentsMd, INSTRUCTION_STUBS, libraryRule, mcpSteps, mergeEnv, skillRefSchema, skillSteps, templateVars, upsertBlock, type KitsLock, type Library, type Step, slugify } from "@kits/schema";
+import { applyWrite, fillTemplate, BRAND, dependencySteps, FRAMEWORK_LABELS, importAgentsMd, INSTRUCTION_STUBS, libraryFits, libraryRule, mcpSteps, mergeEnv, skillRefSchema, skillSteps, templateVars, upsertBlock, type KitsLock, type Library, type Step, slugify } from "@kits/schema";
 import pc from "picocolors";
 
 import { listFlag, type ParsedArgs } from "./args";
-import { detectFramework } from "./create/frameworks";
+import { detectFramework, projectLibraryTargets } from "./create/frameworks";
 import { detectPm, installedLibraries, packageName, readDeps } from "./create/detect";
 import { describe, execute } from "./exec";
 import { hashFile, readLock, writeLock } from "./lockfile";
@@ -36,8 +36,7 @@ export async function add(args: ParsedArgs, guard: <T>(v: T) => Exclude<T, symbo
   const deps = readDeps(dir);
   const framework = detectFramework(deps);
   const childKit = lock?.kit ? (await loadKit(`${lock.kit}@${lock.version}`)).kit : undefined;
-  const declared = childKit?.libraries?.framework;
-  const frameworks = framework?.frameworks ?? (typeof declared === "string" ? [declared] : Array.isArray(declared) ? declared : []);
+  const targets = projectLibraryTargets(framework, childKit?.libraries, lock?.options);
   const pm = lock?.pm ?? detectPm(dir);
   const agents = listFlag(args, "agent") ?? (lock?.agents.length ? lock.agents : ["claude-code"]);
   const title = basename(dir);
@@ -54,8 +53,8 @@ export async function add(args: ParsedArgs, guard: <T>(v: T) => Exclude<T, symbo
     const catalog = await loadCatalog();
     const named = catalog.filter((l) => l.id === target || l.id.startsWith(`${target}-`) || slug(l.name) === target);
     if (!named.length) throw new Error(`"${target}" isn't in the catalog. See the libraries at ${BRAND.siteUrl}/docs/libraries.`);
-    const fitting = named.filter((l) => l.frameworks.some((f) => frameworks.includes(f)));
-    const fwLabel = frameworks.map((f) => FRAMEWORK_LABELS[f] ?? f).join(" / ") || "unknown framework";
+    const fitting = named.filter((l) => libraryFits(l, targets));
+    const fwLabel = targets.map((f) => FRAMEWORK_LABELS[f] ?? f).join(" / ") || "unknown framework";
     if (!fitting.length) {
       throw new Error(`${named[0]!.name} has no variant for ${fwLabel}. Available: ${named.map((l) => `${l.id} (${l.frameworks.join(", ")})`).join(", ")}`);
     }
@@ -65,7 +64,7 @@ export async function add(args: ParsedArgs, guard: <T>(v: T) => Exclude<T, symbo
       lib = fitting.find((l) => l.id === id)!;
     } else throw new Error(`Several variants fit: ${fitting.map((l) => l.id).join(", ")}. Pass the exact id.`);
 
-    const installed = installedLibraries(dir, catalog, frameworks, deps);
+    const installed = installedLibraries(dir, catalog, targets, deps);
     const already = installed[lib.kind].some((l) => l.id === lib!.id);
     if (lib.kind === "components") {
       const others = installed.components.filter((l) => l.id !== lib!.id);

@@ -63,6 +63,18 @@ describe("detectProject", () => {
     expect(d.libraries.observability.map((l) => l.id)).toEqual(["sentry-nextjs"]);
   });
 
+  it("uses the browser extension platform when detecting installed libraries", async () => {
+    const extension = project({ "package.json": JSON.stringify({ dependencies: { react: "19", wxt: "1", motion: "14" } }) });
+    const animation = catalog.find((lib) => lib.id === "motion")!;
+    const detected = await detectProject(extension, [
+      { ...animation, excludeFrameworks: ["browser-extension"] },
+      { ...animation, id: "extension-motion", frameworks: ["browser-extension"] },
+      { ...animation, id: "universal-motion", frameworks: ["any"] },
+    ]);
+    expect(detected.framework.platforms).toEqual(["browser-extension"]);
+    expect(detected.libraries.animation.map((lib) => lib.id)).toEqual(["extension-motion", "universal-motion"]);
+  });
+
   it("keeps only the project's own dependencies", async () => {
     const d = await detectProject(dir, catalog);
     expect(d.dependencies).toEqual(["posthog-js", "zod"]);

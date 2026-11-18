@@ -1,4 +1,4 @@
-import { workspaceSelectionOptions } from "./workspace";
+import { workspaceChoices, workspaceSelectionOptions } from "./workspace";
 import { defaultSelections, pruneSelections, requirementsMet, validateSelections, type Selections } from "./resolve";
 import type { Choice, Kit } from "./schema";
 
@@ -111,12 +111,12 @@ function autofill(kit: Kit, sel: Selections, requested: ReadonlySet<string>): Se
     changed = false;
     for (const option of kit.options.filter((o) => follow.has(o.id))) {
       for (const id of sel.options[option.id] ?? []) {
-        const choice = option.choices.find((c) => c.id === id);
+        const choice = workspaceChoices(kit, sel, option).find((c) => c.id === id);
         for (const [reqId, allowed] of Object.entries(choice?.requires ?? {})) {
           const target = kit.options.find((o) => o.id === reqId);
           const current = sel.options[reqId] ?? [];
           if (!target || current.some((v) => allowed.includes(v))) continue;
-          const pick = target.choices.find((c) => allowed.includes(c.id));
+          const pick = workspaceChoices(kit, sel, target).find((c) => allowed.includes(c.id));
           if (!pick) continue;
           sel.options[reqId] = target.type === "multi" ? [...current.filter((v) => v !== "none"), pick.id] : [pick.id];
           added.push({ optionId: reqId, choiceId: pick.id, label: pick.label });

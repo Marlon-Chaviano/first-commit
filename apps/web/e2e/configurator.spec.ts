@@ -127,3 +127,17 @@ test("a monorepo configures libraries independently for web, API and docs", asyn
   await expect(page.getByText("Create workspace", { exact: true })).toBeVisible();
   await expect(page.getByText("Loading install steps…", { exact: true })).not.toBeVisible();
 });
+
+test("T3 hosting follows the selected composition", async ({ page }) => {
+  await page.goto("/kits/monorepo-t3-turbo");
+  await page.getByRole("button", { name: "Independent services", exact: true }).click();
+  await page.getByRole("button", { name: "Web · nextjs", exact: true }).click();
+  const docker = page.getByRole("button", { name: "docker", exact: true });
+  await expect(docker).toHaveCount(0);
+  await page.getByRole("button", { name: "Backend with Django", exact: true }).click();
+  await docker.click();
+  await expect(command(page)).toContainText("--web.nextjs.deploy docker");
+  await page.getByRole("button", { name: "No api", exact: true }).click();
+  await expect(docker).toHaveCount(0);
+  await expect(command(page)).not.toContainText("--web.nextjs.deploy");
+});

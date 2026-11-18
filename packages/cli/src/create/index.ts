@@ -186,7 +186,7 @@ export function buildKitJson(d: Detection, a: Answers): Record<string, unknown> 
     ...(f.addCommand ? { addCommand: f.addCommand } : {}),
     // The creator's package manager becomes the default.
     packageManagers: [d.pm, ...PACKAGE_MANAGERS.filter((pm) => pm !== d.pm)],
-    libraries,
+    libraries: { ...libraries, ...(f.platforms?.length && { platforms: f.platforms }) },
   };
   if (a.dependencies.length) kit.dependencies = a.dependencies;
   if (a.devDependencies.length) kit.devDependencies = a.devDependencies;

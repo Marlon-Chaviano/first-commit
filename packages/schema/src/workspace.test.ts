@@ -5,7 +5,7 @@ import { loadKitFrom } from "./load";
 import { defaultSelections, resolve, initArgs, validateSelections } from "./resolve";
 import { selectionsFrom } from "./selections";
 import { buildPlan } from "./plan";
-import { selectedServices } from "./workspace";
+import { selectedServices, workspaceChoices } from "./workspace";
 
 const source = registrySource(fileURLToPath(new URL("../../../registry", import.meta.url)));
 const kit = await loadKitFrom(await source.read("monorepo"), source, { admit: true });
@@ -104,4 +104,27 @@ it("translates old Turbo configurations without changing their service choices",
   expect(selectedServices(turbo, sel).map((service) => [service.id, service.variant])).toEqual([["web", "react"], ["api", "hono"], ["docs", "starlight"]]);
   const empty = selectionsFrom(turbo, { options: { web: ["next"], apps: [] } }).selections;
   expect(selectedServices(turbo, empty).map((service) => service.id)).toEqual(["web"]);
+});
+
+it("uses standalone hosting for a custom T3 composition and removes it when the native base returns", async () => {
+  const preset = await loadKitFrom(await source.read("monorepo-t3-turbo"), source);
+  const native = selectionsFrom(preset, { options: { deployment: ["independent"] } }).selections;
+  const option = preset.options.find((o) => o.id === "web.nextjs.deploy")!;
+  const choices = (sel: typeof native) => workspaceChoices(preset, sel, option).map((c) => c.id);
+  const paths = (sel: typeof native) => buildPlan({ kit: preset, kitDir: "", sel, parentDir: "/tmp", name: "demo", git: false })
+    .flatMap((step) => step.kind === "write" ? [step.path] : []);
+  expect(choices(native)).toEqual(["none", "vercel"]);
+  expect(() => selectionsFrom(preset, { base: native, options: { [option.id]: ["docker"] } }, { requirements: "throw" })).toThrow();
+  const request = { api: ["django"], [option.id]: ["docker"] };
+  const custom = selectionsFrom(preset, { base: native, options: request }, { requirements: "throw" }).selections;
+  expect(choices(custom)).toEqual(["none", "docker", "railway", "render", "vercel"]);
+  expect(paths(custom)).toContain("/tmp/demo/apps/nextjs/Dockerfile");
+  const restored = selectionsFrom(preset, { base: custom, options: { api: ["none"] } }).selections;
+  expect(choices(restored)).toEqual(choices(native));
+  expect(restored.options[option.id]).toEqual(["none"]);
+  expect(paths(restored)).not.toContain("/tmp/demo/apps/nextjs/Dockerfile");
+  expect(() => selectionsFrom(preset, { base: restored, options: { deployment: ["compose"] } }, { requirements: "throw" })).toThrow();
+  const compose = selectionsFrom(preset, { base: custom, options: { deployment: ["compose"] } }, { requirements: "throw" }).selections;
+  expect(paths(compose)).toEqual(expect.arrayContaining(["/tmp/demo/compose.yaml", "/tmp/demo/apps/nextjs/Dockerfile", "/tmp/demo/apps/api/Dockerfile"]));
+  expect(selectionsFrom(preset, { base: compose, options: { api: ["none"] } }).selections.options.deployment).toEqual(["none"]);
 });

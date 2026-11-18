@@ -1,5 +1,5 @@
 import { applyWrite, buildPlan, fillTemplate, shellQuote, templateVars, type PlanInput, type Step, posixPaths } from "./plan";
-import { preservesWorkspaceBase, selectedServices } from "./workspace";
+import { DOCKER_DESTINATIONS, preservesWorkspaceBase, selectedServices } from "./workspace";
 
 /** Compose the same child plans used by standalone kits, without nested git repositories. */
 export function workspacePlan(input: PlanInput): Step[] {
@@ -23,7 +23,7 @@ export function workspacePlan(input: PlanInput): Step[] {
   for (const service of services) {
     const parent = service.path.split("/").slice(0, -1).join("/");
     steps.push({ kind: "run", title: `Prepare ${service.id}`, cwd: root, command: `mkdir -p ${shellQuote(parent || ".")}` });
-    const existing = preserveBase && kit.workspace?.services[service.id]?.existing;
+    const existing = service.embedded;
     const childKit = existing ? { ...service.kit, files: undefined, writeFiles: [], postInstall: [], dependencies: [], devDependencies: [], base: { command: "true" } } : service.kit;
     const childSteps = buildPlan({ ...input, kit: childKit, sel: { ...service.sel, agents: [], badge: false }, parentDir: paths.join(root, parent), name: paths.basename(service.path), git: false, brand: service.id === "web" ? input.brand : undefined });
     for (const step of childSteps) {
@@ -36,7 +36,7 @@ export function workspacePlan(input: PlanInput): Step[] {
     commands[service.id] = { cwd: service.path, env: { PORT: String(profile?.port ?? 3000), SERVER_PORT: String(profile?.port ?? 3000) }, dev: fillTemplate(profile?.dev ?? "{{pm}} run dev", vars), build: fillTemplate(profile?.build ?? service.kit.verify?.command ?? "{{pm}} run build", vars), verify };
     write(`${service.path}/.env.example`, `PORT=${profile?.port ?? 3000}\n`);
     // Root build context includes shared packages, while each app retains its own dependency manifest.
-    if (profile?.dockerfile && (sel.options["deployment"]?.[0] === "compose" || ["docker", "railway", "render"].includes(sel.options[`${service.id}.${service.variant}.deploy`]?.[0] ?? "none"))) {
+    if (profile?.dockerfile && (sel.options["deployment"]?.[0] === "compose" || DOCKER_DESTINATIONS.includes(sel.options[`${service.id}.${service.variant}.deploy`]?.[0] ?? "none"))) {
       let dockerfile = fillTemplate(profile.dockerfile, { ...vars, servicePath: service.path });
       if (service.id === "web" && api && apiVariable) dockerfile = dockerfile.replace(/(^FROM[^\n]*\n)/m, `$1ARG ${apiVariable}\nENV ${apiVariable}=\$${apiVariable}\n`);
       write(`${service.path}/Dockerfile`, dockerfile);

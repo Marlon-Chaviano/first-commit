@@ -1,4 +1,4 @@
-import { workspaceOptions } from "./workspace";
+import { DOCKER_DESTINATIONS, workspaceOptions } from "./workspace";
 import { resolveExtends, splitKitRef, type LoadedRawKit, type PathResolver, type RawKitLoader } from "./extends";
 import { expandKit, type Catalog } from "./libraries";
 import { defaultSelections, validateSelections } from "./resolve";
@@ -48,8 +48,7 @@ export async function loadKitFrom(top: LoadedRawKit, source: KitSource, { admit 
           option.default = option.type === "select" ? option.choices[0]!.id : [];
         }
         const nativeDeploy = child.options.find((option) => option.id === "deploy");
-        if (kit.workspace.preserveBase && service.existing) {
-          if (child.service) child.service = { ...child.service, dockerfile: undefined };
+        if (kit.workspace.preserveBase && service.existing && id === service.default) {
           // The native scaffold already owns its UI and integrations. Offer additions without
           // automatically applying a standalone kit's installers over the preset's shared packages.
           for (const option of child.options) {
@@ -62,15 +61,13 @@ export async function loadKitFrom(top: LoadedRawKit, source: KitSource, { admit 
         }
         // CI is composed at workspace level. Hosting is constrained by runtime capabilities.
         child.options = child.options.filter((option) => option.id !== "ci" && option.id !== "deploy");
-        const destinations = ["none", ...(child.service?.dockerfile ? ["docker", "railway", "render"] : []), ...(["web", "docs"].includes(slot) && parsed.packageManagers.some((pm) => ["npm", "pnpm", "bun"].includes(pm)) ? ["vercel"] : [])];
+        const destinations = ["none", ...(child.service?.dockerfile ? DOCKER_DESTINATIONS : []), ...(["web", "docs"].includes(slot) && parsed.packageManagers.some((pm) => ["npm", "pnpm", "bun"].includes(pm)) ? ["vercel"] : [])];
         child.options.push({ id: "deploy", label: "Deployment", type: "select", default: "none", choices: destinations.map((id) => ({ id, label: id === "none" ? "Configure later" : id, dependencies: [], devDependencies: [], skills: [], mcp: {}, env: {}, postInstall: [], writeFiles: [], setupTasks: [] })) });
         if (slot === "mobile" && nativeDeploy) child.options[child.options.length - 1] = nativeDeploy;
         kit.services[slot]![id] = child;
       }
     }
     kit.options.push(...workspaceOptions(kit));
-    const compose = kit.options.find((option) => option.id === "deployment")?.choices.find((choice) => choice.id === "compose");
-    if (compose) compose.requires = Object.fromEntries(Object.entries(kit.services).filter(([slot]) => slot !== "mobile").map(([slot, variants]) => [slot, ["none", ...Object.entries(variants).filter(([, child]) => child.service?.dockerfile).map(([id]) => id)]]));
   }
   if (admit) admitKit(kit);
   return kit;

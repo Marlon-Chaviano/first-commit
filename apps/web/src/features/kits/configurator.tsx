@@ -1,6 +1,6 @@
 "use client";
 
-import { serviceOptionVisible, AGENTS, buildInitCommand, defaultSelections, LIBRARY_OPTION_IDS, pruneSelections, requirementsMet, requirementText, resolve, selectionsFrom, type Choice, type Kit, type Selections, isProjectName } from "@kits/schema/light";
+import { workspaceChoices, serviceOptionVisible, AGENTS, buildInitCommand, defaultSelections, LIBRARY_OPTION_IDS, pruneSelections, requirementsMet, requirementText, resolve, selectionsFrom, type Choice, type Kit, type Selections, isProjectName } from "@kits/schema/light";
 import { BanIcon, PackageIcon, PaletteIcon, PlusIcon, SearchIcon, ShieldCheckIcon, SparklesIcon, XIcon, type LucideIcon } from "lucide-react";
 import { toast } from "sonner";
 import { useEffect, useRef, useState } from "react";
@@ -137,7 +137,7 @@ export function Configurator({
         }}
         className="w-full flex-wrap content-start justify-start sm:justify-end"
       >
-        {option.choices.map((choice) => {
+        {workspaceChoices(kit, sel, option).map((choice) => {
           // Library requirements are added on click; only framework ones block the choice.
           const allowed = requirementsMet(choice, sel) || autoSatisfiable(choice, sel);
           // "None" is an icon: the empty choice reads at a glance, and it's the same in every language.

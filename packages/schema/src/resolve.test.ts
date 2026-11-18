@@ -96,6 +96,18 @@ describe("framework chosen by an option", () => {
     }
   });
 
+  it("applies a renderer exclusion only when that renderer is selected", () => {
+    const lib: Catalog[number] = { ...catalog[0]!, frameworks: ["any"], excludeFrameworks: ["vue"] };
+    const expanded = expandKit(parseKit({
+      ...base, name: "extension",
+      options: [{ id: "renderer", label: "Renderer", default: "react", choices: [{ id: "react", label: "React" }, { id: "vue", label: "Vue" }] }],
+      libraries: { framework: { option: "renderer" }, components: lib.id },
+    }), [lib]);
+    const sel = defaultSelections(expanded);
+    expect(sel.options.components).toEqual([lib.id]);
+    expect(pruneSelections(expanded, { ...sel, options: { ...sel.options, renderer: ["vue"] } }).options.components).toEqual(["none"]);
+  });
+
   it("keeps extension publishing independent of the selected renderer and hides web hosting", () => {
     const store = { ...catalog[0]!, id: "chrome-store", name: "Chrome Web Store", kind: "deploy" as const, frameworks: ["browser-extension"] as Catalog[number]["frameworks"] };
     const hosting = { ...store, id: "web-hosting", name: "Web hosting", frameworks: ["react", "vue"] as Catalog[number]["frameworks"], excludeFrameworks: ["browser-extension"] as Catalog[number]["frameworks"] };

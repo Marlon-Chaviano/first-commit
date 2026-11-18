@@ -3,9 +3,9 @@ import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import { join, relative } from "node:path";
 
-import { BRAND, LIBRARY_KINDS, pmFromLockfiles, type Catalog, type Library, type LibraryKind, type McpServer, type PackageManager } from "@kits/schema";
+import { BRAND, libraryFits, LIBRARY_KINDS, pmFromLockfiles, type Catalog, type Library, type LibraryKind, type McpServer, type PackageManager } from "@kits/schema";
 
-import { detectFramework, isBaseline, type FrameworkMatch } from "./frameworks";
+import { detectFramework, isBaseline, projectLibraryTargets, type FrameworkMatch } from "./frameworks";
 
 export interface Detection {
   packageName: string;
@@ -103,10 +103,9 @@ export async function detectProject(dir: string, catalog: Catalog, baseOverride?
 export function installedLibraries(
   dir: string,
   catalog: Catalog,
-  frameworks: string[],
+  targets: string[],
   deps: Record<string, string>,
 ): Record<LibraryKind, Library[]> {
-  const fits = (lib: Library) => lib.frameworks.some((f) => frameworks.includes(f));
   const componentsJson = readJson(join(dir, "components.json")) as { registries?: Record<string, unknown> } | null;
   const installed = (lib: Library) => {
     const pkgs = [...lib.dependencies, ...lib.devDependencies].map(packageName);
@@ -120,13 +119,13 @@ export function installedLibraries(
     }
     return false;
   };
-  const found = (kind: Library["kind"]) => catalog.filter((l) => l.kind === kind && fits(l) && installed(l));
+  const found = (kind: Library["kind"]) => catalog.filter((l) => l.kind === kind && libraryFits(l, targets) && installed(l));
   return Object.fromEntries(LIBRARY_KINDS.map((kind) => [kind, found(kind)])) as Record<LibraryKind, Library[]>;
 }
 
 /** A library matches when all its packages are installed (shadcn-style registries: by components.json). */
 function matchLibraries(dir: string, catalog: Catalog, framework: FrameworkMatch, deps: Record<string, string>): Detection["libraries"] {
-  const all = installedLibraries(dir, catalog, framework.frameworks, deps);
+  const all = installedLibraries(dir, catalog, projectLibraryTargets(framework), deps);
   return {
     components: framework.ui ? all.components[0] : undefined,
     addons: framework.ui ? all.addon : [],

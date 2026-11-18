@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { workspaceChoices } from "./workspace";
 
 import { BRAND, KITS_SKILL } from "./brand";
 import { allKitSkills, defaultSelections, pruneSelections, requirementsMet, validateSelections, type Selections } from "./resolve";
@@ -38,7 +39,7 @@ export function testCombinations(kit: Kit): TestCombination[] {
     // One extra combination per option: its first allowed choice that isn't the default.
     for (const option of kit.options) {
       const current = base.options[option.id] ?? [];
-      const next = option.choices.find((c) => !current.includes(c.id) && requirementsMet(c, base));
+      const next = workspaceChoices(kit, base, option).find((c) => !current.includes(c.id) && requirementsMet(c, base));
       if (!next) continue;
       combos.push(variant({ [option.id]: option.type === "multi" ? [...current, next.id] : [next.id] }));
     }

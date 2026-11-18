@@ -6,7 +6,7 @@ import pc from "picocolors";
 
 import { api } from "./api";
 import type { ParsedArgs } from "./args";
-import { detectFramework } from "./create/frameworks";
+import { detectFramework, projectLibraryTargets } from "./create/frameworks";
 import { installedLibraries, readDeps } from "./create/detect";
 import { readLock } from "./lockfile";
 import { loadCatalog, loadKit } from "./registry";
@@ -66,7 +66,7 @@ export async function diagnose(dir: string, lock: KitsLock | null, online = true
   if (existsSync(join(dir, "package.json")) && lock) {
     const deps = readDeps(dir);
     const framework = detectFramework(deps);
-    const installed = installedLibraries(dir, await loadCatalog(), framework?.frameworks ?? [], deps);
+    const installed = installedLibraries(dir, await loadCatalog(), projectLibraryTargets(framework), deps);
     const chosen = new Set([...Object.values(lock.options).flat(), ...lock.added.map((a) => a.id)]);
     const components = installed.components.filter((l) => !chosen.has(l.id));
     if (components.length && installed.components.some((l) => chosen.has(l.id))) {
@@ -160,7 +160,7 @@ async function usedLibraries(dir: string, lock: KitsLock): Promise<Set<string>> 
   if (existsSync(join(dir, "package.json"))) {
     const deps = readDeps(dir);
     const framework = detectFramework(deps);
-    for (const libs of Object.values(installedLibraries(dir, await loadCatalog(), framework?.frameworks ?? [], deps))) for (const l of libs) used.add(l.id);
+    for (const libs of Object.values(installedLibraries(dir, await loadCatalog(), projectLibraryTargets(framework), deps))) for (const l of libs) used.add(l.id);
   }
   used.delete("none");
   return used;

@@ -1,4 +1,4 @@
-import { preservesWorkspaceBase, selectedServices, serviceOptionVisible } from "./workspace";
+import { preservesWorkspaceBase, selectedServices, serviceOptionVisible, workspaceChoices } from "./workspace";
 import { BRAND, KITS_SKILL, KITS_SKILL_PUBLISHED } from "./brand";
 import type { PackageManager } from "./package-managers";
 import type { Choice, Kit, McpServer, WriteFile } from "./schema";
@@ -67,7 +67,6 @@ export function resolve(kit: Kit, sel: Selections): Resolved {
   const parts = [root, ...chosen.filter((c) => !kit.workspace || !c.optionId.includes(".")).flatMap((c) => c.choices)];
   const services = selectedServices(kit, sel).map((s) => ({
     ...s, resolved: resolve(s.kit, s.sel),
-    ...(preservesWorkspaceBase(kit, sel) && kit.workspace?.services[s.id]?.existing ? { embedded: true } : {}),
   }));
   const removed = new Set(sel.removeSkills);
 
@@ -106,13 +105,14 @@ export function pruneSelections(kit: Kit, sel: Selections, keep: ReadonlySet<str
   for (const option of kit.options) {
     if (keep.has(option.id)) continue;
     const ids = next.options[option.id] ?? [];
+    const choices = workspaceChoices(kit, next, option);
     const valid = ids.filter((id) => {
-      const choice = option.choices.find((c) => c.id === id);
+      const choice = choices.find((c) => c.id === id);
       return choice && requirementsMet(choice, next);
     });
     if (option.type === "select" && !valid.length) {
       // Fall back to the first choice that is allowed ("none" when there is one).
-      const fallback = option.choices.find((c) => requirementsMet(c, next));
+      const fallback = choices.find((c) => requirementsMet(c, next));
       next.options[option.id] = fallback ? [fallback.id] : [];
     } else {
       next.options[option.id] = valid;
@@ -126,17 +126,17 @@ export function validateSelections(kit: Kit, sel: Selections): void {
   if (kit.workspace) {
     const selected = selectedServices(kit, sel);
     if (!preservesWorkspaceBase(kit, sel) && !selected.length) throw new Error("Select at least one service");
-    if (sel.options.deployment?.[0] === "compose" && !selected.some((service) => service.kit.service?.dockerfile)) throw new Error("Compose needs at least one server with a Docker recipe");
   }
   for (const [id, values] of Object.entries(sel.options)) {
     const option = kit.options.find((o) => o.id === id);
     if (!option) throw new Error(`Unknown option "--${id}". Available: ${kit.options.map((o) => o.id).join(", ") || "none"}`);
     if (!serviceOptionVisible(kit, sel, option) && !values.length) continue;
     if (option.type === "select" && values.length !== 1) throw new Error(`"--${id}" takes exactly one value`);
+    const choices = workspaceChoices(kit, sel, option);
     for (const v of values) {
-      const choice = option.choices.find((c) => c.id === v);
+      const choice = choices.find((c) => c.id === v);
       if (!choice) {
-        throw new Error(`Unknown value "${v}" for --${id}. Choose one of: ${option.choices.map((c) => c.id).join(", ")}`);
+        throw new Error(`Unknown value "${v}" for --${id}. Choose one of: ${choices.map((c) => c.id).join(", ")}`);
       }
       if (!requirementsMet(choice, sel)) {
         const needs = Object.entries(choice.requires ?? {}).map(([o, ids]) => `--${o} ${ids.join("|")}`).join(" and ");

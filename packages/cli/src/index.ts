@@ -2,7 +2,7 @@ import { existsSync } from "node:fs";
 import { join, resolve as resolvePath } from "node:path";
 
 import * as p from "@clack/prompts";
-import { AGENTS, BRAND, KITS_SKILL, workspaceSelectionOptions, buildPlan, allKitSkills, buildInitCommand, defaultSelections, PACKAGE_MANAGERS, pmFromUserAgent, pruneSelections, requirementsMet, resolve, selectionsFrom, skillRefSchema, validateSelections, type Kit, type PackageManager, type Selections, isProjectName } from "@kits/schema";
+import { AGENTS, BRAND, KITS_SKILL, workspaceSelectionOptions, workspaceChoices, buildPlan, allKitSkills, buildInitCommand, defaultSelections, PACKAGE_MANAGERS, pmFromUserAgent, pruneSelections, requirementsMet, resolve, selectionsFrom, skillRefSchema, validateSelections, type Kit, type PackageManager, type Selections, isProjectName } from "@kits/schema";
 import pc from "picocolors";
 
 import { listFlag, parseArgs, type ParsedArgs } from "./args";
@@ -261,7 +261,11 @@ async function collectSelections(kit: Kit, args: ParsedArgs, interactive: boolea
 
   // Options come in kit order, so choices that depend on an earlier answer
   // (a library that needs React, an add-on that needs shadcn) are filtered live.
-  for (const option of kit.options) {
+  // Select the workspace topology before asking about its deployment capabilities.
+  const options = kit.workspace
+    ? [...kit.options.filter((o) => kit.workspace!.services[o.id]), ...kit.options.filter((o) => !kit.workspace!.services[o.id])]
+    : kit.options;
+  for (const option of options) {
     const flag = listFlag(args, option.id);
     if (flag) {
       // "--extras none" clears a multi option, unless "none" is a real choice.
@@ -270,7 +274,7 @@ async function collectSelections(kit: Kit, args: ParsedArgs, interactive: boolea
       explicit.add(option.id);
     } else {
       sel = pruneSelections(kit, sel, explicit);
-      const allowed = option.choices.filter((c) => requirementsMet(c, sel));
+      const allowed = workspaceChoices(kit, sel, option).filter((c) => requirementsMet(c, sel));
       if (interactive && allowed.length) {
         const choices = allowed.map((c) => ({ value: c.id, label: c.label, hint: c.description }));
         const current = sel.options[option.id] ?? [];

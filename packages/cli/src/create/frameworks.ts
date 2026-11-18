@@ -8,6 +8,7 @@ export interface FrameworkMatch {
   category: Kit["category"];
   /** Catalog frameworks, for `libraries.framework`. */
   frameworks: string[];
+  platforms?: string[];
   /** Whether UI libraries (components, add-ons, animation) apply. */
   ui: boolean;
   base: Kit["base"];
@@ -125,6 +126,7 @@ export function detectFramework(deps: Deps): FrameworkMatch | null {
       id: `wxt-${fw}`,
       label: `WXT (${fw})`,
       category: "extension",
+      platforms: ["browser-extension"],
       frameworks: [fw],
       ui: true,
       base: { command: `npx wxt@latest init {{name}} --template ${fw} --pm {{pm}}`, install: "{{pm}} install" },
@@ -144,6 +146,20 @@ export function detectFramework(deps: Deps): FrameworkMatch | null {
     };
   }
   return null;
+}
+
+/** Catalog targets for a specific installation. A framework option uses its recorded choice. */
+export function projectLibraryTargets(
+  detected: FrameworkMatch | null,
+  libraries?: Kit["libraries"],
+  options: Record<string, string[]> = {},
+): string[] {
+  const declared = libraries?.framework;
+  let frameworks = detected?.frameworks ?? [];
+  if (typeof declared === "string") frameworks = [declared];
+  else if (Array.isArray(declared)) frameworks = declared;
+  else if (declared) frameworks = options[declared.option] ?? frameworks;
+  return [...new Set([...frameworks, ...(libraries?.platforms ?? []), ...(detected?.platforms ?? [])])];
 }
 
 export function isBaseline(match: FrameworkMatch, pkg: string): boolean {

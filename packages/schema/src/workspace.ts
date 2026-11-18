@@ -20,18 +20,53 @@ export function workspaceOptions(kit: Kit): KitOption[] {
     }))];
   });
 }
-export function selectedServices(kit: Kit, sel: Selections): { id: string; variant: string; path: string; kit: Kit; sel: Selections }[] {
+
+/** Embedded apps share the native preset's build context. Their standalone Docker recipe
+ * becomes usable again when the selected composition scaffolds them independently. */
+function workspaceApps(kit: Kit, sel: Selections) {
+  const native = preservesWorkspaceBase(kit, sel);
   return Object.entries(kit.services ?? {}).flatMap(([id, variants]) => {
     const variant = sel.options[id]?.[0];
-    const child = variant ? variants[variant] : undefined;
+    const child = variant && variants[variant];
     if (!child || !variant) return [];
-    const prefix = servicePrefix(id, variant);
+    const slot = kit.workspace!.services[id]!;
+    const embedded = native && Boolean(slot.existing);
+    const effectiveKit = embedded && child.service?.dockerfile
+      ? { ...child, service: { ...child.service, dockerfile: undefined } }
+      : child;
+    return [{ id, variant, path: slot.path, kit: effectiveKit, embedded }];
+  });
+}
+
+export const DOCKER_DESTINATIONS = ["docker", "railway", "render"];
+
+/** Hosting choices depend on the selected topology as well as the individual framework. */
+export function workspaceChoices(kit: Kit, sel: Selections, option: KitOption) {
+  if (!kit.workspace) return option.choices;
+  if (option.id === "deployment") {
+    const servers = workspaceApps(kit, sel).filter((app) => app.id !== "mobile");
+    if (servers.length && servers.every((app) => app.kit.service?.dockerfile)) return option.choices;
+    return option.choices.filter((choice) => choice.id !== "compose");
+  }
+  if (option.id.endsWith(".deploy")) {
+    const [slot, variant] = option.id.split(".");
+    const app = workspaceApps(kit, sel).find((app) => app.id === slot && app.variant === variant);
+    if (app?.embedded) return option.choices.filter((choice) => !DOCKER_DESTINATIONS.includes(choice.id));
+  }
+  return option.choices;
+}
+
+export function selectedServices(kit: Kit, sel: Selections) {
+  return workspaceApps(kit, sel).map((app) => {
+    const child = app.kit;
+    const prefix = servicePrefix(app.id, app.variant);
     const options = Object.fromEntries(Object.entries(sel.options).filter(([key]) => key.startsWith(prefix)).map(([key, values]) => [key.slice(prefix.length), values]));
-    return [{ id, variant, path: kit.workspace!.services[id]!.path, kit: child, sel: pruneSelections(child, {
-      ...defaultSelections(child), options: { ...defaultSelections(child).options, ...options }, agents: sel.agents,
+    const defaults = defaultSelections(child);
+    return { ...app, sel: pruneSelections(child, {
+      ...defaults, options: { ...defaults.options, ...options }, agents: sel.agents,
       pm: child.packageManagers.includes(sel.pm) ? sel.pm : child.packageManagers[0]!,
       addSkills: [], removeSkills: sel.removeSkills, badge: false,
-    }) }];
+    }) };
   });
 }
 export function serviceOptionVisible(kit: Kit, sel: Selections, option: KitOption): boolean {

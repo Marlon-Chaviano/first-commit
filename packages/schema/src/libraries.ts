@@ -85,6 +85,12 @@ export const catalogSchema = z.array(librarySchema).superRefine((libs, ctx) => {
 export type Library = z.infer<typeof librarySchema>;
 export type Catalog = z.infer<typeof catalogSchema>;
 
+/** A platform exclusion wins even when the renderer or the universal target matches. */
+export function libraryFits(library: Library, targets: readonly string[]): boolean {
+  if (library.excludeFrameworks?.some((id) => targets.includes(id))) return false;
+  return library.frameworks.includes("any") || library.frameworks.some((id) => targets.includes(id));
+}
+
 export const FRAMEWORK_LABELS: Record<string, string> = {
   react: "React",
   "react-native": "React Native",
@@ -142,8 +148,9 @@ export function expandKit(kit: Kit, catalog: Catalog): Kit {
     : ([] as string[]).concat(libs.framework as string | string[]);
   const platforms = libs.platforms ?? [];
   const targets = [...frameworks, ...platforms];
-  const available = (kind: Library["kind"]) =>
-    catalog.filter((l) => l.kind === kind && !(l.excludeFrameworks ?? []).some((f) => targets.includes(f)) && (l.frameworks.includes("any") || l.frameworks.some((f) => targets.includes(f))));
+  const allowedFrameworks = (lib: Library) => frameworks.filter((id) => libraryFits(lib, [id, ...platforms]));
+  const compatible = catalog.filter((lib) => frameworkOption ? allowedFrameworks(lib).length > 0 : libraryFits(lib, targets));
+  const available = (kind: Library["kind"]) => compatible.filter((lib) => lib.kind === kind);
 
   // Same name in one category (Sentry for Node, Bun, Workers…): add the platform to tell them apart.
   const sameName = (lib: Library) => available(lib.kind).filter((l) => l.name === lib.name).length > 1;
@@ -154,7 +161,13 @@ export function expandKit(kit: Kit, catalog: Catalog): Kit {
 
   const toChoice = (lib: Library): Choice => {
     const requires = { ...lib.requires };
-    if (frameworkOption && !lib.frameworks.includes("any") && !lib.frameworks.some((f) => platforms.includes(f))) requires[frameworkOption] = lib.frameworks.filter((f) => frameworks.includes(f));
+    if (frameworkOption) {
+      const allowed = allowedFrameworks(lib);
+      if (allowed.length < frameworks.length) {
+        const required = requires[frameworkOption];
+        requires[frameworkOption] = required ? allowed.filter((id) => required.includes(id)) : allowed;
+      }
+    }
     return {
       id: lib.id,
       label: label(lib),
