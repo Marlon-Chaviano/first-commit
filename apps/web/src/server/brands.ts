@@ -40,7 +40,7 @@ export async function getBrand(slug: string, viewer: TokenUser | null): Promise<
  * Creates or updates a profile under the user's handle or an org slug. Org
  * profiles need admin (they define the company's identity for everyone).
  */
-export async function saveBrand(viewer: TokenUser, owner: string, input: unknown): Promise<string> {
+export async function saveBrand(viewer: TokenUser, owner: string, input: unknown, mode: "create" | "update"): Promise<string> {
   if (!db) throw new BrandError(503, "No database");
   const parsed = brandProfileSchema.safeParse(input);
   if (!parsed.success) throw new BrandError(400, parsed.error.issues[0]?.message ?? "Invalid profile");
@@ -53,13 +53,19 @@ export async function saveBrand(viewer: TokenUser, owner: string, input: unknown
     orgId = org.id;
   }
   const slug = `${owner}/${profile.name}`;
-  const [existing] = await db.select().from(brandProfiles).where(eq(brandProfiles.slug, slug)).limit(1);
-  if (existing) {
-    const allowed = existing.orgId ? existing.orgId === orgId : existing.ownerId === viewer.id;
-    if (!allowed) throw new BrandError(403, `${slug} pertenece a otra cuenta`);
-    await db.update(brandProfiles).set({ title: profile.title, profile, updatedAt: new Date() }).where(eq(brandProfiles.id, existing.id));
+  if (mode === "update") {
+    const scope = orgId ? eq(brandProfiles.orgId, orgId) : and(isNull(brandProfiles.orgId), eq(brandProfiles.ownerId, viewer.id));
+    const [updated] = await db.update(brandProfiles)
+      .set({ title: profile.title, profile, updatedAt: new Date() })
+      .where(and(eq(brandProfiles.slug, slug), scope))
+      .returning({ id: brandProfiles.id });
+    if (!updated) throw new BrandError(404, "Profile not found");
   } else {
-    await db.insert(brandProfiles).values({ slug, ownerId: viewer.id, orgId, title: profile.title, profile });
+    const [created] = await db.insert(brandProfiles)
+      .values({ slug, ownerId: viewer.id, orgId, title: profile.title, profile })
+      .onConflictDoNothing({ target: brandProfiles.slug })
+      .returning({ id: brandProfiles.id });
+    if (!created) throw new BrandError(409, "That identifier is already in use. Choose another for this copy.");
   }
   return slug;
 }

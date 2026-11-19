@@ -38,7 +38,10 @@ export default function BrandsDocs() {
 
       <H2 id="create">Create a profile</H2>
       <P>
-        In <Link className="underline underline-offset-4" href="/brands">Brand profiles</Link>, with a live preview.
+        Choose a template from the <Link className="underline underline-offset-4" href="/brands">brand catalog</Link>
+        {" "}to see its logo, palette, typography and interface rule. Choose “Fork to my brands” and save a private copy
+        under your account. You can then change its name, logo, colors and fonts. You can also start from scratch
+        or import a file or website before signing in to save your draft.
         It can be yours or an organization&apos;s (all its members use it). A local file works too:
       </P>
       <CodeBlock code={EXAMPLE} />

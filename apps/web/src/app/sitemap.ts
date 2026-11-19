@@ -1,6 +1,7 @@
 import { BRAND } from "@kits/schema";
 import type { MetadataRoute } from "next";
 
+import { brandTemplates, templatePath } from "@/features/brands/templates";
 import { facets } from "@/lib/kit-query";
 import { DOCS_PAGES } from "@/lib/site-nav";
 import { getComparisonSlugs } from "@/server/compare";
@@ -20,6 +21,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: url("/"), lastModified, changeFrequency: "daily", priority: 1 },
     { url: url("/stacks"), lastModified, changeFrequency: "weekly", priority: 0.8 },
     { url: url("/brands"), lastModified, changeFrequency: "monthly", priority: 0.5 },
+    ...brandTemplates.map(({ id }) => ({ url: url(templatePath(id)), lastModified, changeFrequency: "monthly" as const, priority: 0.5 })),
     { url: url("/changelog"), lastModified, changeFrequency: "weekly", priority: 0.5 },
     ...[...DOCS_PAGES.map((p) => p.href), "/about", "/contact", "/privacy", "/terms"].map((d) => ({ url: url(d), lastModified, changeFrequency: "monthly" as const, priority: 0.6 })),
     ...kits.map((k) => ({

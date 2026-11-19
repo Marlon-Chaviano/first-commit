@@ -1,5 +1,14 @@
 [
   {
+    "id": "public-brand-templates",
+    "date": "2026-11-19",
+    "title": "180 brand templates to start from",
+    "items": [
+      "Explore logos, colors and typography without signing in. Search the catalog or browse 20 templates at a time.",
+      "Fork a template or start from scratch. Sign in to save your draft as a private brand, then edit it and apply it to a kit."
+    ]
+  },
+  {
     "id": "configurable-monorepos",
     "date": "2026-11-16",
     "title": "Build your own monorepo",
@@ -15,15 +24,9 @@
     "date": "2026-11-14",
     "title": "A fuller catalog for every stack, and one Security pack",
     "items": [
-      "The shared catalog now has 256 entries, with 144 new library, tooling and deployment options across TypeScript, Python, Go, Rust, C#, Ruby, PHP, Java, Kotlin, Swift and Dart.",
-      "All 70 official kits were reviewed for compatible categories. Nuxt now offers Vercel, Netlify, Docker and Railway, plus auth, database, payments, email, i18n, observability and testing choices. SvelteKit gets its own Vercel, Netlify and Node adapters.",
-      "Expanded native and backend choices include Flutter state/data packages, Swift Package Manager integrations, Android libraries, Rust crates, ASP.NET Core packages, Spring starters and official server SDKs. Setup tasks identify configuration that still needs to be completed.",
-      "Deployment choices follow the project platform: browser and VS Code extensions get their publishing destinations, desktop apps get release distribution, and monorepos keep deployment and dependencies scoped to their services.",
-      "Every catalog entry now has an icon: a publisher mark when available, otherwise a semantic icon for its category, in both themes.",
-      "One general Security pack with 12 skills replaces the separate AI security add-on. It covers code, auth, access control, web/APIs, mobile, infrastructure, secrets and dependencies; LLM/MCP checks apply when the project implements those features.",
-      "create-first-commit 1.0.3 adds platform-aware catalog compatibility and improves verification: project build combinations exclude skills, while skill names are checked separately from their official source files with an installer fallback.",
-      "A generated coverage report documents the options offered by each kit. New verification matrix entries exercise the added catalog choices without requiring production credentials.",
-      "Design, Security and first-commit skill packs start compact. Expand each pack to inspect and select its skills; inclusion switches remain available independently."
+      "Catalog coverage grew to 256 entries across 70 official kits, with 144 new options, icons and deployment targets matched to each stack.",
+      "One Security pack brings together 12 skills. Design, Security and first-commit packs expand to show individual choices.",
+      "CLI 1.0.3 checks kit combinations and official skill sources separately. A coverage report lists the options available in each kit."
     ]
   },
   {

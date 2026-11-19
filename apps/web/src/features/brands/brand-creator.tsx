@@ -13,6 +13,7 @@ import {
   type SocialNetwork,
 } from "@kits/schema";
 import { ArrowLeftIcon, CheckIcon, GlobeIcon, LoaderCircleIcon, PencilIcon, SparklesIcon, UploadIcon } from "lucide-react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState, useTransition } from "react";
 import { toast } from "sonner";
@@ -25,7 +26,9 @@ import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { cn } from "@/lib/utils";
 
 import { detectBrandFromUrlAction, saveBrandAction } from "./actions";
-import { BrandEditor, BrandPreview } from "./brand-editor";
+import { logInWithDraft } from "./pending-draft";
+import { BrandEditor } from "./brand-editor";
+import { BrandPreview } from "./brand-preview";
 import { ACCEPT, detectFile, imageAsDataUrl, MAX_IMAGE_BYTES } from "./brand-importer";
 
 type Review = { detection: BrandDetection; source: string };
@@ -171,6 +174,7 @@ function Start({ onDetected, onBlank }: { onDetected: (d: BrandDetection, source
         <span className="h-px flex-1 bg-border" />
       </div>
 
+      <Button variant="outline" nativeButton={false} render={<Link href="/brands#templates" />}>Browse brand templates</Button>
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <button
           type="button"
@@ -276,8 +280,12 @@ function ReviewStep({
               } catch {
                 return void toast.error("Check the name: lowercase letters, numbers and hyphens");
               }
+              if (!owner) return logInWithDraft(p, router.push);
               const r = await saveBrandAction(owner, p);
-              if (!r.ok) return void toast.error(r.error);
+              if (!r.ok) {
+                if (r.error === "Log in first") return logInWithDraft(p, router.push);
+                return void toast.error(r.error);
+              }
               toast.success("Brand profile created");
               router.push(`/brands/${r.data}`);
             });
@@ -317,7 +325,7 @@ function ReviewStep({
                   }}
                   className="font-mono"
                 />
-                <FieldDescription className="font-mono">--brand {owner}/{name || "name"}</FieldDescription>
+                <FieldDescription className="font-mono">--brand {owner || "your-handle"}/{name || "name"}</FieldDescription>
               </Field>
             </div>
             {owners.length > 1 && (
@@ -388,9 +396,9 @@ function ReviewStep({
           )}
 
           <div className="flex flex-col-reverse gap-2 border-t pt-6 sm:flex-row sm:items-center">
-            <Button type="submit" disabled={pending || !name || !title || !owner}>
+            <Button type="submit" disabled={pending || !name || !title}>
               {pending && <LoaderCircleIcon className="animate-spin" data-icon="inline-start" />}
-              Create brand profile
+              {owner ? "Create brand profile" : "Log in to create profile"}
             </Button>
             <Button
               type="button"
@@ -414,20 +422,14 @@ function ReviewStep({
           <h3 className="label-mono">Preview</h3>
           <BrandPreview
             profile={{
-              ...blank(),
+              dark: d.dark,
               title: title || "Your brand",
               colors: { ...d.colors, primary, primaryForeground: readableOn(primary), background, foreground },
-              fonts: { sans: sans || undefined, heading: heading || undefined },
+              fonts: { ...d.fonts, sans: sans || undefined, heading: heading || undefined },
               radius: d.radius,
-              assets: { icon, logo },
+              assets: { ...d.assets, icon, logo },
             }}
           />
-          {logo && (
-            <div className="grid h-24 place-items-center rounded-lg border p-4" style={{ background }}>
-              {/* eslint-disable-next-line @next/next/no-img-element -- remote brand logo from any host */}
-              <img src={logo} alt="" className="max-h-full max-w-full object-contain" referrerPolicy="no-referrer" />
-            </div>
-          )}
         </aside>
       </div>
     </div>

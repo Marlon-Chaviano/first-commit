@@ -1,5 +1,6 @@
 import { BRAND, buildInitCommand, cliCommand, defaultSelections } from "@kits/schema";
 
+import { brandTemplates, templatePath } from "@/features/brands/templates";
 import { getIndex, getKit } from "@/server/registry";
 import { getStacks } from "@/server/stacks";
 
@@ -25,6 +26,7 @@ export async function GET() {
 - [kit.json reference](${BRAND.siteUrl}/docs/reference)
 - [Library catalog](${BRAND.siteUrl}/docs/libraries)
 - [Keep a project up to date](${BRAND.siteUrl}/docs/maintain): update, add, doctor
+- [Brand template catalog](${BRAND.siteUrl}/brands)
 - [Brand profiles](${BRAND.siteUrl}/docs/brands)
 - [FAQ](${BRAND.siteUrl}/docs/faq)
 
@@ -38,6 +40,10 @@ ${kits
 ## Stacks
 
 ${stacks.map((s) => `- [${s.stack.title}](${BRAND.siteUrl}/stacks/${s.stack.slug}): ${s.stack.description} \`${buildInitCommand(s.kit.name, s.kit, s.selections)}\``).join("\n")}
+
+## Brand templates
+
+${brandTemplates.map((t) => `- [${t.title}](${BRAND.siteUrl}${templatePath(t.id)})`).join("\n")}
 
 ## Optional
 

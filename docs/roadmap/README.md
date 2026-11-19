@@ -14,6 +14,8 @@ Cada archivo es una fase. Se hacen en orden. Las fases 1–7 se desarrollan y pr
 | 8 | [08-despliegue.md](08-despliegue.md) | Cuentas creadas (GitHub, npm, Vercel Hobby, Upstash, Neon, Sentry, dominio; Anthropic opcional), todo en producción y operado: alertas, backups, soporte. |
 | 9 | [09-compartir.md](09-compartir.md) | Cada proyecto, configuración y creador trae visitas: insignia en el README, enlaces cortos con tarjeta, ⌘K, vista previa, remix, comparador de kits y extensión de VS Code / Cursor. |
 
+El [plan de importación desde GitHub](importar-desde-github.md) amplía las fases 1 y 3 en cuatro entregas: selector de repositorios públicos, creación de marcas, creación de kits y acceso a repositorios privados.
+
 ## Cómo usar estos archivos
 
 - Cada fase tiene **Tareas** (checklist) y **Criterios de aceptación**. Una fase está cerrada cuando se cumplen todos los criterios, no cuando se marcan todas las tareas.

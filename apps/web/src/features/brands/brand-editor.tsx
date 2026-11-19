@@ -1,8 +1,8 @@
 "use client";
 
-import { applyDetection, brandLogo, cliCommand, emptyBrandProfile, normalizeBrandProfile, type BrandDetection, type BrandProfile } from "@kits/schema";
+import { applyDetection, brandProfileSchema, cliCommand, emptyBrandProfile, normalizeBrandProfile, type BrandDetection, type BrandProfile } from "@kits/schema";
 import { useRouter } from "next/navigation";
-import { useState, useTransition } from "react";
+import { useMemo, useState, useSyncExternalStore, useTransition } from "react";
 import { toast } from "sonner";
 
 import { Command } from "@/components/shared/command";
@@ -12,8 +12,12 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
+import Link from "next/link";
+
+import { draftStorageKey, logInWithDraft } from "./pending-draft";
 import { saveBrandAction } from "./actions";
 import { BrandAssetsField, BrandLinksField } from "./brand-assets";
+import { BrandPreview } from "./brand-preview";
 import { BrandImporter } from "./brand-importer";
 
 type Colors = BrandProfile["colors"];
@@ -38,7 +42,7 @@ const EMPTY: BrandProfile = { ...emptyBrandProfile(), name: "", title: "" };
  * The full form. `initial` edits a saved profile; `draft` starts a new one prefilled (from the creator's
  * review step), without the importer, since the detection already happened.
  */
-export function BrandEditor({ owners, initial, draft, initialOwner }: { owners: string[]; initial?: BrandProfile; draft?: BrandProfile; initialOwner?: string }) {
+export function BrandEditor({ owners, initial, draft, initialOwner, resumeId }: { owners: string[]; initial?: BrandProfile; draft?: BrandProfile; initialOwner?: string; resumeId?: string }) {
   const router = useRouter();
   const [owner, setOwner] = useState(initialOwner ?? owners[0] ?? "");
   const [p, setP] = useState<BrandProfile>(() => normalizeBrandProfile(initial ?? draft ?? EMPTY));
@@ -48,7 +52,7 @@ export function BrandEditor({ owners, initial, draft, initialOwner }: { owners: 
   const editing = Boolean(initial);
   const set = <K extends keyof BrandProfile>(key: K, value: BrandProfile[K]) => setP((prev) => ({ ...prev, [key]: value }));
   const setColor = (key: keyof Colors, value: string) => setP((prev) => ({ ...prev, colors: { ...prev.colors, [key]: value || undefined } }));
-  const slug = `${owner}/${p.name || "name"}`;
+  const slug = `${owner || "your-handle"}/${p.name || "name"}`;
 
   /** The shared merge rule (brand-draft): detected colors and fonts win, nothing the person set is overwritten. */
   const onDetect = (d: BrandDetection) => {
@@ -64,9 +68,16 @@ export function BrandEditor({ owners, initial, draft, initialOwner }: { owners: 
       const docs = { ...p.docs };
       if (guide.trim()) docs["guide.md"] = guide;
       else delete docs["guide.md"];
-      const profile = { ...p, rules: lines(rules), docs };
-      const r = await saveBrandAction(owner, profile);
-      if (!r.ok) return void toast.error(r.error);
+      const parsed = brandProfileSchema.safeParse({ ...p, rules: lines(rules), docs });
+      if (!parsed.success) return void toast.error(parsed.error.issues[0]?.message ?? "Check the profile fields");
+      const profile = parsed.data;
+      if (!owner && !editing) return logInWithDraft(profile, router.push);
+      const r = await saveBrandAction(owner, profile, editing ? "update" : "create");
+      if (!r.ok) {
+        if (!editing && r.error === "Log in first") return logInWithDraft(profile, router.push);
+        return void toast.error(r.error);
+      }
+      if (resumeId) sessionStorage.removeItem(draftStorageKey(resumeId));
       toast.success("Profile saved");
       if (!editing) router.push(`/brands/${r.data}`);
     });
@@ -178,8 +189,8 @@ export function BrandEditor({ owners, initial, draft, initialOwner }: { owners: 
 
         <BrandLinksField website={p.website} social={p.social} onChange={({ website, social }) => setP((prev) => ({ ...prev, website, social }))} />
 
-        <Button type="submit" disabled={pending || !p.name || !p.title || !owner} className="self-start">
-          {pending ? "Saving…" : editing ? "Save changes" : "Create profile"}
+        <Button type="submit" disabled={pending || !p.name || !p.title} className="self-start">
+          {pending ? "Saving…" : editing ? "Save changes" : owner ? "Create profile" : "Log in to create profile"}
         </Button>
       </form>
       </div>
@@ -199,42 +210,18 @@ export function BrandEditor({ owners, initial, draft, initialOwner }: { owners: 
   );
 }
 
-/** The brand's own colors, so the inline styles are the point here, not raw colors in the site's UI. */
-export function BrandPreview({ profile: p }: { profile: BrandProfile }) {
-  const c = p.colors;
-  const radius = p.radius ?? "0.5rem";
-  const font = p.fonts.sans ? `"${p.fonts.sans}", ui-sans-serif, system-ui` : undefined;
-  return (
-    <div className="flex flex-col gap-3 border p-4" style={{ background: c.background, color: c.foreground, borderRadius: radius, borderColor: c.border, fontFamily: font }}>
-      <div className="flex items-center gap-2.5">
-        {(p.assets?.icon ?? brandLogo(p)) && (
-          // eslint-disable-next-line @next/next/no-img-element -- remote brand assets from any host
-          <img src={p.assets?.icon ?? brandLogo(p)} alt="" className="size-6 shrink-0 object-contain" referrerPolicy="no-referrer" />
-        )}
-        <p className="font-semibold" style={{ fontFamily: p.fonts.heading ? `"${p.fonts.heading}", ui-sans-serif` : font }}>
-          {p.title || "Your brand"}
-        </p>
-      </div>
-      <p className="text-sm opacity-80">This is how buttons, cards and text will look in your projects.</p>
-      <div className="flex flex-wrap gap-2">
-        <span className="px-3 py-1.5 text-sm" style={{ background: c.primary, color: c.primaryForeground ?? c.background, borderRadius: radius }}>
-          Primary
-        </span>
-        {c.secondary && (
-          <span className="px-3 py-1.5 text-sm" style={{ background: c.secondary, color: c.foreground, borderRadius: radius }}>
-            Secondary
-          </span>
-        )}
-        <span className="border px-3 py-1.5 text-sm" style={{ borderColor: c.border ?? c.foreground, borderRadius: radius }}>
-          Outline
-        </span>
-      </div>
-      {c.muted && (
-        <div className="p-3 text-xs" style={{ background: c.muted, borderRadius: radius }}>
-          Card with a soft background
-        </div>
-      )}
-      {c.danger && <p className="text-xs" style={{ color: c.danger }}>Error message</p>}
-    </div>
-  );
+const subscribe = () => () => {};
+
+/** A fresh page after login restores only the draft whose key was carried through the callback. */
+export function ResumeBrandDraft({ owners, id }: { owners: string[]; id: string }) {
+  const raw = useSyncExternalStore(subscribe, () => {
+    try { return sessionStorage.getItem(draftStorageKey(id)); } catch { return null; }
+  }, () => undefined);
+  const profile = useMemo(() => {
+    if (!raw) return null;
+    try { return brandProfileSchema.safeParse(JSON.parse(raw)).data; } catch { return null; }
+  }, [raw]);
+  if (raw === undefined) return <p role="status">Loading your draft…</p>;
+  if (!profile) return <p>This draft is unavailable in this tab. <Link className="underline" href="/brands/new">Start a new brand</Link></p>;
+  return <BrandEditor owners={owners} draft={profile} resumeId={id} />;
 }

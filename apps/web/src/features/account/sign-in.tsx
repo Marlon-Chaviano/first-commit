@@ -2,7 +2,6 @@
 
 import { ChevronRightIcon, LoaderCircleIcon } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useState, useSyncExternalStore } from "react";
 
 import { TechIcon } from "@/components/shared/tech-icon";
@@ -15,7 +14,6 @@ import { authClient } from "@/lib/auth-client";
 type Provider = "github" | "google";
 
 export function SignIn({ github, google, dev, next = "/account", initialError }: { github: boolean; google: boolean; dev: boolean; next?: string; initialError?: string }) {
-  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(initialError ?? null);
@@ -42,8 +40,8 @@ export function SignIn({ github, google, dev, next = "/account", initialError }:
     const result = signedIn.error ? await authClient.signUp.email({ email, password, name: email.split("@")[0]! }) : signedIn;
     setPending(null);
     if (result.error) return setError(result.error.message ?? "Couldn't log in");
-    router.push(next);
-    router.refresh();
+    // Read the new session on a fresh request, including when the editor previously redirected here.
+    window.location.assign(next);
   }
 
   const providers: { id: Provider; label: string; enabled: boolean; variant: "default" | "outline" }[] = [

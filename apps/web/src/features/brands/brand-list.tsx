@@ -9,7 +9,7 @@ import { AgentSetup } from "@/features/agent-help/agent-setup";
 import { listBrands } from "@/server/brands";
 import type { TokenUser } from "@/server/tokens";
 
-import { BrandPreview } from "./brand-editor";
+import { BrandPreview } from "./brand-preview";
 
 /** The viewer's brand profiles with the "New" button, the empty state and Agent setup. Shared by /brands and the account tab. */
 export async function MyBrands({ viewer }: { viewer: TokenUser }) {
@@ -19,9 +19,11 @@ export async function MyBrands({ viewer }: { viewer: TokenUser }) {
       <TabHeader
         title="Brand profiles"
         description="A client's or your company's colors, fonts, logo, interface rules and documentation. Apply it to any kit and every new project starts with its identity."
-        newHref={brands.length ? "/brands/new" : undefined}
+        newHref="/brands/new"
+        action={<AgentSetup tasks={["brand"]} className="max-sm:[&>span[aria-hidden]]:hidden" />}
         newLabel="New brand profile"
       />
+      <Link href="/brands#templates" className="w-fit text-sm underline underline-offset-4">Browse brand templates</Link>
       <BrandsBody brands={brands} />
     </>
   );
@@ -29,25 +31,19 @@ export async function MyBrands({ viewer }: { viewer: TokenUser }) {
 
 type Brands = Awaited<ReturnType<typeof listBrands>>;
 
-/** The list (or the empty state) and Agent setup, for pages that draw their own header. */
 export function BrandsBody({ brands }: { brands: Brands }) {
-  return (
-    <>
-      {brands.length ? <BrandList brands={brands} /> : <NoBrands />}
-      <AgentSetup tasks={["brand"]} className="w-fit" />
-    </>
-  );
+  return brands.length ? <BrandList brands={brands} /> : <NoBrands />;
 }
 
 function NoBrands() {
   return (
-      <Empty className="border">
-        <EmptyHeader>
-          <EmptyTitle>No brand profiles yet</EmptyTitle>
-          <EmptyDescription>Create one per client: then just add --brand when creating each project.</EmptyDescription>
-        </EmptyHeader>
-        <Button nativeButton={false} render={<Link href="/brands/new" />}>Create the first one</Button>
-      </Empty>
+    <Empty className="border">
+      <EmptyHeader>
+        <EmptyTitle>No brand profiles yet</EmptyTitle>
+        <EmptyDescription>Create one per client: then just add --brand when creating each project.</EmptyDescription>
+      </EmptyHeader>
+      <Button nativeButton={false} render={<Link href="/brands/new" />}>Create the first one</Button>
+    </Empty>
   );
 }
 
@@ -57,18 +53,23 @@ function BrandList({ brands }: { brands: Brands }) {
       <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         {brands.map((b) => {
           const profile = brandProfileSchema.safeParse(b.profile);
+          const href = `/brands/${b.slug}` as const;
+          const edit = <Button variant="outline" size="sm" nativeButton={false} render={<Link href={href} aria-label={`Edit ${b.slug}`} />}>Edit</Button>;
           return (
-            <li key={b.id} className="flex flex-col gap-3 rounded-xl border p-4">
-              <div className="flex items-center justify-between gap-3">
-                <Link href={`/brands/${b.slug}`} className="truncate font-mono text-sm font-medium hover:underline">
-                  {b.slug}
-                </Link>
-                <Button variant="ghost" size="sm" nativeButton={false} render={<Link href={`/brands/${b.slug}`} />}>
-                  Edit
-                </Button>
-              </div>
-              {profile.success && <BrandPreview profile={profile.data} />}
-              <Command command={cliCommand(`brand ${b.slug}`)} />
+            <li key={b.id} className="min-w-0">
+              {profile.success ? (
+                <BrandPreview
+                  profile={profile.data}
+                  action={edit}
+                  footer={<Command command={cliCommand(`brand ${b.slug}`)} wrap />}
+                />
+              ) : (
+                <div className="flex flex-wrap items-center justify-between gap-2 rounded-xl border bg-card p-3">
+                  <p className="text-sm">{b.slug}</p>
+                  {edit}
+                  <p className="w-full text-xs text-destructive">This profile’s preview is unavailable.</p>
+                </div>
+              )}
             </li>
           );
         })}
@@ -76,4 +77,3 @@ function BrandList({ brands }: { brands: Brands }) {
     </section>
   );
 }
-

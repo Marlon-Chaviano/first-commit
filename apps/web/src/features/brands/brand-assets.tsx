@@ -45,8 +45,7 @@ function AssetSlot({ kind, value, onChange }: { kind: BrandAssetKind; value?: st
   const uploaded = value?.startsWith("data:");
   return (
     <li className="flex gap-3 rounded-lg border p-3">
-      {/* Checkered-free neutral tile; dark logos get a dark tile so they stay visible. */}
-      <div className={`grid size-16 shrink-0 place-items-center overflow-hidden rounded-md border ${kind === "logoDark" ? "bg-foreground" : "bg-background"}`}>
+      <div className="grid size-16 shrink-0 place-items-center">
         {value && !broken ? (
           // eslint-disable-next-line @next/next/no-img-element -- remote brand assets from any host
           <img src={value} alt="" className="max-h-full max-w-full object-contain p-1.5" referrerPolicy="no-referrer" onError={() => setBroken(true)} onLoad={() => setBroken(false)} />

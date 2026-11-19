@@ -23,8 +23,8 @@ export default function BrandPage({ params }: PageProps<"/brands/[...slug]">) {
 
 async function Editor({ slug: slugPromise }: { slug: Promise<string> }) {
   const viewer = await getViewer();
-  if (!viewer) redirect("/login?next=/brands");
   const slug = await slugPromise;
+  if (!viewer) redirect("/login?next=" + encodeURIComponent("/brands/" + slug));
   const found = await getBrand(slug, viewer);
   if (!found) notFound();
   return (
