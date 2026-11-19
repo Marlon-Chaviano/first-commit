@@ -56,7 +56,7 @@ async function BrandDirectory({ catalog, publicView }: { catalog: ReactNode; pub
     <Tabs defaultValue="all" className="gap-5">
       <div className="flex flex-wrap items-center justify-between gap-x-5 gap-y-3">
         <TabsList variant="line" aria-label="Brand catalogs">
-          <TabsTrigger value="all">Todas</TabsTrigger>
+          <TabsTrigger value="all">All</TabsTrigger>
           <TabsTrigger value="mine">My brands</TabsTrigger>
         </TabsList>
         <BrandActions signedIn />
