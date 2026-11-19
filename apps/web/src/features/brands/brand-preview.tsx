@@ -4,7 +4,7 @@ import type { BrandAssetKind, BrandPalette, BrandProfile } from "@kits/schema";
 import { CircleAlertIcon, ImageOffIcon } from "lucide-react";
 import { useState, type ReactNode } from "react";
 
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
 type Preview = Pick<BrandProfile, "title" | "colors" | "dark" | "fonts" | "radius" | "logo"> & {
@@ -73,7 +73,7 @@ function Palette({ colors, radius, className }: { colors: BrandPalette; radius?:
 }
 
 /** The page theme controls the canvas. Only the specimens use the profile's own colors. */
-export function BrandPreview({ profile, action, footer }: { profile: Preview; action?: ReactNode; footer?: ReactNode }) {
+export function BrandPreview({ profile, action, showAssets = true }: { profile: Preview; action?: ReactNode; showAssets?: boolean }) {
   const { title, colors, dark, fonts, radius } = profile;
   const assets = { ...profile.assets, logo: profile.assets?.logo ?? profile.logo };
   const kinds = (Object.keys(assetLabels) as BrandAssetKind[]).filter((kind) => assets[kind]);
@@ -96,7 +96,7 @@ export function BrandPreview({ profile, action, footer }: { profile: Preview; ac
           </div>
           {action}
         </div>
-        {rest.length > 0 && (
+        {showAssets && rest.length > 0 && (
           <ul aria-label="Brand assets" className="flex flex-wrap gap-x-3 gap-y-2">
             {rest.map((kind) => (
               <li key={kind} className="flex flex-col gap-1 text-[11px] text-muted-foreground">
@@ -115,7 +115,6 @@ export function BrandPreview({ profile, action, footer }: { profile: Preview; ac
         <Palette colors={colors} radius={radius} className={dark ? "hidden [.light_&]:block" : undefined} />
         {dark && <Palette colors={{ ...colors, ...dark }} radius={radius} className="[.light_&]:hidden" />}
       </CardContent>
-      {footer && <CardFooter className="mt-3 block">{footer}</CardFooter>}
     </Card>
   );
 }

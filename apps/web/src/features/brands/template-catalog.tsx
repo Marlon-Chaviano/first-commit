@@ -1,14 +1,13 @@
 "use client";
 
-import { ArrowUpRightIcon, ChevronDownIcon, SearchIcon } from "lucide-react";
-import Link from "next/link";
+import { ChevronDownIcon, SearchIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import { CATALOG_PAGE_SIZE } from "@/lib/catalog-page";
 import { Button } from "@/components/ui/button";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 
-import { BrandPreview } from "./brand-preview";
+import { BrandCard } from "./brand-card";
 import { BrandSkeletons } from "./brand-skeletons";
 import type { BrandTemplatePage } from "./templates";
 
@@ -78,13 +77,8 @@ function CatalogResults({ query, initial, clearSearch }: ResultsProps) {
       <ul aria-busy={requestedPage !== null} className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {results?.items.map(({ id, href, title, colors, fonts, radius }) => (
           <li key={id}>
-            <Link href={href} prefetch={false} aria-label={`View ${title} template`}
-              className="group block h-full rounded-xl hover:ring-1 hover:ring-foreground/40 focus-visible:outline-2 focus-visible:outline-ring">
-              <BrandPreview
-                profile={{ title, colors, fonts, radius, assets: { logo: `/brand-templates/${id}.svg` } }}
-                action={<ArrowUpRightIcon aria-hidden="true" className="size-4 text-muted-foreground group-hover:text-foreground" />}
-              />
-            </Link>
+            <BrandCard href={href} label={`View ${title} template`}
+              profile={{ title, colors, fonts, radius, assets: { logo: `/brand-templates/${id}.svg` } }} />
           </li>
         ))}
         {requestedPage !== null && <BrandSkeletons count={results ? Math.min(CATALOG_PAGE_SIZE, remaining) : CATALOG_PAGE_SIZE} />}

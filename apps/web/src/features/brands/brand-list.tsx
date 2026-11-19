@@ -1,7 +1,6 @@
-import { brandProfileSchema, cliCommand } from "@kits/schema";
+import { brandProfileSchema } from "@kits/schema";
 import Link from "next/link";
 
-import { Command } from "@/components/shared/command";
 import { Button } from "@/components/ui/button";
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from "@/components/ui/empty";
 import { TabHeader } from "@/features/account/tab-header";
@@ -9,7 +8,7 @@ import { AgentSetup } from "@/features/agent-help/agent-setup";
 import { listBrands } from "@/server/brands";
 import type { TokenUser } from "@/server/tokens";
 
-import { BrandPreview } from "./brand-preview";
+import { BrandCard } from "./brand-card";
 
 /** The viewer's brand profiles with the "New" button, the empty state and Agent setup. Shared by /brands and the account tab. */
 export async function MyBrands({ viewer }: { viewer: TokenUser }) {
@@ -50,23 +49,25 @@ function NoBrands() {
 function BrandList({ brands }: { brands: Brands }) {
   return (
     <section className="flex flex-col gap-4">
-      <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+      <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {brands.map((b) => {
           const profile = brandProfileSchema.safeParse(b.profile);
           const href = `/brands/${b.slug}` as const;
-          const edit = <Button variant="outline" size="sm" nativeButton={false} render={<Link href={href} aria-label={`Edit ${b.slug}`} />}>Edit</Button>;
           return (
             <li key={b.id} className="min-w-0">
               {profile.success ? (
-                <BrandPreview
-                  profile={profile.data}
-                  action={edit}
-                  footer={<Command command={cliCommand(`brand ${b.slug}`)} wrap />}
-                />
+                <BrandCard href={href} label={`Edit ${b.slug}`} profile={{
+                  title: profile.data.title, colors: profile.data.colors, dark: profile.data.dark,
+                  fonts: profile.data.fonts, radius: profile.data.radius,
+                  assets: {
+                    logo: profile.data.assets.logo ?? profile.data.logo ?? profile.data.assets.icon ?? profile.data.assets.appleTouchIcon,
+                    logoDark: profile.data.assets.logoDark,
+                  },
+                }} />
               ) : (
                 <div className="flex flex-wrap items-center justify-between gap-2 rounded-xl border bg-card p-3">
                   <p className="text-sm">{b.slug}</p>
-                  {edit}
+                  <Button variant="outline" size="sm" nativeButton={false} render={<Link href={href} aria-label={`Edit ${b.slug}`} />}>Edit</Button>
                   <p className="w-full text-xs text-destructive">This profile’s preview is unavailable.</p>
                 </div>
               )}
