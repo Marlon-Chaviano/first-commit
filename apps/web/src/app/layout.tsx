@@ -7,9 +7,9 @@ import { Suspense } from "react";
 
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
+import { StarPrompt } from "@/components/layout/star-prompt";
 import { ThemeProvider } from "@/components/layout/theme";
 import { Toaster } from "@/components/ui/sonner";
-import { OnboardingGuide } from "@/features/onboarding/onboarding-guide";
 import { TooltipProvider } from "@/components/ui/tooltip";
 
 import "./globals.css";
@@ -47,7 +47,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             <Toaster />
             {/* It reads the pathname: under Suspense so dynamic routes still prerender. */}
             <Suspense fallback={null}>
-              <OnboardingGuide />
+              <StarPrompt />
             </Suspense>
           </TooltipProvider>
         </ThemeProvider>

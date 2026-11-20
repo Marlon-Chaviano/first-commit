@@ -4,7 +4,6 @@ import { CheckIcon, CopyIcon } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
-import { markStep } from "@/features/onboarding/progress";
 import { pixelBurst } from "@/lib/pixel-burst";
 
 import { Button } from "@/components/ui/button";
@@ -30,8 +29,6 @@ export function CopyButton({ text, label = "Copy", stretch = false }: { text: st
         }
         setCopied(true);
         pixelBurst(button);
-        // Copying an install command completes the first-visit guide.
-        if (text.startsWith("npx ")) markStep("copy");
         // The icon turns into a check and a toast says it out loud (also for screen readers).
         toast.success("Copied to your clipboard");
         setTimeout(() => setCopied(false), 1500);
