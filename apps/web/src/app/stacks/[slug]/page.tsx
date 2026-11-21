@@ -83,7 +83,7 @@ async function StackContent({ slug }: { slug: Promise<string> }) {
 
       <header className="mt-8 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
         <div className="flex flex-col gap-5">
-          <StackLogos keys={stackLogoKeys(kit.tags, stack.options)} max={5} size="lg" />
+          <StackLogos keys={stackLogoKeys(kit, stack.options)} max={5} size="lg" />
           <h1 className="text-3xl font-semibold tracking-tight text-balance sm:text-4xl">{stack.title}</h1>
           <p className="max-w-2xl text-lg text-pretty text-muted-foreground">{stack.description}</p>
         </div>
@@ -235,7 +235,7 @@ async function StackContent({ slug }: { slug: Promise<string> }) {
                   kit={p.kit.name}
                   installs={p.installs}
                   popular={p.popular}
-                  logoKeys={stackLogoKeys(p.kit.tags, p.stack.options)}
+                  logoKeys={stackLogoKeys(p.kit, p.stack.options)}
                 />
               </li>
             ))}

@@ -853,9 +853,9 @@
       "posthog-node"
     ],
     "skills": [
-      "posthog/ai-plugin@instrument-product-analytics",
-      "posthog/ai-plugin@instrument-feature-flags",
-      "posthog/ai-plugin@instrument-error-tracking"
+      "PostHog/skills@instrument-product-analytics",
+      "PostHog/skills@instrument-feature-flags",
+      "PostHog/skills@instrument-error-tracking"
     ],
     "env": {
       "NEXT_PUBLIC_POSTHOG_KEY": "",
@@ -895,9 +895,9 @@
       "expo-localization"
     ],
     "skills": [
-      "posthog/ai-plugin@instrument-product-analytics",
-      "posthog/ai-plugin@instrument-feature-flags",
-      "posthog/ai-plugin@instrument-error-tracking"
+      "PostHog/skills@instrument-product-analytics",
+      "PostHog/skills@instrument-feature-flags",
+      "PostHog/skills@instrument-error-tracking"
     ],
     "env": {
       "EXPO_PUBLIC_POSTHOG_KEY": "",
@@ -930,9 +930,9 @@
       "posthog-node"
     ],
     "skills": [
-      "posthog/ai-plugin@instrument-product-analytics",
-      "posthog/ai-plugin@instrument-feature-flags",
-      "posthog/ai-plugin@instrument-error-tracking"
+      "PostHog/skills@instrument-product-analytics",
+      "PostHog/skills@instrument-feature-flags",
+      "PostHog/skills@instrument-error-tracking"
     ],
     "env": {
       "POSTHOG_KEY": "",
@@ -1133,7 +1133,7 @@
     "skills": [
       "stripe/ai@stripe-best-practices",
       "stripe/ai@stripe-docs",
-      "stripe/ai@upgrade-stripe"
+      "stripe/ai@stripe-implementation-planner"
     ],
     "mcp": {
       "stripe": {
@@ -5615,5 +5615,51 @@
     "url": "https://laravel.com/docs/12.x/pint",
     "description": "Laravel formatter included by the official application template.",
     "usage": "Run ./vendor/bin/pint --test in CI and ./vendor/bin/pint to format locally. The Laravel template already includes laravel/pint as a development dependency; do not install a second formatter."
+  },
+  {
+    "id": "openapi-contract",
+    "name": "OpenAPI contract",
+    "kind": "quality",
+    "frameworks": [
+      "any"
+    ],
+    "requiredPlatform": "http-api",
+    "url": "https://spec.openapis.org/oas/v3.1.1.html",
+    "description": "Start a design-first OpenAPI document and validate changes with Redocly CLI.",
+    "usage": "Describe endpoints in api/openapi.json before implementing them. From the service directory, validate the contract with `npx --yes @redocly/cli@2 lint --extends spec api/openapi.json`.",
+    "writeFiles": [
+      {
+        "path": "api/openapi.json",
+        "content": "{\n  \"openapi\": \"3.1.1\",\n  \"info\": {\n    \"title\": \"{{name}} API\",\n    \"version\": \"1.0.0\"\n  },\n  \"paths\": {}\n}\n"
+      }
+    ]
+  },
+  {
+    "id": "nestjs-swagger",
+    "name": "NestJS Swagger UI",
+    "kind": "quality",
+    "frameworks": [
+      "nodejs"
+    ],
+    "requiredPlatform": "nestjs",
+    "url": "https://docs.nestjs.com/openapi/introduction",
+    "description": "Generate interactive API documentation and an OpenAPI JSON document from NestJS controllers.",
+    "usage": "Run the API and open /docs for Swagger UI or /docs-json for its contract. Document request and response DTOs using @nestjs/swagger decorators.",
+    "dependencies": [
+      "@nestjs/swagger@^12.1.2"
+    ],
+    "writeFiles": [
+      {
+        "path": "src/main.ts",
+        "mode": "prepend",
+        "content": "import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';\n"
+      },
+      {
+        "path": "src/main.ts",
+        "mode": "insert-before",
+        "anchor": "  await app.listen(",
+        "content": "  const config = new DocumentBuilder().setTitle('{{name}} API').setVersion('1.0').build();\n  SwaggerModule.setup('docs', app, () => SwaggerModule.createDocument(app, config));\n"
+      }
+    ]
   }
 ]

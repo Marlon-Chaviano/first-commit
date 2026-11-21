@@ -1,7 +1,7 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "ai-agent-python",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "author": "marlon-chaviano",
   "title": "AI agent with Python and LangGraph",
   "description": "A tool-using AI agent in Python with LangChain v1 and LangGraph: typed tools, any model provider, the LangGraph dev server and tests that don't spend tokens.",
@@ -65,15 +65,7 @@
     ".venv/bin/pip freeze > requirements.txt"
   ],
   "skills": [
-    "langchain-ai/langchain-skills@langchain-fundamentals",
-    "langchain-ai/langchain-skills@langchain-dependencies",
-    "langchain-ai/langchain-skills@langchain-middleware",
-    "langchain-ai/langchain-skills@langchain-rag",
-    "langchain-ai/langchain-skills@langgraph-fundamentals",
-    "langchain-ai/langchain-skills@langgraph-persistence",
-    "langchain-ai/langchain-skills@langgraph-human-in-the-loop",
-    "langchain-ai/langchain-skills@langgraph-cli",
-    "langchain-ai/langchain-skills@langgraph-python-quickstart",
+    "langchain-ai/langchain-skills@langchain-build-agent",
     "anthropics/skills@claude-api",
     "trailofbits/skills@modern-python",
     "wshobson/agents@python-code-style",

@@ -1,7 +1,7 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "api-aspnet",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "author": "marlon-chaviano",
   "title": "API with ASP.NET Core",
   "description": "A minimal API with ASP.NET Core and C# (.NET 10): OpenAPI, a solution with a test project and integration tests with WebApplicationFactory.",
@@ -68,7 +68,10 @@
     "forms": [],
     "email": "none",
     "i18n": "none",
-    "testing": []
+    "testing": [],
+    "platforms": [
+      "http-api"
+    ]
   },
   "verify": {
     "command": "dotnet build && dotnet test",

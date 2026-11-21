@@ -74,7 +74,7 @@ export default async function StacksPage() {
                     kit={kit.name}
                     installs={installs}
                     popular={popular}
-                    logoKeys={stackLogoKeys(kit.tags, stack.options)}
+                    logoKeys={stackLogoKeys(kit, stack.options)}
                   />
                 </li>
               ))}

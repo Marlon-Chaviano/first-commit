@@ -1,5 +1,15 @@
 [
   {
+    "id": "nextjs-nestjs-backends",
+    "date": "2026-11-20",
+    "notify": false,
+    "title": "Next.js + NestJS and customizable API kits",
+    "items": [
+      "Pair Next.js with a NestJS API in a monorepo, or start with NestJS on its own. Both install the official NestJS agent skills and support Swagger UI.",
+      "All 13 backend kits now offer a customizable starter stack and an optional OpenAPI contract."
+    ]
+  },
+  {
     "id": "public-brand-templates",
     "date": "2026-11-19",
     "title": "180 brand templates to start from",

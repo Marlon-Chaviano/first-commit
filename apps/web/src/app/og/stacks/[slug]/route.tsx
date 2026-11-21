@@ -14,7 +14,7 @@ export async function GET(_request: Request, { params }: RouteContext<"/og/stack
     eyebrow: "Stack",
     title: stack.title,
     description: stack.description,
-    logos: stackLogoKeys(kit.tags, selections.options),
+    logos: stackLogoKeys(kit, selections.options),
     command: buildInitCommand(kit.name, kit, selections).replace("@latest", ""),
     facts: [`${resolved.skills.length} skills`, ...(Object.keys(resolved.mcp).length ? [`${Object.keys(resolved.mcp).length} MCP`] : [])],
   });

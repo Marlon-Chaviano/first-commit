@@ -40,7 +40,7 @@ export default async function LibrariesDocs() {
                   </div>
                   <div className="flex flex-wrap items-center gap-1.5 sm:max-w-1/2 sm:justify-end">
                     <code className="font-mono text-xs text-muted-foreground">{lib.id}</code>
-                    {lib.frameworks.map((f) => (
+                    {(lib.requiredPlatform ? [lib.requiredPlatform] : lib.frameworks).map((f) => (
                       <Badge key={f} variant="outline" className="font-mono">
                         {f}
                       </Badge>

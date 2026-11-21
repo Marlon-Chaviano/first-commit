@@ -30,6 +30,7 @@ El catálogo (`registry/libraries.json`) es compartido: una biblioteca aparece e
    | `kind` | Categoría de `packages/schema/src/categories.ts`, incluidos los packs `design`, `security` y `workflow`. |
    | `frameworks` | Dónde funciona. Si la configuración cambia por plataforma (Sentry en Next.js y en Node), crea una entrada por variante. |
    | `excludeFrameworks` | Plataformas incompatibles aunque coincida el renderer: una app Electron con React no debe recibir hosting de sitios estáticos. |
+   | `requiredPlatform` | Capacidad que también debe declarar el kit en `libraries.platforms`. Por ejemplo, `http-api` habilita contratos OpenAPI y `nestjs` habilita la integración de Swagger para sus controladores. |
    | `usage` | Regla para el agente en `AGENTS.md`: cómo se usa y qué no hacer. |
    | `dependencies`, `devDependencies` | Paquetes. |
    | `writeFiles` | Archivos de configuración. `mode`: `create`, `append`, `prepend`, `insert-before` (con `anchor`) o `json-merge` (scripts de `package.json`). Admite `{{name}}`, `{{pm}}` y `{{pmx}}`. |

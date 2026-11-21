@@ -3,6 +3,17 @@ import { expect, type Page, test } from "@playwright/test";
 /** The install command shown next to the configurator. */
 const command = (page: Page) => page.locator("code", { hasText: "create-first-commit@latest" }).first();
 
+test("the Next.js and NestJS stack opens with editable service options", async ({ page }) => {
+  await page.goto("/stacks/nextjs-nestjs");
+  await page.getByRole("button", { name: "Customize", exact: true }).click();
+  await expect(command(page)).toContainText("--api nestjs");
+  await expect(command(page)).toContainText("--api.nestjs.quality nestjs-swagger");
+  await page.getByRole("button", { name: "Api · nestjs", exact: true }).click();
+  await page.getByRole("button", { name: "NestJS Swagger UI", exact: true }).click();
+  await page.getByRole("button", { name: "OpenAPI contract", exact: true }).click();
+  await expect(command(page)).toContainText("--api.nestjs.quality openapi-contract");
+});
+
 test("changing an option changes the install command", async ({ page }) => {
   await page.goto("/kits/landing-next");
   await expect(command(page)).toContainText("landing-next");

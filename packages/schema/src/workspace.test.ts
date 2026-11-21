@@ -1,15 +1,32 @@
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
-import { registrySource } from "./node/registry";
+import { loadRegistryKits, registrySource } from "./node/registry";
 import { loadKitFrom } from "./load";
 import { defaultSelections, resolve, initArgs, validateSelections } from "./resolve";
 import { selectionsFrom } from "./selections";
 import { buildPlan } from "./plan";
 import { selectedServices, workspaceChoices } from "./workspace";
 
-const source = registrySource(fileURLToPath(new URL("../../../registry", import.meta.url)));
+const registryDir = fileURLToPath(new URL("../../../registry", import.meta.url));
+const source = registrySource(registryDir);
 const kit = await loadKitFrom(await source.read("monorepo"), source, { admit: true });
+const workspaces = (await loadRegistryKits(registryDir)).filter((preset) => preset.workspace);
 describe("workspace composition", () => {
+  it.each(workspaces)("$name offers Next.js with Swagger inside the NestJS service and installs its skills once", (preset) => {
+    const sel = selectionsFrom(preset, {
+      options: { web: ["nextjs"], api: ["nestjs"], "api.nestjs.quality": ["nestjs-swagger"] },
+      agents: ["codex"],
+    }, { requirements: "throw" }).selections;
+    const plan = buildPlan({ kit: preset, kitDir: "", sel, parentDir: "/tmp", name: "demo", git: false });
+    const runs = plan.filter((s) => s.kind === "run");
+    const skills = runs.filter((s) => s.command.includes("skills@latest add nestjs/agent-skills"));
+    expect(skills).toHaveLength(1);
+    expect(skills[0]).toMatchObject({ cwd: "/tmp/demo", command: expect.stringContaining("--agent codex") });
+    expect(skills[0]!.command).toContain("nestjs-production");
+    expect(runs.filter((s) => s.command.includes("@nestjs/swagger")).map((s) => s.cwd)).toEqual(["/tmp/demo/apps/api"]);
+    const webPath = preset.workspace!.services.web!.path;
+    expect(plan.some((s) => s.kind === "write" && s.path === `/tmp/demo/${webPath}/api-client.js`)).toBe(true);
+  });
   it("reuses standalone libraries while isolating package managers and dependencies", () => {
     const sel = selectionsFrom(kit, { options: { "web.nextjs.components": ["shadcn"], "api.fastapi.database": ["sqlmodel"] } }, { requirements: "throw" }).selections;
     const services = selectedServices(kit, sel);

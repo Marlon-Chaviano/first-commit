@@ -18,6 +18,14 @@ const recommend = (description: string) => {
 };
 
 describe("recommendHeuristic", () => {
+  it("distinguishes a NestJS API from a Next.js frontend with a NestJS backend", () => {
+    expect(recommend("Una API con Nest.js").kit).toBe("api-nestjs");
+    const both = recommend("Frontend Next.js y backend Nest.js con Swagger");
+    expect(both.kit).toBe("monorepo");
+    expect(both.options.web).toEqual(["nextjs"]);
+    expect(both.options.api).toEqual(["nestjs"]);
+    expect(both.options["api.nestjs.quality"]).toContain("nestjs-swagger");
+  });
   it.each([
     ["A landing page to launch my app, with animations and analytics", "landing-next"],
     ["Recipes mobile app for iOS and Android with login", "mobile-expo"],

@@ -1,5 +1,19 @@
 [
   {
+    "slug": "nextjs-nestjs",
+    "kit": "monorepo",
+    "options": {
+      "api": [
+        "nestjs"
+      ],
+      "api.nestjs.quality": [
+        "nestjs-swagger"
+      ]
+    },
+    "title": "Next.js + NestJS",
+    "description": "A Next.js frontend connected to a separate NestJS API with interactive Swagger documentation. Configure each service independently."
+  },
+  {
     "slug": "nextjs-supabase-stripe",
     "kit": "saas-next-supabase",
     "options": {
@@ -199,5 +213,145 @@
     },
     "title": "Extension with Vue and PrimeVue",
     "description": "An extension for Chrome, Firefox and Edge with Vue and PrimeVue components."
+  },
+  {
+    "slug": "nestjs-swagger",
+    "kit": "api-nestjs",
+    "options": {
+      "quality": [
+        "nestjs-swagger"
+      ]
+    },
+    "title": "NestJS + Swagger UI",
+    "description": "Explore controller routes at /docs and use /docs-json to generate typed clients."
+  },
+  {
+    "slug": "django-postgres-pytest",
+    "kit": "api-django",
+    "options": {
+      "database": [
+        "django-postgres"
+      ],
+      "testing": [
+        "pytest-django"
+      ],
+      "quality": [
+        "ruff"
+      ]
+    },
+    "title": "Django + PostgreSQL + pytest",
+    "description": "Use PostgreSQL for persistence and pytest-django for endpoint tests."
+  },
+  {
+    "slug": "aspnet-efcore-sqlite",
+    "kit": "api-aspnet",
+    "options": {
+      "database": [
+        "efcore-sqlite"
+      ],
+      "forms": [
+        "fluentvalidation"
+      ]
+    },
+    "title": "ASP.NET Core + EF Core + SQLite",
+    "description": "Start with a local SQLite database and validate request models with FluentValidation."
+  },
+  {
+    "slug": "axum-sqlx-proptest",
+    "kit": "api-axum",
+    "options": {
+      "database": [
+        "sqlx-rust"
+      ],
+      "testing": [
+        "proptest"
+      ]
+    },
+    "title": "Axum + SQLx + Proptest",
+    "description": "Use SQLx for database access and property-based tests for Rust domain logic."
+  },
+  {
+    "slug": "elysia-drizzle-bun",
+    "kit": "api-elysia",
+    "options": {
+      "database": [
+        "drizzle-bun"
+      ],
+      "testing": [
+        "bun-test"
+      ]
+    },
+    "title": "Elysia + Drizzle + Bun test",
+    "description": "Build a Bun API with Drizzle and run tests with the built-in test runner."
+  },
+  {
+    "slug": "express-sentry",
+    "kit": "api-express",
+    "options": {
+      "observability": [
+        "sentry-node"
+      ],
+      "ci": [
+        "github-actions"
+      ]
+    },
+    "title": "Express + Sentry",
+    "description": "Track errors in an Express API and run checks in GitHub Actions."
+  },
+  {
+    "slug": "fastify-resend",
+    "kit": "api-fastify",
+    "options": {
+      "email": [
+        "resend"
+      ],
+      "ci": [
+        "github-actions"
+      ]
+    },
+    "title": "Fastify + Resend",
+    "description": "Add transactional email to a Fastify service and run checks in GitHub Actions."
+  },
+  {
+    "slug": "laravel-eloquent-pest",
+    "kit": "api-laravel",
+    "options": {
+      "database": [
+        "laravel-eloquent"
+      ],
+      "testing": [
+        "pest"
+      ]
+    },
+    "title": "Laravel + Eloquent + Pest",
+    "description": "Manage persistence with Eloquent and exercise API endpoints with Pest."
+  },
+  {
+    "slug": "rails-postgres-rspec",
+    "kit": "api-rails",
+    "options": {
+      "database": [
+        "rails-postgres"
+      ],
+      "testing": [
+        "rspec-rails"
+      ]
+    },
+    "title": "Rails API + PostgreSQL + RSpec",
+    "description": "Build a Rails API on PostgreSQL with request specs in RSpec."
+  },
+  {
+    "slug": "spring-data-jpa-security",
+    "kit": "api-spring-boot",
+    "options": {
+      "database": [
+        "spring-data-jpa"
+      ],
+      "auth": [
+        "spring-security"
+      ]
+    },
+    "title": "Spring Boot + JPA + Spring Security",
+    "description": "Use Spring Data repositories for persistence and Spring Security for access control."
   }
 ]

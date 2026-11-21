@@ -1,12 +1,12 @@
 {
   "$schema": "../../kit.schema.json",
-  "version": "1.1.4",
+  "version": "1.2.0",
   "author": "marlon-chaviano",
   "name": "api-nestjs",
   "title": "API with NestJS",
   "category": "api",
   "language": "typescript",
-  "description": "An API with NestJS: modules, controllers and dependency injection, validation, tests with Jest and an architecture that holds up for large teams.",
+  "description": "A TypeScript API with NestJS modules, controllers and Jest. Choose authentication, storage and API documentation, and install the official NestJS agent skills.",
   "tags": [
     "nestjs",
     "api",
@@ -14,7 +14,7 @@
     "node"
   ],
   "base": {
-    "command": "npx -y @nestjs/cli@latest new {{name}} --package-manager {{pm}} --skip-git --skip-install --strict",
+    "command": "npx -y @nestjs/cli@12 new {{name}} --package-manager {{pm}} --type cjs --no-observe --skip-skills --no-interactive --skip-git --skip-install --strict",
     "install": "{{pm}} install"
   },
   "packageManagers": [
@@ -40,11 +40,20 @@
     "payments": "none",
     "quality": [],
     "testing": [],
-    "forms": []
+    "forms": [],
+    "platforms": [
+      "http-api",
+      "nestjs"
+    ]
   },
   "verify": {
-    "command": "{{pm}} run build && {{pm}} test",
+    "command": "{{pm}} run build && {{pm}} run test",
     "matrix": [
+      {
+        "quality": [
+          "nestjs-swagger"
+        ]
+      },
       {
         "email": [
           "resend"
@@ -57,18 +66,21 @@
         ],
         "deploy": [
           "docker"
+        ],
+        "quality": [
+          "openapi-contract"
         ]
       }
     ]
   },
   "instructions": "## How to work here\n\n- Organize by domain modules (`src/<domain>/`), each with its module, controller and service. Generate pieces with `npx nest g resource <name>`.\n- Logic lives in services; controllers only translate HTTP. Inject dependencies through the constructor.\n- Validate input with DTOs and `ValidationPipe`.\n- Before finishing: `npm run build && npm test`.",
   "skills": [
-    "kadajett/agent-nestjs-skills@nestjs-best-practices",
-    "jeffallan/claude-skills@nestjs-expert",
-    "mcollina/skills@node",
-    "wshobson/agents@nodejs-backend-patterns",
-    "wshobson/agents@typescript-advanced-types",
-    "wshobson/agents@api-design-principles"
+    "nestjs/agent-skills@nestjs",
+    "nestjs/agent-skills@nestjs-feature",
+    "nestjs/agent-skills@nestjs-auth",
+    "nestjs/agent-skills@nestjs-data",
+    "nestjs/agent-skills@nestjs-testing",
+    "nestjs/agent-skills@nestjs-production"
   ],
   "service": {
     "dev": "{{pm}} run start:dev",

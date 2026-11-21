@@ -21,7 +21,7 @@ export async function GET(_request: Request, { params }: RouteContext<"/og/kits/
     eyebrow: meta.official ? "Official kit" : `Community kit${meta.owner ? ` by @${meta.owner.handle}` : ""}`,
     title: kit.title,
     description: kit.description,
-    logos: stackLogoKeys(kit.tags, selections.options),
+    logos: stackLogoKeys(kit, selections.options),
     command: buildInitCommand(slug, kit, selections).replace("@latest", ""),
     facts: [...(verified && !meta.official ? ["Verified"] : []), `${resolved.skills.length} skills`, ...(Object.keys(resolved.mcp).length ? [`${Object.keys(resolved.mcp).length} MCP`] : [])],
   });

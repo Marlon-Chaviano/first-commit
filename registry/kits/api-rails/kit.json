@@ -1,6 +1,6 @@
 {
   "$schema": "../../kit.schema.json",
-  "version": "1.1.4",
+  "version": "1.2.0",
   "author": "marlon-chaviano",
   "name": "api-rails",
   "title": "API with Rails",
@@ -44,7 +44,10 @@
     "observability": [],
     "payments": "none",
     "quality": [],
-    "i18n": "none"
+    "i18n": "none",
+    "platforms": [
+      "http-api"
+    ]
   },
   "verify": {
     "command": "bin/rails db:prepare && bin/rails test && bin/rails zeitwerk:check && (test ! -d spec || bundle exec rspec)",

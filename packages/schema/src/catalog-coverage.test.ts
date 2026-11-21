@@ -6,6 +6,13 @@ import { LIBRARY_CATEGORIES } from "./categories";
 const kits = await loadRegistryKits(fileURLToPath(new URL("../../../registry", import.meta.url)));
 
 describe("catalog coverage", () => {
+  it("offers a portable OpenAPI contract on API kits and controller-generated docs only on NestJS", () => {
+    for (const kit of kits) {
+      const quality = kit.options.find((o) => o.id === "quality")?.choices.map((c) => c.id) ?? [];
+      expect(quality.includes("openapi-contract"), kit.name).toBe(kit.category === "api");
+      expect(quality.includes("nestjs-swagger"), kit.name).toBe(kit.name === "api-nestjs");
+    }
+  });
   it("offers testing, CI and a deployment or publishing destination in every kit", () => {
     for (const kit of kits) {
       for (const id of ["testing", "ci", "deploy"]) {

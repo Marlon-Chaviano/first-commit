@@ -69,7 +69,7 @@ async function Shared({ id: idPromise }: { id: Promise<string> }) {
         <p className="label-mono text-muted-foreground">Shared setup</p>
         <div className="flex flex-wrap items-center justify-between gap-4">
           <h1 className="text-3xl font-semibold tracking-tight text-balance sm:text-4xl">{kit.title}</h1>
-          <StackLogos keys={stackLogoKeys(kit.tags, shared.selections.options)} size="lg" />
+          <StackLogos keys={stackLogoKeys(kit, shared.selections.options)} size="lg" />
         </div>
         <p className="text-pretty text-muted-foreground">
           {kit.description}{" "}

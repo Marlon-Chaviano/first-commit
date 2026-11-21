@@ -1,7 +1,7 @@
 {
   "$schema": "../../kit.schema.json",
   "name": "api-express",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "author": "marlon-chaviano",
   "title": "API with Express",
   "description": "A REST API with Express 5 and TypeScript: input validation with Zod, security headers, centralized error handling and tests with Vitest and Supertest.",
@@ -102,7 +102,10 @@
     "payments": "none",
     "quality": [],
     "testing": [],
-    "forms": []
+    "forms": [],
+    "platforms": [
+      "http-api"
+    ]
   },
   "verify": {
     "command": "{{pm}} run typecheck && {{pm}} run test && {{pm}} run build",

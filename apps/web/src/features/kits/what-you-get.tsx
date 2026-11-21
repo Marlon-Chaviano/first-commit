@@ -22,7 +22,7 @@ export function WhatYouGet({ kit, resolved, options, installMinutes }: { kit: Ki
       </h2>
       <div className="grid grid-cols-[minmax(0,1fr)] gap-3 md:grid-cols-3 md:items-stretch">
         <Card icon={LayersIcon} title="The stack">
-          <StackLogos keys={stackLogoKeys(kit.tags, options)} size="lg" />
+          <StackLogos keys={stackLogoKeys(kit, options)} size="lg" />
           {picks.length > 0 && <FitBadges names={picks} variant="outline" className="min-h-[3.75rem] flex-1" />}
         </Card>
 

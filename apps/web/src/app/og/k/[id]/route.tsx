@@ -18,7 +18,7 @@ export async function GET(_request: Request, { params }: RouteContext<"/og/k/[id
     eyebrow: "Shared setup",
     title: page.kit.title,
     description: picks.length ? picks.join(" · ") : page.kit.description,
-    logos: stackLogoKeys(page.kit.tags, shared.selections.options),
+    logos: stackLogoKeys(page.kit, shared.selections.options),
     command: buildInitCommand(shared.kit, page.kit, shared.selections, shared.name ?? undefined).replace("@latest", ""),
     facts: [`${resolved.skills.length} skills`, ...(Object.keys(resolved.mcp).length ? [`${Object.keys(resolved.mcp).length} MCP`] : [])],
   });

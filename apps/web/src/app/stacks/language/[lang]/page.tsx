@@ -121,7 +121,7 @@ async function LanguageContent({ lang: langPromise }: { lang: Promise<string> })
                   kit={kit.name}
                   installs={installs}
                   popular={popular}
-                  logoKeys={stackLogoKeys(kit.tags, stack.options)}
+                  logoKeys={stackLogoKeys(kit, stack.options)}
                 />
               </li>
             ))}

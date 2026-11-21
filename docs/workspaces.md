@@ -58,9 +58,16 @@ CLI 1.1.0 introduces workspace support. Example arguments:
 
 ```
 monorepo my-product --web nextjs --api django --docs starlight
+monorepo my-product --web nextjs --api nestjs --api.nestjs.quality nestjs-swagger
 monorepo my-product --web.nextjs.components mantine --api.fastapi.database sqlmodel
 monorepo my-product --deployment independent --web.nextjs.deploy vercel
 ```
+
+The Next.js + NestJS stack creates `apps/web` and `apps/api`. Start the workspace
+with `node scripts/workspace.mjs dev`. The web app reads `NEXT_PUBLIC_API_URL`,
+and the API serves Swagger UI at `http://localhost:8000/docs` when selected.
+The standalone `api-nestjs` kit accepts the same option as `--quality nestjs-swagger`.
+Both install the official NestJS skills for the chosen agents.
 
 `kits.lock` v2 stores child versions, package managers, options and managed-file
 hashes. There is one lock at the root. `add --service <id>`, `update` and `doctor`

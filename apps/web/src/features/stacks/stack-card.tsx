@@ -1,3 +1,4 @@
+import type { Kit } from "@kits/schema/light";
 import { ArrowUpRightIcon } from "lucide-react";
 import Link from "next/link";
 import { Fragment } from "react";
@@ -8,8 +9,11 @@ import { logosFor } from "@/lib/logos";
 import { cn } from "@/lib/utils";
 
 /** What a stack is made of, as logos: the kit's own tech first, then the libraries the stack picks. */
-export function stackLogoKeys(kitTags: readonly string[], options: Record<string, string[]>): string[] {
-  return [...kitTags, ...Object.values(options).flat()].filter((id) => id !== "none");
+export function stackLogoKeys(kit: Pick<Kit, "tags" | "workspace">, options: Record<string, string[]>): string[] {
+  const frameworks = kit.workspace
+    ? Object.entries(kit.workspace.services).map(([slot, service]) => options[slot]?.[0] ?? service.default)
+    : kit.tags;
+  return [...frameworks, ...Object.values(options).flat()].filter((id) => id !== "none");
 }
 
 /** "Next ＋ Supabase ＋ Stripe" as logos: the stack reads like a recipe. */

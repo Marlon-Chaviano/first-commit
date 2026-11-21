@@ -25,6 +25,7 @@ export interface ResolvedRecommendation extends Recommendation {
 const normalize = (text: string) =>
   text
     .toLowerCase()
+    .replace(/\b(next|nest)\.js\b/g, "$1js")
     .normalize("NFD")
     .replace(/[̀-ͯ]/g, "");
 
@@ -74,6 +75,8 @@ const CHOICE_HINTS: Record<string, RegExp> = {
   "web-react-router": /\b(react router|remix)\b/,
   "web-tanstack-start": /\btanstack\b/,
   "api-nestjs": /\bnest(js)?\b/,
+  nestjs: /\bnest(js)?\b/,
+  "nestjs-swagger": /\bswagger\b/,
   "api-fastify": /\bfastify\b/,
   "api-rails": /\b(api en rails|rails api)\b/,
   "mobile-ionic-react": /\b(ionic|capacitor|pwa)\b/,
@@ -115,6 +118,8 @@ const GENERIC_TAGS = new Set(["landing", "saas", "api", "extension", "mobile", "
 
 function scoreKit(kit: Kit, text: string): number {
   let score = 0;
+  if (kit.name === "monorepo" && CHOICE_HINTS.nestjs!.test(text) &&
+      (/\bnext(?:js)?\b/.test(text) || CATEGORY_HINTS.monorepo!.test(text))) score += 12;
   if (CATEGORY_HINTS[kit.category]?.test(text)) score += 3;
   const words = [kit.name, ...kit.tags.filter((t) => !GENERIC_TAGS.has(t))].map(normalize);
   for (const word of words) if (word.length > 2 && new RegExp(`\\b${word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`).test(text)) score += 2;

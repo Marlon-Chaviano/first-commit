@@ -64,6 +64,8 @@ export const librarySchema = z.object({
    */
   kind: z.enum(LIBRARY_KINDS),
   frameworks: z.array(z.enum(FRAMEWORKS)).min(1),
+  /** A service capability that must also be present, e.g. a NestJS app running on Node. */
+  requiredPlatform: z.string().optional(),
   /** Platforms where this integration would be inappropriate even if a renderer framework matches. */
   excludeFrameworks: z.array(z.enum(FRAMEWORKS)).optional(),
   /** How the agent adds a component or uses the library, shown in AGENTS.md. */
@@ -87,6 +89,7 @@ export type Catalog = z.infer<typeof catalogSchema>;
 
 /** A platform exclusion wins even when the renderer or the universal target matches. */
 export function libraryFits(library: Library, targets: readonly string[]): boolean {
+  if (library.requiredPlatform && !targets.includes(library.requiredPlatform)) return false;
   if (library.excludeFrameworks?.some((id) => targets.includes(id))) return false;
   return library.frameworks.includes("any") || library.frameworks.some((id) => targets.includes(id));
 }
