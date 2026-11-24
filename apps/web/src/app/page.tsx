@@ -174,7 +174,7 @@ export default async function Home() {
       <section id="leaderboard" className="flex scroll-mt-20 flex-col gap-4">
         <div className="flex items-center justify-between gap-4">
           <h2 className="label-mono">{stats.total >= RANKING_MIN_INSTALLS ? "Kit ranking" : "Kits"}</h2>
-          <Button size="sm" variant="outline" nativeButton={false} render={<Link href="/kits/new" />}><PlusIcon />Create a kit</Button>
+          <Button size="sm" className="border-border bg-fixed-action text-fixed-action-foreground hover:bg-fixed-action/90" nativeButton={false} render={<Link href="/kits/new" />}><PlusIcon />Create a kit</Button>
         </div>
         <KitLeaderboardFromUrl kits={kits} logos={rowLogos} stats={stats} verified={Object.fromEntries(verified)} />
       </section>
