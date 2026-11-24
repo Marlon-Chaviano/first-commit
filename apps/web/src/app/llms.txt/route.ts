@@ -26,7 +26,7 @@ export async function GET() {
 - [kit.json reference](${BRAND.siteUrl}/docs/reference)
 - [Library catalog](${BRAND.siteUrl}/docs/libraries)
 - [Keep a project up to date](${BRAND.siteUrl}/docs/maintain): update, add, doctor
-- [Brand template catalog](${BRAND.siteUrl}/brands)
+- [Official templates and community brand profiles](${BRAND.siteUrl}/brands)
 - [Brand profiles](${BRAND.siteUrl}/docs/brands)
 - [FAQ](${BRAND.siteUrl}/docs/faq)
 

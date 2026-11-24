@@ -1,14 +1,22 @@
 import type { Metadata } from "next";
-import { notFound, redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
+import { cliCommand } from "@kits/schema";
+import { Command } from "@/components/shared/command";
+import { BrandPreview } from "@/features/brands/brand-preview";
 import { Skeleton } from "@/components/ui/skeleton";
 import { BackLink } from "@/features/brands/back-link";
 import { BrandEditor } from "@/features/brands/brand-editor";
 import { getBrand } from "@/server/brands";
 import { getViewer } from "@/server/session";
 
-export const metadata: Metadata = { title: "Brand profile", robots: { index: false } };
+export async function generateMetadata({ params }: PageProps<"/brands/[...slug]">): Promise<Metadata> {
+  const slug = (await params).slug.join("/");
+  const brand = await getBrand(slug, null);
+  return brand ? { title: brand.profile.title, alternates: { canonical: `/brands/${slug}` } }
+    : { title: "Brand profile", robots: { index: false } };
+}
 
 export default function BrandPage({ params }: PageProps<"/brands/[...slug]">) {
   return (
@@ -24,13 +32,21 @@ export default function BrandPage({ params }: PageProps<"/brands/[...slug]">) {
 async function Editor({ slug: slugPromise }: { slug: Promise<string> }) {
   const viewer = await getViewer();
   const slug = await slugPromise;
-  if (!viewer) redirect("/login?next=" + encodeURIComponent("/brands/" + slug));
   const found = await getBrand(slug, viewer);
   if (!found) notFound();
   return (
     <>
       <h1 className="font-mono text-3xl font-semibold tracking-tight">{slug}</h1>
-      <BrandEditor owners={[slug.split("/")[0]!]} initialOwner={slug.split("/")[0]} initial={found.profile} />
+      {found.canEdit ? <BrandEditor initialPrivate={found.row.isPrivate} owners={[slug.split("/")[0]!]} initialOwner={slug.split("/")[0]} initial={found.profile} /> : (
+        <div className="grid items-start gap-6 sm:grid-cols-2">
+          <BrandPreview profile={found.profile} />
+          <section className="grid gap-3">
+            <h2 className="label-mono">Use this brand</h2>
+            <Command command={cliCommand(`landing-next --brand ${slug}`)} wrap />
+            <Command command={cliCommand(`brand ${slug}`)} wrap />
+          </section>
+        </div>
+      )}
     </>
   );
 }

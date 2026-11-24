@@ -44,8 +44,8 @@ async function Kits() {
       <TabHeader
         title="Your kits"
         description={`${counted} of ${MAX_KITS_PER_ACCOUNT} published. Retired kits don't count.`}
-        newHref={owned.length ? "/publish" : undefined}
-        newLabel="Publish a new kit"
+        newHref={owned.length ? "/kits/new" : undefined}
+        newLabel="Create a new kit"
       />
 
       {owned.length ? (
@@ -75,12 +75,12 @@ async function Kits() {
         <Empty className="border">
           <EmptyHeader>
             <EmptyTitle>No kits yet</EmptyTitle>
-            <EmptyDescription>Turn a project you like into a kit: the CLI reads it and writes the kit.json for you.</EmptyDescription>
+            <EmptyDescription>Choose a public GitHub project to turn into a kit, or create one locally with the CLI.</EmptyDescription>
           </EmptyHeader>
           <EmptyContent className="max-w-md">
             <Command command={cliCommand("create")} className="w-full" />
-            <Button nativeButton={false} render={<Link href="/publish" />}>
-              Publish a kit
+            <Button nativeButton={false} render={<Link href="/kits/new" />}>
+              Create from GitHub
             </Button>
           </EmptyContent>
         </Empty>

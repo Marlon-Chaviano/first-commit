@@ -18,6 +18,7 @@ import { draftStorageKey, logInWithDraft } from "./pending-draft";
 import { saveBrandAction } from "./actions";
 import { BrandAssetsField, BrandLinksField } from "./brand-assets";
 import { BrandPreview } from "./brand-preview";
+import { BrandPrivacy } from "./brand-privacy";
 import { BrandImporter } from "./brand-importer";
 
 type Colors = BrandProfile["colors"];
@@ -42,8 +43,9 @@ const EMPTY: BrandProfile = { ...emptyBrandProfile(), name: "", title: "" };
  * The full form. `initial` edits a saved profile; `draft` starts a new one prefilled (from the creator's
  * review step), without the importer, since the detection already happened.
  */
-export function BrandEditor({ owners, initial, draft, initialOwner, resumeId }: { owners: string[]; initial?: BrandProfile; draft?: BrandProfile; initialOwner?: string; resumeId?: string }) {
+export function BrandEditor({ owners, initial, draft, initialOwner, resumeId, initialPrivate = false, onPrivacyChange }: { owners: string[]; initial?: BrandProfile; draft?: BrandProfile; initialOwner?: string; resumeId?: string; initialPrivate?: boolean; onPrivacyChange?: (value: boolean) => void }) {
   const router = useRouter();
+  const [isPrivate, setPrivate] = useState(initialPrivate);
   const [owner, setOwner] = useState(initialOwner ?? owners[0] ?? "");
   const [p, setP] = useState<BrandProfile>(() => normalizeBrandProfile(initial ?? draft ?? EMPTY));
   const [rules, setRules] = useState(((initial ?? draft)?.rules ?? []).join("\n"));
@@ -71,10 +73,10 @@ export function BrandEditor({ owners, initial, draft, initialOwner, resumeId }: 
       const parsed = brandProfileSchema.safeParse({ ...p, rules: lines(rules), docs });
       if (!parsed.success) return void toast.error(parsed.error.issues[0]?.message ?? "Check the profile fields");
       const profile = parsed.data;
-      if (!owner && !editing) return logInWithDraft(profile, router.push);
-      const r = await saveBrandAction(owner, profile, editing ? "update" : "create");
+      if (!owner && !editing) return logInWithDraft(profile, isPrivate, router.push);
+      const r = await saveBrandAction(owner, profile, editing ? "update" : "create", isPrivate);
       if (!r.ok) {
-        if (!editing && r.error === "Log in first") return logInWithDraft(profile, router.push);
+        if (!editing && r.error === "Log in first") return logInWithDraft(profile, isPrivate, router.push);
         return void toast.error(r.error);
       }
       if (resumeId) sessionStorage.removeItem(draftStorageKey(resumeId));
@@ -189,6 +191,7 @@ export function BrandEditor({ owners, initial, draft, initialOwner, resumeId }: 
 
         <BrandLinksField website={p.website} social={p.social} onChange={({ website, social }) => setP((prev) => ({ ...prev, website, social }))} />
 
+        <BrandPrivacy checked={isPrivate} onChange={(value) => { setPrivate(value); onPrivacyChange?.(value); }} />
         <Button type="submit" disabled={pending || !p.name || !p.title} className="self-start">
           {pending ? "Saving…" : editing ? "Save changes" : owner ? "Create profile" : "Log in to create profile"}
         </Button>
@@ -217,11 +220,16 @@ export function ResumeBrandDraft({ owners, id }: { owners: string[]; id: string 
   const raw = useSyncExternalStore(subscribe, () => {
     try { return sessionStorage.getItem(draftStorageKey(id)); } catch { return null; }
   }, () => undefined);
-  const profile = useMemo(() => {
+  const draft = useMemo(() => {
     if (!raw) return null;
-    try { return brandProfileSchema.safeParse(JSON.parse(raw)).data; } catch { return null; }
+    try {
+      const stored = JSON.parse(raw);
+      // Drafts from before visibility controls were created as private.
+      const profile = brandProfileSchema.safeParse(stored.profile ?? stored);
+      if (profile.success) return { profile: profile.data, isPrivate: stored.isPrivate !== false };
+    } catch { return null; }
   }, [raw]);
   if (raw === undefined) return <p role="status">Loading your draft…</p>;
-  if (!profile) return <p>This draft is unavailable in this tab. <Link className="underline" href="/brands/new">Start a new brand</Link></p>;
-  return <BrandEditor owners={owners} draft={profile} resumeId={id} />;
+  if (!draft) return <p>This draft is unavailable in this tab. <Link className="underline" href="/brands/new">Start a new brand</Link></p>;
+  return <BrandEditor owners={owners} draft={draft.profile} initialPrivate={draft.isPrivate} resumeId={id} />;
 }

@@ -1,5 +1,15 @@
 [
   {
+    "id": "github-kit-and-brand-import",
+    "date": "2026-11-24",
+    "notify": false,
+    "title": "Create kits and brands from public GitHub repositories",
+    "items": [
+      "Choose a branch and project folder, review the dependencies and files, then download a reusable kit.",
+      "Import a project's logo, colors and fonts, then review and save them as a brand profile."
+    ]
+  },
+  {
     "id": "nextjs-nestjs-backends",
     "date": "2026-11-20",
     "notify": false,

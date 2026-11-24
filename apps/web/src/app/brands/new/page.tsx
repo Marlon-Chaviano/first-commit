@@ -10,6 +10,7 @@ import { ForkTemplate } from "@/features/brands/fork-template";
 import { findBrandTemplate } from "@/features/brands/templates";
 import { draftFromTemplate } from "@/server/brand-templates";
 import { capabilitiesFor, listUserOrgs, type OrgRole } from "@/server/orgs";
+import { importAccess } from "@/server/repository-import/access";
 import { getViewer } from "@/server/session";
 
 export const metadata: Metadata = { title: "New brand profile", robots: { index: false } };
@@ -26,7 +27,7 @@ export default function NewBrandPage({ searchParams }: PageProps<"/brands/new">)
 }
 
 async function Editor({ searchParams }: Pick<PageProps<"/brands/new">, "searchParams">) {
-  const { template: id, draft, name } = await searchParams;
+  const { template: id, draft, name, source, private: visibility } = await searchParams;
   const viewer = await getViewer();
   if (id !== undefined) {
     const template = typeof id === "string" && findBrandTemplate(id);
@@ -35,7 +36,7 @@ async function Editor({ searchParams }: Pick<PageProps<"/brands/new">, "searchPa
     return (
       <>
         <h1 className="text-3xl font-semibold tracking-tight">Fork {template.title}</h1>
-        <ForkTemplate owner={viewer?.handle ?? undefined} templateId={template.id} initialName={initialName} draft={await draftFromTemplate(template)} />
+        <ForkTemplate owner={viewer?.handle ?? undefined} templateId={template.id} initialName={initialName} initialPrivate={visibility === "1"} draft={await draftFromTemplate(template)} />
       </>
     );
   }
@@ -45,8 +46,8 @@ async function Editor({ searchParams }: Pick<PageProps<"/brands/new">, "searchPa
   const owners = viewer?.handle ? [viewer.handle, ...orgs] : [];
   return (
     <>
-      <h1 className="text-3xl font-semibold tracking-tight">{draft ? "Review your brand" : "New brand profile"}</h1>
-      {draft ? <ResumeBrandDraft key={draft} owners={owners} id={draft} /> : <BrandCreator owners={owners} />}
+      <h1 className="text-3xl font-semibold tracking-tight">{draft ? "Review your brand" : source === "github" ? "Create a brand from GitHub" : "New brand profile"}</h1>
+      {draft ? <ResumeBrandDraft key={draft} owners={owners} id={draft} /> : <BrandCreator key={source === "github" ? "github" : "default"} owners={owners} repositoryAccess={source === "github" ? await importAccess(viewer) : undefined} />}
     </>
   );
 }

@@ -11,16 +11,16 @@ import { authClient } from "@/lib/auth-client";
 const WHY = ["Your GitHub username becomes your namespace: your-user/kit", "Publishing checks you can access the kit's repository", "Your GitHub avatar is used if you don't have one"];
 
 /** For accounts without GitHub (Google or dev login): publishing needs it to check repo permissions. */
-export function LinkGithub({ enabled, back = "/account/kits" }: { enabled: boolean; back?: string }) {
+export function LinkGithub({ enabled, back = "/account/kits", importing = false }: { enabled: boolean; back?: string; importing?: boolean }) {
   const [pending, setPending] = useState(false);
   return (
     <section className="flex flex-col gap-5 rounded-xl border p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6">
       <div className="flex gap-4">
         <TechIcon id="github" label="" className="mt-0.5 size-6 shrink-0" />
         <div className="flex flex-col gap-2">
-          <h2 className="font-medium">Link GitHub to publish kits</h2>
+          <h2 className="font-medium">{importing ? "Link your GitHub account" : "Link GitHub to publish kits"}</h2>
           <ul className="flex flex-col gap-1.5 text-sm text-muted-foreground">
-            {WHY.map((line) => (
+            {(importing ? ["Choose from your public repositories", "Review the detected project before creating anything"] : WHY).map((line) => (
               <li key={line} className="flex items-start gap-2">
                 <CheckIcon className="mt-0.5 size-3.5 shrink-0 text-foreground" />
                 {line}

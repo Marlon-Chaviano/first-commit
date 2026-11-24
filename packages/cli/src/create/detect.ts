@@ -3,33 +3,10 @@ import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import { join, relative } from "node:path";
 
-import { BRAND, libraryFits, LIBRARY_KINDS, pmFromLockfiles, type Catalog, type Library, type LibraryKind, type McpServer, type PackageManager } from "@kits/schema";
+import { BRAND, pmFromLockfiles, type Catalog, type LibraryKind, type Library, type McpServer, type PackageManager } from "@kits/schema";
+import { inferProject, projectInstructions, matchInstalledLibraries, type Detection, type ProjectPackage } from "@kits/schema/project";
+export { packageName, type Detection } from "@kits/schema/project";
 
-import { detectFramework, isBaseline, projectLibraryTargets, type FrameworkMatch } from "./frameworks";
-
-export interface Detection {
-  packageName: string;
-  pm: PackageManager;
-  framework: FrameworkMatch;
-  libraries: { components?: Library; addons: Library[]; animation: Library[]; observability: Library[]; others: Library[] };
-  dependencies: string[];
-  devDependencies: string[];
-  skills: string[];
-  /** Skill folders found without a source repo (not in skills-lock.json). */
-  unknownSkills: string[];
-  mcp: Record<string, McpServer>;
-  instructions?: string;
-  env: Record<string, string>;
-  /** Candidate files/folders to ship in the kit, grouped (e.g. "src/lib"). */
-  fileGroups: { path: string; files: string[] }[];
-  /** "owner/repo" from the git remote, for the install command. */
-  githubRepo?: string;
-}
-
-const KIT_BLOCK = /<!-- kits:start -->[\s\S]*?<!-- kits:end -->\n?/g;
-const NEXT_BLOCK = /<!-- BEGIN:nextjs-agent-rules -->[\s\S]*?<!-- END:nextjs-agent-rules -->\n?/g;
-/** Packages `shadcn init` adds; they come back when the kit runs it again. */
-const SHADCN_INIT = ["shadcn", "cn", "clsx", "tailwind-merge", "class-variance-authority", "lucide-react", "tw-animate-css", "@base-ui/react", /^@radix-ui\//];
 const NEVER_SHIP = new Set([
   "package.json", "package-lock.json", "pnpm-lock.yaml", "yarn.lock", "bun.lock", "bun.lockb", "pnpm-workspace.yaml",
   "AGENTS.md", "CLAUDE.md", "GEMINI.md", "README.md", "LICENSE", ".gitignore", ".mcp.json", "skills-lock.json",
@@ -43,38 +20,9 @@ const SOURCE_ROOTS = new Set(["src", "app", "lib", "components"]);
 export async function detectProject(dir: string, catalog: Catalog, baseOverride?: string): Promise<Detection> {
   const pkgPath = join(dir, "package.json");
   if (!existsSync(pkgPath)) throw new Error(`No package.json in ${dir}. ${BRAND.cli} create needs a JavaScript/TypeScript project.`);
-  const pkg = JSON.parse(await readFile(pkgPath, "utf8")) as {
-    name?: string;
-    dependencies?: Record<string, string>;
-    devDependencies?: Record<string, string>;
-  };
-  const deps = pkg.dependencies ?? {};
-  const devDeps = pkg.devDependencies ?? {};
-  const all = { ...deps, ...devDeps };
-
-  const detected = detectFramework(all);
-  const framework: FrameworkMatch | null = baseOverride
-    ? {
-        ...(detected ?? { id: "custom", label: "Custom project", category: "other", frameworks: [], ui: false, baseline: [] }),
-        base: { command: baseOverride },
-      }
-    : detected;
-  if (!framework) {
-    throw new Error("Unrecognized framework (Next.js, Expo, Hono, WXT or Vite). Use --base \"<command that creates the project>\".");
-  }
-
-  const libraries = matchLibraries(dir, catalog, framework, all);
-  const covered = new Set<string>();
-  for (const lib of [libraries.components, ...libraries.addons, ...libraries.animation, ...libraries.observability, ...libraries.others]) {
-    if (!lib) continue;
-    for (const d of [...lib.dependencies, ...lib.devDependencies]) covered.add(packageName(d));
-  }
-  const usesShadcn = libraries.components?.id === "shadcn";
-  const keep = (name: string) =>
-    !isBaseline(framework, name) &&
-    !covered.has(name) &&
-    !(usesShadcn && SHADCN_INIT.some((p) => (typeof p === "string" ? p === name : p.test(name))));
-
+  const pkg = JSON.parse(await readFile(pkgPath, "utf8")) as ProjectPackage;
+  const inferred = inferProject(pkg, catalog, (path) => existsSync(join(dir, path)), readComponents(dir), baseOverride);
+  const { framework, libraries } = inferred;
   const { skills, unknownSkills } = await readSkills(dir);
   const libWrites = new Set(
     [libraries.components, ...libraries.addons, ...libraries.animation, ...libraries.observability, ...libraries.others].flatMap((l) =>
@@ -83,12 +31,8 @@ export async function detectProject(dir: string, catalog: Catalog, baseOverride?
   );
 
   return {
-    packageName: pkg.name ?? "mi-kit",
+    ...inferred,
     pm: detectPm(dir),
-    framework,
-    libraries,
-    dependencies: Object.keys(deps).filter(keep),
-    devDependencies: Object.keys(devDeps).filter(keep),
     skills,
     unknownSkills,
     mcp: await readMcp(dir),
@@ -99,53 +43,18 @@ export async function detectProject(dir: string, catalog: Catalog, baseOverride?
   };
 }
 
-/** Every catalog library installed in the project, by kind (`doctor` needs all of them). */
-export function installedLibraries(
-  dir: string,
-  catalog: Catalog,
-  targets: string[],
-  deps: Record<string, string>,
-): Record<LibraryKind, Library[]> {
-  const componentsJson = readJson(join(dir, "components.json")) as { registries?: Record<string, unknown> } | null;
-  const installed = (lib: Library) => {
-    const pkgs = [...lib.dependencies, ...lib.devDependencies].map(packageName);
-    if (pkgs.length) return pkgs.every((p) => p in deps);
-    if (lib.id.startsWith("shadcn")) return componentsJson !== null;
-    if (lib.kind === "addon") {
-      return (
-        Object.keys(componentsJson?.registries ?? {}).includes(`@${lib.id}`) ||
-        ["src/components", "components"].some((d) => existsSync(join(dir, d, lib.id)))
-      );
-    }
-    return false;
-  };
-  const found = (kind: Library["kind"]) => catalog.filter((l) => l.kind === kind && libraryFits(l, targets) && installed(l));
-  return Object.fromEntries(LIBRARY_KINDS.map((kind) => [kind, found(kind)])) as Record<LibraryKind, Library[]>;
+function readComponents(dir: string) {
+  return readJson(join(dir, "components.json")) as { registries?: Record<string, unknown> } | null;
 }
 
-/** A library matches when all its packages are installed (shadcn-style registries: by components.json). */
-function matchLibraries(dir: string, catalog: Catalog, framework: FrameworkMatch, deps: Record<string, string>): Detection["libraries"] {
-  const all = installedLibraries(dir, catalog, projectLibraryTargets(framework), deps);
-  return {
-    components: framework.ui ? all.components[0] : undefined,
-    addons: framework.ui ? all.addon : [],
-    animation: framework.ui ? all.animation : [],
-    observability: all.observability,
-    // Auth, database, payments, testing… (categories that don't depend on a UI framework).
-    others: LIBRARY_KINDS.filter((k) => !["components", "addon", "animation", "observability"].includes(k)).flatMap((k) => all[k]),
-  };
+export function installedLibraries(dir: string, catalog: Catalog, targets: string[], deps: Record<string, string>): Record<LibraryKind, Library[]> {
+  return matchInstalledLibraries((path) => existsSync(join(dir, path)), readComponents(dir), catalog, targets, deps);
 }
 
 /** Dependencies of the project at `dir` (empty when there's no package.json). */
 export function readDeps(dir: string): Record<string, string> {
   const pkg = readJson(join(dir, "package.json")) as { dependencies?: Record<string, string>; devDependencies?: Record<string, string> } | null;
   return { ...pkg?.dependencies, ...pkg?.devDependencies };
-}
-
-/** "tailwindcss@^3.4.17" → "tailwindcss", "@scope/pkg@1" → "@scope/pkg" */
-export function packageName(spec: string): string {
-  const at = spec.indexOf("@", 1);
-  return at === -1 ? spec : spec.slice(0, at);
 }
 
 async function readSkills(dir: string): Promise<{ skills: string[]; unknownSkills: string[] }> {
@@ -179,20 +88,10 @@ async function readMcp(dir: string): Promise<Record<string, McpServer>> {
 }
 
 /** The project's own AGENTS.md, without what kits or the scaffolder generate. */
-async function readInstructions(dir: string, framework: FrameworkMatch): Promise<string | undefined> {
+async function readInstructions(dir: string, framework: Detection["framework"]): Promise<string | undefined> {
   const path = join(dir, "AGENTS.md");
   if (!existsSync(path)) return undefined;
-  let text = (await readFile(path, "utf8")).replace(KIT_BLOCK, "").replace(NEXT_BLOCK, "");
-  if (framework.templateHeadings) {
-    const sections = text.split(/^(?=## )/m);
-    // The preamble before the first "## " is the scaffolder's intro too.
-    text = sections
-      .slice(1)
-      .filter((s) => !framework.templateHeadings!.some((h) => s.startsWith(`## ${h}`)))
-      .join("");
-  }
-  text = text.replace(/^# .*\n/, "").trim();
-  return text || undefined;
+  return projectInstructions(await readFile(path, "utf8"), framework);
 }
 
 /** .env.example only: real .env files may hold secrets. */

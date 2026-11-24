@@ -11,7 +11,8 @@ import { downloadTemplate } from "giget";
 import { revalidateTag } from "next/cache";
 
 import { db } from "./db";
-import { account, kits, kitVersions } from "./db/schema";
+import { githubToken } from "./accounts";
+import { kits, kitVersions } from "./db/schema";
 import { devLogin } from "./env";
 import { getOrg, roleIn } from "./orgs";
 import { effectivePlan, MAX_KITS_PER_ACCOUNT, planAllows } from "./plans";
@@ -161,15 +162,6 @@ async function fetchSource(publisher: TokenUser, source: PublishSource, allowPri
     throw new PublishError(400, `Couldn't download the kit: ${(error as Error).message}`);
   }
   return { dir, repo, path, commitSha };
-}
-
-async function githubToken(userId: string): Promise<string | null> {
-  const rows = await db!
-    .select({ token: account.accessToken })
-    .from(account)
-    .where(and(eq(account.userId, userId), eq(account.providerId, "github")))
-    .limit(1);
-  return rows[0]?.token ?? null;
 }
 
 function archive(dir: string): Buffer {

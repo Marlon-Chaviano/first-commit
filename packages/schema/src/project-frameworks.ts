@@ -1,4 +1,4 @@
-import type { Kit } from "@kits/schema";
+import type { Kit } from "./schema";
 
 type Deps = Record<string, string>;
 

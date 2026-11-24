@@ -73,7 +73,7 @@ function Palette({ colors, radius, className }: { colors: BrandPalette; radius?:
 }
 
 /** The page theme controls the canvas. Only the specimens use the profile's own colors. */
-export function BrandPreview({ profile, action, showAssets = true }: { profile: Preview; action?: ReactNode; showAssets?: boolean }) {
+export function BrandPreview({ profile, action, attribution, showAssets = true }: { profile: Preview; action?: ReactNode; attribution?: string; showAssets?: boolean }) {
   const { title, colors, dark, fonts, radius } = profile;
   const assets = { ...profile.assets, logo: profile.assets?.logo ?? profile.logo };
   const kinds = (Object.keys(assetLabels) as BrandAssetKind[]).filter((kind) => assets[kind]);
@@ -92,6 +92,7 @@ export function BrandPreview({ profile, action, showAssets = true }: { profile: 
           )}
           <div className="min-w-0 flex-1">
             <p className="text-base leading-tight font-semibold wrap-anywhere" style={{ fontFamily: heading ? `"${heading}", var(--font-geist-sans, ui-sans-serif), sans-serif` : undefined }}>{title || "Your brand"}</p>
+            {attribution && <p className="text-xs text-muted-foreground">{attribution}</p>}
             {families && <p className="mt-0.5 text-xs text-muted-foreground wrap-anywhere">{families}</p>}
           </div>
           {action}

@@ -10,31 +10,31 @@ import { Select, SelectContent, SelectItem, SelectSeparator, SelectTrigger, Sele
 import { Skeleton } from "@/components/ui/skeleton";
 import { authClient } from "@/lib/auth-client";
 
-import { listMyBrandsAction, type BrandChoice } from "../brands/actions";
+import { listAvailableBrandsAction, type BrandChoice } from "../brands/actions";
 
 const NONE = "none";
 
-/** Picks one of the viewer's brand profiles for --brand. Signed out, it explains how to get one. */
+/** Picks a public or shared brand profile for --brand. */
 export function BrandPicker({ value, onChange }: { value: string; onChange: (brand: BrandChoice | null) => void }) {
   const { data: session, isPending } = authClient.useSession();
-  const [brands, setBrands] = useState<BrandChoice[] | null>(null);
+  const [result, setResult] = useState<{ viewer: string | undefined; brands: BrandChoice[] } | null>(null);
+  const viewer = session?.user.id;
   const signedIn = Boolean(session);
 
   useEffect(() => {
-    if (!signedIn) return;
+    if (isPending) return;
     let live = true;
-    listMyBrandsAction().then((list) => live && setBrands(list));
+    listAvailableBrandsAction().then((brands) => live && setResult({ viewer, brands }));
     return () => {
       live = false;
     };
-  }, [signedIn]);
+  }, [viewer, isPending]);
 
-  const loading = isPending || (signedIn && !brands);
-  const list = brands ?? [];
+  const loading = isPending || !result || result.viewer !== viewer;
+  const list = loading ? [] : result.brands;
   const current = list.find((b) => b.slug === value);
-  // Signed out or without profiles the select stays visible but locked, with the way to get one right next to it.
-  const locked = loading || !signedIn || !list.length;
-  const placeholder = loading ? "Loading…" : !signedIn ? "Log in to use your brands" : !list.length ? "No brand profiles yet" : "No brand";
+  const locked = loading || !list.length;
+  const placeholder = loading ? "Loading…" : !list.length ? "No brand profiles yet" : "No brand";
 
   return (
     <Field>
@@ -88,7 +88,7 @@ function BrandLabel({ brand }: { brand: BrandChoice }) {
         // The swatch is the brand's own color: data, not part of the site's palette.
         <span aria-hidden className="size-3 shrink-0 rounded-full border" style={{ background: brand.primary }} />
       )}
-      <span className="truncate">{brand.title}</span>
+      <span className="truncate">{brand.title} <span className="text-muted-foreground">({brand.slug})</span></span>
     </span>
   );
 }

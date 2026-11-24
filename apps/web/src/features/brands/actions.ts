@@ -1,21 +1,23 @@
 "use server";
 
-import { BRAND_ASSETS, brandLogo, brandProfileSchema, type BrandAssetKind, type BrandDetection } from "@kits/schema";
+import type { BrandAssetKind, BrandDetection } from "@kits/schema";
 
 import { headers } from "next/headers";
 
 import { clientIp, rateLimit } from "@/server/rate-limit";
 import { detectBrandFromUrl } from "@/server/brand-detection";
 import { action, type Result } from "@/server/action";
-import { deleteBrand, listBrands, saveBrand } from "@/server/brands";
+import { availableBrandChoices, deleteBrand, saveBrand } from "@/server/brands";
 import { fail } from "@/server/errors";
 import { getViewer } from "@/server/session";
 
 const publicDetectionLimit = rateLimit("brand-detect", 5, "1 h");
 const BRANDS = { paths: ["/brands", "/account/brands"] };
 
-export async function saveBrandAction(owner: string, profile: unknown, mode: "create" | "update" = "create"): Promise<Result<string>> {
-  return action({ revalidate: BRANDS, failure: "Couldn't save the profile" }, (viewer) => saveBrand(viewer, owner, profile, mode));
+export async function saveBrandAction(owner: string, profile: unknown, mode: "create" | "update" = "create", isPrivate?: boolean): Promise<Result<string>> {
+  // Pre-visibility forms promised a private save and omitted this argument.
+  const visibility = mode === "create" ? isPrivate ?? true : isPrivate;
+  return action({ revalidate: BRANDS, failure: "Couldn't save the profile" }, (viewer) => saveBrand(viewer, owner, profile, mode, visibility));
 }
 
 export async function deleteBrandAction(slug: string): Promise<Result> {
@@ -40,14 +42,7 @@ export interface BrandChoice {
   images: BrandAssetKind[];
 }
 
-/** The viewer's brand profiles (theirs and their organizations'), for the kit configurator's picker. */
-export async function listMyBrandsAction(): Promise<BrandChoice[]> {
-  const viewer = await getViewer();
-  if (!viewer) return [];
-  return (await listBrands(viewer)).map((b) => {
-    const profile = brandProfileSchema.safeParse(b.profile);
-    const p = profile.success ? profile.data : null;
-    const images = p ? (Object.keys(BRAND_ASSETS) as BrandAssetKind[]).filter((k) => (k === "logo" ? brandLogo(p) : p.assets[k])) : [];
-    return { slug: b.slug, title: p?.title ?? b.slug, primary: p?.colors.primary, logo: p ? (p.assets.icon ?? brandLogo(p)) : undefined, images };
-  });
+/** Public profiles and profiles shared with the viewer, for the kit configurator. */
+export async function listAvailableBrandsAction(): Promise<BrandChoice[]> {
+  return availableBrandChoices(await getViewer());
 }

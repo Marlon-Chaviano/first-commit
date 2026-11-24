@@ -39,10 +39,10 @@ export default function BrandsDocs() {
       <H2 id="create">Create a profile</H2>
       <P>
         Choose a template from the <Link className="underline underline-offset-4" href="/brands">brand catalog</Link>
-        {" "}to see its logo, palette, typography and interface rule. Choose “Fork to my brands” and save a private copy
+        {" "}to see its logo, palette, typography and interface rule. Choose “Fork to my brands” and save a copy
         under your account. You can then change its name, logo, colors and fonts. You can also start from scratch
         or import a file or website before signing in to save your draft.
-        It can be yours or an organization&apos;s (all its members use it). A local file works too:
+        New profiles are public by default. Anyone can find them in the catalog and apply them to a kit. Select “Hacer privada” to restrict access to yourself or, for an organization profile, its members. You can change this setting later. A local file works too:
       </P>
       <CodeBlock code={EXAMPLE} />
       <P>

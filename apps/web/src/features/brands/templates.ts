@@ -1,7 +1,5 @@
 import "server-only";
 
-import { CATALOG_PAGE_SIZE } from "@/lib/catalog-page";
-
 /** Visual references come from Brandfetch and Simple Icons. Type pairings, radii and interface rules are starter design choices. */
 export const brandTemplates = [
   {
@@ -1091,15 +1089,9 @@ export type BrandTemplate = (typeof brandTemplates)[number];
 export const findBrandTemplate = (id: string) => brandTemplates.find((entry) => entry.id === id);
 export const templatePath = (id: string) => `/brand-templates/${id}`;
 
-export function brandTemplatePage(page = 1, query = "") {
+export function matchingTemplates(query: string) {
   const term = query.trim().toLowerCase();
-  const matches = term
+  return term
     ? brandTemplates.filter((t) => [t.title, t.domain, t.fonts.sans, t.fonts.heading].some((s) => s?.toLowerCase().includes(term)))
     : brandTemplates;
-  const start = (page - 1) * CATALOG_PAGE_SIZE;
-  const items = matches.slice(start, start + CATALOG_PAGE_SIZE).map(({ id, title, colors, fonts, radius }) =>
-    ({ id, title, colors, fonts, radius, href: templatePath(id) }));
-  return { items, total: matches.length, nextPage: start + CATALOG_PAGE_SIZE < matches.length ? page + 1 : null };
 }
-
-export type BrandTemplatePage = ReturnType<typeof brandTemplatePage>;

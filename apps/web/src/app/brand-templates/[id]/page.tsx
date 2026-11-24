@@ -15,7 +15,7 @@ export async function generateMetadata({ params }: PageProps<"/brand-templates/[
   return pageMetadata({
     path: templatePath(template.id),
     title: template.title + " brand template",
-    description: `Explore the ${template.title}-inspired palette, typography and interface rule. Fork the template to customize a private brand for your projects.`,
+    description: `Explore the ${template.title}-inspired palette, typography and interface rule. Fork the template to customize a brand for your projects.`,
   });
 }
 

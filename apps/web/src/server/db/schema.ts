@@ -308,8 +308,7 @@ export const licenses = pgTable(
 
 /**
  * Brand profiles: a company's colors, fonts, UI rules and docs, applied to any
- * kit with `--brand <slug>`. Private: owned by a user ("ana/acme") or an org
- * ("acme/web", readable by its members).
+ * kit with `--brand <slug>`. A private profile is scoped to its owner or organization.
  */
 export const brandProfiles = pgTable("brand_profiles", {
   id: uuid("id").primaryKey().defaultRandom(),
@@ -317,6 +316,8 @@ export const brandProfiles = pgTable("brand_profiles", {
   ownerId: text("owner_id").references(() => user.id, { onDelete: "cascade" }),
   orgId: uuid("org_id").references(() => orgs.id, { onDelete: "cascade" }),
   title: text("title").notNull(),
+  // Older clients never requested publication. The publisher explicitly writes the selected visibility.
+  isPrivate: boolean("is_private").notNull().default(true),
   profile: jsonb("profile").$type<Record<string, unknown>>().notNull(),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),

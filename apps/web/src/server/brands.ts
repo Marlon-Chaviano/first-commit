@@ -1,11 +1,11 @@
 import "server-only";
 
-import { brandProfileSchema, type BrandProfile } from "@kits/schema";
-import { and, asc, eq, inArray, isNull } from "drizzle-orm";
+import { BRAND_ASSETS, brandProfileSchema, type BrandAssetKind } from "@kits/schema";
+import { and, asc, eq, inArray, isNull, or, sql } from "drizzle-orm";
 
 import { db } from "./db";
-import { brandProfiles, orgMembers, orgs } from "./db/schema";
-import { getOrg, OrgError, orgCapabilities } from "./orgs";
+import { brandProfiles, orgMembers } from "./db/schema";
+import { capabilitiesFor, getOrg, OrgError, orgCapabilities, roleIn } from "./orgs";
 import type { TokenUser } from "./tokens";
 import { DomainError } from "./errors";
 
@@ -14,34 +14,58 @@ export class BrandError extends DomainError {}
 
 export type BrandRow = typeof brandProfiles.$inferSelect;
 
-/** Profiles the user can use: their own plus those of every org they belong to. */
-export async function listBrands(viewer: TokenUser): Promise<BrandRow[]> {
-  if (!db) return [];
-  const orgIds = (await db.select({ id: orgMembers.orgId }).from(orgMembers).where(eq(orgMembers.userId, viewer.id))).map((r) => r.id);
-  const mine = await db.select().from(brandProfiles).where(and(eq(brandProfiles.ownerId, viewer.id), isNull(brandProfiles.orgId))).orderBy(asc(brandProfiles.slug));
-  const shared = orgIds.length ? await db.select().from(brandProfiles).where(inArray(brandProfiles.orgId, orgIds)).orderBy(asc(brandProfiles.slug)) : [];
-  return [...mine, ...shared];
+function ownedBrandScope(viewer: TokenUser) {
+  return or(
+    and(isNull(brandProfiles.orgId), eq(brandProfiles.ownerId, viewer.id)),
+    inArray(brandProfiles.orgId, db!.select({ id: orgMembers.orgId }).from(orgMembers).where(eq(orgMembers.userId, viewer.id))),
+  );
 }
 
-/** A profile if the user may read it (owner, or member of its org); null otherwise, like a missing one. */
-export async function getBrand(slug: string, viewer: TokenUser | null): Promise<{ row: BrandRow; profile: BrandProfile } | null> {
-  if (!db || !viewer) return null;
+/** The account tab includes personal and organization profiles. */
+export async function listBrands(viewer: TokenUser): Promise<BrandRow[]> {
+  if (!db) return [];
+  return db.select().from(brandProfiles).where(ownedBrandScope(viewer)).orderBy(asc(brandProfiles.slug));
+}
+
+/** The configurator needs asset names for the plan, without loading every profile's files and documentation. */
+export async function availableBrandChoices(viewer: TokenUser | null) {
+  if (!db) return [];
+  const p = brandProfiles.profile;
+  const icon = sql`coalesce(${p}->'assets'->>'icon', ${p}->'assets'->>'logo', ${p}->>'logo')`;
+  const rows = await db.select({
+    slug: brandProfiles.slug, title: brandProfiles.title,
+    primary: sql<string>`${p}->'colors'->>'primary'`,
+    logo: sql<string | null>`case when length(${icon}) <= 4096 then ${icon} end`,
+    assetKeys: sql<string[]>`array(select jsonb_object_keys(${p}->'assets'))`,
+    legacyLogo: sql<boolean>`${p}->>'logo' is not null`,
+  }).from(brandProfiles)
+    .where(or(eq(brandProfiles.isPrivate, false), viewer ? ownedBrandScope(viewer) : undefined))
+    .orderBy(asc(brandProfiles.slug));
+  return rows.map(({ assetKeys, legacyLogo, logo, ...choice }) => ({
+    ...choice, logo: logo ?? undefined,
+    images: (Object.keys(BRAND_ASSETS) as BrandAssetKind[]).filter((k) => assetKeys.includes(k) || (k === "logo" && legacyLogo)),
+  }));
+}
+
+export async function getBrand(slug: string, viewer: TokenUser | null) {
+  if (!db) return null;
   const [row] = await db.select().from(brandProfiles).where(eq(brandProfiles.slug, slug)).limit(1);
   if (!row) return null;
-  if (row.orgId) {
-    const [member] = await db.select({ r: orgMembers.role }).from(orgMembers).where(and(eq(orgMembers.orgId, row.orgId), eq(orgMembers.userId, viewer.id))).limit(1);
-    if (!member) return null;
-  } else if (row.ownerId !== viewer.id) return null;
+  const role = row.orgId ? await roleIn(row.orgId, viewer?.id) : null;
+  const owns = Boolean(viewer && !row.orgId && row.ownerId === viewer.id);
+  if (row.isPrivate && !owns && !role) return null;
   const parsed = brandProfileSchema.safeParse(row.profile);
-  return parsed.success ? { row, profile: parsed.data } : null;
+  const canEdit = owns || capabilitiesFor(role).canEditBrands;
+  return parsed.success ? { row, profile: parsed.data, canEdit } : null;
 }
 
 /**
  * Creates or updates a profile under the user's handle or an org slug. Org
  * profiles need admin (they define the company's identity for everyone).
  */
-export async function saveBrand(viewer: TokenUser, owner: string, input: unknown, mode: "create" | "update"): Promise<string> {
+export async function saveBrand(viewer: TokenUser, owner: string, input: unknown, mode: "create" | "update", isPrivate?: boolean): Promise<string> {
   if (!db) throw new BrandError(503, "No database");
+  if (isPrivate !== undefined && typeof isPrivate !== "boolean") throw new BrandError(400, "Invalid visibility");
   const parsed = brandProfileSchema.safeParse(input);
   if (!parsed.success) throw new BrandError(400, parsed.error.issues[0]?.message ?? "Invalid profile");
   const profile = parsed.data;
@@ -56,13 +80,13 @@ export async function saveBrand(viewer: TokenUser, owner: string, input: unknown
   if (mode === "update") {
     const scope = orgId ? eq(brandProfiles.orgId, orgId) : and(isNull(brandProfiles.orgId), eq(brandProfiles.ownerId, viewer.id));
     const [updated] = await db.update(brandProfiles)
-      .set({ title: profile.title, profile, updatedAt: new Date() })
+      .set({ title: profile.title, profile, isPrivate, updatedAt: new Date() })
       .where(and(eq(brandProfiles.slug, slug), scope))
       .returning({ id: brandProfiles.id });
     if (!updated) throw new BrandError(404, "Profile not found");
   } else {
     const [created] = await db.insert(brandProfiles)
-      .values({ slug, ownerId: viewer.id, orgId, title: profile.title, profile })
+      .values({ slug, ownerId: viewer.id, orgId, title: profile.title, profile, isPrivate: isPrivate ?? false })
       .onConflictDoNothing({ target: brandProfiles.slug })
       .returning({ id: brandProfiles.id });
     if (!created) throw new BrandError(409, "That identifier is already in use. Choose another for this copy.");
@@ -73,9 +97,6 @@ export async function saveBrand(viewer: TokenUser, owner: string, input: unknown
 export async function deleteBrand(viewer: TokenUser, slug: string): Promise<void> {
   const found = await getBrand(slug, viewer);
   if (!found) throw new BrandError(404, "Profile not found");
-  if (found.row.orgId) {
-    const [org] = await db!.select().from(orgs).where(eq(orgs.id, found.row.orgId)).limit(1);
-    if (!(await orgCapabilities(org!, viewer)).canEditBrands) throw new OrgError(403, "Only the organization's owners and admins edit its brand profiles");
-  }
+  if (!found.canEdit) throw new BrandError(403, "You don't have permission to delete this profile");
   await db!.delete(brandProfiles).where(eq(brandProfiles.id, found.row.id));
 }

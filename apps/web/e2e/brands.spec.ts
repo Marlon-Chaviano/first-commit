@@ -2,15 +2,21 @@ import { expect, test } from "@playwright/test";
 
 test("guests can inspect a public template and choose an identifier before login", async ({ page }) => {
   await page.goto("/brands");
-  await page.getByRole("searchbox", { name: "Search brand templates" }).fill("Nike");
+  await page.getByRole("searchbox", { name: "Search brands" }).fill("Nike");
   await page.getByRole("link", { name: "View Nike template" }).click();
   await expect(page).toHaveURL(/\/brand-templates\/nike$/);
   await expect(page.getByRole("heading", { name: "Color palette" })).toBeVisible();
   await page.getByText("Fork to my brands", { exact: true }).click();
   await page.getByLabel("Identifier for your copy").fill("training");
-  await page.getByRole("button", { name: "Log in to create private copy" }).click();
+  const privacy = page.getByRole("checkbox", { name: "Hacer privada" });
+  await expect(privacy).not.toBeChecked();
+  await privacy.check();
+  await page.getByRole("button", { name: "Log in to create copy" }).click();
   await expect(page).toHaveURL(/\/login\?/);
-  expect(new URL(page.url()).searchParams.get("next")).toBe("/brands/new?template=nike&name=training");
+  const next = new URL(page.url()).searchParams.get("next")!;
+  expect(next).toBe("/brands/new?template=nike&name=training&private=1");
+  await page.goto(next);
+  await expect(privacy).toBeChecked();
 });
 
 test("the login return path restores a guest draft in the same tab", async ({ page }) => {
@@ -18,6 +24,7 @@ test("the login return path restores a guest draft in the same tab", async ({ pa
   await page.getByRole("button", { name: /Start from scratch/ }).click();
   await page.getByLabel("Brand name", { exact: true }).fill("Night Studio");
   await page.getByLabel("Identifier", { exact: true }).fill("night-studio");
+  await page.getByRole("checkbox", { name: "Hacer privada" }).check();
   await page.getByLabel("Voice and tone").fill("Direct and conversational");
   await page.getByRole("button", { name: "Log in to create profile" }).click();
   await expect(page).toHaveURL(/\/login\?/);
@@ -25,6 +32,7 @@ test("the login return path restores a guest draft in the same tab", async ({ pa
   expect(next).toMatch(/^\/brands\/new\?draft=[\da-f-]{36}$/);
   await page.goto(next);
   await expect(page.getByLabel("Brand name", { exact: true })).toHaveValue("Night Studio");
+  await expect(page.getByRole("checkbox", { name: "Hacer privada" })).toBeChecked();
   await expect(page.getByLabel("Voice and tone")).toHaveValue("Direct and conversational");
 });
 

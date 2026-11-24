@@ -6,7 +6,7 @@ import { applyWrite, fillTemplate, BRAND, dependencySteps, FRAMEWORK_LABELS, imp
 import pc from "picocolors";
 
 import { listFlag, type ParsedArgs } from "./args";
-import { detectFramework, projectLibraryTargets } from "./create/frameworks";
+import { detectFramework, projectLibraryTargets } from "@kits/schema/project";
 import { detectPm, installedLibraries, packageName, readDeps } from "./create/detect";
 import { describe, execute } from "./exec";
 import { hashFile, readLock, writeLock } from "./lockfile";

@@ -1,4 +1,5 @@
 import { cliCommand } from "@kits/schema";
+import Link from "next/link";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
@@ -26,6 +27,7 @@ export default function PublishPage() {
           the terminal, inside the repo:
         </p>
         <Command command={cliCommand("publish ./kit")} />
+        <Link href="/kits/new" className="mt-2 w-fit text-sm text-muted-foreground underline underline-offset-4 hover:text-foreground">Create a kit from a GitHub project</Link>
       </header>
       <Suspense fallback={<Skeleton className="h-80" />}>
         <Gate />

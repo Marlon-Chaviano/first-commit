@@ -63,3 +63,13 @@ export async function hasGithubAccount(userId: string): Promise<boolean> {
   const [row] = await db.select({ id: account.id }).from(account).where(and(eq(account.userId, userId), eq(account.providerId, "github"))).limit(1);
   return Boolean(row);
 }
+
+export async function githubToken(userId: string): Promise<string | null> {
+  if (!db) return null;
+  const rows = await db
+    .select({ token: account.accessToken })
+    .from(account)
+    .where(and(eq(account.userId, userId), eq(account.providerId, "github")))
+    .limit(1);
+  return rows[0]?.token ?? null;
+}

@@ -53,7 +53,7 @@ export default function ApiDocs() {
 
       <H2 id="account">With your account</H2>
       <P>
-        Publishing kits (<Code>POST /kits</Code>), reading brand profiles and downloading private kits need a session or an{" "}
+        Publishing kits (<Code>POST /kits</Code>), reading private brand profiles and downloading private kits need a session or an{" "}
         <Code>Authorization: Bearer kits_…</Code> token you create in <Link href="/account" className="text-foreground underline underline-offset-4">your account</Link>.
         The CLI handles it for you with <Code>login</Code>.
       </P>

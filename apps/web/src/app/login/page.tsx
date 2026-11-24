@@ -14,7 +14,7 @@ export const metadata: Metadata = { title: "Log in", robots: { index: false } };
 /** What an account adds. Browsing, the configurator and the CLI work without one, and the page says so. */
 const UNLOCKS: { icon: LucideIcon; title: string; text: string }[] = [
   { icon: UploadIcon, title: "Publish kits", text: "Under your GitHub username: your-user/kit." },
-  { icon: PaletteIcon, title: "Brand profiles", text: "Colors, fonts and logo, private to you or your team." },
+  { icon: PaletteIcon, title: "Brand profiles", text: "Colors, fonts and logo, shared publicly or kept private." },
   { icon: BarChart3Icon, title: "Install statistics", text: "How many people install your kits, and with which options." },
   { icon: KeyRoundIcon, title: "Tokens for the CLI and CI", text: "Publish from your terminal or GitHub Actions." },
 ];

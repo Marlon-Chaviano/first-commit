@@ -18,6 +18,10 @@ import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState, useTransition } from "react";
 import { toast } from "sonner";
 
+import { RepositoryPicker } from "@/features/repository-import/repository-picker";
+import { readBrand } from "@/features/repository-import/actions";
+import { TechIcon } from "@/components/shared/tech-icon";
+import type { ImportAccess } from "@/server/repository-import/access";
 import { Button } from "@/components/ui/button";
 import { Field, FieldDescription, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
@@ -27,11 +31,12 @@ import { cn } from "@/lib/utils";
 
 import { detectBrandFromUrlAction, saveBrandAction } from "./actions";
 import { logInWithDraft } from "./pending-draft";
+import { BrandPrivacy } from "./brand-privacy";
 import { BrandEditor } from "./brand-editor";
 import { BrandPreview } from "./brand-preview";
 import { ACCEPT, detectFile, imageAsDataUrl, MAX_IMAGE_BYTES } from "./brand-importer";
 
-type Review = { detection: BrandDetection; source: string };
+type Review = { detection: BrandDetection; source: string; partial?: boolean };
 type Step = { kind: "start" } | { kind: "review" } | { kind: "edit"; draft: BrandProfile; from: "review" | "start" };
 
 
@@ -42,7 +47,8 @@ const STAGES = ["Reading the page", "Loading its stylesheets", "Checking the log
  * Creating a brand profile in three steps: start from a website (or a file, or nothing),
  * review what was detected choosing between alternatives, and only then the full form, if wanted.
  */
-export function BrandCreator({ owners }: { owners: string[] }) {
+export function BrandCreator({ owners, repositoryAccess }: { owners: string[]; repositoryAccess?: ImportAccess }) {
+  const [isPrivate, setPrivate] = useState(false);
   const [step, setStep] = useState<Step>({ kind: "start" });
   const [review, setReview] = useState<Review | null>(null);
   // Each step starts at its top, not wherever the previous one was scrolled to.
@@ -51,11 +57,27 @@ export function BrandCreator({ owners }: { owners: string[] }) {
   }, [step.kind]);
   const restart = () => {
     setReview(null);
+    setPrivate(false);
     setStep({ kind: "start" });
   };
   return (
     <>
-      {step.kind === "start" && (
+      {step.kind === "start" && repositoryAccess && (
+        <div className="flex max-w-2xl flex-col gap-4">
+          <p className="text-pretty text-muted-foreground">Choose a project to extract its logo, colors and typography. You can adjust each one before saving your profile.</p>
+          <RepositoryPicker kind="brand" access={repositoryAccess} onRead={async source => {
+            const result = await readBrand(source);
+            if (!result.ok) return result.error;
+            setReview({ detection: result.data.detection, source: [source.repo, source.folder].filter(Boolean).join("/") + " · " + source.commit.slice(0, 7), partial: result.data.partial });
+            setStep({ kind: "review" });
+          }} />
+          <div className="flex flex-wrap items-center gap-2">
+            <Button variant="outline" nativeButton={false} render={<Link href="/brands/new" />}>Other import methods</Button>
+            <Button variant="ghost" onClick={() => setStep({ kind: "edit", draft: blank(), from: "start" })}>Start from scratch</Button>
+          </div>
+        </div>
+      )}
+      {step.kind === "start" && !repositoryAccess && (
         <Start
           onDetected={(detection, source) => {
             setReview({ detection, source });
@@ -67,7 +89,8 @@ export function BrandCreator({ owners }: { owners: string[] }) {
       {/* Hidden, not unmounted, while fine-tuning: "Back to the review" finds every choice where it was. */}
       {review && (
         <div hidden={step.kind !== "review"}>
-          <ReviewStep key={review.source} detection={review.detection} source={review.source} owners={owners} onBack={restart} onEdit={(draft) => setStep({ kind: "edit", draft, from: "review" })} />
+          {review.partial && <p role="status" className="mb-4 text-sm text-muted-foreground">Some files were skipped. Review the detected values or choose a smaller project folder.</p>}
+          <ReviewStep fromRepository={Boolean(repositoryAccess)} isPrivate={isPrivate} onPrivacyChange={setPrivate} key={review.source} detection={review.detection} source={review.source} owners={owners} onBack={restart} onEdit={(draft) => setStep({ kind: "edit", draft, from: "review" })} />
         </div>
       )}
       {step.kind === "edit" && (
@@ -77,7 +100,7 @@ export function BrandCreator({ owners }: { owners: string[] }) {
           ) : (
             <BackButton onClick={restart}>Back</BackButton>
           )}
-          <BrandEditor owners={owners} draft={step.draft} />
+          <BrandEditor owners={owners} draft={step.draft} initialPrivate={isPrivate} onPrivacyChange={setPrivate} />
         </div>
       )}
     </>
@@ -174,7 +197,10 @@ function Start({ onDetected, onBlank }: { onDetected: (d: BrandDetection, source
         <span className="h-px flex-1 bg-border" />
       </div>
 
-      <Button variant="outline" nativeButton={false} render={<Link href="/brands#templates" />}>Browse brand templates</Button>
+      <div className="grid gap-3 sm:grid-cols-2">
+        <Button variant="outline" nativeButton={false} render={<Link href="/brands/new?source=github" />}><TechIcon id="github" label="" className="size-4" />From GitHub</Button>
+        <Button variant="outline" nativeButton={false} render={<Link href="/brands#templates" />}>Browse brand templates</Button>
+      </div>
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <button
           type="button"
@@ -212,16 +238,22 @@ function Start({ onDetected, onBlank }: { onDetected: (d: BrandDetection, source
 
 function ReviewStep({
   detection,
+  fromRepository,
   source,
   owners,
   onBack,
   onEdit,
+  isPrivate,
+  onPrivacyChange,
 }: {
   detection: BrandDetection;
+  fromRepository: boolean;
   source: string;
   owners: string[];
   onBack: () => void;
   onEdit: (draft: BrandProfile) => void;
+  isPrivate: boolean;
+  onPrivacyChange: (value: boolean) => void;
 }) {
   const router = useRouter();
   const d = detection.profile;
@@ -267,7 +299,7 @@ function ReviewStep({
 
   return (
     <div className="flex flex-col gap-6">
-      <BackButton onClick={onBack}>Try another website or file</BackButton>
+      <BackButton onClick={onBack}>Choose another source</BackButton>
       <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1fr)_320px]">
         <form
           className="flex flex-col gap-8"
@@ -280,10 +312,10 @@ function ReviewStep({
               } catch {
                 return void toast.error("Check the name: lowercase letters, numbers and hyphens");
               }
-              if (!owner) return logInWithDraft(p, router.push);
-              const r = await saveBrandAction(owner, p);
+              if (!owner) return logInWithDraft(p, isPrivate, router.push);
+              const r = await saveBrandAction(owner, p, "create", isPrivate);
               if (!r.ok) {
-                if (r.error === "Log in first") return logInWithDraft(p, router.push);
+                if (r.error === "Log in first") return logInWithDraft(p, isPrivate, router.push);
                 return void toast.error(r.error);
               }
               toast.success("Brand profile created");
@@ -294,10 +326,18 @@ function ReviewStep({
           <div className="flex flex-col gap-1">
             <h3 className="text-lg font-semibold tracking-tight">Review what we found</h3>
             <p className="text-sm text-muted-foreground">
-              From <span className="font-mono text-foreground">{source}</span>. Pick the right option where there are several.
+              From <span className="break-all font-mono text-foreground">{source}</span>. Pick the right option where there are several.
             </p>
           </div>
 
+          {fromRepository && detection.found.length > 0 && (
+            <details className="rounded-lg border px-4 py-3 text-sm">
+              <summary className="cursor-pointer">Detected in the repository</summary>
+              <ul className="mt-3 max-h-52 space-y-1 overflow-auto break-all font-mono text-xs text-muted-foreground">
+                {detection.found.map(line => <li key={line}>{line}</li>)}
+              </ul>
+            </details>
+          )}
           <Section title="Name">
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <Field>
@@ -395,6 +435,7 @@ function ReviewStep({
             </p>
           )}
 
+          <BrandPrivacy checked={isPrivate} onChange={onPrivacyChange} />
           <div className="flex flex-col-reverse gap-2 border-t pt-6 sm:flex-row sm:items-center">
             <Button type="submit" disabled={pending || !name || !title}>
               {pending && <LoaderCircleIcon className="animate-spin" data-icon="inline-start" />}

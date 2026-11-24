@@ -37,7 +37,7 @@ export async function loadBrand(ref: string): Promise<BrandProfile> {
     if (!/^[a-z0-9-]+\/[a-z0-9-]+$/.test(ref)) throw new Error(`Invalid brand profile: "${ref}" (use owner/name or ./brand.json)`);
     const res = await api("/api/v1/brands/" + ref);
     if (res.status === 404 || res.status === 401) {
-      throw new Error(`Brand profile ${ref} not found${(await getToken()) ? "" : `: profiles are private, log in with \`${cliCommand("login")}\``}`);
+      throw new Error(`Brand profile ${ref} not found${(await getToken()) ? "" : `: for a private profile, log in with \`${cliCommand("login")}\``}`);
     }
     if (!res.ok) throw new Error(res.status ? `The registry responded ${res.status} when asked for ${ref}` : res.error!);
     raw = res.data;

@@ -9,9 +9,9 @@ import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/in
 
 import { BrandCard } from "./brand-card";
 import { BrandSkeletons } from "./brand-skeletons";
-import type { BrandTemplatePage } from "./templates";
+import type { BrandCatalogPage } from "@/server/brand-catalog";
 
-export function TemplateCatalog({ initial }: { initial: BrandTemplatePage }) {
+export function TemplateCatalog({ initial }: { initial: BrandCatalogPage }) {
   const [query, setQuery] = useState("");
   const term = query.trim().toLowerCase();
 
@@ -19,12 +19,12 @@ export function TemplateCatalog({ initial }: { initial: BrandTemplatePage }) {
     <section id="templates" aria-labelledby="templates-title" className="flex scroll-mt-20 flex-col gap-4">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div className="flex flex-col gap-1">
-          <h2 id="templates-title" className="label-mono">Brand templates</h2>
-          <p className="text-sm text-muted-foreground">Explore a palette, typography and logo. Fork a template to make it yours.</p>
+          <h2 id="templates-title" className="label-mono">Brand catalog</h2>
+          <p className="text-sm text-muted-foreground">Browse official templates and profiles published by the community.</p>
         </div>
         <InputGroup className="w-full sm:w-64">
           <InputGroupAddon><SearchIcon /></InputGroupAddon>
-          <InputGroupInput type="search" aria-label="Search brand templates" placeholder="Search brands or fonts" value={query} onChange={(e) => setQuery(e.target.value)} />
+          <InputGroupInput type="search" aria-label="Search brands" placeholder="Search brands or fonts" value={query} onChange={(e) => setQuery(e.target.value)} />
         </InputGroup>
       </div>
       <CatalogResults key={term} query={term} initial={initial} clearSearch={() => setQuery("")} />
@@ -34,12 +34,12 @@ export function TemplateCatalog({ initial }: { initial: BrandTemplatePage }) {
 
 type ResultsProps = {
   query: string;
-  initial: BrandTemplatePage;
+  initial: BrandCatalogPage;
   clearSearch: () => void;
 };
 
 function CatalogResults({ query, initial, clearSearch }: ResultsProps) {
-  const [results, setResults] = useState<BrandTemplatePage | null>(query ? null : initial);
+  const [results, setResults] = useState<BrandCatalogPage | null>(query ? null : initial);
   const [requestedPage, requestPage] = useState<number | null>(query ? 1 : null);
   const [failed, setFailed] = useState(false);
 
@@ -52,7 +52,7 @@ function CatalogResults({ query, initial, clearSearch }: ResultsProps) {
         if (query) params.set("q", query);
         const response = await fetch(`/api/v1/brand-templates?${params}`, { signal: controller.signal });
         if (!response.ok) throw new Error("Catalog request failed");
-        const page: BrandTemplatePage = await response.json();
+        const page: BrandCatalogPage = await response.json();
         if (controller.signal.aborted) return;
         setResults((previous) => previous ? { ...page, items: [...previous.items, ...page.items] } : page);
       } catch {
@@ -70,15 +70,15 @@ function CatalogResults({ query, initial, clearSearch }: ResultsProps) {
 
   const nextPage = results ? results.nextPage : 1;
   const remaining = results ? results.total - results.items.length : 0;
-  const status = failed ? "Couldn’t load these templates. Try again." : !results ? "Searching…" : results.total === 0 ? "No matching templates. Try another brand or font." : null;
+  const status = failed ? "Couldn’t load these brands. Try again." : !results ? "Searching…" : results.total === 0 ? "No matching brands. Try another brand or font." : null;
 
   return (
     <>
       <ul aria-busy={requestedPage !== null} className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-        {results?.items.map(({ id, href, title, colors, fonts, radius }) => (
+        {results?.items.map(({ id, href, title, colors, fonts, radius, logo, publisher }) => (
           <li key={id}>
-            <BrandCard href={href} label={`View ${title} template`}
-              profile={{ title, colors, fonts, radius, assets: { logo: `/brand-templates/${id}.svg` } }} />
+            <BrandCard href={href} label={publisher ? `View ${title} by ${publisher}` : `View ${title} template`} attribution={publisher ? `By ${publisher}` : "Official template"}
+              profile={{ title, colors, fonts, radius, assets: { logo } }} />
           </li>
         ))}
         {requestedPage !== null && <BrandSkeletons count={results ? Math.min(CATALOG_PAGE_SIZE, remaining) : CATALOG_PAGE_SIZE} />}

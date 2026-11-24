@@ -9,13 +9,12 @@ import {
   loadKitFrom,
   BRAND,
   buildPlan,
-  LIBRARY_CATEGORIES,
   cliCommand,
   defaultSelections,
-  PACKAGE_MANAGERS,
   REGISTRY_RAW_BASE,
   type Kit,
 } from "@kits/schema";
+import { buildKitJson, kitSlug as slug } from "@kits/schema/project";
 import pc from "picocolors";
 
 import { listFlag, type ParsedArgs } from "../args";
@@ -141,63 +140,6 @@ export async function create(args: ParsedArgs, guard: <T>(v: T) => Exclude<T, sy
   p.outro(`${pc.green("Kit created")} in ${rel}/kit.json${files.length ? ` with ${files.length} files` : ""}.`);
 }
 
-interface Answers {
-  name: string;
-  title: string;
-  description: string;
-  category: Kit["category"];
-  dependencies: string[];
-  devDependencies: string[];
-  skills: string[];
-  mcpNames: string[];
-  instructions?: string;
-  hasFiles: boolean;
-}
-
-/** The kit.json as written to disk: only non-empty fields, in a readable order. */
-export function buildKitJson(d: Detection, a: Answers): Record<string, unknown> {
-  const { libraries: l, framework: f } = d;
-  const libraries = f.ui
-    ? {
-        framework: f.frameworks,
-        components: l.components?.id ?? "none",
-        addons: l.addons.map((x) => x.id),
-        animation: l.animation.map((x) => x.id),
-        observability: l.observability.map((x) => x.id),
-      }
-    : { framework: f.frameworks, observability: l.observability.map((x) => x.id) };
-  // Other detected categories (database, payments, testing…) become options too.
-  for (const category of LIBRARY_CATEGORIES) {
-    const found = l.others.filter((lib) => lib.kind === category.kind);
-    if (found.length) (libraries as Record<string, unknown>)[category.key] = category.type === "select" ? found[0]!.id : found.map((x) => x.id);
-  }
-  const mcp = Object.fromEntries(a.mcpNames.map((n) => [n, d.mcp[n]]));
-
-  const kit: Record<string, unknown> = {
-    $schema: `${REGISTRY_RAW_BASE}/kit.schema.json`,
-    name: a.name,
-    version: "0.1.0",
-    title: a.title,
-    description: a.description,
-    category: a.category,
-    tags: f.frameworks,
-    author: d.githubRepo?.split("/")[0] ?? "anonymous",
-    base: f.base,
-    ...(f.addCommand ? { addCommand: f.addCommand } : {}),
-    // The creator's package manager becomes the default.
-    packageManagers: [d.pm, ...PACKAGE_MANAGERS.filter((pm) => pm !== d.pm)],
-    libraries: { ...libraries, ...(f.platforms?.length && { platforms: f.platforms }) },
-  };
-  if (a.dependencies.length) kit.dependencies = a.dependencies;
-  if (a.devDependencies.length) kit.devDependencies = a.devDependencies;
-  if (a.skills.length) kit.skills = a.skills;
-  if (Object.keys(mcp).length) kit.mcp = mcp;
-  if (Object.keys(d.env).length) kit.env = d.env;
-  if (a.hasFiles) kit.files = "files";
-  if (a.instructions) kit.instructions = a.instructions;
-  return kit;
-}
-
 /** `create-first-commit create --blank [nombre]` — an empty kit.json to fill by hand. */
 async function createBlank(args: ParsedArgs): Promise<void> {
   const name = slug(args.positionals[0] ?? "mi-kit");
@@ -218,12 +160,4 @@ async function createBlank(args: ParsedArgs): Promise<void> {
   await mkdir(out, { recursive: true });
   await writeFile(join(out, "kit.json"), JSON.stringify(kit, null, 2) + "\n");
   console.log(`Created ${relative(process.cwd(), join(out, "kit.json"))}. Try it with: ${cliCommand(`./${basename(out)} demo --dry-run`)}`);
-}
-
-function slug(value: string): string {
-  return value
-    .toLowerCase()
-    .replace(/^@[^/]+\//, "")
-    .replace(/[^a-z0-9-]+/g, "-")
-    .replace(/^-+|-+$/g, "") || "mi-kit";
 }

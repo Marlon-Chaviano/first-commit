@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { PixelWordmark } from "@/components/layout/pixel-wordmark";
+import { Button } from "@/components/ui/button";
+import { PlusIcon } from "lucide-react";
 import { JsonLd } from "@/components/shared/json-ld";
 import { Command } from "@/components/shared/command";
 import { Marquee } from "@/components/shared/marquee";
@@ -170,7 +172,10 @@ export default async function Home() {
       )}
 
       <section id="leaderboard" className="flex scroll-mt-20 flex-col gap-4">
-        <h2 className="label-mono">{stats.total >= RANKING_MIN_INSTALLS ? "Kit ranking" : "Kits"}</h2>
+        <div className="flex items-center justify-between gap-4">
+          <h2 className="label-mono">{stats.total >= RANKING_MIN_INSTALLS ? "Kit ranking" : "Kits"}</h2>
+          <Button size="sm" variant="outline" nativeButton={false} render={<Link href="/kits/new" />}><PlusIcon />Create a kit</Button>
+        </div>
         <KitLeaderboardFromUrl kits={kits} logos={rowLogos} stats={stats} verified={Object.fromEntries(verified)} />
       </section>
     </div>

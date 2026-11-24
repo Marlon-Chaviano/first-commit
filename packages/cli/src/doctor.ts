@@ -6,7 +6,7 @@ import pc from "picocolors";
 
 import { api } from "./api";
 import type { ParsedArgs } from "./args";
-import { detectFramework, projectLibraryTargets } from "./create/frameworks";
+import { detectFramework, projectLibraryTargets } from "@kits/schema/project";
 import { installedLibraries, readDeps } from "./create/detect";
 import { readLock } from "./lockfile";
 import { loadCatalog, loadKit } from "./registry";

@@ -56,7 +56,7 @@ function BrandList({ brands }: { brands: Brands }) {
           return (
             <li key={b.id} className="min-w-0">
               {profile.success ? (
-                <BrandCard href={href} label={`Edit ${b.slug}`} profile={{
+                <BrandCard href={href} attribution={b.isPrivate ? "Private" : "Public"} label={`View ${b.slug}`} profile={{
                   title: profile.data.title, colors: profile.data.colors, dark: profile.data.dark,
                   fonts: profile.data.fonts, radius: profile.data.radius,
                   assets: {
@@ -67,7 +67,7 @@ function BrandList({ brands }: { brands: Brands }) {
               ) : (
                 <div className="flex flex-wrap items-center justify-between gap-2 rounded-xl border bg-card p-3">
                   <p className="text-sm">{b.slug}</p>
-                  <Button variant="outline" size="sm" nativeButton={false} render={<Link href={href} aria-label={`Edit ${b.slug}`} />}>Edit</Button>
+                  <Button variant="outline" size="sm" nativeButton={false} render={<Link href={href} aria-label={`View ${b.slug}`} />}>View</Button>
                   <p className="w-full text-xs text-destructive">This profile’s preview is unavailable.</p>
                 </div>
               )}
